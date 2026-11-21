@@ -238,7 +238,7 @@ def dark_version(img: Image.Image) -> Image.Image | None:
         white = light
     rgb = a[:, :, :3].astype(np.int16)
     dark = (a[:, :, 3] > 128) & (rgb.max(axis=2) < DARK_NEUTRAL) & ((rgb.max(axis=2) - rgb.min(axis=2)) < NEUTRAL_SPREAD)
-    if dark.any() and (dark & _dilate(white, 2)).sum() > MERGE_SHARE * dark.sum():
+    if not white.any() or dark.any() and (dark & _dilate(white, 2)).sum() > MERGE_SHARE * dark.sum():
         return None
     a[white, 0:3] = INK
     return Image.fromarray(a, 'RGBA')

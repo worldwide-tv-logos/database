@@ -279,6 +279,7 @@ def test_white_logo_gets_a_dark_version_and_white_box_with_black_text_is_kept():
     main, white = image.variants(letters)
     assert white is letters and main.getpixel((10, 10))[:3] == (image.INK,) * 3
     box = PILImage.new('RGBA', (800, 300), (255, 255, 255, 255))
-    PILDraw.Draw(box).rectangle((200, 100, 600, 200), fill=(0, 0, 0, 255))                       # black text in a white box
+    for x in range(200, 600, 40):                                                     # thin black letters in a white box
+        PILDraw.Draw(box).rectangle((x, 100, x + 8, 200), fill=(0, 0, 0, 255))
     main, white = image.variants(box)
     assert main is box and white is None
