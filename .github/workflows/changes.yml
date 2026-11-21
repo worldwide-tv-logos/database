@@ -1,19 +1,57 @@
 name: changes
+# Every Monday: the "iptv-org changes" issue lists the logos whose channel was removed, closed or replaced in iptv-org.
+# Claude then applies what can be applied (logo moved to the new ID, logo of a removed channel removed) in a pull
+# request, merged when it says ready and the repository variable AUTO_MERGE is true.
 on:
   workflow_dispatch:
   schedule:
     - cron: '0 6 * * 1'
 permissions:
-  contents: read
+  contents: write
   issues: write
+  pull-requests: write
+  id-token: write
 jobs:
   changes:
     runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      AUTO_MERGE: ${{ vars.AUTO_MERGE }}
+      HAS_CLAUDE: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN != '' }}
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v6
       - run: uv sync
       - name: open, update or close the "iptv-org changes" issue
+        id: issue
         env:
           GITHUB_TOKEN: ${{ github.token }}
-        run: uv run logos changes
+        run: |
+          uv run logos changes
+          mkdir -p temp
+          uv run logos changes --dry-run > temp/changes.md
+          if grep -q '^- \[ \]' temp/changes.md; then echo "todo=yes" >> "$GITHUB_OUTPUT"; fi
+      - name: Claude applies the changes
+        if: env.HAS_CLAUDE == 'true' && steps.issue.outputs.todo == 'yes'
+        uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          prompt: |
+            temp/changes.md lists the logos of ${{ github.repository }} whose channel changed in iptv-org (or says
+            there is none: then stop). Follow CLAUDE.md ("Autonomous work") and handle each line:
+            - replaced by a new ID: `uv run logos move <old id> <new id>`, then check with `uv run logos find <new id>`
+              that the logo is still the current one of the new channel (a rebrand often comes with a new logo:
+              apply it with `uv run logos set <new id> <url>`);
+              If the new ID already has its own logo, remove the old one instead (`uv run logos remove <old id>`);
+            - no longer in iptv-org and not replaced: `uv run logos remove <id>`;
+            - closed: keep the logo, nothing to do.
+            Finish with exactly one `uv run logos verdict ready|hold "<report>"` listing what you did and why.
+          claude_args: |
+            --permission-mode default
+            --max-turns 60
+            --allowedTools Read,WebFetch,WebSearch,Bash(uv run logos move:*),Bash(uv run logos remove:*),Bash(uv run logos find:*),Bash(uv run logos set:*),Bash(uv run logos verdict:*)
+      - name: pull request (merged when Claude says ready and AUTO_MERGE is true)
+        if: env.HAS_CLAUDE == 'true' && steps.issue.outputs.todo == 'yes'
+        run: |
+          printf 'Changes on the iptv-org side, applied by Claude (see the issue labelled iptv-org:changes).\n' > temp/changes-pr.md
+          bash .github/scripts/publish.sh "iptv-org-changes" "Apply iptv-org changes" temp/changes-pr.md

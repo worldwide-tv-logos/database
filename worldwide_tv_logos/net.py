@@ -18,12 +18,12 @@ class DownloadError(RuntimeError):
 
 
 def download(url: str, *, opener: Callable = urllib.request.urlopen, sleep: Callable = time.sleep,
-             attempts: int = 3) -> bytes:
+             attempts: int = 3, accept: str = 'image/*,*/*;q=0.5') -> bytes:
     if not url.startswith('https://'):
         raise DownloadError('only https:// links are accepted')
     for _ in range(attempts):
         try:
-            req = urllib.request.Request(url, headers={'User-Agent': USER_AGENT, 'Accept': 'image/*,*/*;q=0.5'})
+            req = urllib.request.Request(url, headers={'User-Agent': USER_AGENT, 'Accept': accept})
             with opener(req, timeout=TIMEOUT) as resp:
                 data = resp.read(MAX_DOWNLOAD + 1)
             if len(data) > MAX_DOWNLOAD:

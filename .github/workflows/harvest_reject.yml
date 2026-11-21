@@ -21,7 +21,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           head=$(gh pr view ${{ github.event.issue.number }} -R ${{ github.repository }} --json headRefName --jq .headRefName)
-          case "$head" in harvest/*) ;; *) echo "not a harvest pull request"; exit 1;; esac
+          case "$head" in harvest/*|hunt/*) ;; *) echo "not a harvest pull request"; exit 1;; esac
           echo "HEAD_REF=$head" >> "$GITHUB_ENV"
       - uses: actions/checkout@v4
         with:

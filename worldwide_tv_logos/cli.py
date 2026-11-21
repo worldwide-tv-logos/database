@@ -11,7 +11,7 @@ import time
 from pathlib import Path
 
 from worldwide_tv_logos import image, iptvorg, issues, net, ops
-from worldwide_tv_logos.db import CHANNEL_RE, FEED_RE, VARIANTS, Database
+from worldwide_tv_logos.db import CHANNEL_RE, FEED_RE, VARIANTS, Database, parse_logo_id
 
 DATE_RE = re.compile(r'^\d{4}-\d{2}-\d{2}$')
 
@@ -238,6 +238,162 @@ def cmd_reprocess(args, db: Database) -> int:
     return 0
 
 
+def _stems_changed(db: Database, base: str) -> list[str]:
+    import subprocess
+    out = subprocess.run(['git', 'diff', '--name-only', base, '--', 'logos'], cwd=db.root, capture_output=True,
+                         text=True, check=True).stdout.split()
+    return sorted({Path(p).name.removesuffix('.png').removesuffix('.white') for p in out})
+
+
+def cmd_sheet(args, db: Database) -> int:
+    """Contact sheets of logos of the repository: changed since a branch, listed, or of a country."""
+    from worldwide_tv_logos import harvest
+    if args.changed:
+        stems = _stems_changed(db, args.base)
+    elif args.channels:
+        stems = [x.strip() for x in args.channels.split(',') if x.strip()]
+    elif args.country:
+        stems = sorted(x.logo_id for x in db.logos.values() if not x.variant and x.country == args.country.lower())
+    else:
+        print('give --changed, --channels or --country')
+        return 1
+    out = Path(args.out) if args.out else db.root / 'temp' / 'sheets'
+    for old in out.glob('sheet-*.png') if out.is_dir() else []:
+        old.unlink()
+    pages = harvest.repo_sheets(db, stems, out, args.per_page)
+    print(f'{len(stems)} logo(s) on {len(pages)} sheet(s): ' + ', '.join(p.as_posix() for p in pages))
+    return 0
+
+
+def cmd_find(args, db: Database) -> int:
+    """Every candidate logo of one channel or feed, from every source, checked and ranked, on a contact sheet."""
+    from worldwide_tv_logos import harvest
+    channel, feed = parse_logo_id(args.id)
+    iptv = iptvorg.load(db.root)
+    c = iptv.channels.get(channel)
+    if c is None:
+        print(f'`{channel}` is not in iptv-org')
+        return 1
+    cc = (c.get('country') or channel.rsplit('.', 1)[-1]).lower()
+    folder = harvest.folder_of(cc, iptvorg.load_countries(db.root))
+    logos = [x for x in iptvorg.load_logos(db.root) if x['channel'] == channel and (x.get('feed') or '') == feed]
+    extra = harvest.more_candidates(db.root, c, cc, not args.no_wikidata, True, net.download, print)
+    cands = harvest.candidates(c, harvest.tv_logos_index(harvest.load_tree(db.root), folder) if not feed else {},
+                               {channel: [dict(x, feed=None) for x in logos]}, extra)
+    rejected = harvest.load_rejected(db.root)
+    for i, cand in enumerate(cands):
+        if i:
+            time.sleep(args.pause)
+        harvest.evaluate(cand, net.download)
+        if (channel, cand.url) in rejected:
+            cand.error = 'rejected before (data/rejected.csv)'
+    cands.sort(key=lambda x: x.score, reverse=True)
+    out = Path(args.out) if args.out else db.root / 'temp' / 'find' / args.id
+    out.mkdir(parents=True, exist_ok=True)
+    good = [x for x in cands if not x.error]
+    tiles = []
+    current = db.logos.get((channel, feed, ''))
+    if current is not None:
+        white = db.logos.get((channel, feed, 'white'))
+        from PIL import Image
+        light = Image.open(db.path(current.file)).convert('RGBA')
+        tiles.append(('current logo', f'{current.width}x{current.height}  {current.origin[:60]}',
+                      Image.open(db.path(white.file)).convert('RGBA') if white else light, light))
+    for i, cand in enumerate(good, 1):
+        img, white = image.variants(image.prepare(cand.data)[0])
+        tiles.append((f'candidate {i}: {cand.source}', f'{cand.size[0]}x{cand.size[1]}' + (' SVG' if cand.svg else ''),
+                      white or img, img))
+    pages = harvest.render_sheets(tiles, out) if tiles else []
+    records = [{'n': i, 'source': x.source, 'url': x.url, 'size': f'{x.size[0]}x{x.size[1]}', 'svg': x.svg}
+               for i, x in enumerate(good, 1)]
+    (out / 'candidates.json').write_text(json.dumps(records, indent=1), encoding='utf-8')
+    for r in records:
+        print(f"{r['n']}. {r['source']:9} {r['size']:>9}{' SVG' if r['svg'] else '    '}  {r['url']}")
+    for x in cands:
+        if x.error:
+            print(f'   refused  {x.source:9} {x.url}  ({x.error})')
+    print(f'{len(good)} usable candidate(s); sheet: ' + (', '.join(p.as_posix() for p in pages) or 'none')
+          + f'; apply one with `logos set {args.id} <url>`')
+    return 0
+
+
+def cmd_set(args, db: Database) -> int:
+    """Add or replace a logo from a URL or a local file (same preparation and checks as a request)."""
+    channel, feed = parse_logo_id(args.id)
+    try:
+        data = net.download(args.source) if args.source.startswith('https://') else Path(args.source).read_bytes()
+        for change in ops.set_logo(db, channel, feed, data, args.origin or args.source, iptvorg.load(db.root)):
+            print(change)
+    except (ops.RequestError, net.DownloadError, OSError) as exc:
+        print(f'refused: {exc}')
+        return 1
+    db.save()
+    return 0
+
+
+def cmd_move(args, db: Database) -> int:
+    """Move the logos and aliases of a channel to its new iptv-org ID."""
+    try:
+        changes = ops.move_channel(db, args.old, args.new, iptvorg.load(db.root))
+    except ops.RequestError as exc:
+        print(f'refused: {exc}')
+        return 1
+    db.save()
+    print('\n'.join(changes))
+    return 0
+
+
+def cmd_remove(args, db: Database) -> int:
+    """Remove a logo (channel or feed, with its variant, original and aliases)."""
+    channel, feed = parse_logo_id(args.id)
+    try:
+        changes = ops.remove_logo(db, channel, feed)
+    except ops.RequestError as exc:
+        print(f'refused: {exc}')
+        return 1
+    db.save()
+    print('\n'.join(changes))
+    return 0
+
+
+def cmd_verdict(args, db: Database) -> int:
+    """The reviewer's decision for the workflow (temp/verdict.json): `ready` (may be merged) or `hold` (a maintainer
+    must look), with a short report in Markdown."""
+    text = args.text if args.text is not None else sys.stdin.read()
+    out = db.root / 'temp' / 'verdict.json'
+    out.parent.mkdir(exist_ok=True)
+    out.write_text(json.dumps({'state': args.state, 'text': text.strip()}, ensure_ascii=False), encoding='utf-8')
+    print(f'verdict: {args.state}')
+    return 0
+
+
+def cmd_hunt(args, db: Database) -> int:
+    """Logos of channels still without one: a different slice of them every week, every source including their
+    website, for review like a harvest."""
+    import datetime
+    import shutil
+
+    from worldwide_tv_logos import harvest
+    cc = args.country.lower()
+    iptv = iptvorg.load(db.root)
+    have = {k[0] for k in db.logos}
+    missing = sorted(c['id'] for c in iptv.country_channels(cc) if c['id'] not in have)
+    if not missing:
+        print('no channel without a logo')
+        return 0
+    week = datetime.date.today().isocalendar()[1] if args.offset is None else args.offset
+    start = (week * args.limit) % len(missing)
+    only = (missing[start:] + missing[:start])[:args.limit]
+    out = db.root / 'temp' / 'harvest' / cc
+    shutil.rmtree(out, ignore_errors=True)
+    tree = harvest.load_tree(db.root)
+    stats = harvest.harvest(db, iptv, cc, harvest.folder_of(cc, iptvorg.load_countries(db.root)),
+                            iptvorg.load_logos(db.root), tree, out, pause=args.pause, deep=True, only=only)
+    print(f"hunt: {stats['kept']} logo(s) found for {len(only)} of the {len(missing)} channels without one; "
+          f"{out.as_posix()}/summary.md")
+    return 0
+
+
 def cmd_harvest(args, db: Database) -> int:
     from worldwide_tv_logos import harvest
     cc = args.country.lower()
@@ -414,6 +570,42 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument('--limit', type=int, default=0, help='only the first N channels (test)')
     p.add_argument('--updates', action='store_true', help='also propose newer or better versions of current logos')
     p.set_defaults(func=cmd_harvest)
+    p = sub.add_parser('sheet', help='contact sheets of logos of the repository (temp/sheets/)')
+    p.add_argument('--changed', action='store_true', help='logos changed since --base')
+    p.add_argument('--base', default='origin/main')
+    p.add_argument('--channels', help='comma-separated logo IDs, e.g. France3.fr,France3.fr@Alsace')
+    p.add_argument('--country')
+    p.add_argument('--out')
+    p.add_argument('--per-page', type=int, default=30)
+    p.set_defaults(func=cmd_sheet)
+    p = sub.add_parser('find', help='every candidate logo of a channel, from every source (temp/find/<id>/)')
+    p.add_argument('id', help='logo ID, e.g. CanalSur.es or France3.fr@Alsace')
+    p.add_argument('--no-wikidata', action='store_true')
+    p.add_argument('--pause', type=float, default=1.0)
+    p.add_argument('--out')
+    p.set_defaults(func=cmd_find)
+    p = sub.add_parser('set', help='add or replace a logo from a URL or a file')
+    p.add_argument('id')
+    p.add_argument('source', help='https:// URL or local file')
+    p.add_argument('--origin', help='origin to record (default: the source)')
+    p.set_defaults(func=cmd_set)
+    p = sub.add_parser('move', help='move the logos and aliases of a channel to its new iptv-org ID')
+    p.add_argument('old')
+    p.add_argument('new')
+    p.set_defaults(func=cmd_move)
+    p = sub.add_parser('remove', help='remove a logo (with its variant, original and aliases)')
+    p.add_argument('id')
+    p.set_defaults(func=cmd_remove)
+    p = sub.add_parser('verdict', help='record a review decision for the workflow (temp/verdict.json)')
+    p.add_argument('state', choices=('ready', 'hold'))
+    p.add_argument('text', nargs='?', help='short report in Markdown (default: read from stdin)')
+    p.set_defaults(func=cmd_verdict)
+    p = sub.add_parser('hunt', help='look for the logos of channels without one, a slice every week (temp/harvest/)')
+    p.add_argument('--country', required=True)
+    p.add_argument('--limit', type=int, default=40)
+    p.add_argument('--offset', type=int, help='slice number (default: the week of the year)')
+    p.add_argument('--pause', type=float, default=2.0)
+    p.set_defaults(func=cmd_hunt)
     p = sub.add_parser('reject', help='refuse a logo proposed in a harvest pull request')
     p.add_argument('channel')
     p.add_argument('--reason', default='')

@@ -26,7 +26,7 @@ from urllib.parse import quote
 
 from PIL import Image, ImageDraw, ImageFont
 
-from worldwide_tv_logos import image, net
+from worldwide_tv_logos import image, net, sources
 from worldwide_tv_logos.db import Database
 from worldwide_tv_logos.iptvorg import IptvOrg
 
@@ -34,7 +34,7 @@ TV_LOGOS_REPO = 'tv-logo/tv-logos'
 TV_LOGOS_TREE = f'https://api.github.com/repos/{TV_LOGOS_REPO}/git/trees/main?recursive=1'
 TV_LOGOS_RAW = f'https://raw.githubusercontent.com/{TV_LOGOS_REPO}/main/'
 TREE_MAX_AGE = 7 * 86400
-SOURCE_RANK = {'tv-logos': 1, 'iptv-org': 0}
+SOURCE_RANK = {'wikidata': 2, 'tv-logos': 1, 'iptv-org': 0, 'website': 0}
 FOLDER_OVERRIDES = {'uk': 'united-kingdom', 'us': 'united-states', 'ae': 'united-arab-emirates'}
 
 
@@ -113,8 +113,9 @@ class Candidate:
         return (not self.error, self.svg, min(max(self.size), 1200), SOURCE_RANK.get(self.source, 0))
 
 
-def candidates(c: dict, tv_index: dict[str, list[str]], iptv_logos: dict[str, list[dict]]) -> list[Candidate]:
-    out: list[Candidate] = []
+def candidates(c: dict, tv_index: dict[str, list[str]], iptv_logos: dict[str, list[dict]],
+               extra: list[tuple[str, str]] = ()) -> list[Candidate]:
+    out: list[Candidate] = [Candidate(src, url) for src, url in dict.fromkeys(extra)]
     seen = set()
     for k in sorted(channel_keys(c)):
         for path in tv_index.get(k, ()):
@@ -129,6 +130,11 @@ def candidates(c: dict, tv_index: dict[str, list[str]], iptv_logos: dict[str, li
 
 
 def evaluate(cand: Candidate, downloader) -> Candidate:
+    from urllib.parse import unquote
+    name = unquote(cand.url.rsplit('/', 1)[-1])
+    if sources.is_old({'end': '', 'file': name}):
+        cand.error = 'old branding (its file name gives a period already over)'
+        return cand
     try:
         cand.data = downloader(cand.url)
         img, cand.notes = image.prepare(cand.data)
@@ -150,33 +156,58 @@ def _font(size: int):
     return ImageFont.load_default()
 
 
-def contact_sheets(rows: list[tuple[dict, Candidate]], out: Path, per_page: int = 30) -> list[Path]:
-    """Pages of 3 columns: each logo on a dark and on a light tile, with its channel, ID, source and size."""
+def render_sheets(tiles: list[tuple[str, str, Image.Image, Image.Image]], out: Path, per_page: int = 30,
+                  prefix: str = 'sheet') -> list[Path]:
+    """Pages of 3 columns: (title, caption, picture for a dark tile, picture for a light tile), numbered."""
     tw, th, cols, cap = 260, 146, 3, 42
     font, small = _font(16), _font(13)
+    out.mkdir(parents=True, exist_ok=True)
     pages = []
-    for p in range(0, len(rows), per_page):
-        chunk = rows[p:p + per_page]
+    for p in range(0, len(tiles), per_page):
+        chunk = tiles[p:p + per_page]
         lines = (len(chunk) + cols - 1) // cols
         sheet = Image.new('RGB', (cols * (2 * tw + 30), lines * (th + cap + 16) + 10), '#ffffff')
         draw = ImageDraw.Draw(sheet)
-        for i, (c, cand) in enumerate(chunk):
+        for i, (title, caption, dark, light) in enumerate(chunk):
             x, y = (i % cols) * (2 * tw + 30) + 10, (i // cols) * (th + cap + 16) + 10
-            img, _ = image.prepare(cand.data)
-            img, white = image.variants(img)
-            for j, (bg, pic) in enumerate((('#14181f', white or img), ('#eceef1', img))):
+            for j, (bg, pic) in enumerate((('#14181f', dark), ('#eceef1', light))):
                 tile = Image.new('RGB', (tw, th), bg)
                 pic = pic.copy()
                 pic.thumbnail((int(tw * .8), int(th * .8)))
                 tile.paste(pic, ((tw - pic.width) // 2, (th - pic.height) // 2), pic)
                 sheet.paste(tile, (x + j * (tw + 4), y))
-            draw.text((x, y + th + 3), f'{p + i + 1}. {c["name"]}', fill='#111111', font=font)
-            draw.text((x, y + th + 23), f'{c["id"]}  {cand.source}  {cand.size[0]}x{cand.size[1]}'
-                      + ('  SVG' if cand.svg else ''), fill='#555555', font=small)
-        path = out / f'sheet-{p // per_page + 1:02d}.png'
+            draw.text((x, y + th + 3), f'{p + i + 1}. {title}', fill='#111111', font=font)
+            draw.text((x, y + th + 23), caption, fill='#555555', font=small)
+        path = out / f'{prefix}-{p // per_page + 1:02d}.png'
         sheet.save(path)
         pages.append(path)
     return pages
+
+
+def contact_sheets(rows: list[tuple[dict, Candidate]], out: Path, per_page: int = 30) -> list[Path]:
+    """Candidates as they would be published: each logo on a dark and on a light tile."""
+    tiles = []
+    for c, cand in rows:
+        img, white = image.variants(image.prepare(cand.data)[0])
+        tiles.append((c['name'], f'{c["id"]}  {cand.source}  {cand.size[0]}x{cand.size[1]}'
+                      + ('  SVG' if cand.svg else ''), white or img, img))
+    return render_sheets(tiles, out, per_page)
+
+
+def repo_sheets(db: Database, stems: list[str], out: Path, per_page: int = 30) -> list[Path]:
+    """Logos of the repository (`stems` such as France3.fr or France3.fr@Alsace): their files as served."""
+    tiles = []
+    for stem in stems:
+        channel, _, feed = stem.partition('@')
+        main = db.logos.get((channel, feed, ''))
+        if main is None:
+            continue
+        white = db.logos.get((channel, feed, 'white'))
+        light = Image.open(db.path(main.file)).convert('RGBA')
+        dark = Image.open(db.path(white.file)).convert('RGBA') if white else light
+        origin = re.sub(r'^https://([^/]+)/.*', r'', main.origin)
+        tiles.append((stem, f'{main.width}x{main.height}  {origin}', dark, light))
+    return render_sheets(tiles, out, per_page)
 
 
 def split_duplicates(kept: list[tuple[dict, Candidate]], existing: dict[str, str] | None = None
@@ -227,15 +258,37 @@ def update_reason(logo, source: Path, best: Candidate, iptv_urls: set[str]) -> s
     return None
 
 
+def more_candidates(root: Path, c: dict, cc: str, wikidata: bool, deep: bool, downloader, log
+                    ) -> list[tuple[str, str]]:
+    """(source, url) of the current Wikidata logo and, when `deep`, of the logos found on the channel website."""
+    out: list[tuple[str, str]] = []
+    website = c.get('website') or ''
+    if wikidata:
+        try:
+            names = [c['name'], *(c.get('alt_names') or [])]
+            for item in sources.find_items(root, names, cc, channel_keys(c), key, downloader)[:2]:
+                out += [('wikidata', u) for u in sources.current_logos(item)[:1]]
+                website = website or item['website']
+        except (net.DownloadError, ValueError, KeyError) as exc:
+            log(f'{c["id"]}: Wikidata unavailable ({exc})')
+    if deep and website:
+        out += [('website', u) for u in sources.load_website_logos(website, downloader)]
+    return out
+
+
 def harvest(db: Database, iptv: IptvOrg, cc: str, folder: str, iptv_logos: list[dict], tree: list[str],
             out: Path, pause: float = 2.0, limit: int = 0, updates: bool = False, downloader=None,
-            log=print) -> dict[str, int]:
+            log=print, wikidata: bool = True, deep: bool = False, only: list[str] | None = None) -> dict[str, int]:
     """Missing logos of the country (and, with `updates`, better or newer versions of its current logos) into
-    out/: originals, manifest.csv for `logos import`, report.csv, doubts.csv, summary.md, contact sheets."""
+    out/: originals, manifest.csv for `logos import`, report.csv, doubts.csv, summary.md, contact sheets.
+    `wikidata`: also the current logos of the channel on Wikidata; `deep`: also the logos of its website;
+    `only`: these channel IDs only (logos hunt)."""
     downloader = downloader or net.download
     current = {k[0]: x for k, x in db.logos.items() if not k[1] and not k[2]}
     channels = sorted((c for c in iptv.country_channels(cc) if updates or c['id'] not in current),
                       key=lambda c: c['name'].lower())
+    if only is not None:
+        channels = [c for c in channels if c['id'] in set(only)]
     if limit:
         channels = channels[:limit]
     rejected = load_rejected(db.root)
@@ -247,7 +300,8 @@ def harvest(db: Database, iptv: IptvOrg, cc: str, folder: str, iptv_logos: list[
     report, kept, changes = [], [], {}
     last = 0.0
     for c in channels:
-        cands = [x for x in candidates(c, tv_index, by_channel) if (c['id'], x.url) not in rejected]
+        extra = more_candidates(db.root, c, cc, wikidata, deep, downloader, log)
+        cands = [x for x in candidates(c, tv_index, by_channel, extra) if (c['id'], x.url) not in rejected]
         for cand in cands:
             wait = last + pause - time.time()
             if wait > 0:

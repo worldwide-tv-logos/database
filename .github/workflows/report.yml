@@ -1,0 +1,38 @@
+name: report
+# On the 1st of every month: Claude writes an activity report as an issue (what was added, rejected, merged, what
+# waits for a maintainer), so that maintainers can check its work without following every pull request.
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 7 1 * *'
+permissions:
+  contents: read
+  issues: write
+  pull-requests: read
+  id-token: write
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      HAS_CLAUDE: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN != '' }}
+    steps:
+      - uses: actions/checkout@v4
+        if: env.HAS_CLAUDE == 'true'
+        with:
+          fetch-depth: 0
+      - uses: anthropics/claude-code-action@v1
+        if: env.HAS_CLAUDE == 'true'
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          prompt: |
+            Write the monthly activity report of ${{ github.repository }} for the last month, as one new issue titled
+            "Monthly report: <month year>" with the label `report` (`gh issue create`). Use `git log`,
+            `gh pr list --state all`, `gh issue list --state all` and data/rejected.csv. Include: logos added and
+            replaced (count per country), pull requests merged automatically and by maintainers, logos rejected
+            (with reasons), what waits for a maintainer (label needs:maintainer, open pull requests), anything that
+            failed. Short, factual, numbers checked; sign "Report by Claude (automated)".
+          claude_args: |
+            --permission-mode default
+            --max-turns 30
+            --allowedTools Read,Bash(git log:*),Bash(gh pr list:*),Bash(gh pr view:*),Bash(gh issue list:*),Bash(gh issue view:*),Bash(gh issue create:*)

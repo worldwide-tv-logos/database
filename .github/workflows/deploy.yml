@@ -4,7 +4,7 @@ on:
   push:
     branches: [main]
   workflow_run:
-    workflows: [update]
+    workflows: [update, harvest, validate_issue, changes, harvest_reject]
     types: [completed]
 permissions:
   contents: write

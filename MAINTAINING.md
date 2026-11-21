@@ -56,7 +56,16 @@ the previous one is still open.
 4. Merge. Images the bot was unsure about (the same image for several channels) are listed as doubts and are not
    in the pull request.
 
-A country is followed by adding its line to `data/countries.csv` (code, name).
+A country is followed by adding its line to `data/countries.csv` (code, name). On Wednesdays the `hunt` pull
+requests bring the logos of channels that had none, found the same way and reviewed by Claude.
+
+## Letting Claude merge
+
+Pull requests prepared by Claude (harvest, hunt, requests, iptv-org changes) contain data only. They are merged
+automatically when Claude says they are ready **and** the repository variable `AUTO_MERGE` is `true`
+(Settings > Secrets and variables > Actions > Variables). Leave it unset for the first weeks: compare Claude's
+reports with your own review, then set it to `true`. Set it back to `false` at any time to review again by hand.
+The monthly `report` issue sums up what Claude did.
 
 ## Other pull requests
 

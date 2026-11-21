@@ -100,3 +100,32 @@ def remove_alias(db: Database, epg_id: str, source: str) -> list[str]:
     if db.aliases.pop((source, epg_id), None) is None:
         raise RequestError(f'no alias `{source}:{epg_id}` in this repository')
     return [f'removed alias {source}:{epg_id}']
+
+
+def move_channel(db: Database, old: str, new: str, iptv: IptvOrg | None, today: str | None = None) -> list[str]:
+    """Move every logo (channel and feeds, with their variants and originals) and alias of `old` to `new`, when
+    iptv-org renamed or replaced the channel (Syfy.fr -> SciFi.fr). A feed must exist under the new ID too."""
+    keys = sorted(k for k in db.logos if k[0] == old)
+    if not keys:
+        raise RequestError(f'no logo for `{old}`')
+    for k in keys:
+        check_ids(new, k[1], iptv)
+        if (new, k[1], k[2]) in db.logos:
+            raise RequestError(f'`{Logo(new, k[1], k[2]).stem}` already has a logo: remove it first')
+    today = today or date.today().isoformat()
+    out = []
+    for k in keys:
+        logo = db.logos.pop(k)
+        moved = Logo(new, logo.feed, logo.variant, logo.width, logo.height, logo.origin, logo.added, today)
+        files = [(db.path(logo.file), db.path(moved.file))]
+        files += [(p, db.root / 'sources' / moved.country / f'{moved.stem}{p.suffix}') for p in db.source_files(logo)]
+        for src, dst in files:
+            dst.parent.mkdir(parents=True, exist_ok=True)
+            src.replace(dst)
+        db.logos[moved.key] = moved
+        out.append(f'moved {logo.file} to {moved.file}')
+    for key, alias in list(db.aliases.items()):
+        if alias.channel == old:
+            db.aliases[key] = Alias(alias.epg_id, alias.source, new, alias.feed)
+            out.append(f'alias {alias.source}:{alias.epg_id} now points to {new}')
+    return out
