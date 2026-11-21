@@ -1,5 +1,5 @@
 name: harvest
-# Sunday: harvest (new logos and better versions of current ones, from iptv-org and Wikidata).
+# Sunday: harvest (new logos and better versions of current ones, from iptv-org, iptv-epg and Wikidata).
 # Wednesday: hunt (a slice of the channels still without a logo, every source including their website).
 # One pull request per followed country (data/countries.csv), reviewed by Claude, merged automatically when Claude
 # says it is ready and the repository variable AUTO_MERGE is not false.

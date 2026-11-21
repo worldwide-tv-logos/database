@@ -45,6 +45,7 @@ Static files, no key, updated every night. Details and examples: [API page](http
 |---|---|
 | Contributors | logo requests through the [issue forms](../../issues/new/choose) |
 | [iptv-org](https://github.com/iptv-org/database) | the logos listed with each channel |
+| [iptv-epg](https://iptv-epg.org) | the logos of its TV guides, by country (with their permission) |
 | [Wikidata](https://www.wikidata.org) / Wikimedia Commons | official logos with their dates (old ones are refused) |
 | The channel's own website | its current logo |
 

@@ -389,3 +389,33 @@ def test_fingerprint_sees_the_same_drawing_through_resizing():
     other.paste((0, 0, 255, 255), (0, 0, 300, 400))
     assert image.same_drawing(image.fingerprint(big), image.fingerprint(small))
     assert not image.same_drawing(image.fingerprint(big), image.fingerprint(other))
+
+
+def test_iptv_epg_guide_logos_by_alias_id_and_name(tmp_path):
+    import gzip
+    from types import SimpleNamespace
+
+    from worldwide_tv_logos import sources
+    xml = (b'<?xml version="1.0"?><tv>'
+           b'<channel id="La1.es"><display-name>ES - La 1</display-name><icon src="https://e/la1"/></channel>'
+           b'<channel id="Tele5Guide"><display-name>Telecinco</display-name><icon src="https://e/t5"/></channel>'
+           b'<channel id="Cuatro.es"><display-name>Cuatro</display-name></channel>'
+           b'<channel id="Mega.es"><display-name>ES - Mega</display-name><icon src="https://e/mega"/></channel>'
+           b'<programme channel="La1.es"><title>x</title></programme>'
+           b'<channel id="Late.es"><icon src="https://e/late"/></channel></tv>')
+    channels = sources.parse_iptv_epg(gzip.compress(xml))
+    assert [c['id'] for c in channels] == ['La1.es', 'Tele5Guide', 'Mega.es']
+    assert channels[0]['names'] == ['La 1']
+    assert sources.load_iptv_epg(tmp_path, 'es', lambda *a, **k: gzip.compress(xml)) == channels
+    assert sources.load_iptv_epg(tmp_path, 'es', lambda *a, **k: b'') == channels  # cached one day
+
+    alias = SimpleNamespace(epg_id='Mega.es', source='iptv-epg.org', channel='MegaTV.es', feed='')
+    epg = sources.EpgIndex(channels, [alias], harvest.key)
+    assert epg.logos({'id': 'La1.es'}, set()) == ['https://e/la1']
+    assert epg.logos({'id': 'Telecinco.es'}, {harvest.key('Telecinco')}) == ['https://e/t5']
+    assert epg.logos({'id': 'MegaTV.es', 'channel': 'MegaTV.es', 'feed': ''}, set()) == ['https://e/mega']
+    assert epg.logos({'id': 'Other.es'}, {harvest.key('Other')}) == []
+
+    def missing(*a, **k):
+        raise sources.net.DownloadError('HTTP 404')
+    assert sources.load_iptv_epg(tmp_path / 'x', 'zz', missing) == []

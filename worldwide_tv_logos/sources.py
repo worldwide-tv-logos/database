@@ -1,4 +1,5 @@
-"""Logo sources beyond iptv-org: Wikidata (logos with their dates) and the channel's own website.
+"""Logo sources beyond iptv-org: iptv-epg (logos of its TV guides), Wikidata (logos with their dates) and the
+channel's own website.
 
 Wikidata (action API, fast; the SPARQL service is too slow for whole countries): the channel is searched by name
 among the items of its country, then its item is read (names, type, website, logo statements P154 with their start
@@ -12,6 +13,7 @@ Website: the home page of the channel is read once; images whose address, class,
 from __future__ import annotations
 
 import datetime
+import io
 import json
 import re
 import time
@@ -165,3 +167,72 @@ def load_website_logos(url: str, downloader=None) -> list[str]:
     except net.DownloadError:
         return []
     return website_logos(url, html.decode('utf-8', errors='replace'))
+
+
+EPG_URL = 'https://iptv-epg.org/files/epg-{cc}.xml.gz'
+EPG_MAX_AGE = 86400
+EPG_MAX_SIZE = 40_000_000
+EPG_PREFIX_RE = re.compile(r'^[A-Z]{2,3}\s*-\s*')
+
+
+def parse_iptv_epg(data: bytes) -> list[dict]:
+    """Channels of an iptv-epg guide (XMLTV, gzip): [{id, names, icon}]. Only the channel list at the top of the file
+    is read, not the programmes."""
+    import gzip
+    import xml.etree.ElementTree as ET
+    out = []
+    stream = gzip.GzipFile(fileobj=io.BytesIO(data)) if data[:2] == b'\x1f\x8b' else io.BytesIO(data)
+    for _, el in ET.iterparse(stream, events=('end',)):
+        if el.tag == 'programme':
+            break
+        if el.tag != 'channel':
+            continue
+        names = [EPG_PREFIX_RE.sub('', (d.text or '').strip()) for d in el.findall('display-name')]
+        icon = el.find('icon')
+        src = icon.get('src', '') if icon is not None else ''
+        if el.get('id') and src.startswith('https://'):
+            out.append({'id': el.get('id'), 'names': [n for n in names if n], 'icon': src})
+        el.clear()
+    return out
+
+
+def load_iptv_epg(root: Path, cc: str, downloader=None) -> list[dict]:
+    """Channels of the iptv-epg guide of a country (none when there is no guide for it), cached one day."""
+    path = Path(root) / '.cache' / 'iptv-epg' / f'{cc}.json'
+    if path.is_file() and time.time() - path.stat().st_mtime < EPG_MAX_AGE:
+        return json.loads(path.read_text(encoding='utf-8'))
+    try:
+        data = (downloader or net.download)(EPG_URL.format(cc=cc), accept='application/gzip,*/*',
+                                            max_size=EPG_MAX_SIZE)
+        channels = parse_iptv_epg(data)
+    except net.DownloadError as exc:
+        if 'HTTP 404' not in str(exc):
+            raise
+        channels = []
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(channels, ensure_ascii=False), encoding='utf-8')
+    return channels
+
+
+class EpgIndex:
+    """iptv-epg logos of a country, found for a channel or an edition by its guide alias (data/aliases.csv), by the
+    same ID, or by name."""
+
+    def __init__(self, channels: list[dict], aliases: list, key):
+        self.key = key
+        self.by_id = {c['id']: c for c in channels}
+        self.by_key: dict[str, list[dict]] = {}
+        for c in channels:
+            for k in {key(c['id'].rsplit('.', 1)[0]), *(key(n) for n in c['names'])} - {''}:
+                self.by_key.setdefault(k, []).append(c)
+        self.aliases = {(a.channel, a.feed): a.epg_id for a in aliases if a.source.startswith('iptv-epg')}
+
+    def logos(self, unit: dict, keys: set[str]) -> list[str]:
+        found = []
+        epg_id = self.aliases.get((unit.get('channel', unit['id']), unit.get('feed', '')))
+        for c in ([self.by_id[epg_id]] if epg_id in self.by_id else []) + \
+                ([self.by_id[unit['id']]] if unit['id'] in self.by_id else []) + \
+                [c for k in sorted(keys) for c in self.by_key.get(k, [])]:
+            if c['icon'] not in found:
+                found.append(c['icon'])
+        return found[:2]

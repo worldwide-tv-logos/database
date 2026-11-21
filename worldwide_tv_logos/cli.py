@@ -279,7 +279,8 @@ def cmd_find(args, db: Database) -> int:
     cc = (c.get('country') or channel.rsplit('.', 1)[-1]).lower()
     logos = [x for x in iptvorg.load_logos(db.root) if x['channel'] == channel and (x.get('feed') or '') == feed]
     unit = next((u for u in harvest.units(iptv, cc) if u['id'] == args.id), dict(c, channel=channel, feed=feed))
-    extra = harvest.more_candidates(db.root, unit, cc, not args.no_wikidata, True, net.download, print)
+    extra = harvest.more_candidates(db.root, unit, cc, not args.no_wikidata, True, net.download, print,
+                                    harvest.load_epg(db, cc, net.download, print))
     cands = harvest.candidates(unit, {(channel, feed): logos}, extra)
     rejected = harvest.load_rejected(db.root)
     for i, cand in enumerate(cands):

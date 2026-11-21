@@ -33,7 +33,7 @@ Verdict: **approve** only when all three are clearly satisfied; otherwise **need
 | Command | Use |
 |---|---|
 | `sheet --changed` / `--channels A,B` / `--country cc` | contact sheets of logos of the repository (temp/sheets/): look at them instead of opening PNG files one by one |
-| `find <logo id>` | every candidate for a channel or feed (iptv-org, Wikidata with its dates, the channel website), checked, ranked, on a contact sheet (temp/find/<id>/) with the current logo first |
+| `find <logo id>` | every candidate for a channel or feed (iptv-org, iptv-epg, Wikidata with its dates, the channel website), checked, ranked, on a contact sheet (temp/find/<id>/) with the current logo first |
 | `set <logo id> <url>` | add or replace a logo (same preparation and checks as a request) |
 | `reject <channel id> --base ../base --reason "..."` | refuse a logo of a harvest: back to the logo of main, URL never proposed again |
 | `move <old id> <new id>` / `remove <logo id>` | follow iptv-org (renamed channel) / remove a wrong logo |
@@ -46,7 +46,8 @@ old branding and is never proposed. The website of the channel is the best proof
 
 - Look at **every** logo you are responsible for (contact sheets), never a sample. Say how many you looked at.
 - Prefer, in this order: the logo on the channel's own website or press kit, a current Wikidata/Wikimedia Commons
-  logo (SVG), then iptv-org. A group or corporate logo (e.g. "Radio y Televisión") is not the logo of
+  logo (SVG), then iptv-org and iptv-epg. iptv-epg logos are often older brandings or small bitmaps: check that
+  they are current. A group or corporate logo (e.g. "Radio y Televisión") is not the logo of
   one of its channels.
 - Editions (iptv-org feeds such as `France3.fr@Alsace`) are harvested too. An edition gets its own logo only when
   it differs from its channel's (regional logos); quality versions (HD, 4K) never get one: they use the channel logo.

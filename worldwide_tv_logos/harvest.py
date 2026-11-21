@@ -2,11 +2,11 @@
 
 For each open iptv-org channel of the country that has no logo here yet:
 
-1. candidates from iptv-org's logos.json (logos of the channel or edition itself), from Wikidata (its current
-   logo, see sources.py) and, for a hunt, from the channel website;
+1. candidates from iptv-org's logos.json (logos of the channel or edition itself), from the iptv-epg guide of the
+   country, from Wikidata (its current logo, see sources.py) and, for a hunt, from the channel website;
 2. each candidate is downloaded (one at a time, with a pause) and goes through the same preparation as a request
    (image.prepare: trimmed, white frame removed, at least 500 px); refused candidates are reported;
-3. the best one is kept: SVG first, then the largest, Wikidata before iptv-org at equal size.
+3. the best one is kept: SVG first, then the largest, Wikidata before iptv-org and iptv-epg at equal size.
 
 Nothing is written to data/: the result goes to temp/harvest/<cc>/ (originals, manifest.csv for `logos import`,
 report.csv, contact sheets to review by eye). Only the reviewed manifest is imported.
@@ -28,7 +28,7 @@ from worldwide_tv_logos.db import Database
 from worldwide_tv_logos.iptvorg import IptvOrg
 
 QUALITY_FEED = re.compile(r'^(SD|HD|FHD|UHD|QHD|4K|8K|HDR|H265|HEVC|1080p?|720p?)$', re.IGNORECASE)
-SOURCE_RANK = {'wikidata': 2, 'iptv-org': 1, 'website': 0}
+SOURCE_RANK = {'wikidata': 2, 'iptv-epg': 1, 'iptv-org': 1, 'website': 0}
 
 
 def key(text: str) -> str:
@@ -208,10 +208,11 @@ def update_reason(logo, source: Path, best: Candidate, iptv_urls: set[str]) -> s
     return None
 
 
-def more_candidates(root: Path, c: dict, cc: str, wikidata: bool, deep: bool, downloader, log
-                    ) -> list[tuple[str, str]]:
-    """(source, url) of the current Wikidata logo and, when `deep`, of the logos found on the channel website."""
-    out: list[tuple[str, str]] = []
+def more_candidates(root: Path, c: dict, cc: str, wikidata: bool, deep: bool, downloader, log,
+                    epg: sources.EpgIndex | None = None) -> list[tuple[str, str]]:
+    """(source, url) of the iptv-epg logos, of the current Wikidata logo and, when `deep`, of the logos found on the
+    channel website."""
+    out: list[tuple[str, str]] = [('iptv-epg', u) for u in epg.logos(c, channel_keys(c))] if epg else []
     website = c.get('website') or ''
     if wikidata:
         try:
@@ -253,6 +254,15 @@ def same_as_channel(db: Database, u: dict, best: Candidate, kept: list[tuple[dic
     return any(image.same_drawing(fp, best.fp) for fp in fps)
 
 
+def load_epg(db: Database, cc: str, downloader, log) -> sources.EpgIndex | None:
+    """Index of the iptv-epg guide of the country; None (logged) when it cannot be read."""
+    try:
+        return sources.EpgIndex(sources.load_iptv_epg(db.root, cc, downloader), list(db.aliases.values()), key)
+    except Exception as exc:  # noqa: BLE001 - a guide that cannot be read never stops a harvest
+        log(f'iptv-epg guide of `{cc}` unavailable ({exc})')
+        return None
+
+
 def harvest(db: Database, iptv: IptvOrg, cc: str, iptv_logos: list[dict], out: Path, pause: float = 2.0, limit: int = 0, updates: bool = False, downloader=None,
             log=print, wikidata: bool = True, deep: bool = False, only: list[str] | None = None) -> dict[str, int]:
     """Missing logos of the country (and, with `updates`, better or newer versions of its current logos) into
@@ -267,6 +277,7 @@ def harvest(db: Database, iptv: IptvOrg, cc: str, iptv_logos: list[dict], out: P
     if limit:
         channels = channels[:limit]
     rejected = load_rejected(db.root)
+    epg = load_epg(db, cc, downloader, log)
     by_channel: dict[tuple[str, str], list[dict]] = {}
     for x in iptv_logos:
         by_channel.setdefault((x['channel'], x.get('feed') or ''), []).append(x)
@@ -274,7 +285,7 @@ def harvest(db: Database, iptv: IptvOrg, cc: str, iptv_logos: list[dict], out: P
     report, kept, changes = [], [], {}
     last = 0.0
     for c in channels:
-        extra = more_candidates(db.root, c, cc, wikidata, deep, downloader, log)
+        extra = more_candidates(db.root, c, cc, wikidata, deep, downloader, log, epg)
         cands = [x for x in candidates(c, by_channel, extra) if (c['id'], x.url) not in rejected]
         for cand in cands:
             wait = last + pause - time.time()
