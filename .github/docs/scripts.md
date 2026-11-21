@@ -21,6 +21,8 @@ Python 3.12 and [uv](https://docs.astral.sh/uv/). `uv sync` once, then `uv run l
 channel of another family, is a doubt (perceptual fingerprint; a family is one brand across countries or numbered
 sister channels: `Eurosport6.fr`, `Eurosport8.fr`). Current logos of the country with the drawing of a channel of
 another family are listed in the summary ("Current logos to check") for the review |
+| `logos guide-aliases --country <cc>` | aliases from the iptv-epg guide of the country: a guide channel found by name for exactly one channel or edition gets the alias `iptv-epg-<cc>:<guide id>` (run by the harvest and listed in its summary) |
+| `logos alias-remove <source> <guide id>` | remove a guide alias |
 | `logos hunt --country <cc> [--limit 40]` | like harvest, for a weekly slice of the channels without a logo, every source including the website |
 | `logos verdict ready\|hold "<report>"` | a reviewer's decision for the workflows (temp/verdict.json) |
 | `logos reprocess` | rebuild every logo from its original after a change of the image rules |

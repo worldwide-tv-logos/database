@@ -176,8 +176,8 @@ EPG_PREFIX_RE = re.compile(r'^[A-Z]{2,3}\s*-\s*')
 
 
 def parse_iptv_epg(data: bytes) -> list[dict]:
-    """Channels of an iptv-epg guide (XMLTV, gzip): [{id, names, icon}]. Only the channel list at the top of the file
-    is read, not the programmes."""
+    """Channels of an iptv-epg guide (XMLTV, gzip): [{id, names, icon}] (icon: '' when the guide has none). Only the
+    channel list at the top of the file is read, not the programmes."""
     import gzip
     import xml.etree.ElementTree as ET
     out = []
@@ -190,8 +190,9 @@ def parse_iptv_epg(data: bytes) -> list[dict]:
         names = [EPG_PREFIX_RE.sub('', (d.text or '').strip()) for d in el.findall('display-name')]
         icon = el.find('icon')
         src = icon.get('src', '') if icon is not None else ''
-        if el.get('id') and src.startswith('https://'):
-            out.append({'id': el.get('id'), 'names': [n for n in names if n], 'icon': src})
+        if el.get('id'):
+            out.append({'id': el.get('id'), 'names': [n for n in names if n],
+                        'icon': src if src.startswith('https://') else ''})
         el.clear()
     return out
 
@@ -233,6 +234,15 @@ class EpgIndex:
         for c in ([self.by_id[epg_id]] if epg_id in self.by_id else []) + \
                 ([self.by_id[unit['id']]] if unit['id'] in self.by_id else []) + \
                 [c for k in sorted(keys) for c in self.by_key.get(k, [])]:
-            if c['icon'] not in found:
+            if c['icon'] and c['icon'] not in found:
                 found.append(c['icon'])
         return found[:2]
+
+    def match(self, unit: dict, keys: set[str]) -> str | None:
+        """Guide ID of a channel or edition found by name, when exactly one channel of the guide has one of its
+        names and that ID differs from the iptv-org ID; None otherwise."""
+        found = {c['id'] for k in keys for c in self.by_key.get(k, [])}
+        if len(found) != 1:
+            return None
+        epg_id = found.pop()
+        return None if epg_id == unit['id'] else epg_id

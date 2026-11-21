@@ -472,11 +472,57 @@ def changes_body(warnings: list[str]) -> str:
         'This issue closes by itself when the list is empty.'])
 
 
+def cmd_guide_aliases(args, db: Database) -> int:
+    """Aliases from the iptv-epg guide of a country: a guide channel found by name for exactly one channel or edition
+    (and that channel finding only it) gets the alias `iptv-epg-<cc>:<guide id>`. Listed in the harvest summary
+    (temp/harvest/<cc>/summary.md) when there is one, for the review."""
+    from worldwide_tv_logos import harvest
+    cc = args.country.lower()
+    iptv = iptvorg.load(db.root)
+    epg = harvest.load_epg(db, cc, net.download, print)
+    if epg is None:
+        return 0
+    source = f'iptv-epg-{cc}'
+    known = {(a.channel, a.feed) for a in db.aliases.values() if a.source == source}
+    taken = {a.epg_id for a in db.aliases.values() if a.source == source}
+    found: dict[str, list[dict]] = {}
+    for u in harvest.units(iptv, cc):
+        if (u['channel'], u['feed']) in known:
+            continue
+        epg_id = epg.match(u, harvest.channel_keys(u))
+        if epg_id and epg_id not in taken:
+            found.setdefault(epg_id, []).append(u)
+    added = []
+    for epg_id, us in sorted(found.items()):
+        if len(us) == 1:                                  # one guide channel for one channel: no ambiguity
+            u = us[0]
+            ops.set_alias(db, epg_id, source, u['channel'], u['feed'], iptv)
+            added.append((epg_id, u))
+    db.save()
+    print(f'{len(added)} alias(es) added from the iptv-epg guide of `{cc}`')
+    summary = db.root / 'temp' / 'harvest' / cc / 'summary.md'
+    if added and summary.is_file():
+        lines = ['### New guide aliases', '',
+                 f'Guide IDs of the iptv-epg guide matched by name (source `{source}`): check each one.', '']
+        lines += [f'- `{epg_id}` -> `{u["id"]}` ({u["name"]})' for epg_id, u in added]
+        with open(summary, 'a', encoding='utf-8', newline='\n') as fh:
+            fh.write('\n' + '\n'.join(lines) + '\n')
+    return 0
+
+
+def cmd_alias_remove(args, db: Database) -> int:
+    for change in ops.remove_alias(db, args.epg_id, args.source):
+        print(change)
+    db.save()
+    return 0
+
+
 def cmd_changes(args, db: Database) -> int:
     """Open, update or close the single "iptv-org changes" issue from the warnings of `validate`."""
     warnings: list[str] = []
     validate(db, iptvorg.load(db.root), warnings)
-    warnings.sort()
+    # a closed channel keeps its logo: nothing to do, so it is not listed (the issue can close)
+    warnings = sorted(w for w in warnings if ' closed on ' not in w)
     body = changes_body(warnings)
     if args.dry_run:
         print(body if warnings else 'no change on the iptv-org side')
@@ -610,6 +656,13 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument('--reason', default='')
     p.add_argument('--base', required=True, help='checkout of the main branch')
     p.set_defaults(func=cmd_reject)
+    p = sub.add_parser('guide-aliases', help='add the aliases of the iptv-epg guide of a country found by name')
+    p.add_argument('--country', required=True)
+    p.set_defaults(func=cmd_guide_aliases)
+    p = sub.add_parser('alias-remove', help='remove a guide alias')
+    p.add_argument('source')
+    p.add_argument('epg_id')
+    p.set_defaults(func=cmd_alias_remove)
     p = sub.add_parser('changes', help='open/update/close the "iptv-org changes" issue (GITHUB_TOKEN)')
     p.add_argument('--dry-run', action='store_true', help='print the issue body instead')
     p.set_defaults(func=cmd_changes)

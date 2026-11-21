@@ -20,9 +20,9 @@ jobs:
     env:
       HAS_CLAUDE: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN != '' }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         if: env.HAS_CLAUDE == 'true'
-      - uses: astral-sh/setup-uv@v6
+      - uses: astral-sh/setup-uv@v10
         if: env.HAS_CLAUDE == 'true'
       - run: uv sync
         if: env.HAS_CLAUDE == 'true'

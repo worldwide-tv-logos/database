@@ -404,7 +404,8 @@ def test_iptv_epg_guide_logos_by_alias_id_and_name(tmp_path):
            b'<programme channel="La1.es"><title>x</title></programme>'
            b'<channel id="Late.es"><icon src="https://e/late"/></channel></tv>')
     channels = sources.parse_iptv_epg(gzip.compress(xml))
-    assert [c['id'] for c in channels] == ['La1.es', 'Tele5Guide', 'Mega.es']
+    assert [c['id'] for c in channels] == ['La1.es', 'Tele5Guide', 'Cuatro.es', 'Mega.es']
+    assert channels[2]['icon'] == ''
     assert channels[0]['names'] == ['La 1']
     assert sources.load_iptv_epg(tmp_path, 'es', lambda *a, **k: gzip.compress(xml)) == channels
     assert sources.load_iptv_epg(tmp_path, 'es', lambda *a, **k: b'') == channels  # cached one day
@@ -415,6 +416,9 @@ def test_iptv_epg_guide_logos_by_alias_id_and_name(tmp_path):
     assert epg.logos({'id': 'Telecinco.es'}, {harvest.key('Telecinco')}) == ['https://e/t5']
     assert epg.logos({'id': 'MegaTV.es', 'channel': 'MegaTV.es', 'feed': ''}, set()) == ['https://e/mega']
     assert epg.logos({'id': 'Other.es'}, {harvest.key('Other')}) == []
+    assert epg.logos({'id': 'Cuatro.es'}, set()) == []                                          # no icon
+    assert epg.match({'id': 'Telecinco.es'}, {harvest.key('Telecinco')}) == 'Tele5Guide'
+    assert epg.match({'id': 'La1.es'}, {harvest.key('La 1')}) is None                          # same ID
 
     def missing(*a, **k):
         raise sources.net.DownloadError('HTTP 404')

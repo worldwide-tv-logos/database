@@ -19,8 +19,8 @@ jobs:
       AUTO_MERGE: ${{ vars.AUTO_MERGE }}
       HAS_CLAUDE: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN != '' }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: astral-sh/setup-uv@v6
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10
       - run: uv sync
       - name: open, update or close the "iptv-org changes" issue
         id: issue

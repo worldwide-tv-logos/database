@@ -50,6 +50,12 @@ old branding and is never proposed. The website of the channel is the best proof
 ## Autonomous work
 
 - Look at **every** logo you are responsible for (contact sheets), never a sample. Say how many you looked at.
+- **Confirm on the web** every logo that does not come from Wikidata or from the channel's own website (iptv-epg,
+  image hosts such as imgur or ibb, app stores, other sites): open the channel's website (iptv-org field
+  `website`, or found with a web search) or search for its current logo, and compare. A logo you could not confirm
+  as the current one is rejected. A clear sheet is not a proof: a logo can be clean and outdated.
+- In your report, give for every kept logo from such a source the page that confirmed it (one short line each),
+  so that anyone can check your decisions.
 - Prefer, in this order: the logo on the channel's own website or press kit, a current Wikidata/Wikimedia Commons
   logo (SVG), then iptv-org and iptv-epg. iptv-epg logos are often older brandings or small bitmaps: check that
   they are current. A group or corporate logo (e.g. "Radio y Televisión") is not the logo of

@@ -17,7 +17,7 @@ jobs:
       GH_TOKEN: ${{ github.token }}
       HAS_CLAUDE: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN != '' }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         if: env.HAS_CLAUDE == 'true'
         with:
           fetch-depth: 0

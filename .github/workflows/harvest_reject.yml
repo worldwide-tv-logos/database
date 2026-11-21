@@ -16,7 +16,7 @@ jobs:
       contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.comment.author_association)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           path: base
       - name: branch of the pull request
@@ -26,11 +26,11 @@ jobs:
           head=$(gh pr view ${{ github.event.issue.number }} -R ${{ github.repository }} --json headRefName --jq .headRefName)
           case "$head" in harvest/*|hunt/*) ;; *) echo "not a harvest pull request"; exit 1;; esac
           echo "HEAD_REF=$head" >> "$GITHUB_ENV"
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           ref: ${{ env.HEAD_REF }}
           path: pr
-      - uses: astral-sh/setup-uv@v6
+      - uses: astral-sh/setup-uv@v10
       - name: remove the logo from the pull request, never propose it again
         working-directory: pr
         env:
