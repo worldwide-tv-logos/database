@@ -1,4 +1,4 @@
-"""Logo sources beyond tv-logos and iptv-org: Wikidata (logos with their dates) and the channel's own website.
+"""Logo sources beyond iptv-org: Wikidata (logos with their dates) and the channel's own website.
 
 Wikidata (action API, fast; the SPARQL service is too slow for whole countries): the channel is searched by name
 among the items of its country, then its item is read (names, type, website, logo statements P154 with their start

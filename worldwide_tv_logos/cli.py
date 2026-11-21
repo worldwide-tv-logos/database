@@ -277,12 +277,10 @@ def cmd_find(args, db: Database) -> int:
         print(f'`{channel}` is not in iptv-org')
         return 1
     cc = (c.get('country') or channel.rsplit('.', 1)[-1]).lower()
-    folder = harvest.folder_of(cc, iptvorg.load_countries(db.root))
     logos = [x for x in iptvorg.load_logos(db.root) if x['channel'] == channel and (x.get('feed') or '') == feed]
     unit = next((u for u in harvest.units(iptv, cc) if u['id'] == args.id), dict(c, channel=channel, feed=feed))
     extra = harvest.more_candidates(db.root, unit, cc, not args.no_wikidata, True, net.download, print)
-    cands = harvest.candidates(unit, harvest.tv_logos_index(harvest.load_tree(db.root), folder),
-                               {(channel, feed): logos}, extra)
+    cands = harvest.candidates(unit, {(channel, feed): logos}, extra)
     rejected = harvest.load_rejected(db.root)
     for i, cand in enumerate(cands):
         if i:
@@ -389,9 +387,7 @@ def cmd_hunt(args, db: Database) -> int:
     only = (missing[start:] + missing[:start])[:args.limit]
     out = db.root / 'temp' / 'harvest' / cc
     shutil.rmtree(out, ignore_errors=True)
-    tree = harvest.load_tree(db.root)
-    stats = harvest.harvest(db, iptv, cc, harvest.folder_of(cc, iptvorg.load_countries(db.root)),
-                            iptvorg.load_logos(db.root), tree, out, pause=args.pause, deep=True, only=only)
+    stats = harvest.harvest(db, iptv, cc, iptvorg.load_logos(db.root), out, pause=args.pause, deep=True, only=only)
     print(f"hunt: {stats['kept']} logo(s) found for {len(only)} of the {len(missing)} channels without one; "
           f"{out.as_posix()}/summary.md")
     return 0
@@ -400,15 +396,10 @@ def cmd_hunt(args, db: Database) -> int:
 def cmd_harvest(args, db: Database) -> int:
     from worldwide_tv_logos import harvest
     cc = args.country.lower()
-    countries = iptvorg.load_countries(db.root)
-    folder = args.folder or harvest.folder_of(cc, countries)
-    tree = harvest.load_tree(db.root)
-    if not any(p.startswith(f'countries/{folder}/') for p in tree):
-        print(f'no tv-logos folder `countries/{folder}/` (use --folder); iptv-org logos only')
     out = db.root / 'temp' / 'harvest' / cc
     import shutil
     shutil.rmtree(out, ignore_errors=True)
-    stats = harvest.harvest(db, iptvorg.load(db.root), cc, folder, iptvorg.load_logos(db.root), tree, out,
+    stats = harvest.harvest(db, iptvorg.load(db.root), cc, iptvorg.load_logos(db.root), out,
                             pause=args.pause, limit=args.limit, updates=args.updates)
     print(f"{stats['kept']} logo(s) to review ({stats['updates']} update(s), {stats['doubts']} doubt(s)) among "
           f"{stats['channels']} channels, {stats['candidates']} candidates; {out.as_posix()}/sheet-*.png, "
@@ -568,7 +559,6 @@ def main(argv: list[str] | None = None) -> int:
     p.set_defaults(func=cmd_reprocess)
     p = sub.add_parser('harvest', help='collect the best logo of each channel of a country for review (temp/)')
     p.add_argument('--country', required=True, help='two-letter code, e.g. es')
-    p.add_argument('--folder', help='tv-logos folder (default: from the country name, e.g. spain)')
     p.add_argument('--pause', type=float, default=2.0, help='seconds between two downloads')
     p.add_argument('--limit', type=int, default=0, help='only the first N channels (test)')
     p.add_argument('--updates', action='store_true', help='also propose newer or better versions of current logos')

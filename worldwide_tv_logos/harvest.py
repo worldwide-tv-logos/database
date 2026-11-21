@@ -2,11 +2,11 @@
 
 For each open iptv-org channel of the country that has no logo here yet:
 
-1. candidates from tv-logos (https://github.com/tv-logo/tv-logos, folder of the country, matched on the channel
-   name, its alternative names and its ID) and from iptv-org's logos.json (logos of the channel itself);
+1. candidates from iptv-org's logos.json (logos of the channel or edition itself), from Wikidata (its current
+   logo, see sources.py) and, for a hunt, from the channel website;
 2. each candidate is downloaded (one at a time, with a pause) and goes through the same preparation as a request
    (image.prepare: trimmed, white frame removed, at least 500 px); refused candidates are reported;
-3. the best one is kept: SVG first, then the largest, tv-logos before iptv-org at equal size (more recent).
+3. the best one is kept: SVG first, then the largest, Wikidata before iptv-org at equal size.
 
 Nothing is written to data/: the result goes to temp/harvest/<cc>/ (originals, manifest.csv for `logos import`,
 report.csv, contact sheets to review by eye). Only the reviewed manifest is imported.
@@ -15,14 +15,11 @@ from __future__ import annotations
 
 import csv
 import hashlib
-import json
 import re
 import time
 import unicodedata
-import urllib.request
 from dataclasses import dataclass, field
 from pathlib import Path
-from urllib.parse import quote
 
 from PIL import Image, ImageDraw, ImageFont
 
@@ -30,13 +27,8 @@ from worldwide_tv_logos import image, net, sources
 from worldwide_tv_logos.db import Database
 from worldwide_tv_logos.iptvorg import IptvOrg
 
-TV_LOGOS_REPO = 'tv-logo/tv-logos'
-TV_LOGOS_TREE = f'https://api.github.com/repos/{TV_LOGOS_REPO}/git/trees/main?recursive=1'
-TV_LOGOS_RAW = f'https://raw.githubusercontent.com/{TV_LOGOS_REPO}/main/'
-TREE_MAX_AGE = 7 * 86400
 QUALITY_FEED = re.compile(r'^(SD|HD|FHD|UHD|QHD|4K|8K|HDR|H265|HEVC|1080p?|720p?)$', re.IGNORECASE)
-SOURCE_RANK = {'wikidata': 2, 'tv-logos': 1, 'iptv-org': 0, 'website': 0}
-FOLDER_OVERRIDES = {'uk': 'united-kingdom', 'us': 'united-states', 'ae': 'united-arab-emirates'}
+SOURCE_RANK = {'wikidata': 2, 'iptv-org': 1, 'website': 0}
 
 
 def key(text: str) -> str:
@@ -55,52 +47,6 @@ def channel_keys(c: dict) -> set[str]:
     return {k for k in keys if k}
 
 
-def stem_keys(stem: str) -> set[str]:
-    """`la-1-es` -> {'la1'}; `canal-plus-series-fr` -> {'canal+series', 'canalplusseries'}; `-hz` = same channel."""
-    tokens = stem.lower().split('-')[:-1]               # last token: country code
-    if tokens and tokens[-1] == 'hz':
-        tokens = tokens[:-1]
-    if not tokens:
-        return set()
-    return {key(''.join('+' if t == 'plus' else t for t in tokens)), key(''.join(tokens))}
-
-
-def tv_logos_index(paths: list[str], folder: str) -> dict[str, list[str]]:
-    """key -> paths of `countries/<folder>/<stem>.png` (no old versions, no sub-folders, no white versions)."""
-    out: dict[str, list[str]] = {}
-    for path in paths:
-        parts = path.split('/')
-        if len(parts) != 3 or parts[:2] != ['countries', folder] or not path.endswith('.png'):
-            continue
-        stem = parts[2][:-4]
-        if 'white' in stem.split('-'):
-            continue
-        for k in stem_keys(stem):
-            out.setdefault(k, []).append(path)
-    return out
-
-
-def load_tree(root: Path, opener=None) -> list[str]:
-    path = Path(root) / '.cache' / 'tv-logos-tree.json'
-    if path.is_file() and time.time() - path.stat().st_mtime < TREE_MAX_AGE:
-        return json.loads(path.read_text(encoding='utf-8'))
-    req = urllib.request.Request(TV_LOGOS_TREE, headers={'User-Agent': net.USER_AGENT,
-                                                         'Accept': 'application/vnd.github+json'})
-    with (opener or urllib.request.urlopen)(req, timeout=120) as resp:
-        tree = json.loads(resp.read())
-    paths = [e['path'] for e in tree.get('tree', []) if e.get('type') == 'blob']
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(paths), encoding='utf-8')
-    return paths
-
-
-def folder_of(cc: str, countries: list[dict]) -> str:
-    if cc in FOLDER_OVERRIDES:
-        return FOLDER_OVERRIDES[cc]
-    name = next((x['name'] for x in countries if x['code'].lower() == cc), cc)
-    return '-'.join(key(w) for w in name.split())          # "Spain" -> spain, "Saudi Arabia" -> saudi-arabia
-
-
 @dataclass
 class Candidate:
     source: str
@@ -117,16 +63,10 @@ class Candidate:
         return (not self.error, self.svg, min(max(self.size), 1200), SOURCE_RANK.get(self.source, 0))
 
 
-def candidates(c: dict, tv_index: dict[str, list[str]], iptv_logos: dict[tuple[str, str], list[dict]],
+def candidates(c: dict, iptv_logos: dict[tuple[str, str], list[dict]],
                extra: list[tuple[str, str]] = ()) -> list[Candidate]:
     """`c`: a channel or an edition (see units); `iptv_logos`: iptv-org logos by (channel, feed)."""
     out: list[Candidate] = [Candidate(src, url) for src, url in dict.fromkeys(extra)]
-    seen = set()
-    for k in sorted(channel_keys(c)):
-        for path in tv_index.get(k, ()):
-            if path not in seen:
-                seen.add(path)
-                out.append(Candidate('tv-logos', TV_LOGOS_RAW + quote(path)))
     logos = sorted((x for x in iptv_logos.get((c.get('channel', c['id']), c.get('feed', '')), ())
                     if x.get('in_use', True)
                     and 'white' not in (x.get('tags') or []) and str(x.get('url', '')).startswith('https://')),
@@ -313,8 +253,7 @@ def same_as_channel(db: Database, u: dict, best: Candidate, kept: list[tuple[dic
     return any(image.same_drawing(fp, best.fp) for fp in fps)
 
 
-def harvest(db: Database, iptv: IptvOrg, cc: str, folder: str, iptv_logos: list[dict], tree: list[str],
-            out: Path, pause: float = 2.0, limit: int = 0, updates: bool = False, downloader=None,
+def harvest(db: Database, iptv: IptvOrg, cc: str, iptv_logos: list[dict], out: Path, pause: float = 2.0, limit: int = 0, updates: bool = False, downloader=None,
             log=print, wikidata: bool = True, deep: bool = False, only: list[str] | None = None) -> dict[str, int]:
     """Missing logos of the country (and, with `updates`, better or newer versions of its current logos) into
     out/: originals, manifest.csv for `logos import`, report.csv, doubts.csv, summary.md, contact sheets.
@@ -328,7 +267,6 @@ def harvest(db: Database, iptv: IptvOrg, cc: str, folder: str, iptv_logos: list[
     if limit:
         channels = channels[:limit]
     rejected = load_rejected(db.root)
-    tv_index = tv_logos_index(tree, folder)
     by_channel: dict[tuple[str, str], list[dict]] = {}
     for x in iptv_logos:
         by_channel.setdefault((x['channel'], x.get('feed') or ''), []).append(x)
@@ -337,7 +275,7 @@ def harvest(db: Database, iptv: IptvOrg, cc: str, folder: str, iptv_logos: list[
     last = 0.0
     for c in channels:
         extra = more_candidates(db.root, c, cc, wikidata, deep, downloader, log)
-        cands = [x for x in candidates(c, tv_index, by_channel, extra) if (c['id'], x.url) not in rejected]
+        cands = [x for x in candidates(c, by_channel, extra) if (c['id'], x.url) not in rejected]
         for cand in cands:
             wait = last + pause - time.time()
             if wait > 0:

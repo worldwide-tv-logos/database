@@ -44,8 +44,8 @@ the issue closes by itself when the list is empty.
 
 ## Weekly harvest pull requests
 
-Every Sunday the `harvest` workflow looks for the logos of each country of `data/countries.csv` (tv-logos and
-iptv-org): missing logos, and newer or better versions of current ones (original changed at its source, SVG found,
+Every Sunday the `harvest` workflow looks for the logos of each country of `data/countries.csv` (iptv-org and
+Wikidata): missing logos, and newer or better versions of current ones (original changed at its source, SVG found,
 much larger, logo replaced in iptv-org). It opens one pull request per country, `Weekly harvest: <country>`, unless
 the previous one is still open.
 
