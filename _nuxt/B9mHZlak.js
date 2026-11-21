@@ -1,0 +1,1 @@
+import{r as e}from"./BRIFPd2W.js";import{St as t,d as n}from"./CMbmA4Or.js";function r(r){let i=e({dir:t(`ltr`)});return n(()=>r?.value||i.dir?.value||`ltr`)}export{r as t};

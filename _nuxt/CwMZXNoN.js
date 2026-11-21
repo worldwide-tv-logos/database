@@ -1,0 +1,1 @@
+import{C as e}from"./CMbmA4Or.js";function t(t=e()){let n=t;n&&!n.sp&&(n.sp=[])}export{t};
