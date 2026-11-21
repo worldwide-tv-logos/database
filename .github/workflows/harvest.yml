@@ -84,7 +84,10 @@ jobs:
           git worktree add -q ../base origin/main
           echo "found=yes" >> "$GITHUB_OUTPUT"
       - name: review by Claude
+        id: review
         if: steps.collect.outputs.found == 'yes' && env.HAS_CLAUDE == 'true'
+        # Claude unavailable (usage limit...): the pull request is still opened, on hold, and redone at the next run
+        continue-on-error: true
         uses: anthropics/claude-code-action@v1
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
@@ -117,6 +120,12 @@ jobs:
             --permission-mode default
             --max-turns 400
             --allowedTools "Read,WebFetch,WebSearch,Bash(uv run logos reject:*),Bash(uv run logos find:*),Bash(uv run logos set:*),Bash(uv run logos remove:*),Bash(uv run logos alias-remove:*),Bash(uv run logos verdict:*),Bash(uv run logos sheet:*)"
+      - name: why Claude stopped
+        if: steps.review.outcome == 'failure'
+        run: |
+          jq -r '.[] | select(.type == "result") | .result // .subtype' "$RUNNER_TEMP/claude-execution-output.json" || true
+          echo "Claude did not finish: the pull request stays on hold and is redone at the next run." >> temp/harvest/$CC/summary.md
+          rm -f temp/verdict.json
       - name: pull request (merged when Claude says ready unless AUTO_MERGE is false)
         if: steps.collect.outputs.found == 'yes'
         run: |
