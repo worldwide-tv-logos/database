@@ -20,8 +20,11 @@ def _iptv(db: Database, offline: bool):
     return None if offline else iptvorg.load(db.root)
 
 
-def validate(db: Database, iptv) -> list[str]:
+def validate(db: Database, iptv, warnings: list[str] | None = None) -> list[str]:
+    """Errors (blocking). Changes on the iptv-org side (channel removed, closed, replaced) go to `warnings`: they
+    must never block the nightly update."""
     errors = []
+    warnings = [] if warnings is None else warnings
     for logo in db.logos.values():
         where = f'data/logos.csv {logo.stem}'
         if not CHANNEL_RE.match(logo.channel) or (logo.feed and not FEED_RE.match(logo.feed)):
@@ -35,8 +38,8 @@ def validate(db: Database, iptv) -> list[str]:
             errors.append(f'{where}: origin missing')
         if not DATE_RE.match(logo.added) or (logo.updated and not DATE_RE.match(logo.updated)):
             errors.append(f'{where}: dates must be YYYY-MM-DD')
-        if iptv is not None and (err := iptv.channel_error(logo.channel, logo.feed)):
-            errors.append(f'{where}: {err}')
+        if iptv is not None and not logo.variant and (warn := iptv.status_warning(logo.channel, logo.feed)):
+            warnings.append(f'{where}: {warn}')
         path = db.path(logo.file)
         if not path.is_file():
             errors.append(f'{where}: {logo.file} missing')
@@ -69,10 +72,13 @@ def validate(db: Database, iptv) -> list[str]:
 
 
 def cmd_validate(args, db: Database) -> int:
-    errors = validate(db, _iptv(db, args.offline))
+    warnings: list[str] = []
+    errors = validate(db, _iptv(db, args.offline), warnings)
+    for w in warnings:
+        print(f'warning: {w}')
     for e in errors:
         print(e)
-    print(f'{len(db.logos)} logos, {len(db.aliases)} aliases, {len(errors)} error(s)')
+    print(f'{len(db.logos)} logos, {len(db.aliases)} aliases, {len(errors)} error(s), {len(warnings)} warning(s)')
     return 1 if errors else 0
 
 

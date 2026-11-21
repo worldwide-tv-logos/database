@@ -25,6 +25,19 @@ class IptvOrg:
             return f'feed `{feed}` of `{channel}` does not exist in iptv-org yet (known: {", ".join(known) or "none"})'
         return None
 
+    def status_warning(self, channel: str, feed: str = '') -> str | None:
+        """A logo whose channel changed in iptv-org since it was added: removed, closed or replaced."""
+        if channel not in self.channels:
+            return f'`{channel}` is no longer in iptv-org: rename the logo if the channel got a new ID, else remove it'
+        if feed and (channel, feed) not in self.feeds:
+            return f'feed `{channel}@{feed}` is no longer in iptv-org'
+        c = self.channels[channel]
+        if c.get('replaced_by'):
+            return f'`{channel}` is replaced by `{c["replaced_by"]}` in iptv-org: move the logo to the new ID'
+        if c.get('closed'):
+            return f'`{channel}` closed on {c["closed"]} according to iptv-org'
+        return None
+
     def country_channels(self, cc: str) -> list[dict]:
         return [c for c in self.channels.values() if c.get('country', '').lower() == cc and not c.get('closed')
                 and not c.get('is_nsfw')]

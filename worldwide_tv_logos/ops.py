@@ -79,6 +79,10 @@ def remove_logo(db: Database, channel: str, feed: str) -> list[str]:
     for k in keys:
         remove_files(db, db.logos.pop(k))
         out.append(f'removed {Logo(*k).file}')
+    for key, alias in list(db.aliases.items()):
+        if (alias.channel, alias.feed) == (channel, feed):
+            del db.aliases[key]
+            out.append(f'removed alias {alias.source}:{alias.epg_id}')
     return out
 
 

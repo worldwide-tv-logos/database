@@ -215,3 +215,29 @@ def test_a_logo_can_wait_for_its_channel_in_iptv_org(db, monkeypatch):
     cli.main(['--root', str(db.root), 'update'])
     assert (db.root / 'temp/processed.txt').read_text() == 'Closes #9'
     assert (9, '-waiting:iptv-org') in gh.labels
+
+
+def test_iptv_org_changes_are_warnings_and_aliases_follow_their_logo(db):
+    ops.set_logo(db, 'TF1.fr', '', png(800, 300), 'x', IPTV)
+    ops.set_alias(db, 'TF1-HD.fr', 'iptv-epg-fr', 'TF1.fr', '', IPTV)
+    db.save()
+    later = IptvOrg({'TF1.fr': {'id': 'TF1.fr', 'country': 'FR', 'replaced_by': 'TF1New.fr'}}, {})
+    warnings = []
+    assert cli.validate(Database(db.root).load(), later, warnings) == []          # never blocking
+    assert 'replaced by `TF1New.fr`' in warnings[0]
+    gone = IptvOrg({}, {})
+    warnings = []
+    assert cli.validate(Database(db.root).load(), gone, warnings) == []
+    assert 'no longer in iptv-org' in warnings[0]
+    assert ops.remove_logo(db, 'TF1.fr', '') == ['removed logos/fr/TF1.fr.png', 'removed alias iptv-epg-fr:TF1-HD.fr']
+    db.save()
+    assert cli.validate(Database(db.root).load(), IPTV) == []
+
+
+def test_second_addition_the_same_night_is_refused(db):
+    fake = {'https://example.org/f3-alsace.png': png(1000, 400)}
+    first, second = issues.parse(1, ['logos:add'], BODY), issues.parse(2, ['logos:add'], BODY)
+    assert issues.validate(second, db, IPTV, downloader=fake.__getitem__) == []    # valid when submitted
+    issues.apply(first, db, IPTV, downloader=fake.__getitem__)
+    with pytest.raises(ops.RequestError, match='already has a logo'):
+        issues.apply(second, db, IPTV, downloader=fake.__getitem__)

@@ -12,6 +12,13 @@ jobs:
       contains(join(github.event.issue.labels.*.name, ','), 'aliases:')
     runs-on: ubuntu-latest
     steps:
+      - name: edited after approval -> approval withdrawn (the new content has not been reviewed)
+        if: github.event.action == 'edited' && contains(github.event.issue.labels.*.name, 'approved')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh issue edit ${{ github.event.issue.number }} -R ${{ github.repository }} --remove-label approved
+          gh issue comment ${{ github.event.issue.number }} -R ${{ github.repository }} --body "This request was edited after its approval: it needs to be approved again."
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v6
       - run: uv sync

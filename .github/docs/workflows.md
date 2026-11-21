@@ -10,8 +10,14 @@ On every push and pull request: `ruff`, tests, `logos validate`. Blocks the merg
 
 ## validate_issue
 
-When an issue with a `logos:*` or `aliases:*` label is opened or edited: `logos issue-validate` downloads and
+When an issue with a `logos:*` or `aliases:*` label is opened or edited (an edit withdraws `approved`: the new
+content must be reviewed again): `logos issue-validate` downloads and
 checks the logo, then labels the issue `check:passed`, or comments the problems and labels it `check:failed`.
+
+## Changes on the iptv-org side
+
+A channel removed, closed or replaced in iptv-org after its logo was added is a **warning** of `logos validate`
+(with the new ID when iptv-org gives one), never an error: it never blocks the nightly update.
 
 ## update
 

@@ -103,6 +103,11 @@ def apply(req: Request, db: Database, iptv: IptvOrg | None, downloader=None) -> 
     channel, feed = req.get('channel'), req.get('feed')
     if req.kind in ('logos:add', 'logos:edit'):
         ops.check_ids(channel, feed, iptv)                # before downloading: a missing channel waits
+        if req.kind == 'logos:add' and _has_logo(db, channel, feed):
+            raise ops.RequestError(f'`{_label(channel, feed)}` already has a logo (added meanwhile): '
+                                   'use the logos/edit form to replace it')
+        if req.kind == 'logos:edit' and not _has_logo(db, channel, feed):
+            raise ops.RequestError(f'no logo for `{_label(channel, feed)}` any more: use the logos/add form')
         try:
             data = (downloader or net.download)(req.get('url'))
         except net.DownloadError as exc:
