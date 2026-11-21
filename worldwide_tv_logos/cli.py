@@ -10,6 +10,8 @@ import sys
 import time
 from pathlib import Path
 
+from PIL import Image
+
 from worldwide_tv_logos import image, iptvorg, issues, net, ops
 from worldwide_tv_logos.db import CHANNEL_RE, FEED_RE, VARIANTS, Database, parse_logo_id
 
@@ -225,8 +227,11 @@ def cmd_reprocess(args, db: Database) -> int:
             continue
         original = sources[0].read_bytes()
         img, white = image.variants(image.prepare(original)[0])
-        expected = {'': image.png_bytes(img), 'white': image.png_bytes(white) if white is not None else None}
-        current = {v: (db.path(db.logos[(logo.channel, logo.feed, v)].file).read_bytes()
+
+        def pixels(im):         # compared by their pixels: PNG files of the same image differ between zlib builds
+            return None if im is None else (im.size, im.convert('RGBA').tobytes())
+        expected = {'': pixels(img), 'white': pixels(white)}
+        current = {v: (pixels(Image.open(db.path(db.logos[(logo.channel, logo.feed, v)].file)))
                        if (logo.channel, logo.feed, v) in db.logos else None) for v in ('', 'white')}
         if expected == current:
             continue

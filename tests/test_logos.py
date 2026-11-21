@@ -444,3 +444,23 @@ def test_preview_of_a_request_shows_the_proposed_logo(db, monkeypatch):
     monkeypatch.setattr(cli.net, 'download', lambda url, **kw: png(1000, 400))
     cli._preview(db, req)
     assert (db.root / 'temp' / 'preview' / 'sheet-01.png').is_file()
+
+
+def test_white_version_rules_for_dark_logos():
+    from PIL import ImageDraw
+
+    def logo(draw):
+        im = Image.new('RGBA', (600, 200), (0, 0, 0, 0))
+        draw(ImageDraw.Draw(im))
+        return im
+    navy = logo(lambda d: d.rectangle((20, 60, 420, 140), fill=(48, 48, 128, 255)))            # Val TV, Telecinco
+    assert image.white_variant(navy) is not None
+    badge = logo(lambda d: (d.rectangle((20, 60, 420, 140), fill=(16, 0, 64, 255)),           # Eurosport 6: white
+                            d.rectangle((460, 40, 580, 160), fill=(224, 0, 48, 255)),         # digit in a red box
+                            d.rectangle((500, 70, 540, 130), fill=(245, 245, 245, 255))))
+    assert image.white_variant(badge) is not None
+    block = logo(lambda d: (d.rectangle((20, 40, 200, 160), fill=(0, 0, 0, 255)),             # CNEWS: white C on
+                            d.rectangle((60, 70, 160, 130), fill=(250, 250, 250, 255)),       # a black block, and
+                            d.rectangle((230, 40, 580, 160), fill=(224, 0, 30, 255)),         # white text in red
+                            d.rectangle((260, 70, 560, 130), fill=(250, 250, 250, 255))))
+    assert image.white_variant(block) is None

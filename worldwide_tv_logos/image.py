@@ -25,9 +25,11 @@ FLOOD_TOLERANCE = 40
 DARK_NEUTRAL = 110              # neutral dark pixel: max(R, G, B) below this…
 NEUTRAL_SPREAD = 40             # …and max - min below this (black, greys)
 DARK_SHARE = 0.5                # share of neutral dark pixels above which a white variant is made…
-LIGHT_SHARE = 0.03              # …unless the logo already has white parts (white text on a black block: CANAL+)
-DEEP_LUMINANCE = 0.05           # very dark colour (navy, dark grey): unreadable on a dark background
-GRADIENT_SHARE = 0.15            # pixels just lighter than the dark colour, above which it is a gradient
+ON_DARK_SHARE = 0.2             # …unless white parts lie on the dark ones (white text on a black block: CANAL+):
+ON_DARK_AREA = 0.05             # share of the light parts, or of the dark area, that they cover
+DEEP_LUMINANCE = 0.06           # very dark colour (navy, dark grey, teal): contrast below 2:1 on a dark background
+GRADIENT_LUMINANCE = 0.15       # pixels between the dark colour and this luminance are its shades…
+GRADIENT_SHARE = 0.15           # …above this share of it, it is a gradient
 DEEP_SHARE = 0.2                # share of very dark parts (any colour) above which a white variant is made too
 
 
@@ -141,10 +143,25 @@ def _luminance(rgb: np.ndarray) -> np.ndarray:
     return c @ np.array([0.2126, 0.7152, 0.0722], dtype=np.float32)
 
 
+def on_dark(light: np.ndarray, dark: np.ndarray, side: int = 300) -> int:
+    """Pixels of the light parts that lie on a dark part: whole parts touching it, not only their edge (the thick
+    white letters of CANAL+ on its black block). Computed at a small scale."""
+    h, w = light.shape
+    k = max(1, round(max(h, w) / side))
+    small, dark = light[::k, ::k], dark[::k, ::k]
+    mark = small & _dilate(dark, 1)
+    while True:
+        grown = small & _dilate(mark, 1)
+        if grown.sum() == mark.sum():
+            return int(mark.sum()) * k * k
+        mark = grown
+
+
 def white_variant(img: Image.Image) -> Image.Image | None:
     """Drawing unreadable on a dark background -> same logo with its dark parts in white: mostly black / grey, or with
-    a good part in a very dark colour (navy text: LA 7, RTVC). Not for a logo with white parts: its black is a block
-    carrying white text (CANAL+, CINE+, TMC), which would vanish."""
+    a good part in a very dark colour (navy text: LA 7, Eurosport, Val TV). Not when white parts lie on the dark ones:
+    the dark is a block carrying white text (CANAL+, CINE+, TMC, the C of CNEWS), which would vanish. White parts
+    elsewhere (the white 6 in the red box of Eurosport 6) do not matter."""
     a = np.asarray(img).copy()
     rgb = a[:, :, :3].astype(np.int16)
     neutral = (a[:, :, 3] > 0) & (rgb.max(axis=2) < DARK_NEUTRAL) & ((rgb.max(axis=2) - rgb.min(axis=2)) < NEUTRAL_SPREAD)
@@ -157,14 +174,14 @@ def white_variant(img: Image.Image) -> Image.Image | None:
     if share < DARK_SHARE and deep_share < DEEP_SHARE:
         return None
     light = opaque & (rgb.min(axis=2) > 140)          # white or light grey (metallic text)
-    if light.sum() / opaque.sum() > LIGHT_SHARE:
-        return None
-    if light.any() and (light & _dilate(neutral | deep, 2)).sum() > 0.2 * light.sum():
-        return None                                     # white text on the dark part would vanish
+    if light.any():
+        lying = on_dark(light, neutral | deep)
+        if lying > ON_DARK_SHARE * light.sum() or lying > ON_DARK_AREA * ((neutral | deep) & opaque).sum():
+            return None                                 # white text on the dark part would vanish
     coloured = deep & ~neutral
     if share < DARK_SHARE and (coloured & opaque).sum() > 0.05 * opaque.sum():
         lum = _luminance(a[:, :, :3])
-        shades = opaque & ~deep & (lum < 3 * DEEP_LUMINANCE)          # just lighter than the dark colour
+        shades = opaque & ~deep & (lum < GRADIENT_LUMINANCE)          # just lighter than the dark colour
         if shades.sum() > GRADIENT_SHARE * (coloured & opaque).sum():
             return None                                 # a gradient, not dark letters (TELEGILENA, DEJATE DE HISTORIAS)
     a[neutral | deep, 0:3] = 255
