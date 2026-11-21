@@ -24,7 +24,8 @@ WHITE = 232
 FLOOD_TOLERANCE = 40
 DARK_NEUTRAL = 110              # neutral dark pixel: max(R, G, B) below this…
 NEUTRAL_SPREAD = 40             # …and max - min below this (black, greys)
-DARK_SHARE = 0.5                # share of neutral dark pixels above which a white variant is made
+DARK_SHARE = 0.5                # share of neutral dark pixels above which a white variant is made…
+LIGHT_SHARE = 0.03              # …unless the logo already has white parts (white text on a black block: CANAL+)
 
 
 class ImageError(ValueError):
@@ -131,12 +132,16 @@ def prepare(data: bytes) -> tuple[Image.Image, list[str]]:
 
 
 def white_variant(img: Image.Image) -> Image.Image | None:
-    """Mostly black / grey logo (unreadable on a dark background) -> same logo with its neutral dark parts in white."""
+    """Mostly black / grey drawing (unreadable on a dark background) -> same logo with its neutral dark parts in white.
+    Not for a logo with white parts: its black is a block carrying white text (CANAL+, CINE+, TMC), which would vanish."""
     a = np.asarray(img).copy()
     rgb = a[:, :, :3].astype(np.int16)
     dark = (a[:, :, 3] > 0) & (rgb.max(axis=2) < DARK_NEUTRAL) & ((rgb.max(axis=2) - rgb.min(axis=2)) < NEUTRAL_SPREAD)
     opaque = a[:, :, 3] > 128
     if not opaque.any() or (dark & opaque).sum() / opaque.sum() < DARK_SHARE:
+        return None
+    light = opaque & (rgb.min(axis=2) > 140)          # white or light grey (metallic text)
+    if light.sum() / opaque.sum() > LIGHT_SHARE:
         return None
     a[dark, 0:3] = 255
     return Image.fromarray(a, 'RGBA')

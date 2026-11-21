@@ -45,7 +45,7 @@ def set_logo(db: Database, channel: str, feed: str, original: bytes, origin: str
                 changes.append(f'removed {old.file}')
             continue
         logo = Logo(channel, feed, variant, picture.size[0], picture.size[1], origin,
-                    old.added if old else today, today if old else '')
+                    old.added if old else today, today if old and old.added != today else '')
         for path in db.source_files(logo):
             path.unlink()
         src = db.root / 'sources' / logo.country / f'{logo.stem}.{image.extension(original)}'

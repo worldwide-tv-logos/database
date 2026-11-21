@@ -57,6 +57,9 @@ def test_svg_is_rendered_at_target_width_and_dark_logo_gets_white_variant():
     white = image.white_variant(img)
     assert white is not None and white.getpixel((10, 10))[:3] == (255, 255, 255)
     assert image.white_variant(image.prepare(png(800, 300))[0]) is None     # red logo: readable on dark
+    block = Image.new('RGBA', (800, 300), (0, 0, 0, 255))                       # white text on a black block
+    block.paste(Image.new('RGBA', (500, 100), (255, 255, 255, 255)), (150, 100))
+    assert image.white_variant(block) is None
 
 
 def test_set_logo_writes_logo_original_variant_and_validates(db):
