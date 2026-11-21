@@ -4,7 +4,7 @@ import json
 import pytest
 from PIL import Image
 
-from worldwide_tv_logos import cli, image, issues, ops
+from worldwide_tv_logos import cli, harvest, image, issues, ops
 from worldwide_tv_logos.db import Database, Logo, parse_logo_id
 from worldwide_tv_logos.iptvorg import IptvOrg
 
@@ -283,3 +283,19 @@ def test_white_logo_gets_a_dark_version_and_white_box_with_black_text_is_kept():
         PILDraw.Draw(box).rectangle((x, 100, x + 8, 200), fill=(0, 0, 0, 255))
     main, white = image.variants(box)
     assert main is box and white is None
+
+
+def test_reject_restores_the_logo_of_main_and_records_the_url(db, tmp_path_factory):
+    import shutil
+    ops.set_logo(db, 'TF1.fr', '', png(800, 300), 'https://example.org/old.png', IPTV)
+    db.save()
+    base = tmp_path_factory.mktemp('base')
+    shutil.copytree(db.root, base, dirs_exist_ok=True)
+    ops.set_logo(db, 'TF1.fr', '', png(1000, 300), 'https://example.org/new.png', IPTV)   # proposed update
+    db.save()
+    assert cli.main(['--root', str(db.root), 'reject', 'TF1.fr', '--reason', 'old branding',
+                     '--base', str(base)]) == 0
+    again = Database(db.root).load()
+    assert again.logos[('TF1.fr', '', '')].origin == 'https://example.org/old.png'
+    assert harvest.load_rejected(db.root) == {('TF1.fr', 'https://example.org/new.png')}
+    assert cli.validate(again, IPTV) == []

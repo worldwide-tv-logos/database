@@ -24,6 +24,18 @@ A channel removed, closed or replaced in iptv-org after its logo was added is a 
 Every Monday at 06:00 UTC (or by hand): `logos changes` opens, updates or closes the single issue labelled
 `iptv-org:changes`, which lists these warnings with how to fix each one.
 
+## harvest
+
+Every Sunday at 04:00 UTC (or by hand, for one country): for each country of `data/countries.csv` without an open
+harvest pull request, `logos harvest --country <cc> --updates`, `logos import` of the result, `logos validate`, then
+a pull request from the branch `harvest/<cc>` whose description lists the new logos, the updates (with why) and the
+doubts kept out. Repository setting needed: *Allow GitHub Actions to create and approve pull requests*.
+
+## harvest_reject
+
+A comment `/reject <channel id> <reason>` from a maintainer on a harvest pull request: `logos reject` gives the channel
+back its logo of `main` (or none) and adds the proposed URL to `data/rejected.csv`; the bot commits and answers.
+
 ## update
 
 Every night at 03:00 UTC (or by hand): `logos update` applies the open issues labelled `approved`, one by one

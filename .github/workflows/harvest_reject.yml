@@ -1,0 +1,51 @@
+name: harvest_reject
+on:
+  issue_comment:
+    types: [created]
+permissions:
+  contents: write
+  pull-requests: write
+jobs:
+  reject:
+    # `/reject <channel id> <reason>` written by a maintainer on a harvest pull request
+    if: >-
+      github.event.issue.pull_request && startsWith(github.event.comment.body, '/reject ') &&
+      contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.comment.author_association)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: base
+      - name: branch of the pull request
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          head=$(gh pr view ${{ github.event.issue.number }} -R ${{ github.repository }} --json headRefName --jq .headRefName)
+          case "$head" in harvest/*) ;; *) echo "not a harvest pull request"; exit 1;; esac
+          echo "HEAD_REF=$head" >> "$GITHUB_ENV"
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.HEAD_REF }}
+          path: pr
+      - uses: astral-sh/setup-uv@v6
+      - name: remove the logo from the pull request, never propose it again
+        working-directory: pr
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BODY: ${{ github.event.comment.body }}
+          PR: ${{ github.event.issue.number }}
+        run: |
+          set -f
+          set -- $(printf '%s' "$BODY" | head -n 1)
+          channel="$2"; shift 2; reason="$*"
+          uv sync -q
+          if ! uv run logos reject "$channel" --reason "$reason" --base ../base > ../out.txt 2>&1; then
+            gh pr comment "$PR" -R "$GITHUB_REPOSITORY" --body "Could not reject \`$channel\`: $(tail -n 1 ../out.txt)"
+            exit 1
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A data logos sources
+          git commit -q -m "Reject $channel"
+          git push -q
+          gh pr comment "$PR" -R "$GITHUB_REPOSITORY" --body "Rejected \`$channel\`: removed from this pull request and never proposed again."

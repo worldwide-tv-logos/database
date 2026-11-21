@@ -221,10 +221,50 @@ def cmd_harvest(args, db: Database) -> int:
     if not any(p.startswith(f'countries/{folder}/') for p in tree):
         print(f'no tv-logos folder `countries/{folder}/` (use --folder); iptv-org logos only')
     out = db.root / 'temp' / 'harvest' / cc
+    import shutil
+    shutil.rmtree(out, ignore_errors=True)
     stats = harvest.harvest(db, iptvorg.load(db.root), cc, folder, iptvorg.load_logos(db.root), tree, out,
-                            pause=args.pause, limit=args.limit)
-    print(f"{stats['kept']} of {stats['channels']} channels have a logo to review ({stats['candidates']} candidates);"
-          f" {out.as_posix()}/sheet-*.png, then `logos import {out.as_posix()}/manifest.csv`")
+                            pause=args.pause, limit=args.limit, updates=args.updates)
+    print(f"{stats['kept']} logo(s) to review ({stats['updates']} update(s), {stats['doubts']} doubt(s)) among "
+          f"{stats['channels']} channels, {stats['candidates']} candidates; {out.as_posix()}/sheet-*.png, "
+          f"then `logos import {out.as_posix()}/manifest.csv`")
+    return 0
+
+
+def cmd_reject(args, db: Database) -> int:
+    """Refuse a logo proposed in a harvest pull request: the channel gets back its logo of `--base` (the main
+    branch), and its URL goes to data/rejected.csv so that it is never proposed again."""
+    from datetime import date
+    channel = args.channel
+    if not CHANNEL_RE.match(channel):
+        print(f'`{channel}` is not an iptv-org channel ID')
+        return 1
+    logo = db.logos.get((channel, '', ''))
+    if logo is None:
+        print(f'no logo for `{channel}` in this branch')
+        return 1
+    base = Database(Path(args.base)).load()
+    if base.logos.get((channel, '', '')) and base.logos[(channel, '', '')].origin == logo.origin:
+        print(f'`{channel}` is not changed by this pull request')
+        return 1
+    for key in [k for k in db.logos if k[0] == channel and not k[1]]:
+        ops.remove_files(db, db.logos.pop(key))
+    for key, old in base.logos.items():
+        if key[0] == channel and not key[1]:
+            db.logos[key] = old
+            for rel in [old.file] + [p.relative_to(base.root).as_posix() for p in base.source_files(old)]:
+                target = db.path(rel)
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_bytes(base.path(rel).read_bytes())
+    db.save()
+    path = db.root / 'data' / 'rejected.csv'
+    new = not path.is_file()
+    with open(path, 'a', encoding='utf-8', newline='') as fh:
+        w = csv.writer(fh, lineterminator='\n')
+        if new:
+            w.writerow(['channel', 'url', 'reason', 'date'])
+        w.writerow([channel, logo.origin, args.reason or '', date.today().isoformat()])
+    print(f'rejected {logo.origin} for `{channel}`')
     return 0
 
 
@@ -346,7 +386,13 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument('--folder', help='tv-logos folder (default: from the country name, e.g. spain)')
     p.add_argument('--pause', type=float, default=2.0, help='seconds between two downloads')
     p.add_argument('--limit', type=int, default=0, help='only the first N channels (test)')
+    p.add_argument('--updates', action='store_true', help='also propose newer or better versions of current logos')
     p.set_defaults(func=cmd_harvest)
+    p = sub.add_parser('reject', help='refuse a logo proposed in a harvest pull request')
+    p.add_argument('channel')
+    p.add_argument('--reason', default='')
+    p.add_argument('--base', required=True, help='checkout of the main branch')
+    p.set_defaults(func=cmd_reject)
     p = sub.add_parser('changes', help='open/update/close the "iptv-org changes" issue (GITHUB_TOKEN)')
     p.add_argument('--dry-run', action='store_true', help='print the issue body instead')
     p.set_defaults(func=cmd_changes)

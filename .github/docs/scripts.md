@@ -10,6 +10,9 @@ Python 3.12 and [uv](https://docs.astral.sh/uv/). `uv sync` once, then `uv run l
 | `logos update` | applies the approved issues (`GITHUB_REPOSITORY`, `GITHUB_TOKEN`); writes `temp/processed.txt` and `temp/changes.json` |
 | `logos notify --commit SHA` | comments each processed issue with what changed |
 | `logos export [--offline]` | writes `.api/logos.json`, `.api/aliases.json` and (unless `--offline`) the website (`.api/index.html`, `countries.json`, `countries/<cc>.json`, `search.json`) and `missing/<cc>.md` |
+| `logos harvest --country <cc> [--updates] [--folder <tv-logos folder>] [--pause s] [--limit n]` | best logo of each channel of a country from tv-logos and iptv-org, same checks as requests, into `temp/harvest/<cc>/` (manifest.csv for `logos import`, report.csv, doubts.csv, summary.md, contact sheets); `--updates` also proposes newer or better versions of current logos |
+| `logos reject <channel> --base <main checkout> [--reason r]` | refuse a logo of a harvest pull request: back to the logo of main, URL added to `data/rejected.csv` |
+| `logos reprocess` | rebuild every logo from its original after a change of the image rules |
 | `logos changes [--dry-run]` | opens, updates or closes the `iptv-org:changes` issue from the warnings of `validate` |
 
 Tests: `uv run pytest`. Style: `uv run ruff check worldwide_tv_logos tests`.

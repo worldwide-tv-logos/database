@@ -179,13 +179,20 @@ def contact_sheets(rows: list[tuple[dict, Candidate]], out: Path, per_page: int 
     return pages
 
 
-def split_duplicates(kept: list[tuple[dict, Candidate]]) -> tuple[list, list]:
-    """The same image chosen for several channels (a regional channel given the national logo) is a doubt: only the
-    channel with the shortest name keeps it (24 Horas, not 24 Horas Canarias)."""
+def split_duplicates(kept: list[tuple[dict, Candidate]], existing: dict[str, str] | None = None
+                     ) -> tuple[list, list]:
+    """The same image chosen for several channels (a regional channel given the national logo), or already used by
+    another channel here (`existing`: origin URL -> channel), is a doubt: within a group only the channel with the
+    shortest name keeps it (24 Horas, not 24 Horas Canarias)."""
+    existing = existing or {}
     groups: dict[str, list[tuple[dict, Candidate]]] = {}
+    doubts = []
     for c, cand in kept:
+        if existing.get(cand.url, c['id']) != c['id']:
+            doubts.append((c, existing[cand.url]))
+            continue
         groups.setdefault(hashlib.sha1(cand.data).hexdigest(), []).append((c, cand))
-    out, doubts = [], []
+    out = []
     for group in groups.values():
         group.sort(key=lambda x: (len(x[0]['name']), x[0]['name']))
         out.append(group[0])
@@ -194,22 +201,53 @@ def split_duplicates(kept: list[tuple[dict, Candidate]]) -> tuple[list, list]:
     return out, doubts
 
 
+def load_rejected(root: Path) -> set[tuple[str, str]]:
+    """(channel, url) pairs refused in review (data/rejected.csv): never proposed again."""
+    path = Path(root) / 'data' / 'rejected.csv'
+    if not path.is_file():
+        return set()
+    with open(path, encoding='utf-8', newline='') as fh:
+        return {(r['channel'], r['url']) for r in csv.DictReader(fh)}
+
+
+def update_reason(logo, source: Path, best: Candidate, iptv_urls: set[str]) -> str | None:
+    """Why the best candidate should replace the current logo, or None (no clear improvement)."""
+    current = source.read_bytes()
+    if best.data == current:
+        return None
+    if best.url == logo.origin:
+        return 'the original changed at its source'
+    if best.svg and not image.is_svg(current):
+        return 'vector (SVG) version found'
+    if max(best.size) >= 1.5 * max(logo.width, logo.height):
+        return f'larger ({best.size[0]}x{best.size[1]} instead of {logo.width}x{logo.height})'
+    if best.source == 'iptv-org' and logo.origin.startswith('https://') and logo.origin not in iptv_urls \
+            and iptv_urls:
+        return 'iptv-org replaced the logo of this channel'
+    return None
+
+
 def harvest(db: Database, iptv: IptvOrg, cc: str, folder: str, iptv_logos: list[dict], tree: list[str],
-            out: Path, pause: float = 2.0, limit: int = 0, downloader=None, log=print) -> dict[str, int]:
+            out: Path, pause: float = 2.0, limit: int = 0, updates: bool = False, downloader=None,
+            log=print) -> dict[str, int]:
+    """Missing logos of the country (and, with `updates`, better or newer versions of its current logos) into
+    out/: originals, manifest.csv for `logos import`, report.csv, doubts.csv, summary.md, contact sheets."""
     downloader = downloader or net.download
-    have = {k[0] for k in db.logos}
-    channels = sorted((c for c in iptv.country_channels(cc) if c['id'] not in have), key=lambda c: c['name'].lower())
+    current = {k[0]: x for k, x in db.logos.items() if not k[1] and not k[2]}
+    channels = sorted((c for c in iptv.country_channels(cc) if updates or c['id'] not in current),
+                      key=lambda c: c['name'].lower())
     if limit:
         channels = channels[:limit]
+    rejected = load_rejected(db.root)
     tv_index = tv_logos_index(tree, folder)
     by_channel: dict[str, list[dict]] = {}
     for x in iptv_logos:
         by_channel.setdefault(x['channel'], []).append(x)
     (out / 'originals').mkdir(parents=True, exist_ok=True)
-    report, kept = [], []
+    report, kept, changes = [], [], {}
     last = 0.0
     for c in channels:
-        cands = candidates(c, tv_index, by_channel)
+        cands = [x for x in candidates(c, tv_index, by_channel) if (c['id'], x.url) not in rejected]
         for cand in cands:
             wait = last + pause - time.time()
             if wait > 0:
@@ -221,18 +259,26 @@ def harvest(db: Database, iptv: IptvOrg, cc: str, folder: str, iptv_logos: list[
                            'svg': 'yes' if cand.svg else '', 'error': cand.error})
         good = [x for x in cands if not x.error]
         if not good:
-            log(f'{c["id"]}: {"no candidate" if not cands else "every candidate refused"}')
+            if c['id'] not in current:
+                log(f'{c["id"]}: {"no candidate" if not cands else "every candidate refused"}')
             continue
         best = max(good, key=lambda x: x.score)
+        if c['id'] in current:
+            logo = current[c['id']]
+            sources = db.source_files(logo)
+            urls = {x['url'] for x in by_channel.get(c['id'], ()) if not x.get('feed')}
+            reason = update_reason(logo, sources[0], best, urls) if len(sources) == 1 else None
+            if not reason:
+                continue
+            changes[c['id']] = reason
+            log(f'{c["id"]}: UPDATE, {reason}')
+        else:
+            log(f'{c["id"]}: {best.source} {best.size[0]}x{best.size[1]}{" SVG" if best.svg else ""}')
         kept.append((c, best))
-        log(f'{c["id"]}: {best.source} {best.size[0]}x{best.size[1]}{" SVG" if best.svg else ""}')
-    kept, doubts = split_duplicates(kept)
+    kept, doubts = split_duplicates(kept, {x.origin: k for k, x in current.items()})
     for c, other in doubts:
         log(f'{c["id"]}: DOUBT, same image as {other} (kept out)')
-    with open(out / 'doubts.csv', 'w', encoding='utf-8', newline='') as fh:
-        w = csv.writer(fh)
-        w.writerow(['channel', 'reason'])
-        w.writerows([(c['id'], f'same image as {other}') for c, other in doubts])
+        changes.pop(c['id'], None)
     rows = []
     for c, best in kept:
         local = out / 'originals' / f'{c["id"]}.{image.extension(best.data)}'
@@ -246,5 +292,37 @@ def harvest(db: Database, iptv: IptvOrg, cc: str, folder: str, iptv_logos: list[
         w = csv.DictWriter(fh, ['channel', 'name', 'source', 'url', 'size', 'svg', 'error'])
         w.writeheader()
         w.writerows(report)
+    with open(out / 'doubts.csv', 'w', encoding='utf-8', newline='') as fh:
+        w = csv.writer(fh)
+        w.writerow(['channel', 'reason'])
+        w.writerows([(c['id'], f'same image as {other}') for c, other in doubts])
+    (out / 'summary.md').write_text(summary(cc, kept, changes, doubts, len(channels)), encoding='utf-8',
+                                    newline='\n')
     sheets = contact_sheets(kept, out)
-    return {'channels': len(channels), 'kept': len(kept), 'candidates': len(report), 'sheets': len(sheets)}
+    return {'channels': len(channels), 'kept': len(kept), 'updates': len(changes), 'doubts': len(doubts),
+            'candidates': len(report), 'sheets': len(sheets)}
+
+
+def summary(cc: str, kept: list[tuple[dict, Candidate]], changes: dict[str, str], doubts: list, checked: int) -> str:
+    """Body of the harvest pull request."""
+    new = [(c, b) for c, b in kept if c['id'] not in changes]
+    upd = [(c, b) for c, b in kept if c['id'] in changes]
+    lines = [(f'Logos found for `{cc}` by `logos harvest` ({checked} channels checked): **{len(new)} new**, '
+             f'**{len(upd)} updated**. Every file went through the same checks as a request.'), '',
+             ('**Review** in the *Files changed* tab (each image is shown, before and after for an update): the logo '
+             'must be the one currently on air for this exact channel. To refuse one, comment '
+             '`/reject <channel id> <reason>`: it is removed from this pull request and never proposed again.'), '']
+    if new:
+        lines += ['### New', '', '| Channel | ID | Source | Size |', '|---|---|---|---|']
+        lines += [f'| {c["name"]} | `{c["id"]}` | [{b.source}]({b.url}) | {b.size[0]}x{b.size[1]}'
+                  f'{" SVG" if b.svg else ""} |' for c, b in new]
+        lines.append('')
+    if upd:
+        lines += ['### Updated', '', '| Channel | ID | Why | Source |', '|---|---|---|---|']
+        lines += [f'| {c["name"]} | `{c["id"]}` | {changes[c["id"]]} | [{b.source}]({b.url}) |' for c, b in upd]
+        lines.append('')
+    if doubts:
+        lines += ['### Kept out (doubts)', '']
+        lines += [f'- `{c["id"]}`: same image as `{other}`' for c, other in doubts]
+        lines.append('')
+    return '\n'.join(lines)

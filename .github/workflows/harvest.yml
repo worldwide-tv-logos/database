@@ -1,0 +1,48 @@
+name: harvest
+on:
+  workflow_dispatch:
+    inputs:
+      country:
+        description: 'only this country (two-letter code, e.g. es); empty: every country of data/countries.csv'
+        required: false
+  schedule:
+    - cron: '0 4 * * 0'
+permissions:
+  contents: write
+  pull-requests: write
+concurrency: harvest
+jobs:
+  harvest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: astral-sh/setup-uv@v6
+      - run: uv sync
+      - name: one pull request per followed country (skipped while the previous one is under review)
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ONLY: ${{ inputs.country }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          for cc in $(tail -n +2 data/countries.csv | cut -d, -f1); do
+            if [ -n "$ONLY" ] && [ "$cc" != "$ONLY" ]; then continue; fi
+            if [ -n "$(gh pr list --head "harvest/$cc" --state open --json number --jq '.[0].number')" ]; then
+              echo "$cc: the previous harvest is still under review"; continue
+            fi
+            git switch -q -C "harvest/$cc" origin/main
+            uv run logos harvest --country "$cc" --updates
+            if [ "$(wc -l < "temp/harvest/$cc/manifest.csv")" -le 1 ]; then echo "$cc: nothing new"; continue; fi
+            uv run logos import "temp/harvest/$cc/manifest.csv"
+            uv run logos validate
+            git add data logos sources
+            if git diff --cached --quiet; then echo "$cc: nothing new"; continue; fi
+            name=$(grep "^$cc," data/countries.csv | cut -d, -f2)
+            git commit -q -m "Weekly harvest: $name"
+            git push -q -f origin "harvest/$cc"
+            gh pr create --head "harvest/$cc" --base main --title "Weekly harvest: $name" \
+              --body-file "temp/harvest/$cc/summary.md"
+          done

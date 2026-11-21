@@ -36,7 +36,23 @@ Every Monday the `changes` workflow updates the issue labelled
 or replaced in iptv-org. Fix them with ordinary requests (logos/add for the new ID, logos/remove for the old one);
 the issue closes by itself when the list is empty.
 
-## Pull requests
+## Weekly harvest pull requests
+
+Every Sunday the `harvest` workflow looks for the logos of each country of `data/countries.csv` (tv-logos and
+iptv-org): missing logos, and newer or better versions of current ones (original changed at its source, SVG found,
+much larger, logo replaced in iptv-org). It opens one pull request per country, `Weekly harvest: <country>`, unless
+the previous one is still open.
+
+1. Open the *Files changed* tab: every new logo is shown, and an update is shown before and after.
+2. Check each one like a logos/add request: the logo currently on air for this exact channel.
+3. Refuse a logo by commenting `/reject <channel id> <reason>` (e.g. `/reject Cuatro.es old branding`): the bot
+   removes it from the pull request and adds it to `data/rejected.csv`, so it is never proposed again.
+4. Merge. Images the bot was unsure about (the same image for several channels) are listed as doubts and are not
+   in the pull request.
+
+A country is followed by adding its line to `data/countries.csv` (code, name).
+
+## Other pull requests
 
 Only for bulk imports (`uv run logos import`). Merge when the `check` workflow is green and a sample of the new
 logos looks right on the PR's files tab. Commit messages are in English.
@@ -44,4 +60,4 @@ logos looks right on the PR's files tab. Commit messages are in English.
 ## Becoming a maintainer
 
 Contributors with several accepted requests can ask in an issue. Maintainers have the triage role (enough to add
-labels and close issues).
+labels and close issues), or the write role to also merge harvest pull requests.
