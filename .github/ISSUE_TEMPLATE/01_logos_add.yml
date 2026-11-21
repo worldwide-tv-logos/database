@@ -1,0 +1,44 @@
+name: '➕ logos/add'
+description: Add a logo, or replace the current one
+title: 'Logo: '
+labels: ['logos:add']
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        The logo is downloaded, checked and converted automatically once the request is approved.
+        **Rules**: the channel must exist in [iptv-org](https://iptv-org.github.io/); the image must be on a
+        transparent background (a white frame is removed automatically), at least 500 px on its longest side
+        (SVG preferred), and the link must be a direct `https://` link to the image.
+
+  - type: input
+    id: channel_id
+    attributes:
+      label: Channel ID
+      description: iptv-org ID of the channel ([search](https://iptv-org.github.io/))
+      placeholder: 'France3.fr'
+    validations:
+      required: true
+
+  - type: input
+    id: feed_id
+    attributes:
+      label: Feed ID (optional)
+      description: iptv-org ID of the feed, for a regional or local version of the channel
+      placeholder: 'Alsace'
+
+  - type: input
+    id: logo_url
+    attributes:
+      label: Logo URL
+      description: Direct `https://` link to the image (SVG, PNG, WebP, JPEG)
+      placeholder: 'https://example.com/logo.svg'
+    validations:
+      required: true
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes (optional)
+      description: Anything that helps review the request (where the logo comes from, since when it is used)

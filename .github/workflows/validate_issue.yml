@@ -1,0 +1,36 @@
+name: validate_issue
+on:
+  issues:
+    types: [opened, edited]
+permissions:
+  contents: read
+  issues: write
+jobs:
+  validate:
+    if: |
+      contains(join(github.event.issue.labels.*.name, ','), 'logos:') ||
+      contains(join(github.event.issue.labels.*.name, ','), 'aliases:')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+      - run: uv sync
+      - name: issue-validate
+        id: validator
+        env:
+          RAW_BODY: ${{ github.event.issue.body }}
+          LABELS: ${{ join(github.event.issue.labels.*.name, ',') }}
+        run: uv run logos issue-validate --number ${{ github.event.issue.number }} --labels "$LABELS"
+      - name: valid request
+        if: success()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh issue edit ${{ github.event.issue.number }} -R ${{ github.repository }} --add-label check:passed --remove-label check:failed
+      - name: invalid request
+        if: failure() && steps.validator.outcome == 'failure'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          { echo "This request cannot be applied yet:"; echo; cat temp/errors.md; echo; echo "Edit the issue to fix it: it is checked again automatically."; } > temp/comment.md
+          gh issue comment ${{ github.event.issue.number }} -R ${{ github.repository }} --body-file temp/comment.md
+          gh issue edit ${{ github.event.issue.number }} -R ${{ github.repository }} --add-label check:failed --remove-label check:passed

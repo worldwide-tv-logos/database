@@ -1,0 +1,43 @@
+name: '🔗 aliases/add'
+description: Link the ID a TV guide (EPG) uses for a channel to its iptv-org ID
+title: 'Alias: '
+labels: ['aliases:add']
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Guides do not all use iptv-org IDs (e.g. iptv-epg names France 3 Alsace `France3-Alsace.fr`).
+        An alias lets an application that only knows the guide ID find the logo.
+
+  - type: input
+    id: epg_id
+    attributes:
+      label: EPG ID
+      description: ID of the channel in the guide (`<channel id="…">` in the XMLTV file)
+      placeholder: 'France3-Alsace.fr'
+    validations:
+      required: true
+
+  - type: input
+    id: epg_source
+    attributes:
+      label: EPG source
+      description: Short name of the guide
+      placeholder: 'iptv-epg-fr'
+    validations:
+      required: true
+
+  - type: input
+    id: channel_id
+    attributes:
+      label: Channel ID
+      placeholder: 'France3.fr'
+    validations:
+      required: true
+
+  - type: input
+    id: feed_id
+    attributes:
+      label: Feed ID (optional)
+      placeholder: 'Alsace'

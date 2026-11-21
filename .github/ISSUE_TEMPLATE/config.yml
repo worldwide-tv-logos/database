@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Missing logos by country
+    url: https://github.com/alexandre-meline/tv-logos-owntv/tree/main/missing
+    about: Channels that still need a logo
