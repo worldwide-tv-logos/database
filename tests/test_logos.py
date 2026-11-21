@@ -353,3 +353,19 @@ def test_move_channel_moves_logos_sources_and_aliases(db):
     assert cli.validate(again, later) == []
     with pytest.raises(ops.RequestError):
         ops.move_channel(db, 'TF1New.fr', 'Nope.fr', later)
+
+
+def test_navy_letters_get_a_white_variant_but_not_a_gradient():
+    from PIL import Image as PILImage
+    from PIL import ImageDraw as PILDraw
+    navy = PILImage.new('RGBA', (800, 300), (0, 0, 0, 0))
+    PILDraw.Draw(navy).rectangle((0, 0, 500, 299), fill=(5, 20, 80, 255))                       # navy letters
+    PILDraw.Draw(navy).rectangle((550, 0, 799, 299), fill=(220, 50, 40, 255))                   # red part
+    white = image.white_variant(navy)
+    assert white is not None and white.getpixel((10, 10))[:3] == (255, 255, 255)
+    assert white.getpixel((700, 10))[:3] == (220, 50, 40)
+    gradient = PILImage.new('RGBA', (800, 300), (0, 0, 0, 0))
+    d = PILDraw.Draw(gradient)
+    for x in range(800):                                                                        # navy to blue
+        d.line((x, 0, x, 299), fill=(0, 10 + x // 10, 60 + x // 5, 255))
+    assert image.white_variant(gradient) is None

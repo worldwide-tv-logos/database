@@ -7,7 +7,8 @@ buttons to add, replace or request a logo).
 
 - **Transparent background**, trimmed to the drawing, high resolution (SVG originals rendered at 1200 px).
 - **One stable address per logo**, derived from the iptv-org ID: no guessing, no renaming.
-- **A white variant** for logos that are mostly black or grey, so they stay readable on dark screens.
+- **A white variant** for logos that are black, grey or very dark (navy letters), so they stay readable on dark screens;
+  a logo made for dark screens (white letters) gets a dark version for light ones.
 - **Aliases** for the IDs used by TV guides (EPG) that differ from iptv-org.
 
 ## Use

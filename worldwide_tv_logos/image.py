@@ -26,6 +26,9 @@ DARK_NEUTRAL = 110              # neutral dark pixel: max(R, G, B) below this…
 NEUTRAL_SPREAD = 40             # …and max - min below this (black, greys)
 DARK_SHARE = 0.5                # share of neutral dark pixels above which a white variant is made…
 LIGHT_SHARE = 0.03              # …unless the logo already has white parts (white text on a black block: CANAL+)
+DEEP_LUMINANCE = 0.05           # very dark colour (navy, dark grey): unreadable on a dark background
+GRADIENT_SHARE = 0.15            # pixels just lighter than the dark colour, above which it is a gradient
+DEEP_SHARE = 0.2                # share of very dark parts (any colour) above which a white variant is made too
 
 
 class ImageError(ValueError):
@@ -131,19 +134,40 @@ def prepare(data: bytes) -> tuple[Image.Image, list[str]]:
     return img, notes
 
 
+def _luminance(rgb: np.ndarray) -> np.ndarray:
+    """Relative luminance (0 black, 1 white) of sRGB pixels."""
+    c = rgb.astype(np.float32) / 255
+    c = np.where(c <= 0.04045, c / 12.92, ((c + 0.055) / 1.055) ** 2.4)
+    return c @ np.array([0.2126, 0.7152, 0.0722], dtype=np.float32)
+
+
 def white_variant(img: Image.Image) -> Image.Image | None:
-    """Mostly black / grey drawing (unreadable on a dark background) -> same logo with its neutral dark parts in white.
-    Not for a logo with white parts: its black is a block carrying white text (CANAL+, CINE+, TMC), which would vanish."""
+    """Drawing unreadable on a dark background -> same logo with its dark parts in white: mostly black / grey, or with
+    a good part in a very dark colour (navy text: LA 7, RTVC). Not for a logo with white parts: its black is a block
+    carrying white text (CANAL+, CINE+, TMC), which would vanish."""
     a = np.asarray(img).copy()
     rgb = a[:, :, :3].astype(np.int16)
-    dark = (a[:, :, 3] > 0) & (rgb.max(axis=2) < DARK_NEUTRAL) & ((rgb.max(axis=2) - rgb.min(axis=2)) < NEUTRAL_SPREAD)
+    neutral = (a[:, :, 3] > 0) & (rgb.max(axis=2) < DARK_NEUTRAL) & ((rgb.max(axis=2) - rgb.min(axis=2)) < NEUTRAL_SPREAD)
+    deep = (a[:, :, 3] > 0) & (_luminance(a[:, :, :3]) < DEEP_LUMINANCE)
     opaque = a[:, :, 3] > 128
-    if not opaque.any() or (dark & opaque).sum() / opaque.sum() < DARK_SHARE:
+    if not opaque.any():
+        return None
+    share = (neutral & opaque).sum() / opaque.sum()
+    deep_share = ((neutral | deep) & opaque).sum() / opaque.sum()
+    if share < DARK_SHARE and deep_share < DEEP_SHARE:
         return None
     light = opaque & (rgb.min(axis=2) > 140)          # white or light grey (metallic text)
     if light.sum() / opaque.sum() > LIGHT_SHARE:
         return None
-    a[dark, 0:3] = 255
+    if light.any() and (light & _dilate(neutral | deep, 2)).sum() > 0.2 * light.sum():
+        return None                                     # white text on the dark part would vanish
+    coloured = deep & ~neutral
+    if share < DARK_SHARE and (coloured & opaque).sum() > 0.05 * opaque.sum():
+        lum = _luminance(a[:, :, :3])
+        shades = opaque & ~deep & (lum < 3 * DEEP_LUMINANCE)          # just lighter than the dark colour
+        if shades.sum() > GRADIENT_SHARE * (coloured & opaque).sum():
+            return None                                 # a gradient, not dark letters (TELEGILENA, DEJATE DE HISTORIAS)
+    a[neutral | deep, 0:3] = 255
     return Image.fromarray(a, 'RGBA')
 
 

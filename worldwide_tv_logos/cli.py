@@ -242,6 +242,8 @@ def _stems_changed(db: Database, base: str) -> list[str]:
     import subprocess
     out = subprocess.run(['git', 'diff', '--name-only', base, '--', 'logos'], cwd=db.root, capture_output=True,
                          text=True, check=True).stdout.split()
+    out += subprocess.run(['git', 'ls-files', '--others', '--exclude-standard', '--', 'logos'], cwd=db.root,
+                          capture_output=True, text=True, check=True).stdout.split()      # new, not committed yet
     return sorted({Path(p).name.removesuffix('.png').removesuffix('.white') for p in out})
 
 
