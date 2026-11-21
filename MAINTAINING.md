@@ -5,10 +5,11 @@ Maintainers review requests; the bot does everything else. A maintainer never ed
 
 ## Daily routine
 
-Claude reviews every request and every harvest pull request first (see CLAUDE.md): it approves the clear requests,
-rejects the wrong harvested logos, and labels the rest `needs:maintainer`. Your part is mostly the
-[requests a maintainer must check](../../issues?q=is%3Aopen+label%3Aneeds%3Amaintainer), merging the harvest pull
-requests, and checking Claude's decisions from time to time. Write `@claude` in an issue or pull request to ask it
+Claude decides every request and every logo of the pull requests it prepares (see CLAUDE.md): it approves the
+right requests and closes the others with the reason, rejects the wrong or unverifiable harvested logos, and the
+pull requests are merged automatically. Your part is only what is labelled
+[`needs:maintainer`](../../issues?q=is%3Aopen+label%3Aneeds%3Amaintainer) (something broken), and checking
+Claude's decisions from time to time (monthly report). Write `@claude` in an issue or pull request to ask it
 something.
 
 1. Open the [requests that passed the checks](../../issues?q=is%3Aopen+label%3Acheck%3Apassed+-label%3Aapproved).
@@ -62,8 +63,8 @@ requests bring the logos of channels that had none, found the same way and revie
 ## Letting Claude merge
 
 Pull requests prepared by Claude (harvest, hunt, requests, iptv-org changes) contain data only. They are merged
-automatically when Claude says they are ready and `logos validate` passes; when Claude says `hold`, they wait for a
-maintainer (label `needs:maintainer`). To review everything by hand for a while, create the repository variable
+automatically when Claude says they are ready and `logos validate` passes; Claude says `hold` only when something
+is broken, and they then wait for a maintainer (label `needs:maintainer`). To review everything by hand for a while, create the repository variable
 `AUTO_MERGE` with the value `false` (Settings > Secrets and variables > Actions > Variables); delete it to let Claude
 merge again. The monthly `report` issue sums up what Claude did, and any merged change can be reverted.
 

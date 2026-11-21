@@ -45,7 +45,9 @@ jobs:
               If the new ID already has its own logo, remove the old one instead (`uv run logos remove <old id>`);
             - no longer in iptv-org and not replaced: `uv run logos remove <id>`;
             - closed: keep the logo, nothing to do.
-            Finish with exactly one `uv run logos verdict ready|hold "<report>"` listing what you did and why.
+            You decide yourself; a logo you cannot confirm for the new channel is removed, not kept by guess.
+            Finish with exactly one `uv run logos verdict ready "<report>"` listing what you did and why (`hold`
+            only if a tool is broken).
           claude_args: |
             --permission-mode default
             --max-turns 60

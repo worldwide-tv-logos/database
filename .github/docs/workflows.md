@@ -38,14 +38,16 @@ One pull request per country of `data/countries.csv` (skipped while the previous
 The logos found are imported, then Claude looks at every one of them on the contact sheets, rejects the wrong ones
 (`logos reject`), looks for better ones (`logos find`, `logos set`) and records its decision (`logos verdict`).
 `.github/scripts/publish.sh` commits the data only, opens the pull request with Claude's report, and merges it when
-Claude said `ready` and `logos validate` passes, unless the repository variable `AUTO_MERGE` is `false`; otherwise the
-pull request waits for a maintainer (`needs:maintainer` when Claude said `hold`).
+Claude said `ready` and `logos validate` passes, unless the repository variable `AUTO_MERGE` is `false`. Claude
+decides every logo itself (a doubt is rejected, never published) and says `hold` only when the change is broken: the
+pull request then waits for a maintainer (`needs:maintainer`), and the next harvest of the country redoes it.
 
 ## Review by Claude (validate_issue)
 
 When the secret `CLAUDE_CODE_OAUTH_TOKEN` is set, a request that passes the checks is reviewed by Claude following
 CLAUDE.md: the preview of the logo (`temp/preview/sheet-01.png`, on dark and light tiles) is compared with the
-channel; a clear case gets `approved` (applied the next night), a doubt gets `needs:maintainer` with what to check.
+channel; a right logo gets `approved` (applied the next night), a wrong or unverifiable one is closed with the
+reason (`needs:maintainer` only when something is broken).
 Issue texts are treated as data: Claude can only read, comment and label. For a `logos:request`, Claude looks for the
 logo itself (`logos find`, `logos set`) and opens a pull request `request/<n>` that closes the issue.
 

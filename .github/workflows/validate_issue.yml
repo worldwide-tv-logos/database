@@ -55,7 +55,7 @@ jobs:
           { echo "This request cannot be applied yet:"; echo; cat temp/errors.md; echo; echo "Edit the issue to fix it: it is checked again automatically."; } > temp/comment.md
           gh issue comment ${{ github.event.issue.number }} -R ${{ github.repository }} --body-file temp/comment.md
           gh issue edit ${{ github.event.issue.number }} -R ${{ github.repository }} --add-label check:failed --remove-label check:passed
-      - name: review by Claude (approves clear cases, sends doubts to a maintainer)
+      - name: review by Claude (approves or refuses)
         if: success() && env.HAS_CLAUDE == 'true' && !contains(github.event.issue.labels.*.name, 'logos:request')
         uses: anthropics/claude-code-action@v1
         with:
@@ -65,14 +65,19 @@ jobs:
             automatic checks. Review it following CLAUDE.md ("Reviewing a logo" or "Reviewing other requests").
             Read the request with `gh issue view ${{ github.event.issue.number }}`. For a logo, the preview is
             temp/preview/sheet-01.png (proposed logo, and the current one for an edit), on dark and light tiles.
+            You decide yourself (check the channel website, the web, `uv run logos find <logo id>` when unsure).
             Finish with exactly one of:
-            - `gh issue edit ${{ github.event.issue.number }} --add-label approved` and a comment with your review;
-            - `gh issue edit ${{ github.event.issue.number }} --add-label needs:maintainer` and a comment saying what
-              a maintainer must check.
+            - approve: `gh issue edit ${{ github.event.issue.number }} --add-label approved` and a comment with your
+              review;
+            - refuse (wrong, outdated, not clean, or unverifiable after checking):
+              `gh issue close ${{ github.event.issue.number }} --reason "not planned" --comment "<review>"`, the
+              review saying why and how to submit a better request (a new issue with a source).
+            Only when the request cannot be judged because something is broken (a missing preview, a failing
+            tool): `gh issue edit ${{ github.event.issue.number }} --add-label needs:maintainer` and a comment.
           claude_args: |
             --permission-mode default
             --max-turns 20
-            --allowedTools "Read,WebFetch,WebSearch,Bash(gh issue view:*),Bash(gh issue comment:*),Bash(gh issue edit:*),Bash(uv run logos find:*)"
+            --allowedTools "Read,WebFetch,WebSearch,Bash(gh issue view:*),Bash(gh issue comment:*),Bash(gh issue edit:*),Bash(gh issue close:*),Bash(uv run logos find:*)"
       - name: a logo wanted -> Claude looks for it
         if: success() && env.HAS_CLAUDE == 'true' && contains(github.event.issue.labels.*.name, 'logos:request')
         uses: anthropics/claude-code-action@v1
@@ -83,8 +88,9 @@ jobs:
             a channel (read it with `gh issue view ${{ github.event.issue.number }}`). Follow CLAUDE.md ("Reviewing a
             logo" and "Autonomous work"): run `uv run logos find <logo id>`, look at the contact sheet it writes, and
             if one candidate is clearly the current logo of this exact channel, apply it with
-            `uv run logos set <logo id> <url>`. Finish with exactly one `uv run logos verdict ready|hold "<report>"`
-            (what you chose and why, or why nothing is good enough), and comment the issue with the same report.
+            `uv run logos set <logo id> <url>`. Finish with exactly one `uv run logos verdict ready "<report>"`
+            (what you chose and why, or why nothing is good enough: then nothing is published and the request stays
+            open for a contributor), and comment the issue with the same report. `hold` only if a tool is broken.
           claude_args: |
             --permission-mode default
             --max-turns 40

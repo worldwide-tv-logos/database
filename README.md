@@ -66,8 +66,10 @@ prepares the changes following [CLAUDE.md](CLAUDE.md), and maintainers keep the 
 | Monday | changes on the iptv-org side (channel renamed, replaced or removed) applied |
 | 1st of the month | activity report as an issue |
 
-Pull requests prepared by Claude contain data only (never code or workflows). They are merged when Claude finds every
-logo right and the data validates; anything uncertain waits for a maintainer (label `needs:maintainer`). A logo
+Pull requests prepared by Claude contain data only (never code or workflows). Claude decides every logo itself:
+it keeps the right ones, replaces or rejects the others (a doubt is rejected, never published: the channel is
+simply looked for again the next week), and the pull request is merged automatically once the data validates. A
+maintainer is needed only when something is broken (label `needs:maintainer`). A logo
 refused in review is recorded in `data/rejected.csv` and never proposed again.
 
 ## Contribute

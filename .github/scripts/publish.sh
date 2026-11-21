@@ -45,6 +45,7 @@ echo "pull request #$number, review: $state"
 [ -n "${GITHUB_OUTPUT:-}" ] && echo "pr=$number" >> "$GITHUB_OUTPUT"
 
 if [ "$state" = ready ] && [ "${AUTO_MERGE:-true}" != false ]; then
+  gh pr edit "$number" --remove-label needs:maintainer > /dev/null 2>&1 || true
   gh pr merge "$number" --squash --delete-branch
   echo "merged"
 elif [ "$state" = hold ]; then

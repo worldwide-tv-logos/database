@@ -29,7 +29,7 @@ jobs:
       mode: ${{ steps.list.outputs.mode }}
     steps:
       - uses: actions/checkout@v4
-      - name: followed countries without a pull request of this mode under review
+      - name: followed countries without a pull request of this mode waiting (one on hold is redone)
         id: list
         env:
           GH_TOKEN: ${{ github.token }}
@@ -39,8 +39,9 @@ jobs:
           out=()
           for cc in $(tail -n +2 data/countries.csv | cut -d, -f1); do
             if [ -n "$ONLY" ] && [ "$cc" != "$ONLY" ]; then continue; fi
-            if [ -n "$(gh pr list -R "$GITHUB_REPOSITORY" --head "$MODE/$cc" --state open --json number --jq '.[0].number')" ]; then
-              echo "$cc: the previous $MODE is still under review"; continue
+            if [ -n "$(gh pr list -R "$GITHUB_REPOSITORY" --head "$MODE/$cc" --state open --json number,labels \
+                  --jq '.[] | select(all(.labels[]; .name != "needs:maintainer")) | .number')" ]; then
+              echo "$cc: the previous $MODE waits to be merged"; continue
             fi
             out+=("\"$cc\"")
           done
@@ -88,13 +89,15 @@ jobs:
             The logos found are already imported in the working tree. The list is
             temp/harvest/${{ matrix.cc }}/summary.md; look at EVERY logo on the contact sheets
             temp/harvest/${{ matrix.cc }}/sheet-*.png (numbered; each logo on a dark and a light tile).
-            - A wrong logo: `uv run logos reject <channel id> --base ../base --reason "<short reason>"`.
-            - When you rejected one, or are unsure that a logo is current, `uv run logos find <channel id>` lists
-              every candidate from every source with a contact sheet (temp/find/<id>/sheet-01.png); apply a better
-              one with `uv run logos set <channel id> <url>`, or leave the channel without a logo.
-            Finish with exactly one `uv run logos verdict ready|hold "<report>"`: `ready` only if every remaining
-            logo is right; the report lists what you rejected, replaced and why, and anything a maintainer
-            should check.
+            You decide every logo yourself, nobody reviews after you:
+            - unsure that a logo is right and current: check it (channel website, web search, and
+              `uv run logos find <channel id>`, which lists every candidate with a contact sheet
+              temp/find/<id>/sheet-01.png); apply a clearly better one with `uv run logos set <channel id> <url>`;
+            - wrong, or still unverifiable after checking: `uv run logos reject <channel id> --base ../base
+              --reason "<short reason>"` (a new logo: the channel stays missing and is tried again next week; an
+              update: the current logo is kept).
+            Finish with exactly one `uv run logos verdict ready "<report>"` (what remains is merged; the report
+            lists every rejected or replaced logo and why). Use `hold` only if the change itself is broken.
           claude_args: |
             --permission-mode default
             --max-turns 150
