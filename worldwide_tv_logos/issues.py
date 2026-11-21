@@ -4,9 +4,9 @@ from __future__ import annotations
 import re
 from dataclasses import dataclass, field
 
-from owntv_logos import image, net, ops
-from owntv_logos.db import Database
-from owntv_logos.iptvorg import IptvOrg
+from worldwide_tv_logos import image, net, ops
+from worldwide_tv_logos.db import Database
+from worldwide_tv_logos.iptvorg import IptvOrg
 
 KINDS = ('logos:add', 'logos:remove', 'aliases:add')
 # form label -> field name (labels of the issue forms, without « (optional) »)

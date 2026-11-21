@@ -11,7 +11,7 @@ Python 3.12 and [uv](https://docs.astral.sh/uv/). `uv sync` once, then `uv run l
 | `logos notify --commit SHA` | comments each processed issue with what changed |
 | `logos export [--offline]` | writes `.api/logos.json`, `.api/aliases.json` and (unless `--offline`) `missing/<cc>.md` |
 
-Tests: `uv run pytest`. Style: `uv run ruff check owntv_logos tests`.
+Tests: `uv run pytest`. Style: `uv run ruff check worldwide_tv_logos tests`.
 
 Downloads identify themselves with the repository address and honour `Retry-After`; iptv-org data is cached one
 day in `.cache/`.

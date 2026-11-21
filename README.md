@@ -1,4 +1,4 @@
-# tv-logos-owntv
+# worldwide-tv-logos
 
 Clean TV channel logos, keyed by [iptv-org](https://github.com/iptv-org/database) channel ID.
 
@@ -10,7 +10,7 @@ Clean TV channel logos, keyed by [iptv-org](https://github.com/iptv-org/database
 ## Use
 
 ```
-https://raw.githubusercontent.com/alexandre-meline/tv-logos-owntv/main/logos/<cc>/<channel>[@<feed>][.white].png
+https://raw.githubusercontent.com/alexandre-meline/worldwide-tv-logos/main/logos/<cc>/<channel>[@<feed>][.white].png
 ```
 
 | Logo | Address (after `…/main/`) |
@@ -19,7 +19,7 @@ https://raw.githubusercontent.com/alexandre-meline/tv-logos-owntv/main/logos/<cc
 | France 3 Alsace (feed `Alsace` of `France3.fr`) | `logos/fr/France3.fr@Alsace.png` |
 | …its version for dark backgrounds | `logos/fr/France3.fr@Alsace.white.png` |
 
-The whole index as JSON: `https://alexandre-meline.github.io/tv-logos-owntv/logos.json`
+The whole index as JSON: `https://alexandre-meline.github.io/worldwide-tv-logos/logos.json`
 (and `aliases.json` for guide IDs).
 
 ## Layout
@@ -31,7 +31,7 @@ data/countries.csv   countries followed in missing/
 logos/<cc>/          the logos (PNG), named after their iptv-org ID
 sources/<cc>/        the originals they were built from (same name, original extension)
 missing/<cc>.md      iptv-org channels of the country that still have no logo here
-owntv_logos/         the tools (`uv run logos --help`)
+worldwide_tv_logos/         the tools (`uv run logos --help`)
 tests/               tests of the tools
 ```
 

@@ -10,8 +10,8 @@ import sys
 import time
 from pathlib import Path
 
-from owntv_logos import image, iptvorg, issues, net, ops
-from owntv_logos.db import CHANNEL_RE, FEED_RE, VARIANTS, Database
+from worldwide_tv_logos import image, iptvorg, issues, net, ops
+from worldwide_tv_logos.db import CHANNEL_RE, FEED_RE, VARIANTS, Database
 
 DATE_RE = re.compile(r'^\d{4}-\d{2}-\d{2}$')
 

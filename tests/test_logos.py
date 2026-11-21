@@ -4,9 +4,9 @@ import json
 import pytest
 from PIL import Image
 
-from owntv_logos import cli, image, issues, ops
-from owntv_logos.db import Database, Logo, parse_logo_id
-from owntv_logos.iptvorg import IptvOrg
+from worldwide_tv_logos import cli, image, issues, ops
+from worldwide_tv_logos.db import Database, Logo, parse_logo_id
+from worldwide_tv_logos.iptvorg import IptvOrg
 
 IPTV = IptvOrg({'France3.fr': {'id': 'France3.fr', 'name': 'France 3', 'country': 'FR'},
                 'TF1.fr': {'id': 'TF1.fr', 'name': 'TF1', 'country': 'FR'}},

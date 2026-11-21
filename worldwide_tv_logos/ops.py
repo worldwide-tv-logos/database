@@ -3,9 +3,9 @@ from __future__ import annotations
 
 from datetime import date
 
-from owntv_logos import image
-from owntv_logos.db import CHANNEL_RE, EPG_ID_RE, FEED_RE, Alias, Database, Logo
-from owntv_logos.iptvorg import IptvOrg
+from worldwide_tv_logos import image
+from worldwide_tv_logos.db import CHANNEL_RE, EPG_ID_RE, FEED_RE, Alias, Database, Logo
+from worldwide_tv_logos.iptvorg import IptvOrg
 
 
 class RequestError(ValueError):

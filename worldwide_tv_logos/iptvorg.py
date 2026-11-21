@@ -6,7 +6,7 @@ import time
 from dataclasses import dataclass
 from pathlib import Path
 
-from owntv_logos.net import USER_AGENT
+from worldwide_tv_logos.net import USER_AGENT
 
 API = 'https://iptv-org.github.io/api/'
 MAX_AGE = 86400

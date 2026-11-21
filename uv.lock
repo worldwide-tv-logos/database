@@ -293,7 +293,7 @@ wheels = [
 ]
 
 [[package]]
-name = "tv-logos-owntv"
+name = "worldwide-tv-logos"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [

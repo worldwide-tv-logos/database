@@ -8,7 +8,7 @@ import urllib.error
 import urllib.request
 from collections.abc import Callable
 
-USER_AGENT = 'tv-logos-owntv/0.1 (+https://github.com/alexandre-meline/tv-logos-owntv)'
+USER_AGENT = 'worldwide-tv-logos/0.1 (+https://github.com/alexandre-meline/worldwide-tv-logos)'
 MAX_DOWNLOAD = 5_000_000
 TIMEOUT = 60
 
