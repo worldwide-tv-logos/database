@@ -108,14 +108,23 @@ def cmd_import(args, db: Database) -> int:
 def cmd_issue_validate(args, db: Database) -> int:
     body = os.environ.get('RAW_BODY', '') if args.body is None else args.body
     labels = [x.strip() for x in (args.labels or '').split(',') if x.strip()]
+    waiting = ''
     try:
         req = issues.parse(args.number or 0, labels, body)
         errors = issues.validate(req, db, _iptv(db, args.offline))
+        waiting = req.waiting
     except ops.RequestError as exc:
         errors = [str(exc)]
     out = db.root / 'temp' / 'errors.md'
     out.parent.mkdir(exist_ok=True)
     out.write_text('\n'.join(f'- {e}' for e in errors), encoding='utf-8')
+    (db.root / 'temp' / 'waiting.md').write_text(
+        (f'{waiting}.\n\nThe image is fine. This request waits for the channel to be added to iptv-org '
+         '([form](https://github.com/iptv-org/database/issues/new?template=01_channels_add.yml); use exactly the '
+         'same ID). Once approved here, it is checked again every night and applied as soon as iptv-org has the '
+         'channel: nothing else to do.') if waiting and not errors else '', encoding='utf-8')
+    if waiting and not errors:
+        print(f'waiting: {waiting}')
     for e in errors:
         print(e)
     return 1 if errors else 0
@@ -133,6 +142,12 @@ def cmd_update(args, db: Database) -> int:
         try:
             req = issues.parse(raw['number'], labels, raw.get('body') or '')
             changes = issues.apply(req, db, iptv)
+        except ops.NotInIptvOrg as exc:
+            db.logos, db.aliases = snapshot
+            print(f'#{raw["number"]}: waiting — {exc}')
+            if 'waiting:iptv-org' not in labels:
+                gh.add_labels(raw['number'], ['waiting:iptv-org'])
+            continue
         except ops.RequestError as exc:
             db.logos, db.aliases = snapshot
             print(f'#{raw["number"]}: skipped — {exc}')
@@ -142,6 +157,8 @@ def cmd_update(args, db: Database) -> int:
             gh.add_labels(raw['number'], ['check:failed'])
             continue
         print(f'#{raw["number"]}: ' + '; '.join(changes))
+        if 'waiting:iptv-org' in labels:
+            gh.remove_label(raw['number'], 'waiting:iptv-org')
         done.append(raw['number'])
         notes[raw['number']] = changes
     db.save()

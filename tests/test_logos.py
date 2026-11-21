@@ -83,7 +83,7 @@ def test_set_logo_writes_logo_original_variant_and_validates(db):
 
 
 def test_unknown_ids_are_refused(db):
-    with pytest.raises(ops.RequestError, match='does not exist in iptv-org'):
+    with pytest.raises(ops.NotInIptvOrg, match='does not exist in iptv-org'):
         ops.set_logo(db, 'Nope.fr', '', png(800, 300), 'x', IPTV)
     with pytest.raises(ops.RequestError, match='known: Alsace, National'):
         ops.set_logo(db, 'France3.fr', 'Mars', png(800, 300), 'x', IPTV)
@@ -128,7 +128,8 @@ def test_issue_form_is_parsed_validated_and_applied(db):
     assert changes[0].startswith('added logos/fr/France3.fr@Alsace.png')
     assert db.logos[('France3.fr', 'Alsace', '')].origin == 'issue #12'
     bad = issues.parse(13, ['logos:add'], BODY.replace('Alsace', 'Mars'))
-    assert 'does not exist' in issues.validate(bad, db, IPTV, downloader=fake.__getitem__)[0]
+    assert issues.validate(bad, db, IPTV, downloader=fake.__getitem__) == []     # unknown feed: waits for iptv-org
+    assert 'Mars' in bad.waiting and 'known: Alsace, National' in bad.waiting
     alias = issues.parse(14, ['aliases:add'], '### EPG ID\n\nFrance3-Alsace.fr\n\n### EPG source\n\niptv-epg-fr\n\n'
                                                '### Channel ID\n\nFrance3.fr\n\n### Feed ID (optional)\n\nAlsace\n')
     assert issues.apply(alias, db, IPTV) == ['added alias iptv-epg-fr:France3-Alsace.fr -> France3.fr@Alsace']
@@ -153,7 +154,7 @@ class FakeGitHub:
 
 def test_update_applies_each_issue_alone_and_skips_faulty_ones(db, monkeypatch):
     good = {'number': 1, 'labels': [{'name': 'logos:add'}, {'name': 'approved'}], 'body': BODY}
-    bad = {'number': 2, 'labels': [{'name': 'logos:add'}, {'name': 'approved'}], 'body': BODY.replace('Alsace', 'Mars')}
+    bad = {'number': 2, 'labels': [{'name': 'logos:add'}, {'name': 'approved'}], 'body': BODY.replace('France3.fr', 'France 3')}
     gh = FakeGitHub([good, bad])
     monkeypatch.setattr(cli.net, 'GitHub', lambda: gh)
     monkeypatch.setattr(cli.iptvorg, 'load', lambda root: IPTV)
@@ -190,3 +191,27 @@ def test_every_form_action(db):
     assert 'no alias' in issues.validate(remove, db, IPTV)[0]
     gone = issues.parse(7, ['logos:remove'], BODY)
     assert issues.apply(gone, db, IPTV)[0] == 'removed logos/fr/France3.fr@Alsace.png'
+
+
+def test_a_logo_can_wait_for_its_channel_in_iptv_org(db, monkeypatch):
+    body = BODY.replace('France3.fr', 'NewChannel.fr').replace('Alsace', '')
+    fake = {'https://example.org/f3-alsace.png': png(1000, 400)}
+    req = issues.parse(9, ['logos:add'], body)
+    assert issues.validate(req, db, IPTV, downloader=fake.__getitem__) == []
+    assert 'NewChannel.fr' in req.waiting                                  # image checked, channel awaited
+    edit = issues.parse(10, ['logos:edit'], body)
+    assert 'does not exist' in issues.validate(edit, db, IPTV, downloader=fake.__getitem__)[0]
+    item = {'number': 9, 'labels': [{'name': 'logos:add'}, {'name': 'approved'}], 'body': body}
+    gh = FakeGitHub([item])
+    monkeypatch.setattr(cli.net, 'GitHub', lambda: gh)
+    monkeypatch.setattr(issues.net, 'download', lambda url: png(1000, 400))
+    monkeypatch.setattr(cli.iptvorg, 'load', lambda root: IPTV)
+    cli.main(['--root', str(db.root), 'update'])
+    assert (db.root / 'temp/processed.txt').read_text() == ''
+    assert gh.labels == [(9, ['waiting:iptv-org'])] and gh.comments == []  # kept approved, no failure
+    later = IptvOrg({**IPTV.channels, 'NewChannel.fr': {'id': 'NewChannel.fr', 'country': 'FR'}}, IPTV.feeds)
+    monkeypatch.setattr(cli.iptvorg, 'load', lambda root: later)
+    item['labels'].append({'name': 'waiting:iptv-org'})
+    cli.main(['--root', str(db.root), 'update'])
+    assert (db.root / 'temp/processed.txt').read_text() == 'Closes #9'
+    assert (9, '-waiting:iptv-org') in gh.labels

@@ -12,13 +12,17 @@ class RequestError(ValueError):
     pass
 
 
+class NotInIptvOrg(RequestError):
+    """Well-formed id not (yet) in iptv-org: a request can wait for it instead of being refused."""
+
+
 def check_ids(channel: str, feed: str, iptv: IptvOrg | None) -> None:
     if not CHANNEL_RE.match(channel):
         raise RequestError(f'`{channel}` is not an iptv-org channel id (e.g. `France3.fr`)')
     if feed and not FEED_RE.match(feed):
         raise RequestError(f'`{feed}` is not an iptv-org feed id (letters and digits, e.g. `Alsace`)')
     if iptv is not None and (err := iptv.channel_error(channel, feed)):
-        raise RequestError(err)
+        raise NotInIptvOrg(err)
 
 
 def set_logo(db: Database, channel: str, feed: str, original: bytes, origin: str, iptv: IptvOrg | None,

@@ -19,10 +19,10 @@ class IptvOrg:
 
     def channel_error(self, channel: str, feed: str = '') -> str | None:
         if channel not in self.channels:
-            return f'channel `{channel}` does not exist in iptv-org (add it there first)'
+            return f'channel `{channel}` does not exist in iptv-org yet'
         if feed and (channel, feed) not in self.feeds:
             known = sorted(f for c, f in self.feeds if c == channel)
-            return f'feed `{feed}` does not exist for `{channel}` in iptv-org (known: {", ".join(known) or "none"})'
+            return f'feed `{feed}` of `{channel}` does not exist in iptv-org yet (known: {", ".join(known) or "none"})'
         return None
 
     def country_channels(self, cc: str) -> list[dict]:

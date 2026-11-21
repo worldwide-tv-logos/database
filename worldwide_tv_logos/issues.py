@@ -20,6 +20,7 @@ class Request:
     number: int
     kind: str
     values: dict[str, str] = field(default_factory=dict)
+    waiting: str = ''           # set by validate(): the channel / feed is not in iptv-org yet
 
     def get(self, name: str) -> str:
         return self.values.get(name, '')
@@ -52,13 +53,18 @@ def _has_logo(db: Database, channel: str, feed: str) -> bool:
     return any(k[:2] == (channel, feed) for k in db.logos)
 
 
-def validate(req: Request, db: Database, iptv: IptvOrg | None, downloader=net.download) -> list[str]:
+def validate(req: Request, db: Database, iptv: IptvOrg | None, downloader=None) -> list[str]:
     """Problems that prevent the request from being applied (empty list: valid). Downloads the image to check it."""
     channel, feed = req.get('channel'), req.get('feed')
     if not channel:
         return ['Channel ID is required']
     try:
-        ops.check_ids(channel, feed, iptv)
+        try:
+            ops.check_ids(channel, feed, iptv)
+        except ops.NotInIptvOrg as exc:
+            if req.kind not in ('logos:add', 'logos:request'):
+                raise
+            req.waiting = str(exc)                    # checked again every night until iptv-org has it
         if req.kind in ('logos:add', 'logos:edit'):
             if req.kind == 'logos:add' and _has_logo(db, channel, feed):
                 return [f'`{_label(channel, feed)}` already has a logo: use the logos/edit form to replace it']
@@ -68,7 +74,7 @@ def validate(req: Request, db: Database, iptv: IptvOrg | None, downloader=net.do
             if not url:
                 return ['Logo URL is required']
             try:
-                image.prepare(downloader(url))
+                image.prepare((downloader or net.download)(url))
             except net.DownloadError as exc:
                 return [f'the logo could not be downloaded: {exc}']
             except image.ImageError as exc:
@@ -93,11 +99,12 @@ def validate(req: Request, db: Database, iptv: IptvOrg | None, downloader=net.do
     return []
 
 
-def apply(req: Request, db: Database, iptv: IptvOrg | None, downloader=net.download) -> list[str]:
+def apply(req: Request, db: Database, iptv: IptvOrg | None, downloader=None) -> list[str]:
     channel, feed = req.get('channel'), req.get('feed')
     if req.kind in ('logos:add', 'logos:edit'):
+        ops.check_ids(channel, feed, iptv)                # before downloading: a missing channel waits
         try:
-            data = downloader(req.get('url'))
+            data = (downloader or net.download)(req.get('url'))
         except net.DownloadError as exc:
             raise ops.RequestError(f'the logo could not be downloaded: {exc}') from None
         return ops.set_logo(db, channel, feed, data, f'issue #{req.number}', iptv)

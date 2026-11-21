@@ -8,8 +8,9 @@ body:
     attributes:
       value: |
         The logo is downloaded, checked and converted automatically once the request is approved.
-        **Rules**: the channel must exist in [iptv-org](https://iptv-org.github.io/) (if it does not, first
-        [add it there](https://github.com/iptv-org/database/issues/new?template=01_channels_add.yml)); the image must
+        **Rules**: the channel must be in [iptv-org](https://iptv-org.github.io/); if it is not, also
+        [add it there](https://github.com/iptv-org/database/issues/new?template=01_channels_add.yml) and use the same
+        ID here: this request then waits (`waiting:iptv-org`) and is applied once iptv-org has it. The image must
         be on a transparent background (a white frame is removed automatically), at least 500 px on its longest side
         (SVG preferred), and the link must be a direct `https://` link to the image.
         To replace an existing logo, use the **logos/edit** form instead.

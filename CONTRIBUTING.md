@@ -26,8 +26,14 @@ longest side; **SVG is preferred**. Use the version currently on air.
 ### A channel that is not in iptv-org
 
 Every logo is attached to an iptv-org channel, so that its name is stable and shared with guides and playlists.
-[Add the channel to iptv-org](https://github.com/iptv-org/database/issues/new?template=01_channels_add.yml) first;
-once it is there (usually the next day), submit its logo here.
+Submit both requests the same day:
+
+1. [add the channel to iptv-org](https://github.com/iptv-org/database/issues/new?template=01_channels_add.yml),
+   and note the channel ID it will get (name without spaces + country code, e.g. `MyChannel.fr`);
+2. submit the logo here with that exact ID.
+
+The bot checks the image, labels the request `waiting:iptv-org` and, once approved, checks it again every night: the
+logo is added as soon as iptv-org has the channel, with nothing else to do.
 
 ### A channel without a TV guide ID
 
