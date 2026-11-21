@@ -20,6 +20,9 @@ TARGET_HEIGHT = 800             # …or this high, whichever comes first
 MAX_FILE = 1_000_000            # bytes, served PNG
 MAX_PIXELS = 40_000_000
 OPAQUE_BORDER = 0.9             # share of opaque border pixels above which the image has a background
+WHITE_BORDER = 0.5              # share of white border pixels above which that background is white (the drawing may
+                                # touch the edges elsewhere: the black block of EDA TV, the skyline of Distrito TV)
+FRINGE = 2                      # pixels of the drawing's edge unblended from the removed white
 WHITE = 232
 FLOOD_TOLERANCE = 40
 DARK_NEUTRAL = 110              # neutral dark pixel: max(R, G, B) below this…
@@ -77,8 +80,11 @@ def _border(a: np.ndarray) -> np.ndarray:
 
 
 def remove_white_frame(img: Image.Image) -> Image.Image:
-    """Opaque white border -> transparent (flood fill from the edges, light fringe softened)."""
-    out = img.copy()
+    """White background -> transparent (flood fill from the white of the edges). Next to it, the anti-aliased edge
+    of the drawing, blended with the white, is unblended (colour to alpha), so that no light fringe remains around
+    the drawing on a dark screen."""
+    out = img.convert('RGBA')
+    before = np.asarray(out).copy()
     w, h = out.size
     px = out.load()
     for x, y in [(x, 0) for x in range(0, w, 7)] + [(x, h - 1) for x in range(0, w, 7)] + \
@@ -87,25 +93,37 @@ def remove_white_frame(img: Image.Image) -> Image.Image:
         if p[3] > 240 and min(p[:3]) >= WHITE:
             ImageDraw.floodfill(out, (x, y), (255, 255, 255, 0), thresh=FLOOD_TOLERANCE)
     b = np.asarray(out).copy()
-    clear = b[:, :, 3] == 0
-    near = np.zeros_like(clear)
-    near[1:] |= clear[:-1]
-    near[:-1] |= clear[1:]
-    near[:, 1:] |= clear[:, :-1]
-    near[:, :-1] |= clear[:, 1:]
-    light = b[:, :, :3].min(axis=2).astype(np.float32)
-    halo = near & ~clear & (light >= WHITE - 30)
-    factor = np.clip((255.0 - light) / (255.0 - (WHITE - 30)), 0, 1)
-    b[:, :, 3] = np.where(halo, (b[:, :, 3] * factor).astype(np.uint8), b[:, :, 3])
+    clear = (b[:, :, 3] == 0) & (before[:, :, 3] > 0)
+    band = _dilate(clear, FRINGE) & ~clear & (b[:, :, 3] > 0)
+    rgb = b[:, :, :3].astype(np.float32)
+    alpha = (255.0 - rgb.min(axis=2)) / 255.0                 # share of the drawing in a pixel blended with white
+    soft = band & (alpha < 1)
+    keep = np.maximum(alpha, 1e-3)[:, :, None]
+    unblended = np.clip(255.0 - (255.0 - rgb) / keep, 0, 255)
+    b[:, :, :3] = np.where(soft[:, :, None], unblended, rgb).astype(np.uint8)
+    b[:, :, 3] = np.where(soft, (b[:, :, 3] * alpha).astype(np.uint8), b[:, :, 3])
     return Image.fromarray(b, 'RGBA')
 
 
 def white_frame(img: Image.Image) -> bool:
-    """Opaque white border all around: a frame added around the logo, to be made transparent."""
+    """Opaque border mostly white: a white background around the logo, to be made transparent (only the white
+    reached from the edges is removed)."""
     border = _border(np.asarray(img))
     opaque = border[:, 3] > 240
     white = opaque & (border[:, :3].min(axis=1) >= WHITE)
-    return opaque.mean() >= OPAQUE_BORDER and white.mean() >= 0.85
+    return opaque.mean() >= OPAQUE_BORDER and white.mean() >= WHITE_BORDER
+
+
+def without_white_background(img: Image.Image) -> Image.Image | None:
+    """The logo with its white background removed, or None: no white background, or a dark drawing that would be
+    unreadable on a dark screen without it (white left inside dark letters, the counters of EDA TV, prevent its
+    white variant): the white background is then part of the logo and kept."""
+    if not white_frame(img):
+        return None
+    clear = remove_white_frame(img)
+    if is_dark(clear) and white_variant(clear) is None:
+        return None
+    return clear
 
 
 def trim(img: Image.Image) -> Image.Image:
@@ -120,8 +138,8 @@ def prepare(data: bytes) -> tuple[Image.Image, list[str]]:
     """Original -> logo (trimmed, transparent, scaled). Returns (image, notes). ImageError if unusable."""
     img, vector = open_image(data)
     notes = []
-    if white_frame(img):
-        img = remove_white_frame(img)
+    if (clear := without_white_background(img)) is not None:
+        img = clear
         notes.append('white frame removed')
     img = trim(img)
     w, h = img.size
@@ -157,6 +175,22 @@ def on_dark(light: np.ndarray, dark: np.ndarray, side: int = 300) -> int:
         mark = grown
 
 
+def _dark_parts(a: np.ndarray) -> tuple:
+    """(neutral dark pixels, very dark pixels, opaque pixels, share of neutral dark, share of dark of any colour)."""
+    rgb = a[:, :, :3].astype(np.int16)
+    neutral = (a[:, :, 3] > 0) & (rgb.max(axis=2) < DARK_NEUTRAL) & ((rgb.max(axis=2) - rgb.min(axis=2)) < NEUTRAL_SPREAD)
+    deep = (a[:, :, 3] > 0) & (_luminance(a[:, :, :3]) < DEEP_LUMINANCE)
+    opaque = a[:, :, 3] > 128
+    n = max(1, int(opaque.sum()))
+    return neutral, deep, opaque, (neutral & opaque).sum() / n, ((neutral | deep) & opaque).sum() / n
+
+
+def is_dark(img: Image.Image) -> bool:
+    """Mostly black or grey, or with a good part in a very dark colour: unreadable on a dark screen as it is."""
+    _, _, opaque, share, deep_share = _dark_parts(np.asarray(img.convert('RGBA')))
+    return bool(opaque.any()) and (share >= DARK_SHARE or deep_share >= DEEP_SHARE)
+
+
 def white_variant(img: Image.Image) -> Image.Image | None:
     """Drawing unreadable on a dark background -> same logo with its dark parts in white: mostly black / grey, or with
     a good part in a very dark colour (navy text: LA 7, Eurosport, Val TV). Not when white parts lie on the dark ones:
@@ -164,13 +198,7 @@ def white_variant(img: Image.Image) -> Image.Image | None:
     elsewhere (the white 6 in the red box of Eurosport 6) do not matter."""
     a = np.asarray(img).copy()
     rgb = a[:, :, :3].astype(np.int16)
-    neutral = (a[:, :, 3] > 0) & (rgb.max(axis=2) < DARK_NEUTRAL) & ((rgb.max(axis=2) - rgb.min(axis=2)) < NEUTRAL_SPREAD)
-    deep = (a[:, :, 3] > 0) & (_luminance(a[:, :, :3]) < DEEP_LUMINANCE)
-    opaque = a[:, :, 3] > 128
-    if not opaque.any():
-        return None
-    share = (neutral & opaque).sum() / opaque.sum()
-    deep_share = ((neutral | deep) & opaque).sum() / opaque.sum()
+    neutral, deep, opaque, share, deep_share = _dark_parts(a)
     if share < DARK_SHARE and deep_share < DEEP_SHARE:
         return None
     light = opaque & (rgb.min(axis=2) > 140)          # white or light grey (metallic text)
@@ -221,7 +249,7 @@ def check_file(path: Path, white: bool = False) -> list[str]:
         w, h = img.size
         if max(w, h) < MIN_SIDE or max(w, h) > MAX_SIDE:
             errors.append(f'size {w}x{h}: longest side must be {MIN_SIDE} to {MAX_SIDE} px')
-        if not white and white_frame(img):
+        if not white and without_white_background(img.convert('RGBA')) is not None:
             errors.append('white frame around the logo: make it transparent')
         alpha = np.asarray(img.getchannel('A'))
         bbox = Image.fromarray(((alpha > 8) * 255).astype(np.uint8)).getbbox()

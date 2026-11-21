@@ -51,6 +51,32 @@ def test_prepare_trims_removes_white_frame_and_refuses_bad_images():
         image.prepare(b'<html>blocked</html>')
 
 
+def _png(img: Image.Image) -> bytes:
+    out = io.BytesIO()
+    img.save(out, 'PNG')
+    return out.getvalue()
+
+
+def test_white_background_touching_the_drawing_is_removed_unless_the_logo_needs_it():
+    # white background (60 % of the border) cut by a red band touching the left, right and bottom edges: it goes,
+    # with the white reached from the edges; the red parts stay
+    img = Image.new('RGBA', (800, 300), (255, 255, 255, 255))
+    img.paste(Image.new('RGBA', (800, 100), (200, 0, 0, 255)), (0, 200))
+    img.paste(Image.new('RGBA', (100, 50), (200, 0, 0, 255)), (600, 0))
+    out, notes = image.prepare(_png(img))
+    assert notes == ['white frame removed'] and out.size == (800, 300)
+    assert out.getpixel((10, 10))[3] == 0 and out.getpixel((330, 299))[3] == 255 and out.getpixel((650, 10))[3] == 255
+    # black letters with white counters on a white background (EDA TV): without it the logo would be unreadable
+    # on a dark screen, so the white background is kept
+    img = Image.new('RGBA', (800, 300), (255, 255, 255, 255))
+    for x in (0, 325, 650):
+        img.paste(Image.new('RGBA', (150, 300), (10, 10, 10, 255)), (x, 0))
+        img.paste(Image.new('RGBA', (50, 100), (255, 255, 255, 255)), (x + 50, 100))
+    out, notes = image.prepare(_png(img))
+    assert notes == [] and out.getpixel((250, 150))[3] == 255
+    assert image.without_white_background(out) is None                   # so check_file does not report it
+
+
 def test_svg_is_rendered_at_target_width_and_dark_logo_gets_white_variant():
     img, _ = image.prepare(SVG)
     assert img.size == (image.TARGET_WIDTH, image.TARGET_WIDTH // 3)
