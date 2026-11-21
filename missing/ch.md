@@ -1,13 +1,10 @@
 # Switzerland: channels without a logo
 
-29 of 157 iptv-org channels have a logo here. To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
+35 of 157 iptv-org channels have a logo here. To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
 
 | Channel ID | Name |
 |---|---|
 | `3Plus.ch` | 3+ |
-| `4Plus.ch` | 4+ |
-| `5Plus.ch` | 5+ |
-| `6Plus.ch` | 6+ |
 | `6terSwitzerland.ch` | 6ter Switzerland |
 | `7Plus.ch` | 7+ |
 | `7PlusNickSchweiz.ch` | 7+/Nick Schweiz |
@@ -98,7 +95,6 @@
 | `RTSInfo.ch` | RTS Info |
 | `RTVIslam.ch` | RTV Islam |
 | `RTVPendimi.ch` | RTV Pendimi |
-| `S1.ch` | S1 |
 | `SAT1GoldSchweiz.ch` | SAT.1 Gold Schweiz |
 | `SAT1Schweiz.ch` | SAT.1 Schweiz |
 | `SchaffhauserFernsehen.ch` | Schaffhauser Fernsehen |
@@ -117,8 +113,6 @@
 | `Televista.ch` | Televista |
 | `TF1Switzerland.ch` | TF 1 Switzerland |
 | `TFXSwitzerland.ch` | TFX Switzerland |
-| `TV24.ch` | TV 24 |
-| `TV25.ch` | TV 25 |
 | `TVDecouverte.ch` | TV Decouverte |
 | `TVOberwallis.ch` | TV Oberwallis |
 | `TVOnex.ch` | TV Onex |
