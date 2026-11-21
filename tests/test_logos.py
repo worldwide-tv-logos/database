@@ -532,3 +532,16 @@ def test_seen_on_finds_a_logo_drawn_or_shown_in_a_page():
     red = png(600, 200)
     pages['https://other.example/a.png'] = png(300, 100)                                    # same drawing, smaller
     assert 'image https://other.example/a.png' in seen.seen_on('https://other.example/', red, get, pause=0)
+
+
+def test_guide_aliases_only_for_channels_with_a_logo(db, monkeypatch):
+    import argparse
+
+    from worldwide_tv_logos import iptvorg, sources
+    ops.set_logo(db, 'France3.fr', '', SVG, 'https://example.org/f3.svg', IPTV)
+    guide = [{'id': 'F3guide', 'names': ['France 3'], 'icon': ''}, {'id': 'TF1guide', 'names': ['TF1'], 'icon': ''}]
+    monkeypatch.setattr(iptvorg, 'load', lambda root: IPTV)
+    monkeypatch.setattr(harvest, 'load_epg', lambda db, cc, dl, log: sources.EpgIndex(guide, [], harvest.key))
+    cli.cmd_guide_aliases(argparse.Namespace(country='fr'), db)
+    assert [(a.epg_id, a.channel) for a in db.aliases.values()] == [('F3guide', 'France3.fr')]   # TF1: no logo
+    assert cli.validate(Database(db.root).load(), IPTV) == []

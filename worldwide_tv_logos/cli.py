@@ -474,6 +474,9 @@ def cmd_reject(args, db: Database) -> int:
                 target = db.path(rel)
                 target.parent.mkdir(parents=True, exist_ok=True)
                 target.write_bytes(base.path(rel).read_bytes())
+    for key, alias in list(db.aliases.items()):         # a new logo refused: its guide aliases go with it
+        if (alias.channel, alias.feed, '') not in db.logos:
+            del db.aliases[key]
     db.save()
     path = db.root / 'data' / 'rejected.csv'
     new = not path.is_file()
@@ -530,8 +533,8 @@ def cmd_guide_aliases(args, db: Database) -> int:
             found.setdefault(epg_id, []).append(u)
     added = []
     for epg_id, us in sorted(found.items()):
-        if len(us) == 1:                                  # one guide channel for one channel: no ambiguity
-            u = us[0]
+        u = us[0]
+        if len(us) == 1 and (u['channel'], u['feed'], '') in db.logos:   # unambiguous, and an alias needs a logo
             ops.set_alias(db, epg_id, source, u['channel'], u['feed'], iptv)
             added.append((epg_id, u))
     db.save()

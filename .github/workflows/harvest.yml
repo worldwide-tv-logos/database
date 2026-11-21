@@ -75,10 +75,11 @@ jobs:
         id: collect
         run: |
           if [ "$MODE" = hunt ]; then uv run logos hunt --country "$CC"; else uv run logos harvest --country "$CC" --updates; fi
-          uv run logos guide-aliases --country "$CC"
           if [ "$(wc -l < "temp/harvest/$CC/manifest.csv")" -gt 1 ]; then
             uv run logos import "temp/harvest/$CC/manifest.csv"
-          elif ! grep -qE '^### (Current logos to check|New guide aliases)' "temp/harvest/$CC/summary.md"; then
+          fi
+          uv run logos guide-aliases --country "$CC"         # after the import: an alias needs a logo
+          if [ "$(wc -l < "temp/harvest/$CC/manifest.csv")" -le 1 ]              && ! grep -qE '^### (Current logos to check|New guide aliases)' "temp/harvest/$CC/summary.md"; then
             echo "nothing found"; exit 0
           fi
           git worktree add -q ../base origin/main
