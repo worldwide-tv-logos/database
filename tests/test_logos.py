@@ -419,3 +419,21 @@ def test_iptv_epg_guide_logos_by_alias_id_and_name(tmp_path):
     def missing(*a, **k):
         raise sources.net.DownloadError('HTTP 404')
     assert sources.load_iptv_epg(tmp_path / 'x', 'zz', missing) == []
+
+
+def test_drawing_of_another_family_is_a_doubt():
+    assert harvest.family('Eurosport6.fr') == harvest.family('Eurosport8.fr') == 'eurosport'
+    assert harvest.family('ComedyCentral.es') == harvest.family('ComedyCentral.fr@Paris')
+    assert harvest.family('BlueAction.ch') != harvest.family('Action.fr')
+    fp = (1 << 200) - 1
+    drawings = [('Action.fr', 'Action.fr', fp), ('Eurosport6.fr', 'Eurosport6.fr', 12345)]
+    assert harvest.drawing_of_other('BlueAction.ch', fp ^ 0b111, drawings) == 'Action.fr'      # 3 bits apart
+    assert harvest.drawing_of_other('BlueAction.ch', fp ^ ((1 << 10) - 1), drawings) is None   # 10 bits apart
+    assert harvest.drawing_of_other('Action.fr', fp, drawings) is None                         # itself
+    assert harvest.drawing_of_other('Eurosport8.fr', 12345, drawings) is None                  # same family
+    assert harvest.shared_drawings('ch', drawings + [('BlueAction.ch', 'BlueAction.ch', fp)]) == \
+        [('BlueAction.ch', 'Action.fr')]
+    kept, doubts = harvest.split_duplicates(
+        [({'id': 'BlueAction.ch', 'channel': 'BlueAction.ch', 'name': 'Blue Action'},
+          harvest.Candidate('iptv-epg', 'https://e/x', fp=fp))], {}, drawings)
+    assert kept == [] and doubts[0][1] == 'Action.fr'

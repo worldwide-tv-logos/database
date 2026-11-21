@@ -74,8 +74,11 @@ jobs:
         id: collect
         run: |
           if [ "$MODE" = hunt ]; then uv run logos hunt --country "$CC"; else uv run logos harvest --country "$CC" --updates; fi
-          if [ "$(wc -l < "temp/harvest/$CC/manifest.csv")" -le 1 ]; then echo "nothing found"; exit 0; fi
-          uv run logos import "temp/harvest/$CC/manifest.csv"
+          if [ "$(wc -l < "temp/harvest/$CC/manifest.csv")" -gt 1 ]; then
+            uv run logos import "temp/harvest/$CC/manifest.csv"
+          elif ! grep -q '^### Current logos to check' "temp/harvest/$CC/summary.md"; then
+            echo "nothing found"; exit 0
+          fi
           git worktree add -q ../base origin/main
           echo "found=yes" >> "$GITHUB_OUTPUT"
       - name: review by Claude
@@ -96,12 +99,15 @@ jobs:
             - wrong, or still unverifiable after checking: `uv run logos reject <channel id> --base ../base
               --reason "<short reason>"` (a new logo: the channel stays missing and is tried again next week; an
               update: the current logo is kept).
+            The summary may list "Current logos to check": logos already published with the drawing of a channel
+            of another family. Compare them (`uv run logos sheet --channels <a>,<b>`, the channels' websites) and
+            remove the wrong one with `uv run logos remove <logo id>`; keep both only if both are right.
             Finish with exactly one `uv run logos verdict ready "<report>"` (what remains is merged; the report
             lists every rejected or replaced logo and why). Use `hold` only if the change itself is broken.
           claude_args: |
             --permission-mode default
             --max-turns 150
-            --allowedTools "Read,WebFetch,WebSearch,Bash(uv run logos reject:*),Bash(uv run logos find:*),Bash(uv run logos set:*),Bash(uv run logos verdict:*),Bash(uv run logos sheet:*)"
+            --allowedTools "Read,WebFetch,WebSearch,Bash(uv run logos reject:*),Bash(uv run logos find:*),Bash(uv run logos set:*),Bash(uv run logos remove:*),Bash(uv run logos verdict:*),Bash(uv run logos sheet:*)"
       - name: pull request (merged when Claude says ready unless AUTO_MERGE is false)
         if: steps.collect.outputs.found == 'yes'
         run: |

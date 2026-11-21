@@ -157,17 +157,62 @@ def repo_sheets(db: Database, stems: list[str], out: Path, per_page: int = 30) -
     return render_sheets(tiles, out, per_page)
 
 
-def split_duplicates(kept: list[tuple[dict, Candidate]], existing: dict[str, str] | None = None
-                     ) -> tuple[list, list]:
-    """The same image chosen for several channels (a regional channel given the national logo), or already used by
-    another channel here (`existing`: origin URL -> channel), is a doubt: within a group only the channel with the
-    shortest name keeps it (24 Horas, not 24 Horas Canarias)."""
+CROSS_TOLERANCE = 6   # bits of the fingerprint: the same drawing, give or take resizing and compression
+
+
+def family(channel_id: str) -> str:
+    """Channels of one family may share a drawing: the same brand in several countries (ComedyCentral.es and .fr)
+    or numbered sister channels whose logos differ by a digit only (Eurosport6.fr, Eurosport8.fr)."""
+    return re.sub(r'\d+', '', channel_id.split('@')[0].rsplit('.', 1)[0]).lower()
+
+
+def repo_drawings(db: Database) -> list[tuple[str, str, int]]:
+    """(channel, logo id, fingerprint) of every logo of the repository (main version, every country)."""
+    out = []
+    for x in db.logos.values():
+        path = db.path(x.file)
+        if not x.variant and path.is_file():
+            try:
+                out.append((x.channel, x.logo_id, image.fingerprint(Image.open(path).convert('RGBA'))))
+            except OSError:
+                pass
+    return out
+
+
+def drawing_of_other(channel: str, fp: int, drawings: list[tuple[str, str, int]]) -> str | None:
+    """Logo ID of another channel, outside the family of `channel`, that has this drawing (a logo given to the
+    wrong channel: Action.fr's logo found for BlueAction.ch)."""
+    return next((lid for ch, lid, f in drawings if ch != channel and family(ch) != family(channel)
+                 and (f ^ fp).bit_count() <= CROSS_TOLERANCE), None)
+
+
+def shared_drawings(cc: str, drawings: list[tuple[str, str, int]]) -> list[tuple[str, str]]:
+    """Current logos of the country that have the drawing of a channel of another family: (logo id, other)."""
+    out = []
+    for ch, lid, fp in drawings:
+        if ch.rsplit('.', 1)[-1] == cc:
+            other = drawing_of_other(ch, fp, drawings)
+            if other:
+                out.append((lid, other))
+    return out
+
+
+def split_duplicates(kept: list[tuple[dict, Candidate]], existing: dict[str, str] | None = None,
+                     drawings: list[tuple[str, str, int]] | None = None) -> tuple[list, list]:
+    """The same image chosen for several channels (a regional channel given the national logo), already used by
+    another channel here (`existing`: origin URL -> channel), or the drawing of a channel of another family anywhere
+    in the repository (`drawings`), is a doubt: within a group only the channel with the shortest name keeps it
+    (24 Horas, not 24 Horas Canarias)."""
     existing = existing or {}
     groups: dict[int, list[tuple[dict, Candidate]]] = {}
     doubts = []
     for c, cand in kept:
         if existing.get(cand.url, c['id']) != c['id']:
             doubts.append((c, existing[cand.url]))
+            continue
+        other = drawing_of_other(c['channel'], cand.fp, drawings or []) if cand.fp else None
+        if other:
+            doubts.append((c, other))
             continue
         group = next((g for fp, g in groups.items() if image.same_drawing(fp, cand.fp)), None)
         if group is None:
@@ -316,7 +361,9 @@ def harvest(db: Database, iptv: IptvOrg, cc: str, iptv_logos: list[dict], out: P
         else:
             log(f'{c["id"]}: {best.source} {best.size[0]}x{best.size[1]}{" SVG" if best.svg else ""}')
         kept.append((c, best))
-    kept, doubts = split_duplicates(kept, {x.origin: k for k, x in current.items()})
+    drawings = repo_drawings(db)
+    kept, doubts = split_duplicates(kept, {x.origin: k for k, x in current.items()}, drawings)
+    shared = shared_drawings(cc, drawings)
     for c, other in doubts:
         log(f'{c["id"]}: DOUBT, same image as {other} (kept out)')
         changes.pop(c['id'], None)
@@ -337,14 +384,15 @@ def harvest(db: Database, iptv: IptvOrg, cc: str, iptv_logos: list[dict], out: P
         w = csv.writer(fh)
         w.writerow(['channel', 'reason'])
         w.writerows([(c['id'], f'same image as {other}') for c, other in doubts])
-    (out / 'summary.md').write_text(summary(cc, kept, changes, doubts, len(channels)), encoding='utf-8',
+    (out / 'summary.md').write_text(summary(cc, kept, changes, doubts, len(channels), shared), encoding='utf-8',
                                     newline='\n')
     sheets = contact_sheets(kept, out)
     return {'channels': len(channels), 'kept': len(kept), 'updates': len(changes), 'doubts': len(doubts),
             'candidates': len(report), 'sheets': len(sheets)}
 
 
-def summary(cc: str, kept: list[tuple[dict, Candidate]], changes: dict[str, str], doubts: list, checked: int) -> str:
+def summary(cc: str, kept: list[tuple[dict, Candidate]], changes: dict[str, str], doubts: list, checked: int,
+            shared: list[tuple[str, str]] = ()) -> str:
     """Body of the harvest pull request."""
     new = [(c, b) for c, b in kept if c['id'] not in changes]
     upd = [(c, b) for c, b in kept if c['id'] in changes]
@@ -365,5 +413,11 @@ def summary(cc: str, kept: list[tuple[dict, Candidate]], changes: dict[str, str]
     if doubts:
         lines += ['### Kept out (doubts)', '']
         lines += [f'- `{c["id"]}`: same image as `{other}`' for c, other in doubts]
+        lines.append('')
+    if shared:
+        lines += ['### Current logos to check', '',
+                  'Already published, with the drawing of a channel of another family: one of them is probably wrong.',
+                  '']
+        lines += [f'- `{lid}`: same drawing as `{other}`' for lid, other in shared]
         lines.append('')
     return '\n'.join(lines)
