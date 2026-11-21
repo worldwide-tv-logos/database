@@ -310,3 +310,46 @@ def test_black_drawing_inside_a_white_disc_is_not_darkened():
     d.rectangle((200, 150, 400, 450), fill=(0, 0, 0, 255))                                   # thick black "10"
     main, white = image.variants(disc)
     assert main is disc and white is None
+
+
+def test_wikidata_logos_keep_only_the_current_one():
+    from worldwide_tv_logos import sources
+
+    def claim(file, start='', end='', rank='normal'):
+        quals = {}
+        if start:
+            quals['P580'] = [{'datavalue': {'value': {'time': f'+{start}T00:00:00Z'}}}]
+        if end:
+            quals['P582'] = [{'datavalue': {'value': {'time': f'+{end}T00:00:00Z'}}}]
+        return {'rank': rank, 'mainsnak': {'datavalue': {'value': file}}, 'qualifiers': quals}
+    item = sources.parse_entity({'id': 'Q1', 'labels': {'es': {'value': 'Canal Sur'}}, 'claims': {
+        'P154': [claim('Canal Sur 2011-2017 logo.svg'), claim('Old.png', '2008-01-01', '2011-01-01'),
+                 claim('New.png', '2017-01-01'), claim('New.svg', '2017-01-01')],
+        'P31': [{'rank': 'normal', 'mainsnak': {'datavalue': {'value': {'id': 'Q2001305'}}}}]}})
+    assert item['names'] == ['Canal Sur'] and item['types'] == ['Q2001305']
+    assert sources.current_logos(item) == [sources.COMMONS_FILE + 'New.svg', sources.COMMONS_FILE + 'New.png']
+
+
+def test_website_logos_and_old_file_names():
+    from worldwide_tv_logos import sources
+    html = ('<header><img class="site-logo" src="/img/brand.svg"><img src="/photo.jpg" alt="news">'
+            '<img src="data:image/png;base64,xx" class="logo"><link rel="icon" href="/favicon.svg"></header>')
+    assert sources.website_logos('https://example.org/', html) == ['https://example.org/img/brand.svg',
+                                                                    'https://example.org/favicon.svg']
+    cand = harvest.Candidate('iptv-org', 'https://upload.wikimedia.org/x/Canal_Sur_2011-2017_logo.svg')
+    assert harvest.evaluate(cand, lambda url: b'').error.startswith('old branding')
+
+
+def test_move_channel_moves_logos_sources_and_aliases(db):
+    later = IptvOrg({**IPTV.channels, 'TF1New.fr': {'id': 'TF1New.fr', 'name': 'TF1', 'country': 'FR'}}, IPTV.feeds)
+    ops.set_logo(db, 'TF1.fr', '', png(800, 300), 'x', IPTV)
+    ops.set_alias(db, 'TF1-HD.fr', 'iptv-epg-fr', 'TF1.fr', '', IPTV)
+    db.save()
+    ops.move_channel(db, 'TF1.fr', 'TF1New.fr', later)
+    db.save()
+    again = Database(db.root).load()
+    assert ('TF1New.fr', '', '') in again.logos and ('TF1.fr', '', '') not in again.logos
+    assert next(iter(again.aliases.values())).channel == 'TF1New.fr'
+    assert cli.validate(again, later) == []
+    with pytest.raises(ops.RequestError):
+        ops.move_channel(db, 'TF1New.fr', 'Nope.fr', later)

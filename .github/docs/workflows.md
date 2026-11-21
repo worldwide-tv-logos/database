@@ -26,21 +26,35 @@ Every Monday at 06:00 UTC (or by hand): `logos changes` opens, updates or closes
 
 ## harvest
 
-Every Sunday at 04:00 UTC (or by hand, for one country): for each country of `data/countries.csv` without an open
-harvest pull request, `logos harvest --country <cc> --updates`, `logos import` of the result, `logos validate`, then
-a pull request from the branch `harvest/<cc>` whose description lists the new logos, the updates (with why) and the
-doubts kept out. Repository setting needed: *Allow GitHub Actions to create and approve pull requests*.
+One pull request per country of `data/countries.csv` (skipped while the previous one of the same kind is open):
 
-When the secret `CLAUDE_CODE_OAUTH_TOKEN` is set, Claude then reviews the pull request: it looks at the contact
-sheets, rejects the wrong logos with `logos reject` (pushed to the branch) and comments its verdict. A maintainer
-merges.
+- **Sunday 04:00 UTC, harvest**: `logos harvest --country <cc> --updates`: missing logos and newer or better
+  versions of current ones, from tv-logos, iptv-org and Wikidata (branch `harvest/<cc>`);
+- **Wednesday 04:00 UTC, hunt**: `logos hunt --country <cc>`: a different slice of 40 channels still without a logo
+  every week, every source including the channel website (branch `hunt/<cc>`).
+
+The logos found are imported, then Claude looks at every one of them on the contact sheets, rejects the wrong ones
+(`logos reject`), looks for better ones (`logos find`, `logos set`) and records its decision (`logos verdict`).
+`.github/scripts/publish.sh` commits the data only, opens the pull request with Claude's report, and merges it when
+Claude said `ready`, `logos validate` passes and the repository variable `AUTO_MERGE` is `true`; otherwise the pull
+request waits for a maintainer (`needs:maintainer` when Claude said `hold`).
 
 ## Review by Claude (validate_issue)
 
 When the secret `CLAUDE_CODE_OAUTH_TOKEN` is set, a request that passes the checks is reviewed by Claude following
 CLAUDE.md: the preview of the logo (`temp/preview/sheet-01.png`, on dark and light tiles) is compared with the
 channel; a clear case gets `approved` (applied the next night), a doubt gets `needs:maintainer` with what to check.
-Issue texts are treated as data: Claude can only read, comment and label.
+Issue texts are treated as data: Claude can only read, comment and label. For a `logos:request`, Claude looks for the
+logo itself (`logos find`, `logos set`) and opens a pull request `request/<n>` that closes the issue.
+
+## changes (Claude)
+
+After the Monday update of the `iptv-org:changes` issue, Claude applies what can be applied (`logos move` to the new
+ID, `logos remove` for a channel gone for good) in the pull request `iptv-org-changes`.
+
+## report
+
+On the 1st of every month, Claude writes an activity report as an issue labelled `report`.
 
 ## claude
 
@@ -69,6 +83,6 @@ and `aliases.json`, and publishes it to the `gh-pages` branch: https://worldwide
 ## Labels to create in the repository
 
 `logos:add`, `logos:edit`, `logos:remove`, `logos:request`, `aliases:add`, `aliases:remove`, `approved`,
-`check:passed`, `check:failed`, `needs:maintainer`, `iptv-org:changes`, `waiting:iptv-org` (a logo for a channel or feed not in iptv-org yet: kept
+`check:passed`, `check:failed`, `needs:maintainer`, `report`, `iptv-org:changes`, `waiting:iptv-org` (a logo for a channel or feed not in iptv-org yet: kept
 `approved`, tried again every night, applied as soon as iptv-org has it). A `logos:request` issue is only checked (the channel exists and has no logo yet):
 it is closed by hand once a `logos:add` request brings the image.

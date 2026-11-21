@@ -3,8 +3,9 @@ on:
   issues:
     types: [opened, edited]
 permissions:
-  contents: read
+  contents: write
   issues: write
+  pull-requests: write
   id-token: write
 concurrency:
   group: issue-${{ github.event.issue.number }}
@@ -17,6 +18,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       HAS_CLAUDE: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN != '' }}
+      AUTO_MERGE: ${{ vars.AUTO_MERGE }}
+      N: ${{ github.event.issue.number }}
     steps:
       - name: edited after approval -> approval withdrawn (the new content has not been reviewed)
         if: github.event.action == 'edited' && contains(github.event.issue.labels.*.name, 'approved')
@@ -69,4 +72,27 @@ jobs:
           claude_args: |
             --permission-mode default
             --max-turns 20
-            --allowedTools Read,WebFetch,Bash(gh issue view:*),Bash(gh issue comment:*),Bash(gh issue edit:*)
+            --allowedTools Read,WebFetch,WebSearch,Bash(gh issue view:*),Bash(gh issue comment:*),Bash(gh issue edit:*),Bash(uv run logos find:*)
+      - name: a logo wanted -> Claude looks for it
+        if: success() && env.HAS_CLAUDE == 'true' && contains(github.event.issue.labels.*.name, 'logos:request')
+        uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          prompt: |
+            Repository ${{ github.repository }}, issue #${{ github.event.issue.number }}: someone asks for the logo of
+            a channel (read it with `gh issue view ${{ github.event.issue.number }}`). Follow CLAUDE.md ("Reviewing a
+            logo" and "Autonomous work"): run `uv run logos find <logo id>`, look at the contact sheet it writes, and
+            if one candidate is clearly the current logo of this exact channel, apply it with
+            `uv run logos set <logo id> <url>`. Finish with exactly one `uv run logos verdict ready|hold "<report>"`
+            (what you chose and why, or why nothing is good enough), and comment the issue with the same report.
+          claude_args: |
+            --permission-mode default
+            --max-turns 40
+            --allowedTools Read,WebFetch,WebSearch,Bash(gh issue view:*),Bash(gh issue comment:*),Bash(uv run logos find:*),Bash(uv run logos set:*),Bash(uv run logos verdict:*)
+      - name: pull request with the logo found (merged when Claude says ready and AUTO_MERGE is true)
+        if: success() && env.HAS_CLAUDE == 'true' && contains(github.event.issue.labels.*.name, 'logos:request')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          printf 'Logo found by Claude for the request #%s.\n\nCloses #%s\n' "$N" "$N" > temp/request.md
+          bash .github/scripts/publish.sh "request/$N" "Logo for request #$N" temp/request.md

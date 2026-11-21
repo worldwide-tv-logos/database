@@ -1,12 +1,21 @@
 name: harvest
+# Sunday: harvest (new logos and better versions of current ones, from tv-logos, iptv-org and Wikidata).
+# Wednesday: hunt (a slice of the channels still without a logo, every source including their website).
+# One pull request per followed country (data/countries.csv), reviewed by Claude, merged automatically when Claude
+# says it is ready and the repository variable AUTO_MERGE is true.
 on:
   workflow_dispatch:
     inputs:
       country:
         description: 'only this country (two-letter code, e.g. es); empty: every country of data/countries.csv'
         required: false
+      mode:
+        description: 'harvest or hunt'
+        required: false
+        default: harvest
   schedule:
     - cron: '0 4 * * 0'
+    - cron: '0 4 * * 3'
 permissions:
   contents: write
   pull-requests: write
@@ -17,29 +26,32 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       list: ${{ steps.list.outputs.list }}
+      mode: ${{ steps.list.outputs.mode }}
     steps:
       - uses: actions/checkout@v4
-      - name: followed countries without a harvest pull request under review
+      - name: followed countries without a pull request of this mode under review
         id: list
         env:
           GH_TOKEN: ${{ github.token }}
           ONLY: ${{ inputs.country }}
+          MODE: ${{ github.event.schedule == '0 4 * * 3' && 'hunt' || inputs.mode || 'harvest' }}
         run: |
           out=()
           for cc in $(tail -n +2 data/countries.csv | cut -d, -f1); do
             if [ -n "$ONLY" ] && [ "$cc" != "$ONLY" ]; then continue; fi
-            if [ -n "$(gh pr list -R "$GITHUB_REPOSITORY" --head "harvest/$cc" --state open --json number --jq '.[0].number')" ]; then
-              echo "$cc: the previous harvest is still under review"; continue
+            if [ -n "$(gh pr list -R "$GITHUB_REPOSITORY" --head "$MODE/$cc" --state open --json number --jq '.[0].number')" ]; then
+              echo "$cc: the previous $MODE is still under review"; continue
             fi
             out+=("\"$cc\"")
           done
           echo "list=[$(IFS=,; echo "${out[*]}")]" >> "$GITHUB_OUTPUT"
+          echo "mode=$MODE" >> "$GITHUB_OUTPUT"
 
-  harvest:
+  country:
     needs: countries
     if: needs.countries.outputs.list != '[]'
     runs-on: ubuntu-latest
-    timeout-minutes: 240
+    timeout-minutes: 300
     strategy:
       max-parallel: 1                      # one download at a time
       fail-fast: false
@@ -47,7 +59,9 @@ jobs:
         cc: ${{ fromJSON(needs.countries.outputs.list) }}
     env:
       CC: ${{ matrix.cc }}
+      MODE: ${{ needs.countries.outputs.mode }}
       GH_TOKEN: ${{ github.token }}
+      AUTO_MERGE: ${{ vars.AUTO_MERGE }}
       HAS_CLAUDE: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN != '' }}
     steps:
       - uses: actions/checkout@v4
@@ -55,49 +69,39 @@ jobs:
           fetch-depth: 0
       - uses: astral-sh/setup-uv@v6
       - run: uv sync
-      - name: harvest, import, validate
-        id: harvest
+      - name: collect and import
+        id: collect
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git switch -q -C "harvest/$CC" origin/main
-          uv run logos harvest --country "$CC" --updates
-          if [ "$(wc -l < "temp/harvest/$CC/manifest.csv")" -le 1 ]; then echo "nothing new"; exit 0; fi
+          if [ "$MODE" = hunt ]; then uv run logos hunt --country "$CC"; else uv run logos harvest --country "$CC" --updates; fi
+          if [ "$(wc -l < "temp/harvest/$CC/manifest.csv")" -le 1 ]; then echo "nothing found"; exit 0; fi
           uv run logos import "temp/harvest/$CC/manifest.csv"
-          uv run logos validate
-          git add data logos sources
-          if git diff --cached --quiet; then echo "nothing new"; exit 0; fi
-          name=$(grep "^$CC," data/countries.csv | cut -d, -f2)
-          git commit -q -m "Weekly harvest: $name"
-          git push -q -f origin "harvest/$CC"
-          gh pr create --head "harvest/$CC" --base main --title "Weekly harvest: $name" \
-            --body-file "temp/harvest/$CC/summary.md"
-          echo "pr=$(gh pr view "harvest/$CC" --json number --jq .number)" >> "$GITHUB_OUTPUT"
-      - name: main branch, for logos reject
-        if: steps.harvest.outputs.pr != '' && env.HAS_CLAUDE == 'true'
-        run: git worktree add -q ../base origin/main
-      - name: review by Claude (rejects the wrong logos, sums up for the maintainer)
-        if: steps.harvest.outputs.pr != '' && env.HAS_CLAUDE == 'true'
+          git worktree add -q ../base origin/main
+          echo "found=yes" >> "$GITHUB_OUTPUT"
+      - name: review by Claude
+        if: steps.collect.outputs.found == 'yes' && env.HAS_CLAUDE == 'true'
         uses: anthropics/claude-code-action@v1
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           prompt: |
-            Repository ${{ github.repository }}, pull request #${{ steps.harvest.outputs.pr }}: the weekly harvest of
-            the country `${{ matrix.cc }}`. Review every logo following CLAUDE.md ("Reviewing a logo").
-            The list is temp/harvest/${{ matrix.cc }}/summary.md; the logos are on the contact sheets
-            temp/harvest/${{ matrix.cc }}/sheet-*.png (each logo on a dark and a light tile, numbered, with its ID).
-            For each logo that fails, run `uv run logos reject <channel id> --base ../base --reason "<short reason>"`.
-            Do not run any other command that changes files. Then post one comment with
-            `gh pr comment ${{ steps.harvest.outputs.pr }} --body "..."`: the rejected logos with their
-            reason, the logos a maintainer should look at, and your verdict (ready to merge or not).
+            You review the weekly ${{ needs.countries.outputs.mode }} of the country `${{ matrix.cc }}` of
+            ${{ github.repository }}, following CLAUDE.md ("Reviewing a logo" and "Autonomous work").
+            The logos found are already imported in the working tree. The list is
+            temp/harvest/${{ matrix.cc }}/summary.md; look at EVERY logo on the contact sheets
+            temp/harvest/${{ matrix.cc }}/sheet-*.png (numbered; each logo on a dark and a light tile).
+            - A wrong logo: `uv run logos reject <channel id> --base ../base --reason "<short reason>"`.
+            - When you rejected one, or are unsure that a logo is current, `uv run logos find <channel id>` lists
+              every candidate from every source with a contact sheet (temp/find/<id>/sheet-01.png); apply a better
+              one with `uv run logos set <channel id> <url>`, or leave the channel without a logo.
+            Finish with exactly one `uv run logos verdict ready|hold "<report>"`: `ready` only if every remaining
+            logo is right; the report lists what you rejected, replaced and why, and anything a maintainer
+            should check.
           claude_args: |
             --permission-mode default
-            --max-turns 60
-            --allowedTools Read,WebFetch,Bash(uv run logos reject:*),Bash(gh pr comment:*),Bash(gh pr view:*)
-      - name: push the rejections
-        if: steps.harvest.outputs.pr != '' && env.HAS_CLAUDE == 'true'
+            --max-turns 150
+            --allowedTools Read,WebFetch,WebSearch,Bash(uv run logos reject:*),Bash(uv run logos find:*),Bash(uv run logos set:*),Bash(uv run logos verdict:*),Bash(uv run logos sheet:*)
+      - name: pull request (merged when Claude says ready and AUTO_MERGE is true)
+        if: steps.collect.outputs.found == 'yes'
         run: |
-          git add -A data logos sources
-          if git diff --cached --quiet; then exit 0; fi
-          git commit -q -m "Rejected in review by Claude"
-          git push -q origin "harvest/$CC"
+          name=$(grep "^$CC," data/countries.csv | cut -d, -f2)
+          title="$([ "$MODE" = hunt ] && echo "Weekly hunt" || echo "Weekly harvest"): $name"
+          bash .github/scripts/publish.sh "$MODE/$CC" "$title" "temp/harvest/$CC/summary.md"
