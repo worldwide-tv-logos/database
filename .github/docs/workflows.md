@@ -36,8 +36,8 @@ One pull request per country of `data/countries.csv` (skipped while the previous
 The logos found are imported, then Claude looks at every one of them on the contact sheets, rejects the wrong ones
 (`logos reject`), looks for better ones (`logos find`, `logos set`) and records its decision (`logos verdict`).
 `.github/scripts/publish.sh` commits the data only, opens the pull request with Claude's report, and merges it when
-Claude said `ready`, `logos validate` passes and the repository variable `AUTO_MERGE` is `true`; otherwise the pull
-request waits for a maintainer (`needs:maintainer` when Claude said `hold`).
+Claude said `ready` and `logos validate` passes, unless the repository variable `AUTO_MERGE` is `false`; otherwise the
+pull request waits for a maintainer (`needs:maintainer` when Claude said `hold`).
 
 ## Review by Claude (validate_issue)
 

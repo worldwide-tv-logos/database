@@ -89,7 +89,7 @@ jobs:
             --permission-mode default
             --max-turns 40
             --allowedTools Read,WebFetch,WebSearch,Bash(gh issue view:*),Bash(gh issue comment:*),Bash(uv run logos find:*),Bash(uv run logos set:*),Bash(uv run logos verdict:*)
-      - name: pull request with the logo found (merged when Claude says ready and AUTO_MERGE is true)
+      - name: pull request with the logo found (merged when Claude says ready unless AUTO_MERGE is false)
         if: success() && env.HAS_CLAUDE == 'true' && contains(github.event.issue.labels.*.name, 'logos:request')
         env:
           GH_TOKEN: ${{ github.token }}

@@ -2,7 +2,7 @@ name: harvest
 # Sunday: harvest (new logos and better versions of current ones, from tv-logos, iptv-org and Wikidata).
 # Wednesday: hunt (a slice of the channels still without a logo, every source including their website).
 # One pull request per followed country (data/countries.csv), reviewed by Claude, merged automatically when Claude
-# says it is ready and the repository variable AUTO_MERGE is true.
+# says it is ready and the repository variable AUTO_MERGE is not false.
 on:
   workflow_dispatch:
     inputs:
@@ -99,7 +99,7 @@ jobs:
             --permission-mode default
             --max-turns 150
             --allowedTools Read,WebFetch,WebSearch,Bash(uv run logos reject:*),Bash(uv run logos find:*),Bash(uv run logos set:*),Bash(uv run logos verdict:*),Bash(uv run logos sheet:*)
-      - name: pull request (merged when Claude says ready and AUTO_MERGE is true)
+      - name: pull request (merged when Claude says ready unless AUTO_MERGE is false)
         if: steps.collect.outputs.found == 'yes'
         run: |
           name=$(grep "^$CC," data/countries.csv | cut -d, -f2)

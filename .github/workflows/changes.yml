@@ -1,7 +1,7 @@
 name: changes
 # Every Monday: the "iptv-org changes" issue lists the logos whose channel was removed, closed or replaced in iptv-org.
 # Claude then applies what can be applied (logo moved to the new ID, logo of a removed channel removed) in a pull
-# request, merged when it says ready and the repository variable AUTO_MERGE is true.
+# request, merged when it says ready and the repository variable AUTO_MERGE is not false.
 on:
   workflow_dispatch:
   schedule:
@@ -50,7 +50,7 @@ jobs:
             --permission-mode default
             --max-turns 60
             --allowedTools Read,WebFetch,WebSearch,Bash(uv run logos move:*),Bash(uv run logos remove:*),Bash(uv run logos find:*),Bash(uv run logos set:*),Bash(uv run logos verdict:*)
-      - name: pull request (merged when Claude says ready and AUTO_MERGE is true)
+      - name: pull request (merged when Claude says ready unless AUTO_MERGE is false)
         if: env.HAS_CLAUDE == 'true' && steps.issue.outputs.todo == 'yes'
         run: |
           printf 'Changes on the iptv-org side, applied by Claude (see the issue labelled iptv-org:changes).\n' > temp/changes-pr.md

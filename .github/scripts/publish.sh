@@ -5,8 +5,8 @@
 #
 # Only data/, logos/, sources/ and missing/ are committed (never code, workflows or instructions). The pull request
 # body is the body file followed by the reviewer's report (temp/verdict.json, written by `logos verdict`). The pull
-# request is merged only when the reviewer said `ready`, `logos validate` passes and the repository variable
-# AUTO_MERGE is `true`; otherwise it waits for a maintainer (label needs:maintainer when the reviewer said `hold`).
+# request is merged only when the reviewer said `ready` and `logos validate` passes, unless the repository variable
+# AUTO_MERGE is `false`; otherwise it waits for a maintainer (label needs:maintainer when the reviewer said `hold`).
 set -euo pipefail
 branch=$1 title=$2 body=$3
 
@@ -37,7 +37,7 @@ fi
 echo "pull request #$number, review: $state"
 [ -n "${GITHUB_OUTPUT:-}" ] && echo "pr=$number" >> "$GITHUB_OUTPUT"
 
-if [ "$state" = ready ] && [ "${AUTO_MERGE:-}" = true ]; then
+if [ "$state" = ready ] && [ "${AUTO_MERGE:-true}" != false ]; then
   gh pr merge "$number" --squash --delete-branch
   echo "merged"
 elif [ "$state" = hold ]; then

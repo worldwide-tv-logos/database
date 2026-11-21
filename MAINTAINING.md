@@ -62,10 +62,10 @@ requests bring the logos of channels that had none, found the same way and revie
 ## Letting Claude merge
 
 Pull requests prepared by Claude (harvest, hunt, requests, iptv-org changes) contain data only. They are merged
-automatically when Claude says they are ready **and** the repository variable `AUTO_MERGE` is `true`
-(Settings > Secrets and variables > Actions > Variables). Leave it unset for the first weeks: compare Claude's
-reports with your own review, then set it to `true`. Set it back to `false` at any time to review again by hand.
-The monthly `report` issue sums up what Claude did.
+automatically when Claude says they are ready and `logos validate` passes; when Claude says `hold`, they wait for a
+maintainer (label `needs:maintainer`). To review everything by hand for a while, create the repository variable
+`AUTO_MERGE` with the value `false` (Settings > Secrets and variables > Actions > Variables); delete it to let Claude
+merge again. The monthly `report` issue sums up what Claude did, and any merged change can be reverted.
 
 ## Other pull requests
 
