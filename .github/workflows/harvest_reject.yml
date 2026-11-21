@@ -30,7 +30,7 @@ jobs:
         with:
           ref: ${{ env.HEAD_REF }}
           path: pr
-      - uses: astral-sh/setup-uv@v10
+      - uses: astral-sh/setup-uv@v10.3.3
       - name: remove the logo from the pull request, never propose it again
         working-directory: pr
         env:

@@ -16,7 +16,7 @@ jobs:
       - uses: actions/checkout@v7
         with:
           ref: main
-      - uses: astral-sh/setup-uv@v10
+      - uses: astral-sh/setup-uv@v10.3.3
       - run: uv sync
       - run: uv run logos export
       # the website (site/, Nuxt): static pages, then the data and logos of .api/ next to them

@@ -29,7 +29,7 @@ jobs:
           gh issue edit ${{ github.event.issue.number }} -R ${{ github.repository }} --remove-label approved
           gh issue comment ${{ github.event.issue.number }} -R ${{ github.repository }} --body "This request was edited after its approval: it needs to be approved again."
       - uses: actions/checkout@v7
-      - uses: astral-sh/setup-uv@v10
+      - uses: astral-sh/setup-uv@v10.3.3
       - run: uv sync
       - name: issue-validate
         id: validator
