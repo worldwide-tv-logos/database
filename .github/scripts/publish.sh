@@ -12,6 +12,11 @@ branch=$1 title=$2 body=$3
 
 git config user.name "github-actions[bot]"
 git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+if [ -n "${GITHUB_ACTIONS:-}" ]; then
+  # the Claude action leaves git configured with its own token, revoked when it ends: push with the workflow token
+  git config --local --unset-all http.https://github.com/.extraheader || true
+  git remote set-url origin "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+fi
 uv run logos validate
 git add data logos sources missing
 if git diff --cached --quiet; then echo "nothing to publish"; exit 0; fi
