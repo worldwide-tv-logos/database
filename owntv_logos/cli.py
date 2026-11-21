@@ -191,7 +191,7 @@ def cmd_export(args, db: Database) -> int:
                   'To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).'), '',
                  '| Channel ID | Name |', '|---|---|']
         lines += [f'| `{c["id"]}` | {c["name"]} |' for c in todo]
-        (missing_dir / f'{cc}.md').write_text('\n'.join(lines) + '\n', encoding='utf-8')
+        (missing_dir / f'{cc}.md').write_text('\n'.join(lines) + '\n', encoding='utf-8', newline='\n')
         print(f'missing/{cc}.md: {len(todo)} of {len(channels)}')
     return 0
 
