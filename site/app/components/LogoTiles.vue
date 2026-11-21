@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { DropdownMenuItem } from '@nuxt/ui'
 import type { Channel } from '~/composables/useCatalog'
 
 const props = defineProps<{ channel: Channel, feed?: string | null }>()
@@ -6,6 +7,21 @@ const feed = computed(() => props.feed ?? null)
 const main = computed(() => mainLogo(props.channel, feed.value))
 const white = computed(() => whiteLogo(props.channel, feed.value))
 const id = computed(() => logoId(props.channel.id, feed.value))
+
+const toast = useToast()
+function copy(url: string) {
+  navigator.clipboard?.writeText(url).then(() => toast.add({ title: 'URL copied', icon: 'i-lucide-copy-check' }))
+}
+const downloads = computed<DropdownMenuItem[][]>(() => [
+  [
+    { label: 'PNG', icon: 'i-lucide-image', to: main.value?.url, target: '_blank' },
+    ...(white.value ? [{ label: 'White PNG (dark screens)', icon: 'i-lucide-moon', to: white.value.url, target: '_blank' }] : [])
+  ],
+  [
+    { label: 'Copy URL', icon: 'i-lucide-link', onSelect: () => main.value && copy(main.value.url) },
+    ...(white.value ? [{ label: 'Copy white URL', icon: 'i-lucide-link', onSelect: () => copy(white.value!.url) }] : [])
+  ]
+])
 </script>
 
 <template>
@@ -62,27 +78,28 @@ const id = computed(() => logoId(props.channel.id, feed.value))
       </figure>
     </div>
 
-    <div class="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted">
-      <span>{{ main.width }} × {{ main.height }} px</span>
-      <span>updated {{ main.updated }}</span>
-      <span>
-        <ULink
-          :to="main.url"
-          target="_blank"
-          class="text-primary"
-        >PNG</ULink><template v-if="white">, <ULink
-          :to="white.url"
-          target="_blank"
-          class="text-primary"
-        >white PNG</ULink></template>
-      </span>
-      <CopyButton
-        :value="main.url"
-        label="Copy URL"
+    <div class="mt-3 flex flex-wrap items-center gap-2 text-sm text-muted">
+      <UBadge
+        color="neutral"
+        variant="outline"
+        :label="`${main.width} × ${main.height} px`"
+      />
+      <UBadge
+        color="neutral"
+        variant="outline"
+        :label="`updated ${main.updated}`"
       />
     </div>
 
     <div class="mt-3 flex flex-wrap gap-2">
+      <UDropdownMenu :items="downloads">
+        <UButton
+          icon="i-lucide-download"
+          label="Download"
+          trailing-icon="i-lucide-chevron-down"
+          class="bg-gradient-brand text-white hover:opacity-90"
+        />
+      </UDropdownMenu>
       <UButton
         :to="forms.edit(channel.id, feed)"
         target="_blank"

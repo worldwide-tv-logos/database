@@ -55,6 +55,35 @@ export interface CountryData {
 /** [id, name, country code, number of logos] */
 export type SearchRow = [string, string, string, number]
 
+/** One record of logos.json (the public API). */
+export interface ApiLogo {
+  channel: string
+  feed: string | null
+  variant: string | null
+  url: string
+  width: number
+  height: number
+  country: string
+  updated: string
+}
+
+/** Flag image of a country (iptv-org uses UK where flag sets use GB). */
+export function flagUrl(code: string): string {
+  return `https://flagcdn.com/w80/${({ uk: 'gb' } as Record<string, string>)[code] || code}.png`
+}
+
+/** Channels of the search index matching a term: name or ID, without accents; channels with a logo first. */
+export function searchChannels(index: SearchRow[] | null | undefined, term: string, limit = 20): SearchRow[] {
+  const t = fold(term.trim())
+  if (t.length < 2 || !index) return []
+  const out: SearchRow[] = []
+  for (const row of index) {
+    if (fold(row[1]).includes(t) || row[0].toLowerCase().includes(t)) out.push(row)
+    if (out.length >= limit * 3) break
+  }
+  return out.sort((a, b) => Number(b[3] > 0) - Number(a[3] > 0)).slice(0, limit)
+}
+
 export const REPO = 'https://github.com/worldwide-tv-logos/database'
 export const SITE = 'https://worldwide-tv-logos.github.io/database/'
 

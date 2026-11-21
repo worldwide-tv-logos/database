@@ -1,9 +1,16 @@
 <script setup lang="ts">
-import type { Channel } from '~/composables/useCatalog'
+import type { TableColumn } from '@nuxt/ui'
+import type { Alias, Channel } from '~/composables/useCatalog'
 
 const props = defineProps<{ channel: Channel }>()
 const ch = computed(() => props.channel)
 // the main edition uses the channel logo: listed only when it has a logo of its own
+const aliasColumns: TableColumn<Alias>[] = [
+  { accessorKey: 'epg_id', header: 'Guide ID' },
+  { accessorKey: 'source', header: 'Guide' },
+  { accessorKey: 'feed', header: 'Edition' },
+  { id: 'actions', header: '' }
+]
 const editions = computed(() => ch.value.feeds.filter(f => !(f.is_main && !mainLogo(ch.value, f.id))))
 </script>
 
@@ -113,50 +120,29 @@ const editions = computed(() => ch.value.feeds.filter(f => !(f.is_main && !mainL
       <p class="mb-3 text-sm text-muted">
         IDs that TV guides (EPG) use for this channel when they differ from the iptv-org ID.
       </p>
-      <div
+      <UTable
         v-if="ch.aliases.length"
-        class="overflow-x-auto rounded-lg border border-default"
+        :data="ch.aliases"
+        :columns="aliasColumns"
+        class="rounded-lg border border-default"
       >
-        <table class="w-full text-sm">
-          <thead class="bg-elevated/50 text-left text-muted">
-            <tr>
-              <th class="px-3 py-2 font-medium">
-                Guide ID
-              </th>
-              <th class="px-3 py-2 font-medium">
-                Guide
-              </th>
-              <th class="px-3 py-2 font-medium">
-                Edition
-              </th>
-              <th class="px-3 py-2" />
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-default">
-            <tr
-              v-for="a in ch.aliases"
-              :key="`${a.source}:${a.epg_id}`"
-            >
-              <td class="px-3 py-2 font-mono">
-                {{ a.epg_id }}
-              </td>
-              <td class="px-3 py-2">
-                {{ a.source }}
-              </td>
-              <td class="px-3 py-2">
-                {{ a.feed || 'channel' }}
-              </td>
-              <td class="px-3 py-2 text-right">
-                <ULink
-                  :to="forms.aliasRemove(ch.id, a)"
-                  target="_blank"
-                  class="text-error"
-                >remove</ULink>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+        <template #epg_id-cell="{ row }">
+          <span class="font-mono">{{ row.original.epg_id }}</span>
+        </template>
+        <template #feed-cell="{ row }">
+          {{ row.original.feed || 'channel' }}
+        </template>
+        <template #actions-cell="{ row }">
+          <UButton
+            :to="forms.aliasRemove(ch.id, row.original)"
+            target="_blank"
+            label="Remove"
+            color="error"
+            variant="ghost"
+            size="xs"
+          />
+        </template>
+      </UTable>
       <p
         v-else
         class="text-sm text-muted"

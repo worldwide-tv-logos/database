@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Country, CountryData } from '~/composables/useCatalog'
 
-const PAGE = 120 // channels shown at once
+const PER_PAGE = 48
 
 const route = useRoute()
 const router = useRouter()
@@ -19,22 +19,27 @@ useSeoMeta({
 
 const filter = ref('')
 const mode = ref<'all' | 'logo' | 'missing'>('all')
+const categories = ref<string[]>([])
 const closed = ref(false)
-const shown = ref(PAGE)
-watch([filter, mode, closed], () => {
-  shown.value = PAGE
+const page = ref(1)
+watch([filter, mode, categories, closed], () => {
+  page.value = 1
 })
 
 const onAir = computed(() => (data.value?.channels ?? []).filter(c => !c.closed))
 const withLogo = computed(() => onAir.value.filter(c => c.logos.length).length)
+const share = computed(() => onAir.value.length ? Math.round(100 * withLogo.value / onAir.value.length) : 0)
+const allCategories = computed(() => [...new Set((data.value?.channels ?? []).flatMap(c => c.categories ?? []))].sort())
 
 const list = computed(() => {
   const f = fold(filter.value)
   return (data.value?.channels ?? []).filter(c => (closed.value || !c.closed || c.logos.length)
     && (mode.value === 'all' || (mode.value === 'logo' ? c.logos.length : !c.logos.length))
+    && (!categories.value.length || (c.categories ?? []).some(x => categories.value.includes(x)))
     && (!f || fold(c.name).includes(f) || c.id.toLowerCase().includes(f) || (c.alt_names || []).some(a => fold(a).includes(f))))
     .sort((a, b) => Number(b.logos.length > 0) - Number(a.logos.length > 0)) // stable: by name within each group
 })
+const pageItems = computed(() => list.value.slice((page.value - 1) * PER_PAGE, page.value * PER_PAGE))
 
 // channel opened in the side panel: ?channel=<id>
 const selectedId = computed(() => typeof route.query.channel === 'string' ? route.query.channel : null)
@@ -48,87 +53,131 @@ const panelOpen = computed({
 </script>
 
 <template>
-  <UContainer>
-    <UPageHeader :description="data ? `${withLogo} of ${onAir.length} channels on air have a logo. Missing one? Open a channel and use Add logo.` : undefined">
-      <template #headline>
-        <UBreadcrumb :items="[{ label: 'Countries', to: '/countries' }, { label: name }]" />
-      </template>
-      <template #title>
-        <span class="inline-flex items-center gap-3">
-          <CountryFlag
-            :code="cc"
-            :name="name"
+  <div class="relative isolate">
+    <div class="hero-glow -z-10 h-72 opacity-60" />
+    <UContainer>
+      <UPageHeader :ui="{ root: 'border-none pb-4' }">
+        <template #headline>
+          <UBreadcrumb :items="[{ label: 'Countries', to: '/countries' }, { label: name }]" />
+        </template>
+        <template #title>
+          <span class="inline-flex items-center gap-3">
+            <CountryFlag
+              :code="cc"
+              :name="name"
+              size="lg"
+            />
+            {{ name }}
+          </span>
+        </template>
+        <template #description>
+          <span
+            v-if="data"
+            class="flex max-w-md flex-col gap-2"
+          >
+            <span>{{ withLogo }} of {{ onAir.length }} channels on air have a logo. Missing one? Open a channel and use
+              Add logo.</span>
+            <UProgress
+              :model-value="share"
+              size="sm"
+              :ui="{ indicator: 'bg-gradient-brand' }"
+            />
+          </span>
+        </template>
+      </UPageHeader>
+
+      <UPageBody>
+        <div class="flex flex-wrap items-center gap-3 rounded-xl border border-default bg-elevated/40 p-3 backdrop-blur">
+          <UInput
+            v-model="filter"
+            icon="i-lucide-search"
+            placeholder="Filter by name or ID"
+            aria-label="Filter channels"
+            class="w-full sm:w-72"
+          >
+            <template
+              v-if="filter"
+              #trailing
+            >
+              <UButton
+                icon="i-lucide-x"
+                color="neutral"
+                variant="link"
+                size="xs"
+                aria-label="Clear"
+                @click="filter = ''"
+              />
+            </template>
+          </UInput>
+          <UTabs
+            v-model="mode"
+            :items="[{ label: 'All', value: 'all' }, { label: 'With logo', value: 'logo' }, { label: 'Missing', value: 'missing' }]"
+            :content="false"
+            size="sm"
           />
-          {{ name }}
-        </span>
-      </template>
-    </UPageHeader>
-
-    <UPageBody>
-      <div class="flex flex-wrap items-center gap-3">
-        <UInput
-          v-model="filter"
-          icon="i-lucide-filter"
-          placeholder="Filter channels by name or ID"
-          aria-label="Filter channels"
-          class="w-full sm:w-80"
-        />
-        <UTabs
-          v-model="mode"
-          :items="[{ label: 'All', value: 'all' }, { label: 'With logo', value: 'logo' }, { label: 'Missing', value: 'missing' }]"
-          :content="false"
-          size="sm"
-        />
-        <USwitch
-          v-model="closed"
-          label="Show closed channels"
-        />
-      </div>
-
-      <UAlert
-        v-if="error"
-        color="error"
-        variant="subtle"
-        title="This country could not be loaded."
-        :actions="[{ label: 'All countries', to: '/countries', color: 'neutral', variant: 'outline' }]"
-      />
-      <template v-else-if="status === 'success' && data">
-        <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
-          <ChannelCard
-            v-for="c in list.slice(0, shown)"
-            :key="c.id"
-            :channel="c"
+          <USelectMenu
+            v-model="categories"
+            :items="allCategories"
+            multiple
+            placeholder="Categories"
+            icon="i-lucide-tags"
+            class="w-full sm:w-52"
+          />
+          <USwitch
+            v-model="closed"
+            label="Closed channels"
+            class="sm:ms-auto"
           />
         </div>
-        <p
-          v-if="!list.length"
-          class="text-muted"
-        >
-          No channel found.
-        </p>
+
+        <UAlert
+          v-if="error"
+          color="error"
+          variant="subtle"
+          title="This country could not be loaded."
+          :actions="[{ label: 'All countries', to: '/countries', color: 'neutral', variant: 'outline' }]"
+        />
+        <template v-else-if="status === 'success' && data">
+          <p class="text-sm text-muted">
+            {{ list.length }} channel{{ list.length === 1 ? '' : 's' }}
+          </p>
+          <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
+            <ChannelCard
+              v-for="c in pageItems"
+              :key="c.id"
+              :channel="c"
+            />
+          </div>
+          <UEmpty
+            v-if="!list.length"
+            icon="i-lucide-search-x"
+            title="No channel found"
+            description="Try another name, or clear the filters."
+          />
+          <div
+            v-if="list.length > PER_PAGE"
+            class="flex justify-center"
+          >
+            <UPagination
+              v-model:page="page"
+              :total="list.length"
+              :items-per-page="PER_PAGE"
+              show-edges
+            />
+          </div>
+        </template>
         <div
-          v-if="list.length > shown"
-          class="flex justify-center"
+          v-else
+          class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6"
         >
-          <UButton
-            :label="`Show more (${list.length - shown} left)`"
-            color="neutral"
-            variant="outline"
-            @click="shown += PAGE"
+          <USkeleton
+            v-for="i in 18"
+            :key="i"
+            class="aspect-[4/3]"
           />
         </div>
-      </template>
-      <div
-        v-else
-        class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6"
-      >
-        <USkeleton
-          v-for="i in 18"
-          :key="i"
-          class="aspect-[4/3]"
-        />
-      </div>
-    </UPageBody>
+      </UPageBody>
+    </UContainer>
 
     <USlideover
       v-model:open="panelOpen"
@@ -141,17 +190,16 @@ const panelOpen = computed({
           v-if="selected"
           :channel="selected"
         />
-        <p
+        <UEmpty
           v-else-if="data"
-          class="text-muted"
-        >
-          Channel <code class="font-mono">{{ selectedId }}</code> not found in {{ name }}.
-        </p>
+          icon="i-lucide-tv"
+          :title="`Channel ${selectedId} not found in ${name}`"
+        />
         <USkeleton
           v-else
           class="h-64"
         />
       </template>
     </USlideover>
-  </UContainer>
+  </div>
 </template>

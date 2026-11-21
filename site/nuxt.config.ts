@@ -24,6 +24,10 @@ export default defineNuxtConfig({
 
   css: ['~/assets/css/main.css'],
 
+  colorMode: {
+    preference: 'dark'
+  },
+
   content: {
     build: { markdown: { toc: { searchDepth: 1 } } },
     experimental: { sqliteConnector: 'native' }

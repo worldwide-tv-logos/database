@@ -5,12 +5,75 @@
 
 @theme static {
   --container-8xl: 90rem;
-  --font-sans: 'Public Sans', sans-serif;
+  --font-sans: 'Geist', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'Geist Mono', ui-monospace, monospace;
   /* backgrounds of the logo tiles: the same in both themes, so a logo is always judged on the same colours */
-  --color-tile-dark: #14181f;
+  --color-tile-dark: #11141b;
   --color-tile-light: #eceef1;
 }
 
 :root {
   --ui-container: var(--container-8xl);
+}
+
+/* signature gradient: electric blue -> violet, with a touch of cyan */
+.text-gradient {
+  background-image: linear-gradient(100deg, #38bdf8 0%, var(--ui-primary) 35%, var(--ui-secondary) 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.bg-gradient-brand {
+  background-image: linear-gradient(100deg, #0ea5e9 0%, var(--ui-primary) 40%, var(--ui-secondary) 100%);
+}
+
+/* glow behind the first section */
+.hero-glow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(40rem 26rem at 15% 10%, color-mix(in oklab, var(--ui-primary) 28%, transparent), transparent 70%),
+    radial-gradient(36rem 24rem at 85% 30%, color-mix(in oklab, var(--ui-secondary) 24%, transparent), transparent 70%),
+    radial-gradient(30rem 20rem at 50% 100%, color-mix(in oklab, #38bdf8 14%, transparent), transparent 70%);
+}
+
+/* faint grid, faded at the edges */
+.hero-grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(to right, color-mix(in oklab, var(--ui-text) 7%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in oklab, var(--ui-text) 7%, transparent) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, black, transparent 75%);
+}
+
+/* border painted with the brand gradient (on an element with a background) */
+.ring-gradient {
+  position: relative;
+  isolation: isolate;
+}
+.ring-gradient::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, color-mix(in oklab, var(--ui-primary) 70%, transparent), transparent 40%, transparent 60%, color-mix(in oklab, var(--ui-secondary) 70%, transparent));
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* checkerboard: shows that a logo is transparent */
+.bg-checker {
+  background-color: #f4f5f7;
+  background-image:
+    linear-gradient(45deg, #dfe2e7 25%, transparent 25%), linear-gradient(-45deg, #dfe2e7 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #dfe2e7 75%), linear-gradient(-45deg, transparent 75%, #dfe2e7 75%);
+  background-size: 16px 16px;
+  background-position: 0 0, 0 8px, 8px -8px, -8px 0;
 }

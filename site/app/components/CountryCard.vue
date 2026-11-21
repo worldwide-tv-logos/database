@@ -6,23 +6,32 @@ const share = computed(() => props.country.channels ? Math.round(100 * props.cou
 </script>
 
 <template>
-  <NuxtLink
+  <UPageCard
     :to="`/countries/${country.code}`"
-    class="group flex items-center gap-3 rounded-lg border border-default bg-default p-3 transition hover:border-primary/60 hover:bg-elevated/50 focus-visible:outline-2 focus-visible:outline-primary"
+    variant="outline"
+    spotlight
+    :ui="{ container: 'p-4 sm:p-4 gap-y-0', wrapper: 'w-full', title: 'w-full', description: 'w-full' }"
   >
-    <CountryFlag
-      :code="country.code"
-      :name="country.name"
-      class="text-2xl"
-    />
-    <span class="min-w-0 flex-1">
-      <span class="block truncate font-medium text-highlighted">{{ country.name }}</span>
-      <span class="block text-xs text-muted">{{ country.logos.toLocaleString('en') }} / {{ country.channels.toLocaleString('en') }} channels</span>
-      <UProgress
-        :model-value="share"
-        size="xs"
-        class="mt-1.5"
-      />
-    </span>
-  </NuxtLink>
+    <template #title>
+      <span class="flex w-full items-center gap-3">
+        <CountryFlag
+          :code="country.code"
+          :name="country.name"
+          size="md"
+        />
+        <span class="min-w-0 flex-1 truncate">{{ country.name }}</span>
+        <span class="font-mono text-xs font-normal text-muted">{{ share }}%</span>
+      </span>
+    </template>
+    <template #description>
+      <span class="mt-3 block">
+        <UProgress
+          :model-value="share"
+          size="xs"
+          :ui="{ indicator: 'bg-gradient-brand' }"
+        />
+        <span class="mt-2 block text-xs text-muted">{{ country.logos.toLocaleString('en') }} of {{ country.channels.toLocaleString('en') }} channels</span>
+      </span>
+    </template>
+  </UPageCard>
 </template>
