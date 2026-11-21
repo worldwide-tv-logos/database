@@ -1,6 +1,6 @@
 # Spain: channels without a logo
 
-194 of 644 iptv-org channels have a logo here. To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
+186 of 644 iptv-org channels have a logo here. To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
 
 | Channel ID | Name |
 |---|---|
@@ -86,7 +86,12 @@
 | `CanalParlamento.es` | Canal Parlamento |
 | `CanalPortada.es` | Canal Portada |
 | `CanalRed.es` | Canal Red |
+| `CanalSanRoque.es` | Canal San Roque |
 | `CanalSierradeCadiz.es` | Canal Sierra de Cadiz |
+| `CanalSur.es` | Canal Sur |
+| `CanalSur2.es` | Canal Sur 2 |
+| `CanalSurAndalucia.es` | Canal Sur Andalucia |
+| `CanalSurNoticias.es` | Canal Sur Noticias |
 | `CanalTaronjaComarquesCentrals.es` | Canal Taronja Comarques Centrals |
 | `CanalTaronjaOsonaiMoianes.es` | Canal Taronja Osona i Moianes |
 | `CanalTerrassa.es` | Canal Terrassa |
@@ -324,6 +329,7 @@
 | `RadioBocairentTV.es` | Radio Bocairent TV |
 | `RadioCarnavalTV.es` | Radio Carnaval TV |
 | `RadioRutasdelPeru.es` | Radio Rutas del Peru |
+| `RadioTelevisionCeuta.es` | Radio Television Ceuta |
 | `RadioTelevisionMarbella.es` | Radio Television Marbella |
 | `RadioTelevisionMogan.es` | Radio Television Mogan |
 | `RakutenTVActionMovies.es` | Rakuten TV Action Movies |
@@ -390,6 +396,7 @@
 | `TG7.es` | TG7 |
 | `ThaderTV.es` | Thader TV |
 | `TitanChannel.es` | Titan Channel |
+| `TitoTV.es` | Tito TV |
 | `Torrevision.es` | Torrevision |
 | `TPA7.es` | TPA7 |
 | `TPA9HD.es` | TPA9 HD |
@@ -430,6 +437,7 @@
 | `TVGPequerrechos.es` | TVG Pequerrechos |
 | `TVMCordoba.es` | TVM Cordoba |
 | `TVOJesus.es` | TVO Jesus |
+| `TVOMIX.es` | TVOMIX |
 | `TVReus.es` | TVReus |
 | `UDTV.es` | UDTV |
 | `UneVinalopo.es` | Une Vinalopo |
