@@ -369,3 +369,23 @@ def test_navy_letters_get_a_white_variant_but_not_a_gradient():
     for x in range(800):                                                                        # navy to blue
         d.line((x, 0, x, 299), fill=(0, 10 + x // 10, 60 + x // 5, 255))
     assert image.white_variant(gradient) is None
+
+
+def test_editions_are_harvest_units_except_quality_versions():
+    iptv = IptvOrg({'France3.fr': {'id': 'France3.fr', 'name': 'France 3', 'country': 'FR'}},
+                   {('France3.fr', 'National'): {'id': 'National', 'is_main': True},
+                    ('France3.fr', 'Alsace'): {'id': 'Alsace', 'name': 'Alsace'},
+                    ('France3.fr', 'HD'): {'id': 'HD', 'name': 'HD'}})
+    units = harvest.units(iptv, 'fr')
+    assert [(u['id'], u['name']) for u in units] == [('France3.fr', 'France 3'),
+                                                     ('France3.fr@Alsace', 'France 3 Alsace')]
+    assert harvest.channel_keys(units[1]) == {'france3alsace'}            # never the key of the channel itself
+
+
+def test_fingerprint_sees_the_same_drawing_through_resizing():
+    big = Image.open(io.BytesIO(png(1000, 400))).convert('RGBA')
+    small = big.resize((500, 200))
+    other = Image.new('RGBA', (1000, 400), (0, 0, 0, 0))
+    other.paste((0, 0, 255, 255), (0, 0, 300, 400))
+    assert image.same_drawing(image.fingerprint(big), image.fingerprint(small))
+    assert not image.same_drawing(image.fingerprint(big), image.fingerprint(other))

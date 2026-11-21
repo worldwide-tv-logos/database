@@ -48,6 +48,9 @@ old branding and is never proposed. The website of the channel is the best proof
 - Prefer, in this order: the logo on the channel's own website or press kit, a current Wikidata/Wikimedia Commons
   logo (SVG), then tv-logos and iptv-org. A group or corporate logo (e.g. "Radio y Televisión") is not the logo of
   one of its channels.
+- Editions (iptv-org feeds such as `France3.fr@Alsace`) are harvested too. An edition gets its own logo only when
+  it differs from its channel's (regional logos); quality versions (HD, 4K) never get one: they use the channel logo.
+  Check that an edition logo names the right region or market.
 - Replace a wrong logo when `find` gives a clearly right one; otherwise remove it from the change and leave the
   channel without a logo. Fewer logos is better than one wrong logo.
 - `ready` only when every logo of the change is right and current. Anything uncertain: `hold`, and say exactly what

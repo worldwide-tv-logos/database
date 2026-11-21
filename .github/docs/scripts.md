@@ -17,6 +17,7 @@ Python 3.12 and [uv](https://docs.astral.sh/uv/). `uv sync` once, then `uv run l
 | `logos set <logo id> <url or file>` | add or replace a logo (same preparation and checks as a request) |
 | `logos move <old id> <new id>` | move the logos, originals and aliases of a channel to its new iptv-org ID |
 | `logos remove <logo id>` | remove a logo with its variant, original and aliases |
+| (harvest and hunt) | work on channels **and editions** (feeds other than the main one, named after their channel: "France 3 Alsace"); quality versions (HD, 4K...) are skipped, an edition whose logo is the drawing of its channel is skipped, and the same drawing found for several channels or editions is a doubt (perceptual fingerprint) |
 | `logos hunt --country <cc> [--limit 40]` | like harvest, for a weekly slice of the channels without a logo, every source including the website |
 | `logos verdict ready\|hold "<report>"` | a reviewer's decision for the workflows (temp/verdict.json) |
 | `logos reprocess` | rebuild every logo from its original after a change of the image rules |

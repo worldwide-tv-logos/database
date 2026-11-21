@@ -34,6 +34,7 @@ TV_LOGOS_REPO = 'tv-logo/tv-logos'
 TV_LOGOS_TREE = f'https://api.github.com/repos/{TV_LOGOS_REPO}/git/trees/main?recursive=1'
 TV_LOGOS_RAW = f'https://raw.githubusercontent.com/{TV_LOGOS_REPO}/main/'
 TREE_MAX_AGE = 7 * 86400
+QUALITY_FEED = re.compile(r'^(SD|HD|FHD|UHD|QHD|4K|8K|HDR|H265|HEVC|1080p?|720p?)$', re.IGNORECASE)
 SOURCE_RANK = {'wikidata': 2, 'tv-logos': 1, 'iptv-org': 0, 'website': 0}
 FOLDER_OVERRIDES = {'uk': 'united-kingdom', 'us': 'united-states', 'ae': 'united-arab-emirates'}
 
@@ -45,7 +46,9 @@ def key(text: str) -> str:
 
 
 def channel_keys(c: dict) -> set[str]:
-    names = [c.get('name') or '', *(c.get('alt_names') or []), c['id'].split('.')[0]]
+    names = [c.get('name') or '', *(c.get('alt_names') or [])]
+    if '@' not in c['id']:
+        names.append(c['id'].split('.')[0])
     keys = set()
     for n in names:
         keys |= {key(n), key(n.replace('+', 'plus'))}
@@ -106,6 +109,7 @@ class Candidate:
     svg: bool = False
     size: tuple[int, int] = (0, 0)
     error: str = ''
+    fp: int = 0
     notes: list[str] = field(default_factory=list)
 
     @property
@@ -113,8 +117,9 @@ class Candidate:
         return (not self.error, self.svg, min(max(self.size), 1200), SOURCE_RANK.get(self.source, 0))
 
 
-def candidates(c: dict, tv_index: dict[str, list[str]], iptv_logos: dict[str, list[dict]],
+def candidates(c: dict, tv_index: dict[str, list[str]], iptv_logos: dict[tuple[str, str], list[dict]],
                extra: list[tuple[str, str]] = ()) -> list[Candidate]:
+    """`c`: a channel or an edition (see units); `iptv_logos`: iptv-org logos by (channel, feed)."""
     out: list[Candidate] = [Candidate(src, url) for src, url in dict.fromkeys(extra)]
     seen = set()
     for k in sorted(channel_keys(c)):
@@ -122,7 +127,8 @@ def candidates(c: dict, tv_index: dict[str, list[str]], iptv_logos: dict[str, li
             if path not in seen:
                 seen.add(path)
                 out.append(Candidate('tv-logos', TV_LOGOS_RAW + quote(path)))
-    logos = sorted((x for x in iptv_logos.get(c['id'], ()) if not x.get('feed') and x.get('in_use', True)
+    logos = sorted((x for x in iptv_logos.get((c.get('channel', c['id']), c.get('feed', '')), ())
+                    if x.get('in_use', True)
                     and 'white' not in (x.get('tags') or []) and str(x.get('url', '')).startswith('https://')),
                    key=lambda x: (x.get('format') != 'SVG', -(x.get('width') or 0)))
     out += [Candidate('iptv-org', x['url']) for x in logos[:2]]
@@ -140,6 +146,7 @@ def evaluate(cand: Candidate, downloader) -> Candidate:
         img, cand.notes = image.prepare(cand.data)
         cand.svg = image.is_svg(cand.data)
         cand.size = img.size
+        cand.fp = image.fingerprint(img)
         if len(image.png_bytes(img)) > image.MAX_FILE:
             cand.error = 'heavier than 1 MB once converted'
     except (image.ImageError, net.DownloadError) as exc:
@@ -205,7 +212,7 @@ def repo_sheets(db: Database, stems: list[str], out: Path, per_page: int = 30) -
         white = db.logos.get((channel, feed, 'white'))
         light = Image.open(db.path(main.file)).convert('RGBA')
         dark = Image.open(db.path(white.file)).convert('RGBA') if white else light
-        origin = re.sub(r'^https://([^/]+)/.*', r'', main.origin)
+        origin = re.sub(r'^https://([^/]+)/.*', r'\1', main.origin)
         tiles.append((stem, f'{main.width}x{main.height}  {origin}', dark, light))
     return render_sheets(tiles, out, per_page)
 
@@ -216,13 +223,16 @@ def split_duplicates(kept: list[tuple[dict, Candidate]], existing: dict[str, str
     another channel here (`existing`: origin URL -> channel), is a doubt: within a group only the channel with the
     shortest name keeps it (24 Horas, not 24 Horas Canarias)."""
     existing = existing or {}
-    groups: dict[str, list[tuple[dict, Candidate]]] = {}
+    groups: dict[int, list[tuple[dict, Candidate]]] = {}
     doubts = []
     for c, cand in kept:
         if existing.get(cand.url, c['id']) != c['id']:
             doubts.append((c, existing[cand.url]))
             continue
-        groups.setdefault(hashlib.sha1(cand.data).hexdigest(), []).append((c, cand))
+        group = next((g for fp, g in groups.items() if image.same_drawing(fp, cand.fp)), None)
+        if group is None:
+            groups[cand.fp or int(hashlib.sha1(cand.data).hexdigest(), 16)] = group = []
+        group.append((c, cand))
     out = []
     for group in groups.values():
         group.sort(key=lambda x: (len(x[0]['name']), x[0]['name']))
@@ -276,6 +286,33 @@ def more_candidates(root: Path, c: dict, cc: str, wikidata: bool, deep: bool, do
     return out
 
 
+def units(iptv: IptvOrg, cc: str) -> list[dict]:
+    """The open channels of a country and their editions (iptv-org feeds other than the main one), each as
+    {id, channel, feed, name, alt_names, website}; an edition is named after its channel ("France 3 Alsace")."""
+    out = []
+    feeds: dict[str, list[dict]] = {}
+    for (channel, fid), f in iptv.feeds.items():
+        if not f.get('is_main') and not QUALITY_FEED.match(fid):     # TF1@HD uses the logo of TF1
+            feeds.setdefault(channel, []).append(dict(f, id=fid))
+    for c in sorted(iptv.country_channels(cc), key=lambda c: c['name'].lower()):
+        out.append(dict(c, channel=c['id'], feed=''))
+        for f in sorted(feeds.get(c['id'], []), key=lambda f: f['id']):
+            name = f.get('name') or f['id']
+            out.append({'id': f'{c["id"]}@{f["id"]}', 'channel': c['id'], 'feed': f['id'],
+                        'name': name if name.lower().startswith(c['name'].lower()) else f'{c["name"]} {name}',
+                        'alt_names': [], 'website': c.get('website') or ''})
+    return out
+
+
+def same_as_channel(db: Database, u: dict, best: Candidate, kept: list[tuple[dict, Candidate]]) -> bool:
+    """The logo found for an edition is the drawing of its channel (current, or found in this run)."""
+    fps = [cand.fp for c, cand in kept if c['id'] == u['channel']]
+    logo = db.logos.get((u['channel'], '', ''))
+    if logo is not None and db.path(logo.file).is_file():
+        fps.append(image.fingerprint(Image.open(db.path(logo.file)).convert('RGBA')))
+    return any(image.same_drawing(fp, best.fp) for fp in fps)
+
+
 def harvest(db: Database, iptv: IptvOrg, cc: str, folder: str, iptv_logos: list[dict], tree: list[str],
             out: Path, pause: float = 2.0, limit: int = 0, updates: bool = False, downloader=None,
             log=print, wikidata: bool = True, deep: bool = False, only: list[str] | None = None) -> dict[str, int]:
@@ -284,18 +321,17 @@ def harvest(db: Database, iptv: IptvOrg, cc: str, folder: str, iptv_logos: list[
     `wikidata`: also the current logos of the channel on Wikidata; `deep`: also the logos of its website;
     `only`: these channel IDs only (logos hunt)."""
     downloader = downloader or net.download
-    current = {k[0]: x for k, x in db.logos.items() if not k[1] and not k[2]}
-    channels = sorted((c for c in iptv.country_channels(cc) if updates or c['id'] not in current),
-                      key=lambda c: c['name'].lower())
+    current = {x.logo_id: x for x in db.logos.values() if not x.variant}
+    channels = [u for u in units(iptv, cc) if updates or u['id'] not in current]
     if only is not None:
         channels = [c for c in channels if c['id'] in set(only)]
     if limit:
         channels = channels[:limit]
     rejected = load_rejected(db.root)
     tv_index = tv_logos_index(tree, folder)
-    by_channel: dict[str, list[dict]] = {}
+    by_channel: dict[tuple[str, str], list[dict]] = {}
     for x in iptv_logos:
-        by_channel.setdefault(x['channel'], []).append(x)
+        by_channel.setdefault((x['channel'], x.get('feed') or ''), []).append(x)
     (out / 'originals').mkdir(parents=True, exist_ok=True)
     report, kept, changes = [], [], {}
     last = 0.0
@@ -317,10 +353,12 @@ def harvest(db: Database, iptv: IptvOrg, cc: str, folder: str, iptv_logos: list[
                 log(f'{c["id"]}: {"no candidate" if not cands else "every candidate refused"}')
             continue
         best = max(good, key=lambda x: x.score)
+        if c['feed'] and same_as_channel(db, c, best, kept):
+            continue                                     # the edition uses the logo of its channel: nothing to add
         if c['id'] in current:
             logo = current[c['id']]
             sources = db.source_files(logo)
-            urls = {x['url'] for x in by_channel.get(c['id'], ()) if not x.get('feed')}
+            urls = {x['url'] for x in by_channel.get((c['channel'], c['feed']), ())}
             reason = update_reason(logo, sources[0], best, urls) if len(sources) == 1 else None
             if not reason:
                 continue
@@ -337,7 +375,7 @@ def harvest(db: Database, iptv: IptvOrg, cc: str, folder: str, iptv_logos: list[
     for c, best in kept:
         local = out / 'originals' / f'{c["id"]}.{image.extension(best.data)}'
         local.write_bytes(best.data)
-        rows.append({'channel': c['id'], 'feed': '', 'origin': local.as_posix(), 'label': best.url})
+        rows.append({'channel': c['channel'], 'feed': c['feed'], 'origin': local.as_posix(), 'label': best.url})
     with open(out / 'manifest.csv', 'w', encoding='utf-8', newline='') as fh:
         w = csv.DictWriter(fh, ['channel', 'feed', 'origin', 'label'])
         w.writeheader()

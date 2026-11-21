@@ -279,9 +279,10 @@ def cmd_find(args, db: Database) -> int:
     cc = (c.get('country') or channel.rsplit('.', 1)[-1]).lower()
     folder = harvest.folder_of(cc, iptvorg.load_countries(db.root))
     logos = [x for x in iptvorg.load_logos(db.root) if x['channel'] == channel and (x.get('feed') or '') == feed]
-    extra = harvest.more_candidates(db.root, c, cc, not args.no_wikidata, True, net.download, print)
-    cands = harvest.candidates(c, harvest.tv_logos_index(harvest.load_tree(db.root), folder) if not feed else {},
-                               {channel: [dict(x, feed=None) for x in logos]}, extra)
+    unit = next((u for u in harvest.units(iptv, cc) if u['id'] == args.id), dict(c, channel=channel, feed=feed))
+    extra = harvest.more_candidates(db.root, unit, cc, not args.no_wikidata, True, net.download, print)
+    cands = harvest.candidates(unit, harvest.tv_logos_index(harvest.load_tree(db.root), folder),
+                               {(channel, feed): logos}, extra)
     rejected = harvest.load_rejected(db.root)
     for i, cand in enumerate(cands):
         if i:
@@ -378,8 +379,8 @@ def cmd_hunt(args, db: Database) -> int:
     from worldwide_tv_logos import harvest
     cc = args.country.lower()
     iptv = iptvorg.load(db.root)
-    have = {k[0] for k in db.logos}
-    missing = sorted(c['id'] for c in iptv.country_channels(cc) if c['id'] not in have)
+    have = {x.logo_id for x in db.logos.values()}
+    missing = [u['id'] for u in harvest.units(iptv, cc) if u['id'] not in have]
     if not missing:
         print('no channel without a logo')
         return 0
@@ -419,22 +420,22 @@ def cmd_reject(args, db: Database) -> int:
     """Refuse a logo proposed in a harvest pull request: the channel gets back its logo of `--base` (the main
     branch), and its URL goes to data/rejected.csv so that it is never proposed again."""
     from datetime import date
-    channel = args.channel
-    if not CHANNEL_RE.match(channel):
-        print(f'`{channel}` is not an iptv-org channel ID')
+    channel, feed = parse_logo_id(args.channel)
+    if not CHANNEL_RE.match(channel) or (feed and not FEED_RE.match(feed)):
+        print(f'`{args.channel}` is not an iptv-org channel or feed ID')
         return 1
-    logo = db.logos.get((channel, '', ''))
+    logo = db.logos.get((channel, feed, ''))
     if logo is None:
         print(f'no logo for `{channel}` in this branch')
         return 1
     base = Database(Path(args.base)).load()
-    if base.logos.get((channel, '', '')) and base.logos[(channel, '', '')].origin == logo.origin:
-        print(f'`{channel}` is not changed by this pull request')
+    if base.logos.get((channel, feed, '')) and base.logos[(channel, feed, '')].origin == logo.origin:
+        print(f'`{args.channel}` is not changed by this pull request')
         return 1
-    for key in [k for k in db.logos if k[0] == channel and not k[1]]:
+    for key in [k for k in db.logos if k[:2] == (channel, feed)]:
         ops.remove_files(db, db.logos.pop(key))
     for key, old in base.logos.items():
-        if key[0] == channel and not key[1]:
+        if key[:2] == (channel, feed):
             db.logos[key] = old
             for rel in [old.file] + [p.relative_to(base.root).as_posix() for p in base.source_files(old)]:
                 target = db.path(rel)
@@ -447,8 +448,8 @@ def cmd_reject(args, db: Database) -> int:
         w = csv.writer(fh, lineterminator='\n')
         if new:
             w.writerow(['channel', 'url', 'reason', 'date'])
-        w.writerow([channel, logo.origin, args.reason or '', date.today().isoformat()])
-    print(f'rejected {logo.origin} for `{channel}`')
+        w.writerow([args.channel, logo.origin, args.reason or '', date.today().isoformat()])
+    print(f'rejected {logo.origin} for `{args.channel}`')
     return 0
 
 

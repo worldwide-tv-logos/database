@@ -171,6 +171,20 @@ def white_variant(img: Image.Image) -> Image.Image | None:
     return Image.fromarray(a, 'RGBA')
 
 
+def fingerprint(img: Image.Image) -> int:
+    """Perceptual fingerprint (difference hash, 256 bits) of a logo on a grey background: the same drawing gives
+    (almost) the same fingerprint whatever its size, format or compression."""
+    ground = Image.new('RGBA', img.size, (128, 128, 128, 255))
+    ground.alpha_composite(img.convert('RGBA'))
+    g = np.asarray(ground.convert('L').resize((17, 16), Image.LANCZOS), dtype=np.int16)
+    bits = (g[:, 1:] > g[:, :-1]).flatten()
+    return int(''.join('1' if b else '0' for b in bits), 2)
+
+
+def same_drawing(a: int, b: int, tolerance: int = 20) -> bool:
+    return (a ^ b).bit_count() <= tolerance
+
+
 def png_bytes(img: Image.Image) -> bytes:
     out = io.BytesIO()
     img.save(out, 'PNG', optimize=True)
