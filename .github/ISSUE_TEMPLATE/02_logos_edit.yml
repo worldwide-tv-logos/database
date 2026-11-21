@@ -29,7 +29,7 @@ body:
     id: logo_url
     attributes:
       label: Logo URL
-      description: Direct `https://` link to the new image
+      description: Direct `https://` link to the new image, or a logo drawn in a web page copied as `data:image/svg+xml,...` (then give the page in Reason)
       placeholder: 'https://example.com/logo.svg'
     validations:
       required: true

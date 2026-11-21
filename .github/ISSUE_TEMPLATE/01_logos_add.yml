@@ -35,7 +35,7 @@ body:
     id: logo_url
     attributes:
       label: Logo URL
-      description: Direct `https://` link to the image (SVG, PNG, WebP, JPEG)
+      description: Direct `https://` link to the image (SVG, PNG, WebP, JPEG), or a logo drawn in a web page copied as `data:image/svg+xml,...` (then give the page in Notes)
       placeholder: 'https://example.com/logo.svg'
     validations:
       required: true

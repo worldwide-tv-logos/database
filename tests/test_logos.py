@@ -508,3 +508,12 @@ def test_sharper_version_says_whether_it_is_the_same_drawing(tmp_path):
     small = harvest.Candidate('iptv-epg', 'https://e.org/x.png', data=b'x', size=(600, 240), fp=current)
     assert harvest.update_reason(logo, src, small, set(), [current]) is None        # not clearly larger
     assert cli._slice(['a', 'b', 'c'], 1, 2) == ['c', 'a'] and cli._slice([], 1, 2) == []
+
+
+def test_logo_copied_from_a_page_as_a_data_uri():
+    from worldwide_tv_logos import net
+    svg = net.download('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%2F%3E')
+    assert svg == b'<svg xmlns="http://www.w3.org/2000/svg"/>'
+    assert net.download('data:image/png;base64,iVBORw0KGgo=') == b'\x89PNG\r\n\x1a\n'
+    with pytest.raises(net.DownloadError, match='only https'):
+        net.download('http://example.org/logo.png')

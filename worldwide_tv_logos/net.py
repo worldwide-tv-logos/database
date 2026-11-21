@@ -17,10 +17,28 @@ class DownloadError(RuntimeError):
     pass
 
 
+def data_uri(url: str, max_size: int = MAX_DOWNLOAD) -> bytes:
+    """Image inlined in a page and copied as a data: URI (an SVG logo drawn in the page of the channel's website):
+    `data:image/svg+xml,<percent-encoded>` or `data:image/<type>;base64,<data>`."""
+    import base64
+    import urllib.parse
+    head, _, payload = url.partition(',')
+    try:
+        data = base64.b64decode(payload, validate=False) if head.endswith(';base64') else \
+            urllib.parse.unquote_to_bytes(payload)
+    except ValueError:
+        raise DownloadError('unreadable data: image') from None
+    if not data or len(data) > max_size:
+        raise DownloadError('empty or too large data: image')
+    return data
+
+
 def download(url: str, *, opener: Callable = urllib.request.urlopen, sleep: Callable = time.sleep,
              attempts: int = 3, accept: str = 'image/*,*/*;q=0.5', max_size: int = MAX_DOWNLOAD) -> bytes:
+    if url.startswith('data:image/'):
+        return data_uri(url, max_size)
     if not url.startswith('https://'):
-        raise DownloadError('only https:// links are accepted')
+        raise DownloadError('only https:// links (or an image copied as data:image/...) are accepted')
     for _ in range(attempts):
         try:
             req = urllib.request.Request(url, headers={'User-Agent': USER_AGENT, 'Accept': accept})
