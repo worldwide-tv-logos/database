@@ -4,3 +4,7 @@
 *.py text eol=lf
 *.md text eol=lf
 *.yml text eol=lf
+# the pull requests of several countries add rows to the same files: merged line by line, then rewritten
+data/logos.csv merge=union
+data/aliases.csv merge=union
+data/rejected.csv merge=union

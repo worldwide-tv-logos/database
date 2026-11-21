@@ -29,10 +29,20 @@ else
   { cat "$body"; echo; echo "---"; echo; echo "No review recorded: a maintainer must review this pull request."; } > temp/pr-body.md
 fi
 
+# On top of the current main: a branch based on an older main would seem to revert the workflows changed since,
+# and the pull requests of the other countries, merged meanwhile, touch the same data files. Those are merged line by
+# line (.gitattributes: merge=union), rewritten (sorted, one row per logo or alias) and validated again.
+sync() {
+  git fetch -q origin main
+  if ! git rebase -q origin/main; then git rebase --abort; echo "rebase on main failed"; return 1; fi
+  uv run python -c 'from worldwide_tv_logos.db import Database; Database(".").load().save()'
+  if ! git diff --quiet -- data; then git add data && git commit -q --amend --no-edit; fi
+  uv run logos validate > /dev/null || { echo "data no longer valid once on top of main"; return 1; }
+}
+
 git switch -q -C "$branch"
 git commit -q -m "$title"
-# on top of the current main: a branch based on an older main would seem to revert the workflows changed since
-git fetch -q origin main && { git rebase -q origin/main || git rebase --abort; }
+sync || state=hold
 git push -q -f origin "$branch"
 number=$(gh pr list --head "$branch" --state open --json number --jq '.[0].number')
 if [ -z "$number" ]; then
@@ -46,8 +56,13 @@ echo "pull request #$number, review: $state"
 
 if [ "$state" = ready ] && [ "${AUTO_MERGE:-true}" != false ]; then
   gh pr edit "$number" --remove-label needs:maintainer > /dev/null 2>&1 || true
-  gh pr merge "$number" --squash --delete-branch
-  echo "merged"
+  for attempt in 1 2 3; do              # another country merged meanwhile: on top of main again, then retry
+    if gh pr merge "$number" --squash --delete-branch; then echo "merged"; exit 0; fi
+    sleep $((attempt * 15))
+    sync && git push -q -f origin "$branch" || break
+  done
+  gh pr edit "$number" --add-label needs:maintainer > /dev/null
+  echo "could not be merged: on hold, redone at the next run"
 elif [ "$state" = hold ]; then
   gh pr edit "$number" --add-label needs:maintainer > /dev/null
 fi
