@@ -10,7 +10,7 @@ Clean TV channel logos, keyed by [iptv-org](https://github.com/iptv-org/database
 ## Use
 
 ```
-https://raw.githubusercontent.com/alexandre-meline/worldwide-tv-logos/main/logos/<cc>/<channel>[@<feed>][.white].png
+https://raw.githubusercontent.com/worldwide-tv-logos/database/main/logos/<cc>/<channel>[@<feed>][.white].png
 ```
 
 | Logo | Address (after `…/main/`) |
@@ -19,7 +19,7 @@ https://raw.githubusercontent.com/alexandre-meline/worldwide-tv-logos/main/logos
 | France 3 Alsace (feed `Alsace` of `France3.fr`) | `logos/fr/France3.fr@Alsace.png` |
 | …its version for dark backgrounds | `logos/fr/France3.fr@Alsace.white.png` |
 
-The whole index as JSON: `https://alexandre-meline.github.io/worldwide-tv-logos/logos.json`
+The whole index as JSON: `https://worldwide-tv-logos.github.io/database/logos.json`
 (and `aliases.json` for guide IDs).
 
 ## Layout

@@ -8,7 +8,7 @@ import urllib.error
 import urllib.request
 from collections.abc import Callable
 
-USER_AGENT = 'worldwide-tv-logos/0.1 (+https://github.com/alexandre-meline/worldwide-tv-logos)'
+USER_AGENT = 'worldwide-tv-logos/0.1 (+https://github.com/worldwide-tv-logos/database)'
 MAX_DOWNLOAD = 5_000_000
 TIMEOUT = 60
 

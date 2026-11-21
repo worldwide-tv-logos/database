@@ -1,5 +1,5 @@
 blank_issues_enabled: true
 contact_links:
   - name: Missing logos by country
-    url: https://github.com/alexandre-meline/worldwide-tv-logos/tree/main/missing
+    url: https://github.com/worldwide-tv-logos/database/tree/main/missing
     about: Channels that still need a logo

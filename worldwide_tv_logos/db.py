@@ -20,7 +20,7 @@ CHANNEL_RE = re.compile(r'^[A-Za-z0-9]+\.[a-z]{2}$')        # iptv-org channel i
 FEED_RE = re.compile(r'^[A-Za-z0-9]+$')
 EPG_ID_RE = re.compile(r'^[^,"\s]+$')
 VARIANTS = ('', 'white')                                     # '' : the logo itself; white : for dark backgrounds
-RAW_BASE = 'https://raw.githubusercontent.com/alexandre-meline/worldwide-tv-logos/main/'
+RAW_BASE = 'https://raw.githubusercontent.com/worldwide-tv-logos/database/main/'
 
 
 @dataclass
