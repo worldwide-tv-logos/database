@@ -1,4 +1,6 @@
-# worldwide-tv-logos
+<p align="center"><img src="site/public/logo-mark.svg" width="96" alt="Worldwide TV Logos"></p>
+
+<h1 align="center">Worldwide TV Logos</h1>
 
 Clean TV channel logos from all over the world, keyed by [iptv-org](https://github.com/iptv-org/database) channel ID.
 
