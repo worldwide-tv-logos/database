@@ -1,4 +1,4 @@
-// Worldwide TV Logos — static site. Routes: #/ (countries), #/<cc> (channels of a country), #/<cc>/<channel id>.
+// Worldwide TV Logos: static site. Routes: #/ (countries), #/<cc> (channels of a country), #/<cc>/<channel id>.
 'use strict';
 
 const REPO = 'https://github.com/worldwide-tv-logos/database';
@@ -69,7 +69,7 @@ async function home() {
   app.innerHTML = `
     <section class="hero">
       <h1>TV channel logos from all over the world</h1>
-      <p class="sub">Transparent, trimmed, high resolution — one stable address per logo, named after the iptv-org channel ID.</p>
+      <p class="sub">Transparent, trimmed, high resolution. One stable address per logo, named after the iptv-org channel ID.</p>
       <div class="stats">
         <div class="stat"><b>${logos.toLocaleString('en')}</b><span>channels with a logo</span></div>
         <div class="stat"><b>${total.toLocaleString('en')}</b><span>channels listed</span></div>
@@ -205,8 +205,8 @@ function logoBlock(ch, feed) {
       <div><div class="tile light"><img src="${esc(main.url)}" alt="${esc(id)} logo on a light background"></div>
         <div class="tile-cap">On a light background</div></div>
     </div>
-    <div class="info"><span>${main.width} × ${main.height} px</span><span>updated ${esc(main.updated)}</span>
-      <span><a href="${esc(main.url)}" target="_blank" rel="noopener">PNG</a>${white ? ` · <a href="${esc(white.url)}" target="_blank" rel="noopener">white PNG</a>` : ''}</span>
+    <div class="info"><span>${main.width} x ${main.height} px</span><span>updated ${esc(main.updated)}</span>
+      <span><a href="${esc(main.url)}" target="_blank" rel="noopener">PNG</a>${white ? `, <a href="${esc(white.url)}" target="_blank" rel="noopener">white PNG</a>` : ''}</span>
       <button class="copy" data-copy="${esc(main.url)}">Copy URL</button></div>
     <div class="actions">
       <a class="btn" href="${forms.edit(ch.id, feed)}" target="_blank" rel="noopener">Replace logo</a>
@@ -262,7 +262,7 @@ async function channel(cc, id) {
     <h2>TV guide IDs</h2>
     <p class="sub">IDs that TV guides (EPG) use for this channel when they differ from the iptv-org ID.</p>
     ${ch.aliases.length ? `<div class="table-wrap"><table><thead><tr><th>Guide ID</th><th>Guide</th><th>Edition</th><th></th></tr></thead><tbody>
-      ${ch.aliases.map((a) => `<tr><td><code>${esc(a.epg_id)}</code></td><td>${esc(a.source)}</td><td>${esc(a.feed || '—')}</td>
+      ${ch.aliases.map((a) => `<tr><td><code>${esc(a.epg_id)}</code></td><td>${esc(a.source)}</td><td>${esc(a.feed || 'channel')}</td>
         <td><a href="${forms.aliasRemove(ch.id, a)}" target="_blank" rel="noopener">remove</a></td></tr>`).join('')}
       </tbody></table></div>` : '<p class="empty">None yet.</p>'}
     <div class="actions"><a class="btn" href="${forms.aliasAdd(ch.id, null)}" target="_blank" rel="noopener">Add a guide ID</a></div>`;
@@ -271,12 +271,12 @@ async function channel(cc, id) {
 // ---------- router ----------
 async function route() {
   const parts = location.hash.replace(/^#\/?/, '').split('/').filter(Boolean).map(decodeURIComponent);
-  app.innerHTML = '<p class="loading">Loading…</p>';
+  app.innerHTML = '<p class="loading">Loading...</p>';
   try {
     if (parts.length >= 2) await channel(parts[0].toLowerCase(), parts.slice(1).join('/'));
     else if (parts.length === 1) await country(parts[0].toLowerCase());
     else await home();
-    document.title = parts.length ? `${document.querySelector('h1')?.textContent.trim()} · Worldwide TV Logos` : 'Worldwide TV Logos';
+    document.title = parts.length ? `${document.querySelector('h1')?.textContent.trim()} | Worldwide TV Logos` : 'Worldwide TV Logos';
   } catch (err) {
     app.innerHTML = `<p class="empty">Could not load this page (${esc(err.message)}). <a href="#/">Home</a></p>`;
   }
