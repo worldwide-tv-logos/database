@@ -31,6 +31,8 @@ fi
 
 git switch -q -C "$branch"
 git commit -q -m "$title"
+# on top of the current main: a branch based on an older main would seem to revert the workflows changed since
+git fetch -q origin main && { git rebase -q origin/main || git rebase --abort; }
 git push -q -f origin "$branch"
 number=$(gh pr list --head "$branch" --state open --json number --jq '.[0].number')
 if [ -z "$number" ]; then
