@@ -1,4 +1,5 @@
-// Worldwide TV Logos: static site. Routes: #/ (countries), #/<cc> (channels of a country), #/<cc>/<channel id>.
+// Worldwide TV Logos: static site. Routes: #/ (countries), #/<cc> (channels of a country), #/<cc>/<channel id>,
+// #/api (API documentation).
 'use strict';
 
 const REPO = 'https://github.com/worldwide-tv-logos/database';
@@ -268,12 +269,82 @@ async function channel(cc, id) {
     <div class="actions"><a class="btn" href="${forms.aliasAdd(ch.id, null)}" target="_blank" rel="noopener">Add a guide ID</a></div>`;
 }
 
+// ---------- API documentation ----------
+function apiPage() {
+  const base = location.href.split('#')[0].replace(/index\.html$/, '');
+  const row = (f, t, d) => `<tr><td><code>${f}</code></td><td>${t}</td><td>${d}</td></tr>`;
+  app.innerHTML = `
+    <div class="crumbs"><a href="#/">Countries</a> / API</div>
+    <h1>API</h1>
+    <p class="sub">Static JSON files and images, free, no key, served by GitHub Pages (CDN). Updated every night.</p>
+
+    <h2>Endpoints</h2>
+    <div class="table-wrap"><table>
+      <tr><th>Address</th><th>Content</th></tr>
+      <tr><td><a href="logos.json"><code>${esc(base)}logos.json</code></a></td><td>every logo</td></tr>
+      <tr><td><a href="aliases.json"><code>${esc(base)}aliases.json</code></a></td><td>TV guide (EPG) IDs that differ from iptv-org</td></tr>
+      <tr><td><code>${esc(base)}logos/&lt;cc&gt;/&lt;channel&gt;[@&lt;feed&gt;][.white].png</code></td><td>one logo (PNG, transparent)</td></tr>
+    </table></div>
+
+    <h2>logos.json</h2>
+    <p class="uses">Same fields as <a href="https://github.com/iptv-org/api" target="_blank" rel="noopener">iptv-org's logos.json</a>,
+      so it can replace it as is, plus three fields of its own.</p>
+    <div class="table-wrap"><table>
+      <tr><th>Field</th><th>Type</th><th>Description</th></tr>
+      ${row('channel', 'string', 'iptv-org channel ID, e.g. <code>France3.fr</code>')}
+      ${row('feed', 'string or null', 'iptv-org feed ID for an edition, e.g. <code>Alsace</code>; null for the channel itself')}
+      ${row('in_use', 'bool', 'always true (only current logos are kept)')}
+      ${row('tags', 'string[]', '<code>["white"]</code> for the version made for dark backgrounds, else empty')}
+      ${row('width, height', 'int', 'size in pixels (longest side 500 to 2000)')}
+      ${row('format', 'string', 'always <code>PNG</code>')}
+      ${row('url', 'string', 'address of the image')}
+      ${row('country', 'string', 'country code of the channel (lowercase), e.g. <code>fr</code>')}
+      ${row('variant', 'string or null', '<code>white</code> or null (same information as tags)')}
+      ${row('updated', 'string', 'date of the last change of the image (YYYY-MM-DD), useful to refresh a cache')}
+    </table></div>
+    <pre><code>{"channel": "France3.fr", "feed": null, "in_use": true, "tags": ["white"], "width": 512, "height": 437,
+ "format": "PNG", "url": "${esc(base)}logos/fr/France3.fr.white.png",
+ "country": "fr", "variant": "white", "updated": "2026-11-21"}</code></pre>
+
+    <h2>aliases.json</h2>
+    <div class="table-wrap"><table>
+      <tr><th>Field</th><th>Type</th><th>Description</th></tr>
+      ${row('epg_id', 'string', 'ID of the channel in a TV guide, e.g. <code>RTLtvi.be</code>')}
+      ${row('source', 'string', 'short name of the guide, e.g. <code>iptv-epg-be</code>')}
+      ${row('channel, feed', 'string', 'the iptv-org IDs it stands for')}
+    </table></div>
+
+    <h2>Examples</h2>
+    <p class="uses">Logo of a channel or of an edition, falling back to the channel logo:</p>
+    <pre><code>const logos = await (await fetch('${esc(base)}logos.json')).json();
+const find = (channel, feed = null, dark = false) =>
+  logos.find((l) => l.channel === channel && l.feed === feed && l.tags.includes('white') === dark)
+  || (dark && find(channel, feed))              // no white version: the logo itself
+  || (feed && find(channel, null, dark));       // no logo for the edition: the channel logo
+find('France3.fr', 'Alsace')?.url;</code></pre>
+    <p class="uses">From a TV guide ID:</p>
+    <pre><code>const aliases = await (await fetch('${esc(base)}aliases.json')).json();
+const a = aliases.find((x) => x.epg_id === 'RTLtvi.be');
+const logo = a && find(a.channel, a.feed);</code></pre>
+    <p class="uses">Command line:</p>
+    <pre><code>curl -s ${esc(base)}logos.json | jq -r '.[] | select(.channel == "TF1.fr" and .tags == []) | .url'</code></pre>
+
+    <h2>Good to know</h2>
+    <ul class="uses">
+      <li>An address never changes while the channel keeps its iptv-org ID; a new image keeps the same address
+        (check <code>updated</code> to refresh a cache).</li>
+      <li>Channel names, countries and categories come from the <a href="https://iptv-org.github.io/api/channels.json" target="_blank" rel="noopener">iptv-org API</a>: join on <code>channel</code>.</li>
+      <li>A logo missing? Use the buttons on the channel pages, or the <a href="${REPO}/issues/new/choose" target="_blank" rel="noopener">forms</a>.</li>
+    </ul>`;
+}
+
 // ---------- router ----------
 async function route() {
   const parts = location.hash.replace(/^#\/?/, '').split('/').filter(Boolean).map(decodeURIComponent);
   app.innerHTML = '<p class="loading">Loading...</p>';
   try {
-    if (parts.length >= 2) await channel(parts[0].toLowerCase(), parts.slice(1).join('/'));
+    if (parts[0] === 'api') apiPage();
+    else if (parts.length >= 2) await channel(parts[0].toLowerCase(), parts.slice(1).join('/'));
     else if (parts.length === 1) await country(parts[0].toLowerCase());
     else await home();
     document.title = parts.length ? `${document.querySelector('h1')?.textContent.trim()} | Worldwide TV Logos` : 'Worldwide TV Logos';
