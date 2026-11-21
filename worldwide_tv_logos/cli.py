@@ -115,14 +115,14 @@ def _preview(db: Database, req) -> None:
     """temp/preview/sheet-01.png: the proposed logo (and the current one, for an edit) on dark and light tiles, for
     the review of the request (by a maintainer or by Claude)."""
     from worldwide_tv_logos import harvest
-    channel, feed = req.get('channel_id'), req.get('feed_id')
+    channel, feed, url = req.get('channel'), req.get('feed'), req.get('url')
     label = channel + (f'@{feed}' if feed else '')
     rows = []
     try:
-        data = net.download(req.get('logo_url'))
+        data = net.download(url)
         img = image.prepare(data)[0]
         rows.append(({'id': label, 'name': f'proposed: {label}'},
-                     harvest.Candidate('request', req.get('logo_url'), data, image.is_svg(data), img.size)))
+                     harvest.Candidate('request', url, data, image.is_svg(data), img.size)))
         old = db.logos.get((channel, feed, ''))
         if old is not None and len(db.source_files(old)) == 1:
             data = db.source_files(old)[0].read_bytes()

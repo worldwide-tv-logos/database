@@ -437,3 +437,10 @@ def test_drawing_of_another_family_is_a_doubt():
         [({'id': 'BlueAction.ch', 'channel': 'BlueAction.ch', 'name': 'Blue Action'},
           harvest.Candidate('iptv-epg', 'https://e/x', fp=fp))], {}, drawings)
     assert kept == [] and doubts[0][1] == 'Action.fr'
+
+
+def test_preview_of_a_request_shows_the_proposed_logo(db, monkeypatch):
+    req = issues.parse(15, ['logos:add'], BODY)
+    monkeypatch.setattr(cli.net, 'download', lambda url, **kw: png(1000, 400))
+    cli._preview(db, req)
+    assert (db.root / 'temp' / 'preview' / 'sheet-01.png').is_file()
