@@ -1,0 +1,1 @@
+import{r as e}from"./BkBHKGMT.js";import{Ct as t,d as n}from"./Bo2ENBCX.js";function r(r){let i=e({dir:t(`ltr`)});return n(()=>r?.value||i.dir?.value||`ltr`)}export{r as t};
