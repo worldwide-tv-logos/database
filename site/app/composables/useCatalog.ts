@@ -116,8 +116,8 @@ export function channelLink(id: string) {
   return { path: `/countries/${countryOf(id)}`, query: { channel: id } }
 }
 
-/** Quality versions of a channel (TF1@HD) always use the channel logo (same rule as the harvest). */
-export const QUALITY_FEED = /^(SD|HD|FHD|UHD|QHD|4K|8K|HDR|H265|HEVC|1080p?|720p?)$/i
+/** Quality and timeshift versions of a channel (TF1@HD, Boomerang@Plus1) always use the channel logo (same rule as the harvest). */
+export const QUALITY_FEED = /^(SD|HD|FHD|UHD|QHD|4K|8K|HDR|H265|HEVC|1080p?|720p?|Plus\d+)$/i
 
 export function mainLogo(ch: Channel, feed: string | null = null): Logo | undefined {
   return ch.logos.find(l => (l.feed || null) === feed && !l.variant)

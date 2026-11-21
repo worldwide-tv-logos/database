@@ -58,7 +58,7 @@ const shown = computed(() => own.value ? darkLogo(props.channel, props.feed.id) 
         <span
           v-else-if="QUALITY_FEED.test(feed.id)"
           class="text-muted"
-        >Quality version: uses the channel logo</span>
+        >Same programmes (quality or +1 version): uses the channel logo</span>
         <template v-else>
           <ULink
             :to="forms.add(channel.id, feed.id)"

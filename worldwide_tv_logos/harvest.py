@@ -27,7 +27,7 @@ from worldwide_tv_logos import image, net, sources
 from worldwide_tv_logos.db import Database
 from worldwide_tv_logos.iptvorg import IptvOrg
 
-QUALITY_FEED = re.compile(r'^(SD|HD|FHD|UHD|QHD|4K|8K|HDR|H265|HEVC|1080p?|720p?)$', re.IGNORECASE)
+QUALITY_FEED = re.compile(r'^(SD|HD|FHD|UHD|QHD|4K|8K|HDR|H265|HEVC|1080p?|720p?|Plus\d+)$', re.IGNORECASE)  # quality and timeshift (+1)
 SOURCE_RANK = {'wikidata': 2, 'iptv-epg': 1, 'iptv-org': 1, 'website': 0}
 
 

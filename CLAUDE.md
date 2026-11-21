@@ -61,7 +61,7 @@ old branding and is never proposed. The website of the channel is the best proof
   they are current. A group or corporate logo (e.g. "Radio y Televisión") is not the logo of
   one of its channels.
 - Editions (iptv-org feeds such as `France3.fr@Alsace`) are harvested too. An edition gets its own logo only when
-  it differs from its channel's (regional logos); quality versions (HD, 4K) never get one: they use the channel logo.
+  it differs from its channel's (regional logos); quality and timeshift versions (HD, 4K, +1) never get one: they use the channel logo.
   Check that an edition logo names the right region or market.
 - Every logo of a change gets a decision: **kept** (right and current), **replaced** (`find` gives a clearly right
   one: `logos set`) or **rejected** (`logos reject`). A rejected new logo leaves the channel in `missing/`, looked for
