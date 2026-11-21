@@ -517,3 +517,18 @@ def test_logo_copied_from_a_page_as_a_data_uri():
     assert net.download('data:image/png;base64,iVBORw0KGgo=') == b'\x89PNG\r\n\x1a\n'
     with pytest.raises(net.DownloadError, match='only https'):
         net.download('http://example.org/logo.png')
+
+
+def test_seen_on_finds_a_logo_drawn_or_shown_in_a_page():
+    from worldwide_tv_logos import seen
+    logo = (b'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 40"><path d="M10 10 L90 10 L90 30 L50 38 '
+            b'L10 30 Z M20 15 L80 15 L80 25 L20 25 Z"/></svg>')
+    pages = {'https://tv.example/': b'<header><svg viewBox="0 0 100 40"><path d="M10 10 L90 10 L90 30 L50 38 L10 30 Z '
+                                     b'M20 15 L80 15 L80 25 L20 25 Z"/></svg></header>',
+             'https://other.example/': b'<img src="/a.png">', 'https://other.example/a.png': png(300, 300)}
+    get = lambda url, **kw: pages[url]
+    assert 'written in the page' in seen.seen_on('https://tv.example/', logo, get, pause=0)
+    assert seen.seen_on('https://other.example/', logo, get, pause=0) is None
+    red = png(600, 200)
+    pages['https://other.example/a.png'] = png(300, 100)                                    # same drawing, smaller
+    assert 'image https://other.example/a.png' in seen.seen_on('https://other.example/', red, get, pause=0)

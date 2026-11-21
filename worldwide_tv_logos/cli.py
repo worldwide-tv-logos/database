@@ -324,6 +324,26 @@ def cmd_find(args, db: Database) -> int:
     return 0
 
 
+def cmd_seen_on(args, db: Database) -> int:
+    """Is this logo shown on this page (the channel's website)? Proof that it is the current one."""
+    from worldwide_tv_logos import seen
+    try:
+        logo = args.logo
+        if logo in {x.logo_id for x in db.logos.values()}:
+            channel, feed = parse_logo_id(logo)
+            data = db.source_files(db.logos[(channel, feed, '')])[0].read_bytes()
+        elif logo.startswith(('https://', 'data:image/')):
+            data = net.download(logo)
+        else:
+            data = Path(logo).read_bytes()
+        how = seen.seen_on(args.page, data)
+    except (net.DownloadError, image.ImageError, OSError, IndexError) as exc:
+        print(f'could not check: {exc}')
+        return 2
+    print(f'FOUND on {args.page}: {how}' if how else f'NOT FOUND on {args.page}')
+    return 0 if how else 1
+
+
 def cmd_set(args, db: Database) -> int:
     """Add or replace a logo from a URL or a local file (same preparation and checks as a request)."""
     channel, feed = parse_logo_id(args.id)
@@ -645,6 +665,10 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument('--pause', type=float, default=1.0)
     p.add_argument('--out')
     p.set_defaults(func=cmd_find)
+    p = sub.add_parser('seen-on', help='is a logo shown on a web page (read like a browser)? proof that it is current')
+    p.add_argument('page', help='https:// page, e.g. the channel website')
+    p.add_argument('logo', help='https:// or data:image URL, local file, or logo ID of this repository')
+    p.set_defaults(func=cmd_seen_on)
     p = sub.add_parser('set', help='add or replace a logo from a URL or a file')
     p.add_argument('id')
     p.add_argument('source', help='https:// URL or local file')

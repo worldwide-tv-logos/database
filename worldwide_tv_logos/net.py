@@ -34,14 +34,15 @@ def data_uri(url: str, max_size: int = MAX_DOWNLOAD) -> bytes:
 
 
 def download(url: str, *, opener: Callable = urllib.request.urlopen, sleep: Callable = time.sleep,
-             attempts: int = 3, accept: str = 'image/*,*/*;q=0.5', max_size: int = MAX_DOWNLOAD) -> bytes:
+             attempts: int = 3, accept: str = 'image/*,*/*;q=0.5', max_size: int = MAX_DOWNLOAD,
+             user_agent: str = USER_AGENT) -> bytes:
     if url.startswith('data:image/'):
         return data_uri(url, max_size)
     if not url.startswith('https://'):
         raise DownloadError('only https:// links (or an image copied as data:image/...) are accepted')
     for _ in range(attempts):
         try:
-            req = urllib.request.Request(url, headers={'User-Agent': USER_AGENT, 'Accept': accept})
+            req = urllib.request.Request(url, headers={'User-Agent': user_agent, 'Accept': accept})
             with opener(req, timeout=TIMEOUT) as resp:
                 data = resp.read(max_size + 1)
             if len(data) > max_size:

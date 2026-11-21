@@ -23,6 +23,7 @@ sister channels: `Eurosport6.fr`, `Eurosport8.fr`). Current logos of the country
 another family are listed in the summary ("Current logos to check") for the review |
 | `logos guide-aliases --country <cc>` | aliases from the iptv-epg guide of the country: a guide channel found by name for exactly one channel or edition gets the alias `iptv-epg-<cc>:<guide id>` (run by the harvest and listed in its summary) |
 | `logos alias-remove <source> <guide id>` | remove a guide alias |
+| `logos seen-on <page> <logo>` | is the logo (URL, `data:image/...`, file or logo ID) shown on the page? Reads it like a browser; FOUND (the SVG written in the page, or one of its images with the same drawing, by perceptual fingerprint) or NOT FOUND: the proof a reviewer gives that a logo is current |
 | `logos hunt --country <cc> [--limit 40] [--sharpen 30]` | like harvest, for a weekly slice of the channels without a logo and of the small logos (under 1000 px, raster original: a sharper version is proposed, marked same or different drawing), every source including the website |
 | `logos verdict ready\|hold "<report>"` | a reviewer's decision for the workflows (temp/verdict.json) |
 | `logos reprocess` | rebuild every logo from its original after a change of the image rules |

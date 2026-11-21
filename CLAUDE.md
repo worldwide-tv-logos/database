@@ -54,6 +54,10 @@ old branding and is never proposed. The website of the channel is the best proof
   image hosts such as imgur or ibb, app stores, other sites): open the channel's website (iptv-org field
   `website`, or found with a web search) or search for its current logo, and compare. A logo you could not confirm
   as the current one is rejected. A clear sheet is not a proof: a logo can be clean and outdated.
+- **The best proof** is `uv run logos seen-on <page> <logo>` (`<logo>`: the request's URL or `data:image/...`, a
+  candidate's URL, or a logo ID of this repository): it reads the page like a browser (many channel websites refuse
+  WebFetch) and says whether the same drawing is on it (the SVG written in the page, or one of its images). FOUND on
+  the channel's own website proves the logo is current. Use it whenever WebFetch is refused or the page is long.
 - In your report, give for every kept logo from such a source the page that confirmed it (one short line each),
   so that anyone can check your decisions.
 - Prefer, in this order: the logo on the channel's own website or press kit, a current Wikidata/Wikimedia Commons

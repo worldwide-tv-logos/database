@@ -51,7 +51,7 @@ jobs:
           claude_args: |
             --permission-mode default
             --max-turns 60
-            --allowedTools "Read,WebFetch,WebSearch,Bash(uv run logos move:*),Bash(uv run logos remove:*),Bash(uv run logos find:*),Bash(uv run logos set:*),Bash(uv run logos verdict:*)"
+            --allowedTools "Read,WebFetch,WebSearch,Bash(uv run logos seen-on:*),Bash(uv run logos move:*),Bash(uv run logos remove:*),Bash(uv run logos find:*),Bash(uv run logos set:*),Bash(uv run logos verdict:*)"
       - name: pull request (merged when Claude says ready unless AUTO_MERGE is false)
         if: env.HAS_CLAUDE == 'true' && steps.issue.outputs.todo == 'yes'
         run: |

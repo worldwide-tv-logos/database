@@ -100,7 +100,8 @@ jobs:
             You decide every logo yourself, nobody reviews after you. The Source column of the summary says where
             each logo comes from: a logo from iptv-epg, iptv-org or a website other than the channel's own must be
             confirmed on the web (the channel's website, or a web search for its current logo) before you keep it;
-            say which page confirmed it in the report. An update marked "same drawing" only replaces a logo by a
+            say which page confirmed it in the report (`uv run logos seen-on <page> <logo>` checks a page
+            like a browser, see CLAUDE.md). An update marked "same drawing" only replaces a logo by a
             sharper file of it: check that it is clean (no background, nothing cut). An update marked "DIFFERENT
             drawing" is kept only if you confirmed on the web that it is the current branding of the channel.
             - unsure that a logo is right and current: check it (channel website, web search, and
@@ -119,7 +120,7 @@ jobs:
           claude_args: |
             --permission-mode default
             --max-turns 400
-            --allowedTools "Read,WebFetch,WebSearch,Bash(uv run logos reject:*),Bash(uv run logos find:*),Bash(uv run logos set:*),Bash(uv run logos remove:*),Bash(uv run logos alias-remove:*),Bash(uv run logos verdict:*),Bash(uv run logos sheet:*)"
+            --allowedTools "Read,WebFetch,WebSearch,Bash(uv run logos seen-on:*),Bash(uv run logos reject:*),Bash(uv run logos find:*),Bash(uv run logos set:*),Bash(uv run logos remove:*),Bash(uv run logos alias-remove:*),Bash(uv run logos verdict:*),Bash(uv run logos sheet:*)"
       - name: why Claude stopped
         if: steps.review.outcome == 'failure'
         run: |
