@@ -31,6 +31,13 @@ jobs:
           if git diff --cached --quiet; then echo "nothing to commit"; exit 0; fi
           git commit -m "[bot] update data" -m "${{ steps.update.outputs.processed }}"
           git push
+      - name: keep the scheduled workflows active (GitHub disables them after 60 days without activity)
+        run: |
+          last=$(git log -1 --format=%ct)
+          if [ $(( $(date +%s) - last )) -gt $(( 45 * 86400 )) ]; then
+            git commit --allow-empty -m "chore: keep scheduled workflows active"
+            git push
+          fi
       - name: notify the processed issues
         if: steps.update.outputs.processed != ''
         env:

@@ -76,3 +76,13 @@ class GitHub:
         except urllib.error.HTTPError as exc:
             if exc.code != 404:
                 raise
+
+    def open_issues(self, label: str) -> list[dict]:
+        return [i for i in self.call('GET', f'/issues?state=open&labels={label}&per_page=100')
+                if 'pull_request' not in i]
+
+    def create_issue(self, title: str, body: str, labels: list[str]) -> int:
+        return self.call('POST', '/issues', {'title': title, 'body': body, 'labels': labels})['number']
+
+    def edit_issue(self, number: int, **fields) -> None:
+        self.call('PATCH', f'/issues/{number}', fields)

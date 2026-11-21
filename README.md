@@ -2,6 +2,9 @@
 
 Clean TV channel logos, keyed by [iptv-org](https://github.com/iptv-org/database) channel ID.
 
+**Browse them by country, channel and edition: https://worldwide-tv-logos.github.io/database/** (every page has
+buttons to add, replace or request a logo).
+
 - **Transparent background**, trimmed to the drawing, high resolution (SVG originals rendered at 1200 px).
 - **One stable address per logo**, derived from the iptv-org ID: no guessing, no renaming.
 - **A white variant** for logos that are mostly black or grey, so they stay readable on dark screens.
@@ -31,7 +34,8 @@ data/countries.csv   countries followed in missing/
 logos/<cc>/          the logos (PNG), named after their iptv-org ID
 sources/<cc>/        the originals they were built from (same name, original extension)
 missing/<cc>.md      iptv-org channels of the country that still have no logo here
-worldwide_tv_logos/         the tools (`uv run logos --help`)
+site/                the website (static pages; its data is built by `logos export`)
+worldwide_tv_logos/  the tools (`uv run logos --help`)
 tests/               tests of the tools
 ```
 
@@ -43,3 +47,5 @@ checks.
 Pick a channel in [missing/](missing/) and submit its logo with the
 [form](../../issues/new?template=01_logos_add.yml): the request is checked automatically, and once approved the logo
 is downloaded, converted and added the next night. Details in [CONTRIBUTING.md](CONTRIBUTING.md).
+
+Maintainers: [MAINTAINING.md](MAINTAINING.md). Everyone: [code of conduct](CODE_OF_CONDUCT.md).

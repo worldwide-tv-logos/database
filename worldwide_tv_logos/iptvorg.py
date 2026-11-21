@@ -61,3 +61,8 @@ def load(root: Path, opener=None) -> IptvOrg:
     channels = {c['id']: c for c in _get('channels.json', cache, opener)}
     feeds = {(f['channel'], f['id']): f for f in _get('feeds.json', cache, opener)}
     return IptvOrg(channels, feeds)
+
+
+def load_countries(root: Path, opener=None) -> list[dict]:
+    """[{name, code, flag, languages}] from the iptv-org API (cached one day)."""
+    return _get('countries.json', Path(root) / '.cache' / 'iptvorg', opener)

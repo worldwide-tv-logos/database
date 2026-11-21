@@ -241,3 +241,22 @@ def test_second_addition_the_same_night_is_refused(db):
     issues.apply(first, db, IPTV, downloader=fake.__getitem__)
     with pytest.raises(ops.RequestError, match='already has a logo'):
         issues.apply(second, db, IPTV, downloader=fake.__getitem__)
+
+
+def test_changes_issue_body_lists_each_warning():
+    body = cli.changes_body(['data/logos.csv Syfy.fr: `Syfy.fr` is replaced by `SciFi.fr` in iptv-org'])
+    assert '- [ ] data/logos.csv Syfy.fr: `Syfy.fr` is replaced by `SciFi.fr`' in body
+
+
+def test_site_data(db, tmp_path):
+    from worldwide_tv_logos import site
+    ops.set_logo(db, 'TF1.fr', '', png(800, 300), 'x', IPTV)
+    db.save()
+    out = tmp_path / 'api'
+    stats = site.build(db, IPTV, [{'code': 'FR', 'name': 'France', 'flag': ''}], out)
+    assert stats['with_logo'] == 1
+    import json
+    fr = json.loads((out / 'countries' / 'fr.json').read_text(encoding='utf-8'))
+    tf1 = next(c for c in fr['channels'] if c['id'] == 'TF1.fr')
+    assert tf1['logos'][0]['url'].endswith('logos/fr/TF1.fr.png')
+    assert json.loads((out / 'countries.json').read_text(encoding='utf-8'))[0]['name'] == 'France'

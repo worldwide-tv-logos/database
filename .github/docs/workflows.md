@@ -19,19 +19,28 @@ checks the logo, then labels the issue `check:passed`, or comments the problems 
 A channel removed, closed or replaced in iptv-org after its logo was added is a **warning** of `logos validate`
 (with the new ID when iptv-org gives one), never an error: it never blocks the nightly update.
 
+## changes
+
+Every Monday at 06:00 UTC (or by hand): `logos changes` opens, updates or closes the single issue labelled
+`iptv-org:changes`, which lists these warnings with how to fix each one.
+
 ## update
 
 Every night at 03:00 UTC (or by hand): `logos update` applies the open issues labelled `approved`, one by one
 (a faulty one is commented, labelled `check:failed` and loses `approved`); then `logos validate`, `logos export`
 (`missing/`), one commit closing the processed issues (`Closes #N`), and a comment on each with what changed.
+If the repository had no commit for 45 days, it makes an empty commit: GitHub disables scheduled workflows after 60
+days without activity.
 
 ## deploy
 
-On every push to `main`: `logos export` publishes `logos.json` and `aliases.json` to the `gh-pages` branch.
+On every push to `main` and after every nightly `update` (a push made by a workflow starts no other workflow):
+`logos export` builds the website (`site/` plus the data of every iptv-org country and channel) with `logos.json`
+and `aliases.json`, and publishes it to the `gh-pages` branch: https://worldwide-tv-logos.github.io/database/
 
 ## Labels to create in the repository
 
 `logos:add`, `logos:edit`, `logos:remove`, `logos:request`, `aliases:add`, `aliases:remove`, `approved`,
-`check:passed`, `check:failed`, `waiting:iptv-org` (a logo for a channel or feed not in iptv-org yet: kept
+`check:passed`, `check:failed`, `iptv-org:changes`, `waiting:iptv-org` (a logo for a channel or feed not in iptv-org yet: kept
 `approved`, tried again every night, applied as soon as iptv-org has it). A `logos:request` issue is only checked (the channel exists and has no logo yet):
 it is closed by hand once a `logos:add` request brings the image.

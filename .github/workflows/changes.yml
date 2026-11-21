@@ -1,0 +1,19 @@
+name: changes
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 6 * * 1'
+permissions:
+  contents: read
+  issues: write
+jobs:
+  changes:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+      - run: uv sync
+      - name: open, update or close the "iptv-org changes" issue
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: uv run logos changes

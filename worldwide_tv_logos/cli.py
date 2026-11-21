@@ -188,8 +188,51 @@ def cmd_notify(args, db: Database) -> int:
     return 0
 
 
+CHANGES_LABEL = 'iptv-org:changes'
+CHANGES_TITLE = 'Changes on the iptv-org side'
+
+
+def changes_body(warnings: list[str]) -> str:
+    return '\n'.join([
+        ('Logos whose channel changed in iptv-org since they were added (found by `logos validate`, '
+        'refreshed every week by the `changes` workflow).'), '',
+        ('To fix one: a replaced channel gets its logo moved to the new ID (open a logos/add request for the new '
+        'ID with the same image, then a logos/remove request for the old one); a channel removed for good gets '
+        'its logo removed; a closed channel can keep its logo.'), '',
+        *[f'- [ ] {w}' for w in warnings], '',
+        'This issue closes by itself when the list is empty.'])
+
+
+def cmd_changes(args, db: Database) -> int:
+    """Open, update or close the single "iptv-org changes" issue from the warnings of `validate`."""
+    warnings: list[str] = []
+    validate(db, iptvorg.load(db.root), warnings)
+    warnings.sort()
+    body = changes_body(warnings)
+    if args.dry_run:
+        print(body if warnings else 'no change on the iptv-org side')
+        return 0
+    gh = net.GitHub()
+    current = gh.open_issues(CHANGES_LABEL)
+    if not warnings:
+        for issue in current:
+            gh.comment(issue['number'], 'Nothing left to fix: closing.')
+            gh.edit_issue(issue['number'], state='closed', state_reason='completed')
+        print('no change on the iptv-org side')
+        return 0
+    if current:
+        number = current[0]['number']
+        if (current[0].get('body') or '').strip() != body.strip():
+            gh.edit_issue(number, body=body)
+    else:
+        number = gh.create_issue(CHANGES_TITLE, body, [CHANGES_LABEL])
+    print(f'issue #{number}: {len(warnings)} change(s)')
+    return 0
+
+
 def cmd_export(args, db: Database) -> int:
-    """`.api/` (logos.json, aliases.json) for the gh-pages branch, and `missing/<cc>.md` for contributors."""
+    """`.api/` for the gh-pages branch (logos.json, aliases.json and, unless offline, the website and its data),
+    and `missing/<cc>.md` for the countries of data/countries.csv."""
     api = db.root / '.api'
     api.mkdir(exist_ok=True)
     logos = [{'channel': x.channel, 'feed': x.feed or None, 'variant': x.variant or None, 'width': x.width,
@@ -200,9 +243,13 @@ def cmd_export(args, db: Database) -> int:
                for a in sorted(db.aliases.values(), key=lambda r: r.key)]
     (api / 'aliases.json').write_text(json.dumps(aliases, ensure_ascii=False), encoding='utf-8')
     print(f'.api/: {len(logos)} logos, {len(aliases)} aliases')
-    if args.offline or not db.countries:
+    if args.offline:
         return 0
     iptv = iptvorg.load(db.root)
+    from worldwide_tv_logos import site
+    stats = site.build(db, iptv, iptvorg.load_countries(db.root), api)
+    print(f".api/ website data: {stats['countries']} countries, {stats['channels']} channels, "
+          f"{stats['with_logo']} with a logo")
     have = {k[0] for k in db.logos}
     missing_dir = db.root / 'missing'
     missing_dir.mkdir(exist_ok=True)
@@ -243,6 +290,9 @@ def main(argv: list[str] | None = None) -> int:
     p = sub.add_parser('notify', help='comment the processed issues after the update commit')
     p.add_argument('--commit')
     p.set_defaults(func=cmd_notify)
+    p = sub.add_parser('changes', help='open/update/close the "iptv-org changes" issue (GITHUB_TOKEN)')
+    p.add_argument('--dry-run', action='store_true', help='print the issue body instead')
+    p.set_defaults(func=cmd_changes)
     p = sub.add_parser('export', help='write .api/ and missing/')
     p.add_argument('--offline', action='store_true', help='skip missing/ (needs iptv-org)')
     p.set_defaults(func=cmd_export)
