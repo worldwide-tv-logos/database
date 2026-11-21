@@ -1,46 +1,32 @@
 # Switzerland: channels without a logo
 
-35 of 157 iptv-org channels have a logo here. To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
+68 of 157 iptv-org channels have a logo here. To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
 
 | Channel ID | Name |
 |---|---|
-| `3Plus.ch` | 3+ |
 | `6terSwitzerland.ch` | 6ter Switzerland |
 | `7Plus.ch` | 7+ |
-| `7PlusNickSchweiz.ch` | 7+/Nick Schweiz |
 | `AjoieTV.ch` | Ajoie TV |
 | `ALFTV.ch` | ALF-TV |
 | `AlpenWelleTV.ch` | Alpen-Welle TV |
-| `AlpenlandTV.ch` | Alpenland TV |
 | `AuftankenTV.ch` | Auftanken TV |
-| `BlickTV.ch` | Blick TV |
 | `BlueAction.ch` | Blue Action |
 | `BlueCity.ch` | Blue City |
 | `BlueEvent1.ch` | Blue Event 1 |
 | `BlueEvent2.ch` | Blue Event 2 |
-| `BluePrime.ch` | Blue Prime |
 | `BlueRetro.ch` | Blue Retro |
 | `BlueSport1.ch` | Blue Sport 1 |
 | `BlueSport2.ch` | Blue Sport 2 |
-| `BlueStars.ch` | Blue Stars |
 | `BlueZoomD.ch` | Blue Zoom D |
 | `BodenseeTV.ch` | Bodensee TV |
-| `Canal9.ch` | Canal 9 |
-| `CanalAlphaJU.ch` | Canal Alpha JU |
 | `CanalAlphaJura.ch` | Canal Alpha Jura |
 | `CanalAlphaNE.ch` | Canal Alpha NE |
 | `CanalAlphaNeuchatel.ch` | Canal Alpha Neuchatel |
 | `Carac1.ch` | Carac 1 |
-| `Carac2.ch` | Carac 2 |
-| `Carac3.ch` | Carac 3 |
-| `Carac4.ch` | Carac 4 |
-| `Carac5.ch` | Carac 5 |
 | `CHMusicTV.ch` | CH Music TV |
 | `Couleur3.ch` | Couleur 3 |
 | `DiasporaTVSwitzerland.ch` | Diaspora-TV Switzerland |
 | `DieNeueZeitTV.ch` | Die Neue Zeit TV |
-| `DritaTV.ch` | Drita TV |
-| `ELITTVIsvicre.ch` | ELIT TV Isvicre |
 | `FirstChannel.ch` | First Channel |
 | `GameTV.ch` | Game TV |
 | `GVAXTV.ch` | GVAX TV |
@@ -51,14 +37,11 @@
 | `kabeleinsSchweiz.ch` | kabel eins Schweiz |
 | `KabelioInfokanal.ch` | Kabelio Infokanal |
 | `Kanal9.ch` | Kanal 9 |
-| `LaTele.ch` | La Tele |
 | `LabelTV1.ch` | Label TV 1 |
 | `LabelTV2.ch` | Label TV 2 |
 | `Latinos1TV.ch` | Latinos 1 TV |
 | `LolyTV.ch` | Loly TV |
 | `MLeMedia.ch` | M Le Media |
-| `M6.ch` | M6 |
-| `MaxTV.ch` | Max TV |
 | `Meteonews.ch` | Meteonews |
 | `Musig24TV.ch` | Musig24 TV |
 | `MyCinemaEurope.ch` | My Cinema Europe |
@@ -72,14 +55,9 @@
 | `MySports7French.ch` | MySports 7 French |
 | `MySports8French.ch` | MySports 8 French |
 | `MySports9French.ch` | MySports 9 French |
-| `MySportsOne.ch` | MySports One |
 | `MySportsOneFrench.ch` | MySports One French |
 | `NewcomerTV.ch` | Newcomer TV |
-| `NickSchweiz.ch` | Nick Schweiz |
 | `NRTV.ch` | NRTV |
-| `PremiumShoppingTV.ch` | Premium Shopping TV |
-| `ProSiebenMaxxSchweiz.ch` | ProSieben Maxx Schweiz |
-| `ProSiebenSchweiz.ch` | ProSieben Schweiz |
 | `QS24tv.ch` | QS24.tv |
 | `Radio3i.ch` | Radio 3i |
 | `RADIODISCOuntTV.ch` | RADIO DISCOunt TV |
@@ -92,18 +70,11 @@
 | `RockLabelTV.ch` | Rock-Label.TV |
 | `RoyalTV.ch` | Royal TV |
 | `rrotv.ch` | rrotv |
-| `RTSInfo.ch` | RTS Info |
-| `RTVIslam.ch` | RTV Islam |
-| `RTVPendimi.ch` | RTV Pendimi |
-| `SAT1GoldSchweiz.ch` | SAT.1 Gold Schweiz |
-| `SAT1Schweiz.ch` | SAT.1 Schweiz |
 | `SchaffhauserFernsehen.ch` | Schaffhauser Fernsehen |
-| `Schweiz5.ch` | Schweiz 5 |
 | `ShivaLiveTV.ch` | Shiva Live TV |
 | `SivanTV.ch` | Sivan TV |
 | `SKITV.ch` | SKI TV |
 | `SofyTV.ch` | Sofy TV |
-| `SRFzwei.ch` | SRF zwei |
 | `Sudostschweiz.ch` | Sudostschweiz |
 | `SwissSportTV.ch` | Swiss Sport TV |
 | `SwissRockTV.ch` | SwissRock.TV |
@@ -113,16 +84,12 @@
 | `Televista.ch` | Televista |
 | `TF1Switzerland.ch` | TF 1 Switzerland |
 | `TFXSwitzerland.ch` | TFX Switzerland |
-| `TVDecouverte.ch` | TV Decouverte |
 | `TVOberwallis.ch` | TV Oberwallis |
 | `TVOnex.ch` | TV Onex |
 | `TVRheintal.ch` | TV Rheintal |
 | `TV4TNG.ch` | TV4TNG |
-| `TVM3.ch` | TVM 3 |
-| `ValTV.ch` | Val TV |
 | `VernierVisions.ch` | Vernier Visions |
 | `W9Switzerland.ch` | W9 Switzerland |
-| `WaterBear.ch` | WaterBear |
 | `WedoBigStories.ch` | Wedo Big Stories |
 | `WedoMoviesNordics.ch` | Wedo Movies Nordics |
 | `WedoTVAmor.ch` | Wedo TV Amor |

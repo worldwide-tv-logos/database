@@ -1,10 +1,9 @@
 # France: channels without a logo
 
-129 of 548 iptv-org channels have a logo here. To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
+150 of 548 iptv-org channels have a logo here. To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
 
 | Channel ID | Name |
 |---|---|
-| `20MinutesTV.fr` | 20 Minutes TV |
 | `4Afghanistan.fr` | 4 Afghanistan |
 | `4Music.fr` | 4 Music |
 | `4Sports.fr` | 4 Sports |
@@ -218,45 +217,26 @@
 | `LyonCapitaleTV.fr` | Lyon Capitale TV |
 | `M6International.fr` | M6 International |
 | `MaisonTravauxTV.fr` | Maison & Travaux TV |
-| `MandarinTV.fr` | Mandarin TV |
-| `MaritimaTV.fr` | Maritima TV |
-| `MarmitonTV.fr` | Marmiton TV |
-| `MaurienneTV.fr` | Maurienne TV |
-| `MDL.fr` | MDL |
 | `MelodydAfrique.fr` | Melody d'Afrique |
-| `MensUPTV.fr` | Men's UP TV |
-| `MistralTV.fr` | Mistral TV |
-| `MonteCarloDigitalTelevision.fr` | Monte Carlo Digital Television |
-| `MosaikCristal.fr` | Mosaik Cristal |
-| `MoselleTV.fr` | Moselle TV |
-| `Motorsporttv.fr` | Motorsport.tv |
 | `MouvTV.fr` | Mouv' TV |
 | `MoviesCentral.fr` | Movies Central |
 | `MuseumTVEnglish.fr` | Museum TV English |
-| `MuseumTVFrench.fr` | Museum TV French |
 | `MyGospelTV.fr` | My Gospel TV |
-| `MyComedy.fr` | MyComedy |
 | `MyZenNature.fr` | MyZen Nature |
-| `MyZenTV.fr` | MyZen TV |
 | `MyZenTV4K.fr` | MyZen TV 4K |
 | `N31.fr` | N31 |
 | `NATV.fr` | NA TV |
 | `NancyWebTV.fr` | Nancy Web TV |
 | `NathanTV.fr` | Nathan TV |
-| `NCATV.fr` | NCA-TV |
 | `NinaTVEnglish.fr` | Nina TV English |
 | `NinaTVFrench.fr` | Nina TV French |
 | `NLMTV.fr` | NLM TV |
-| `NollywoodTV.fr` | Nollywood TV |
 | `NollywoodTVEpic.fr` | Nollywood TV Epic |
-| `NOVO19.fr` | NOVO19 |
-| `Novocomedy.fr` | Novocomedy |
 | `OCS.fr` | OCS |
 | `OCtele.fr` | OCtele |
 | `OFIVETV.fr` | OFIVE TV |
 | `P2MTV.fr` | P2M TV |
 | `ParamountChannelOffset.fr` | Paramount Channel Offset |
-| `PearlDiffusion.fr` | Pearl Diffusion |
 | `Persiana1.fr` | Persiana 1 |
 | `PersianaBillboard.fr` | Persiana Billboard |
 | `PersianaCinema.fr` | Persiana Cinema |
@@ -315,7 +295,6 @@
 | `RTL2.fr` | RTL2 |
 | `RTVHF.fr` | RTVHF |
 | `RugbyZoneTV.fr` | RugbyZone.TV |
-| `SciFi.fr` | SciFi |
 | `ScreamIN.fr` | ScreamIN |
 | `Seasons.fr` | Seasons |
 | `SenatDirect.fr` | Senat Direct |
