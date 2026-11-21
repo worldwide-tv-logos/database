@@ -37,7 +37,7 @@ heavy use.
 | [`logos.json`](https://worldwide-tv-logos.github.io/database/logos.json) | every logo; a drop-in replacement for iptv-org's `logos.json` (same fields: `channel`, `feed`, `in_use`, `tags`, `width`, `height`, `format`, `url`), plus `country`, `variant` and `updated` |
 | [`aliases.json`](https://worldwide-tv-logos.github.io/database/aliases.json) | TV guide IDs that differ from iptv-org: `epg_id`, `source`, `channel`, `feed` |
 
-Static files, no key, updated every night. Details and examples: [API page](https://worldwide-tv-logos.github.io/database/#/api).
+Static files, no key, updated every night. Details and examples: [API page](https://worldwide-tv-logos.github.io/database/docs/getting-started/api).
 
 ## Where the logos come from
 
@@ -89,7 +89,7 @@ data/rejected.csv    logos refused in review, never proposed again
 logos/<cc>/          the logos (PNG), named after their iptv-org ID
 sources/<cc>/        the originals they were built from (same name, original extension)
 missing/<cc>.md      iptv-org channels of the country that still have no logo here
-site/                the website (static pages; its data is built by `logos export`)
+site/                the website (Nuxt, from the Nuxt UI docs template; its data is built by `logos export`)
 worldwide_tv_logos/  the tools (`uv run logos --help`, see .github/docs/scripts.md)
 tests/               tests of the tools
 ```

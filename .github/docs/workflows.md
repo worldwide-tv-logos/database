@@ -79,8 +79,12 @@ days without activity.
 ## deploy
 
 On every push to `main` and after every nightly `update` (a push made by a workflow starts no other workflow):
-`logos export` builds the website (`site/` plus the data of every iptv-org country and channel) with `logos.json`
-and `aliases.json`, and publishes it to the `gh-pages` branch: https://worldwide-tv-logos.github.io/database/
+`logos export` builds the data of the website (every iptv-org country and channel), `logos.json` and
+`aliases.json` in `.api/`; `npx nuxt generate` builds the website (`site/`, Nuxt) and the data is copied next to its
+pages, then everything is published to the `gh-pages` branch: https://worldwide-tv-logos.github.io/database/
+
+To work on the website: `uv run logos export`, then in `site/`: `npm ci` and `npm run dev` (the data of `.api/` is
+served by the development server).
 
 ## Labels to create in the repository
 

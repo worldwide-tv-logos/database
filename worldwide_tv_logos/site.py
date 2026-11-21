@@ -4,19 +4,17 @@
     countries/<cc>.json       {code, name, flag, channels: [...]}     channels of a country, their feeds and logos
     search.json               [[id, name, cc, logos]]                 every channel, for the global search
 
-NSFW channels are left out. The static pages in site/ are copied next to these files.
+NSFW channels are left out. The website itself (site/, Nuxt) reads these files; it is built by `npm run generate`.
 """
 from __future__ import annotations
 
 import json
-import shutil
 from collections import defaultdict
 from pathlib import Path
 
 from worldwide_tv_logos.db import Database
 from worldwide_tv_logos.iptvorg import IptvOrg
 
-SITE_DIR = 'site'
 CHANNEL_KEYS = ('name', 'alt_names', 'network', 'categories', 'website', 'launched', 'closed', 'replaced_by')
 
 
@@ -62,8 +60,5 @@ def build(db: Database, iptv: IptvOrg, countries: list[dict], out: Path) -> dict
     index.sort(key=lambda x: x['name'].lower())
     _dump(out / 'countries.json', index)
     _dump(out / 'search.json', search)
-    site = db.root / SITE_DIR
-    if site.is_dir():
-        shutil.copytree(site, out, dirs_exist_ok=True)
     return {'countries': len(index), 'channels': sum(x['channels'] for x in index),
             'with_logo': sum(x['logos'] for x in index)}

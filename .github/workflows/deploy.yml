@@ -19,9 +19,22 @@ jobs:
       - uses: astral-sh/setup-uv@v6
       - run: uv sync
       - run: uv run logos export
+      # the website (site/, Nuxt): static pages, then the data and logos of .api/ next to them
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: site/package-lock.json
+      - run: npm ci
+        working-directory: site
+      - run: npx nuxt generate
+        working-directory: site
+        env:
+          NUXT_APP_BASE_URL: /database/
+      - run: cp -r .api/. site/.output/public/
       - uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ github.token }}
-          publish_dir: ./.api
+          publish_dir: ./site/.output/public
           publish_branch: gh-pages
           commit_message: '[bot] deploy'

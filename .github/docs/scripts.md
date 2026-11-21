@@ -9,7 +9,7 @@ Python 3.12 and [uv](https://docs.astral.sh/uv/). `uv sync` once, then `uv run l
 | `logos issue-validate --number N --labels L` | checks one request (body in `RAW_BODY`); writes the problems to `temp/errors.md` |
 | `logos update` | applies the approved issues (`GITHUB_REPOSITORY`, `GITHUB_TOKEN`); writes `temp/processed.txt` and `temp/changes.json` |
 | `logos notify --commit SHA` | comments each processed issue with what changed |
-| `logos export [--offline]` | writes `.api/logos.json`, `.api/aliases.json` and (unless `--offline`) the website (`.api/index.html`, `countries.json`, `countries/<cc>.json`, `search.json`) and `missing/<cc>.md` |
+| `logos export [--offline]` | writes `.api/logos.json`, `.api/aliases.json` and (unless `--offline`) the data of the website (`countries.json`, `countries/<cc>.json`, `search.json`) and `missing/<cc>.md` |
 | `logos harvest --country <cc> [--updates] [--pause s] [--limit n]` | best logo of each channel of a country from iptv-org, iptv-epg (logos of its TV guide for the country, matched by guide alias, ID or name, cached one day in `.cache/iptv-epg/`) and Wikidata, same checks as requests, into `temp/harvest/<cc>/` (manifest.csv for `logos import`, report.csv, doubts.csv, summary.md, contact sheets); `--updates` also proposes newer or better versions of current logos |
 | `logos reject <channel> --base <main checkout> [--reason r]` | refuse a logo of a harvest pull request: back to the logo of main, URL added to `data/rejected.csv` |
 | `logos sheet --changed [--base ref] \| --channels A,B \| --country cc` | contact sheets of logos of the repository (temp/sheets/) |
