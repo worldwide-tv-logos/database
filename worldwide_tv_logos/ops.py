@@ -35,7 +35,7 @@ def set_logo(db: Database, channel: str, feed: str, original: bytes, origin: str
         raise RequestError(str(exc)) from None
     today = today or date.today().isoformat()
     changes = []
-    white = image.white_variant(img)
+    img, white = image.variants(img)
     pngs = {v: image.png_bytes(p) for v, p in (('', img), ('white', white)) if p is not None}
     if any(len(b) > image.MAX_FILE for b in pngs.values()):
         raise RequestError(f'logo heavier than {image.MAX_FILE // 1000} KB once converted (too detailed)')

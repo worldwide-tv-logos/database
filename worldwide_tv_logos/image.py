@@ -173,3 +173,80 @@ def check_file(path: Path, white: bool = False) -> list[str]:
         if bbox and (bbox[0] > 1 or bbox[1] > 1 or bbox[2] < w - 1 or bbox[3] < h - 1):
             errors.append(f'empty margin (drawing {bbox} in {w}x{h}): trim to the drawing')
     return errors
+
+
+WHITE_EDGE = 0.25               # share of the drawing's outline that is white above which it is made for dark screens
+
+
+def white_edge_share(img: Image.Image) -> float:
+    """Share of the drawing's outline (opaque pixels next to transparency) that is white or light grey.
+    High for white letters on a transparent background (readable on dark screens only); low for white text inside a
+    coloured block (CANAL+), whose outline is the block."""
+    a = np.asarray(img)
+    opaque = a[:, :, 3] > 128
+    clear = np.pad(a[:, :, 3] < 32, 2, constant_values=True)
+    near = np.zeros_like(opaque)
+    h, w = opaque.shape
+    for dy in range(5):
+        for dx in range(5):
+            near |= clear[dy:dy + h, dx:dx + w]
+    edge = opaque & near
+    if not edge.any():
+        return 0.0
+    light = a[:, :, :3].min(axis=2) > 200
+    return float((edge & light).sum() / edge.sum())
+
+
+INK = 20                        # grey level of the dark version of a white logo
+OUTER_MAJORITY = 0.5            # share of the white on the outline above which all the white is turned dark
+MERGE_SHARE = 0.1               # share of black parts touching the white ones above which they would merge
+
+
+def _dilate(mask: np.ndarray, r: int = 1) -> np.ndarray:
+    h, w = mask.shape
+    pad = np.pad(mask, r)
+    out = np.zeros_like(mask)
+    for dy in range(2 * r + 1):
+        for dx in range(2 * r + 1):
+            out |= pad[dy:dy + h, dx:dx + w]
+    return out
+
+
+def _light(a: np.ndarray) -> np.ndarray:
+    rgb = a[:, :, :3].astype(np.int16)
+    return (a[:, :, 3] > 0) & (rgb.min(axis=2) > 170) & ((rgb.max(axis=2) - rgb.min(axis=2)) < NEUTRAL_SPREAD)
+
+
+def outer_white(a: np.ndarray) -> np.ndarray:
+    """White / light grey parts connected to the outline of the drawing (white letters on a transparent background),
+    not those inside a coloured block (white letters of BFM PARIS inside its blue square)."""
+    light = _light(a)
+    cur = light & _dilate(a[:, :, 3] < 32, 2)
+    while True:
+        grown = _dilate(cur) & light
+        if (grown == cur).all():
+            return cur
+        cur = grown
+
+
+def dark_version(img: Image.Image) -> Image.Image | None:
+    """The white parts on the outline turned dark, so that a logo made for dark screens is readable on a light
+    background. None when its white is a box carrying black text (LCP, TELE 1): they would merge."""
+    a = np.asarray(img).copy()
+    white, light = outer_white(a), _light(a)
+    if white.sum() >= OUTER_MAJORITY * light.sum():     # mostly white letters: all of them (NICKELODEON)
+        white = light
+    rgb = a[:, :, :3].astype(np.int16)
+    dark = (a[:, :, 3] > 128) & (rgb.max(axis=2) < DARK_NEUTRAL) & ((rgb.max(axis=2) - rgb.min(axis=2)) < NEUTRAL_SPREAD)
+    if dark.any() and (dark & _dilate(white, 2)).sum() > MERGE_SHARE * dark.sum():
+        return None
+    a[white, 0:3] = INK
+    return Image.fromarray(a, 'RGBA')
+
+
+def variants(img: Image.Image) -> tuple[Image.Image, Image.Image | None]:
+    """(logo, white variant or None). A logo whose outline is white (made for dark screens) becomes its own white
+    variant, and the logo is its dark version; a mostly black or grey logo gets a white variant (white_variant)."""
+    if white_edge_share(img) > WHITE_EDGE and (dark := dark_version(img)) is not None:
+        return dark, img
+    return img, white_variant(img)

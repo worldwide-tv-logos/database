@@ -269,3 +269,16 @@ def test_logos_json_is_a_drop_in_for_iptv_org(db):
     assert list(rec)[:8] == iptv_org_fields
     assert rec['url'] == 'https://worldwide-tv-logos.github.io/database/logos/fr/TF1.fr.png'
     assert rec['country'] == 'fr' and rec['format'] == 'PNG' and rec['tags'] == []
+
+
+def test_white_logo_gets_a_dark_version_and_white_box_with_black_text_is_kept():
+    from PIL import Image as PILImage
+    from PIL import ImageDraw as PILDraw
+    letters = PILImage.new('RGBA', (800, 300), (0, 0, 0, 0))
+    PILDraw.Draw(letters).rectangle((0, 0, 799, 299), outline=(255, 255, 255, 255), width=40)   # white on clear
+    main, white = image.variants(letters)
+    assert white is letters and main.getpixel((10, 10))[:3] == (image.INK,) * 3
+    box = PILImage.new('RGBA', (800, 300), (255, 255, 255, 255))
+    PILDraw.Draw(box).rectangle((200, 100, 600, 200), fill=(0, 0, 0, 255))                       # black text in a white box
+    main, white = image.variants(box)
+    assert main is box and white is None

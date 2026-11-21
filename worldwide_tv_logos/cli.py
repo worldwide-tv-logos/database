@@ -188,6 +188,46 @@ def cmd_notify(args, db: Database) -> int:
     return 0
 
 
+def cmd_reprocess(args, db: Database) -> int:
+    """Rebuild every logo from its original in sources/ after a change of the image rules; only the logos whose
+    result differs are rewritten."""
+    changed = 0
+    for logo in sorted((x for x in db.logos.values() if not x.variant), key=lambda x: x.key):
+        sources = db.source_files(logo)
+        if len(sources) != 1:
+            print(f'{logo.stem}: original missing, skipped')
+            continue
+        original = sources[0].read_bytes()
+        img, white = image.variants(image.prepare(original)[0])
+        expected = {'': image.png_bytes(img), 'white': image.png_bytes(white) if white is not None else None}
+        current = {v: (db.path(db.logos[(logo.channel, logo.feed, v)].file).read_bytes()
+                       if (logo.channel, logo.feed, v) in db.logos else None) for v in ('', 'white')}
+        if expected == current:
+            continue
+        changed += 1
+        for change in ops.set_logo(db, logo.channel, logo.feed, original, logo.origin, None):
+            print(f'{logo.stem}: {change}')
+    db.save()
+    print(f'{changed} logo(s) rebuilt')
+    return 0
+
+
+def cmd_harvest(args, db: Database) -> int:
+    from worldwide_tv_logos import harvest
+    cc = args.country.lower()
+    countries = iptvorg.load_countries(db.root)
+    folder = args.folder or harvest.folder_of(cc, countries)
+    tree = harvest.load_tree(db.root)
+    if not any(p.startswith(f'countries/{folder}/') for p in tree):
+        print(f'no tv-logos folder `countries/{folder}/` (use --folder); iptv-org logos only')
+    out = db.root / 'temp' / 'harvest' / cc
+    stats = harvest.harvest(db, iptvorg.load(db.root), cc, folder, iptvorg.load_logos(db.root), tree, out,
+                            pause=args.pause, limit=args.limit)
+    print(f"{stats['kept']} of {stats['channels']} channels have a logo to review ({stats['candidates']} candidates);"
+          f" {out.as_posix()}/sheet-*.png, then `logos import {out.as_posix()}/manifest.csv`")
+    return 0
+
+
 def logo_record(x) -> dict:
     """One entry of logos.json: the fields of iptv-org's logos.json (drop-in), then ours."""
     return {'channel': x.channel, 'feed': x.feed or None, 'in_use': True, 'tags': [x.variant] if x.variant else [],
@@ -299,6 +339,14 @@ def main(argv: list[str] | None = None) -> int:
     p = sub.add_parser('notify', help='comment the processed issues after the update commit')
     p.add_argument('--commit')
     p.set_defaults(func=cmd_notify)
+    p = sub.add_parser('reprocess', help='rebuild the logos from their originals after a change of the image rules')
+    p.set_defaults(func=cmd_reprocess)
+    p = sub.add_parser('harvest', help='collect the best logo of each channel of a country for review (temp/)')
+    p.add_argument('--country', required=True, help='two-letter code, e.g. es')
+    p.add_argument('--folder', help='tv-logos folder (default: from the country name, e.g. spain)')
+    p.add_argument('--pause', type=float, default=2.0, help='seconds between two downloads')
+    p.add_argument('--limit', type=int, default=0, help='only the first N channels (test)')
+    p.set_defaults(func=cmd_harvest)
     p = sub.add_parser('changes', help='open/update/close the "iptv-org changes" issue (GITHUB_TOKEN)')
     p.add_argument('--dry-run', action='store_true', help='print the issue body instead')
     p.set_defaults(func=cmd_changes)

@@ -66,3 +66,8 @@ def load(root: Path, opener=None) -> IptvOrg:
 def load_countries(root: Path, opener=None) -> list[dict]:
     """[{name, code, flag, languages}] from the iptv-org API (cached one day)."""
     return _get('countries.json', Path(root) / '.cache' / 'iptvorg', opener)
+
+
+def load_logos(root: Path, opener=None) -> list[dict]:
+    """iptv-org's logos.json: [{channel, feed, in_use, tags, width, height, format, url}] (cached one day)."""
+    return _get('logos.json', Path(root) / '.cache' / 'iptvorg', opener)
