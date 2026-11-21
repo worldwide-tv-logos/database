@@ -21,7 +21,7 @@ Every night at 03:00 UTC (or by hand): `logos update` applies the open issues la
 
 ## deploy
 
-When `data/` changes on `main`: `logos export` publishes `logos.json` and `aliases.json` to the `gh-pages` branch.
+On every push to `main`: `logos export` publishes `logos.json` and `aliases.json` to the `gh-pages` branch.
 
 ## Labels to create in the repository
 
