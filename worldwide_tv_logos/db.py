@@ -21,6 +21,7 @@ FEED_RE = re.compile(r'^[A-Za-z0-9]+$')
 EPG_ID_RE = re.compile(r'^[^,"\s]+$')
 VARIANTS = ('', 'white')                                     # '' : the logo itself; white : for dark backgrounds
 RAW_BASE = 'https://raw.githubusercontent.com/worldwide-tv-logos/database/main/'
+SITE_BASE = 'https://worldwide-tv-logos.github.io/database/'   # GitHub Pages (CDN): the address to use
 
 
 @dataclass
@@ -56,6 +57,10 @@ class Logo:
 
     @property
     def url(self) -> str:
+        return SITE_BASE + self.file
+
+    @property
+    def raw_url(self) -> str:
         return RAW_BASE + self.file
 
 

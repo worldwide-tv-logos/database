@@ -13,17 +13,21 @@ buttons to add, replace or request a logo).
 ## Use
 
 ```
-https://raw.githubusercontent.com/worldwide-tv-logos/database/main/logos/<cc>/<channel>[@<feed>][.white].png
+https://worldwide-tv-logos.github.io/database/logos/<cc>/<channel>[@<feed>][.white].png
 ```
 
-| Logo | Address (after `…/main/`) |
+| Logo | Address (after `…/database/`) |
 |---|---|
 | TF1 | `logos/fr/TF1.fr.png` |
 | France 3 Alsace (feed `Alsace` of `France3.fr`) | `logos/fr/France3.fr@Alsace.png` |
-| …its version for dark backgrounds | `logos/fr/France3.fr@Alsace.white.png` |
+| its version for dark backgrounds | `logos/fr/France3.fr@Alsace.white.png` |
 
-The whole index as JSON: `https://worldwide-tv-logos.github.io/database/logos.json`
-(and `aliases.json` for guide IDs).
+Images are served by GitHub Pages (a CDN); the same paths also work under
+`https://raw.githubusercontent.com/worldwide-tv-logos/database/main/`, which is not meant for heavy use.
+
+The whole index as JSON: `https://worldwide-tv-logos.github.io/database/logos.json`, a drop-in replacement for
+iptv-org's `logos.json` (same fields, plus `country`, `variant` and `updated`), and `aliases.json` for guide IDs.
+Details and examples: [API page](https://worldwide-tv-logos.github.io/database/#/api).
 
 ## Layout
 

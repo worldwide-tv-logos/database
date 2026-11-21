@@ -188,6 +188,13 @@ def cmd_notify(args, db: Database) -> int:
     return 0
 
 
+def logo_record(x) -> dict:
+    """One entry of logos.json: the fields of iptv-org's logos.json (drop-in), then ours."""
+    return {'channel': x.channel, 'feed': x.feed or None, 'in_use': True, 'tags': [x.variant] if x.variant else [],
+            'width': x.width, 'height': x.height, 'format': 'PNG', 'url': x.url,
+            'country': x.country, 'variant': x.variant or None, 'updated': x.updated or x.added}
+
+
 CHANGES_LABEL = 'iptv-org:changes'
 CHANGES_TITLE = 'Changes on the iptv-org side'
 
@@ -235,13 +242,15 @@ def cmd_export(args, db: Database) -> int:
     and `missing/<cc>.md` for the countries of data/countries.csv."""
     api = db.root / '.api'
     api.mkdir(exist_ok=True)
-    logos = [{'channel': x.channel, 'feed': x.feed or None, 'variant': x.variant or None, 'width': x.width,
-              'height': x.height, 'url': x.url, 'updated': x.updated or x.added} for x in
-             sorted(db.logos.values(), key=lambda r: r.key)]
+    logos = [logo_record(x) for x in sorted(db.logos.values(), key=lambda r: r.key)]
     (api / 'logos.json').write_text(json.dumps(logos, ensure_ascii=False), encoding='utf-8')
     aliases = [{'epg_id': a.epg_id, 'source': a.source, 'channel': a.channel, 'feed': a.feed or None}
                for a in sorted(db.aliases.values(), key=lambda r: r.key)]
     (api / 'aliases.json').write_text(json.dumps(aliases, ensure_ascii=False), encoding='utf-8')
+    if (db.root / 'logos').is_dir():                       # the images themselves, served by GitHub Pages
+        import shutil
+        shutil.rmtree(api / 'logos', ignore_errors=True)
+        shutil.copytree(db.root / 'logos', api / 'logos')
     print(f'.api/: {len(logos)} logos, {len(aliases)} aliases')
     if args.offline:
         return 0

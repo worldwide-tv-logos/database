@@ -146,3 +146,7 @@ th { color: var(--muted); font-weight: 550; }
 .ed .acts .danger { color: var(--danger); }
 .ed .thumb.inherit img { opacity: .5; }
 .ed .thumb .tag { position: absolute; bottom: 6px; left: 8px; font-size: 11.5px; color: #cfd5dd; background: rgba(0,0,0,.45); padding: 1px 7px; border-radius: 99px; }
+
+pre { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; overflow-x: auto; }
+pre code { font-size: 13px; white-space: pre; }
+td code { overflow-wrap: anywhere; }

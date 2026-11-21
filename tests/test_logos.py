@@ -260,3 +260,12 @@ def test_site_data(db, tmp_path):
     tf1 = next(c for c in fr['channels'] if c['id'] == 'TF1.fr')
     assert tf1['logos'][0]['url'].endswith('logos/fr/TF1.fr.png')
     assert json.loads((out / 'countries.json').read_text(encoding='utf-8'))[0]['name'] == 'France'
+
+
+def test_logos_json_is_a_drop_in_for_iptv_org(db):
+    ops.set_logo(db, 'TF1.fr', '', png(800, 300), 'x', IPTV)
+    rec = cli.logo_record(db.logos[('TF1.fr', '', '')])
+    iptv_org_fields = ['channel', 'feed', 'in_use', 'tags', 'width', 'height', 'format', 'url']
+    assert list(rec)[:8] == iptv_org_fields
+    assert rec['url'] == 'https://worldwide-tv-logos.github.io/database/logos/fr/TF1.fr.png'
+    assert rec['country'] == 'fr' and rec['format'] == 'PNG' and rec['tags'] == []
