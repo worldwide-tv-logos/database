@@ -374,9 +374,19 @@ def cmd_verdict(args, db: Database) -> int:
     return 0
 
 
+SHARP_SIDE = 1000      # current logos smaller than this (longest side, raster original) are hunted for a sharper version
+
+
+def _slice(items: list[str], week: int, size: int) -> list[str]:
+    if not items or size <= 0:
+        return []
+    start = (week * size) % len(items)
+    return (items[start:] + items[:start])[:size]
+
+
 def cmd_hunt(args, db: Database) -> int:
-    """Logos of channels still without one: a different slice of them every week, every source including their
-    website, for review like a harvest."""
+    """Logos of channels still without one, and sharper versions of small logos: a different slice of each every
+    week, every source including the channel website, for review like a harvest."""
     import datetime
     import shutil
 
@@ -384,18 +394,24 @@ def cmd_hunt(args, db: Database) -> int:
     cc = args.country.lower()
     iptv = iptvorg.load(db.root)
     have = {x.logo_id for x in db.logos.values()}
-    missing = [u['id'] for u in harvest.units(iptv, cc) if u['id'] not in have]
-    if not missing:
-        print('no channel without a logo')
-        return 0
+    ids = [u['id'] for u in harvest.units(iptv, cc)]
+    missing = [i for i in ids if i not in have]
+    followed = set(ids)
+    small = [x.logo_id for x in sorted(db.logos.values(), key=lambda x: x.key)
+             if not x.variant and x.logo_id in followed and max(x.width, x.height) < SHARP_SIDE
+             and not any(p.suffix == '.svg' for p in db.source_files(x))]
     week = datetime.date.today().isocalendar()[1] if args.offset is None else args.offset
-    start = (week * args.limit) % len(missing)
-    only = (missing[start:] + missing[:start])[:args.limit]
+    only = _slice(missing, week, args.limit) + _slice(small, week, args.sharpen)
+    if not only:
+        print('no channel without a logo, no small logo')
+        return 0
     out = db.root / 'temp' / 'harvest' / cc
     shutil.rmtree(out, ignore_errors=True)
-    stats = harvest.harvest(db, iptv, cc, iptvorg.load_logos(db.root), out, pause=args.pause, deep=True, only=only)
-    print(f"hunt: {stats['kept']} logo(s) found for {len(only)} of the {len(missing)} channels without one; "
-          f"{out.as_posix()}/summary.md")
+    stats = harvest.harvest(db, iptv, cc, iptvorg.load_logos(db.root), out, pause=args.pause, deep=True, only=only,
+                            updates=True)
+    print(f"hunt: {stats['kept'] - stats['updates']} logo(s) found for {min(len(missing), args.limit)} of the "
+          f"{len(missing)} channels without one, {stats['updates']} sharper or newer version(s) among "
+          f"{min(len(small), args.sharpen)} of the {len(small)} small logos; {out.as_posix()}/summary.md")
     return 0
 
 
@@ -648,6 +664,8 @@ def main(argv: list[str] | None = None) -> int:
     p = sub.add_parser('hunt', help='look for the logos of channels without one, a slice every week (temp/harvest/)')
     p.add_argument('--country', required=True)
     p.add_argument('--limit', type=int, default=40)
+    p.add_argument('--sharpen', type=int, default=30,
+                   help=f'small logos (under {SHARP_SIDE} px) checked for a sharper version')
     p.add_argument('--offset', type=int, help='slice number (default: the week of the year)')
     p.add_argument('--pause', type=float, default=2.0)
     p.set_defaults(func=cmd_hunt)

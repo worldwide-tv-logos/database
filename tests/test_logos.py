@@ -494,3 +494,17 @@ def test_white_version_rules_for_dark_logos():
                             d.rectangle((230, 40, 580, 160), fill=(224, 0, 30, 255)),         # white text in red
                             d.rectangle((260, 70, 560, 130), fill=(250, 250, 250, 255))))
     assert image.white_variant(block) is None
+
+
+def test_sharper_version_says_whether_it_is_the_same_drawing(tmp_path):
+    src = tmp_path / 'X.fr.png'
+    src.write_bytes(png(512, 200))
+    logo = Logo('X.fr', '', '', 512, 200, 'https://example.org/x.png')
+    current = 0x5A5A5A5A5A5A5A5A                                           # fingerprint of the current logo
+    same = harvest.Candidate('website', 'https://x.fr/logo.svg', data=SVG, svg=True, size=(1200, 400), fp=current)
+    assert harvest.update_reason(logo, src, same, set(), [current]) == 'vector (SVG) version found, same drawing'
+    other = harvest.Candidate('iptv-epg', 'https://e.org/x.png', data=b'x', size=(1000, 400), fp=~current & (2**256 - 1))
+    assert 'DIFFERENT drawing' in harvest.update_reason(logo, src, other, set(), [current])
+    small = harvest.Candidate('iptv-epg', 'https://e.org/x.png', data=b'x', size=(600, 240), fp=current)
+    assert harvest.update_reason(logo, src, small, set(), [current]) is None        # not clearly larger
+    assert cli._slice(['a', 'b', 'c'], 1, 2) == ['c', 'a'] and cli._slice([], 1, 2) == []

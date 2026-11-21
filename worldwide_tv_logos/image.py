@@ -231,9 +231,14 @@ def same_drawing(a: int, b: int, tolerance: int = 20) -> bool:
 
 
 def png_bytes(img: Image.Image) -> bytes:
+    """PNG file of a logo, compressed without loss by oxipng (about 15 % smaller), always RGBA (no palette or
+    colour type reduction: the files keep the same format for every user)."""
+    import oxipng
     out = io.BytesIO()
     img.save(out, 'PNG', optimize=True)
-    return out.getvalue()
+    return oxipng.optimize_from_memory(out.getvalue(), level=4, strip=oxipng.StripChunks.safe(),
+                                       bit_depth_reduction=False, color_type_reduction=False,
+                                       palette_reduction=False, grayscale_reduction=False)
 
 
 def check_file(path: Path, white: bool = False) -> list[str]:

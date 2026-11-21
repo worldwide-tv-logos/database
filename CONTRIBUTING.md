@@ -9,7 +9,7 @@
 4. A maintainer approves it (`approved`); the next nightly run downloads the image, converts it, commits it and
    closes the issue with a summary.
 
-A logo must be on a **transparent background** (a white frame is removed automatically), at least **500 px** on its
+A logo must be on a **transparent background** (a white background is removed automatically), at least **500 px** on its
 longest side; **SVG is preferred**. Use the version currently on air.
 
 ## All the forms

@@ -64,7 +64,7 @@ prepares the changes following [CLAUDE.md](CLAUDE.md), and maintainers keep the 
 | Every request | automatic checks (IDs, image), then Claude's review: clear cases are approved, doubts go to a maintainer; a wanted logo is looked for by Claude |
 | Every night | approved requests applied, data validated, website and API published |
 | Sunday | harvest: new and better logos for every followed country, one pull request per country |
-| Wednesday | hunt: a weekly slice of the channels still without a logo, every source including their website |
+| Wednesday | hunt: a weekly slice of the channels still without a logo, and of the small logos for a sharper version, every source including their website |
 | Monday | changes on the iptv-org side (channel renamed, replaced or removed) applied |
 | 1st of the month | activity report as an issue |
 

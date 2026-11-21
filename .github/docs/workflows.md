@@ -33,7 +33,9 @@ One pull request per country of `data/countries.csv` (skipped while the previous
   `harvest/<cc>`). A new iptv-org channel of a followed country is therefore looked for the first Sunday after it
   appears;
 - **Wednesday 04:00 UTC, hunt**: `logos hunt --country <cc>`: a different slice of 40 channels still without a logo
-  every week, every source including the channel website (branch `hunt/<cc>`).
+  and of 30 small logos (under 1000 px, raster original) every week, every source including the channel website:
+  missing logos, and sharper versions of the small ones (SVG, or 1.5 times larger), each marked "same drawing" or
+  "DIFFERENT drawing" (branch `hunt/<cc>`).
 
 The logos found are imported, then Claude looks at every one of them on the contact sheets, rejects the wrong ones
 (`logos reject`), looks for better ones (`logos find`, `logos set`) and records its decision (`logos verdict`).

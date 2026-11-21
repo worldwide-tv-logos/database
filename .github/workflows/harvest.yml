@@ -1,6 +1,7 @@
 name: harvest
 # Sunday: harvest (new logos and better versions of current ones, from iptv-org, iptv-epg and Wikidata).
-# Wednesday: hunt (a slice of the channels still without a logo, every source including their website).
+# Wednesday: hunt (a slice of the channels still without a logo and of the small logos, every source including their
+# website).
 # One pull request per followed country (data/countries.csv), reviewed by Claude, merged automatically when Claude
 # says it is ready and the repository variable AUTO_MERGE is not false.
 on:
@@ -96,7 +97,9 @@ jobs:
             You decide every logo yourself, nobody reviews after you. The Source column of the summary says where
             each logo comes from: a logo from iptv-epg, iptv-org or a website other than the channel's own must be
             confirmed on the web (the channel's website, or a web search for its current logo) before you keep it;
-            say which page confirmed it in the report.
+            say which page confirmed it in the report. An update marked "same drawing" only replaces a logo by a
+            sharper file of it: check that it is clean (no background, nothing cut). An update marked "DIFFERENT
+            drawing" is kept only if you confirmed on the web that it is the current branding of the channel.
             - unsure that a logo is right and current: check it (channel website, web search, and
               `uv run logos find <channel id>`, which lists every candidate with a contact sheet
               temp/find/<id>/sheet-01.png); apply a clearly better one with `uv run logos set <channel id> <url>`;

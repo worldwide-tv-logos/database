@@ -236,17 +236,21 @@ def load_rejected(root: Path) -> set[tuple[str, str]]:
         return {(r['channel'], r['url']) for r in csv.DictReader(fh)}
 
 
-def update_reason(logo, source: Path, best: Candidate, iptv_urls: set[str]) -> str | None:
-    """Why the best candidate should replace the current logo, or None (no clear improvement)."""
+def update_reason(logo, source: Path, best: Candidate, iptv_urls: set[str], current_fps: list[int] = ()) -> str | None:
+    """Why the best candidate should replace the current logo, or None (no clear improvement). A sharper version
+    says whether it is the same drawing as the current logo (`current_fps`: fingerprints of the logo and its white
+    variant) or another one, to be checked as the current branding."""
     current = source.read_bytes()
     if best.data == current:
         return None
     if best.url == logo.origin:
         return 'the original changed at its source'
+    same = any(image.same_drawing(fp, best.fp) for fp in current_fps) if best.fp else False
+    drawing = 'same drawing' if same else 'DIFFERENT drawing: check that it is the current branding'
     if best.svg and not image.is_svg(current):
-        return 'vector (SVG) version found'
+        return f'vector (SVG) version found, {drawing}'
     if max(best.size) >= 1.5 * max(logo.width, logo.height):
-        return f'larger ({best.size[0]}x{best.size[1]} instead of {logo.width}x{logo.height})'
+        return f'larger ({best.size[0]}x{best.size[1]} instead of {logo.width}x{logo.height}), {drawing}'
     if best.source == 'iptv-org' and logo.origin.startswith('https://') and logo.origin not in iptv_urls \
             and iptv_urls:
         return 'iptv-org replaced the logo of this channel'
@@ -353,7 +357,9 @@ def harvest(db: Database, iptv: IptvOrg, cc: str, iptv_logos: list[dict], out: P
             logo = current[c['id']]
             sources = db.source_files(logo)
             urls = {x['url'] for x in by_channel.get((c['channel'], c['feed']), ())}
-            reason = update_reason(logo, sources[0], best, urls) if len(sources) == 1 else None
+            fps = [image.fingerprint(Image.open(db.path(x.file)).convert('RGBA'))
+                   for x in (logo, db.logos.get((logo.channel, logo.feed, 'white'))) if x and db.path(x.file).is_file()]
+            reason = update_reason(logo, sources[0], best, urls, fps) if len(sources) == 1 else None
             if not reason:
                 continue
             changes[c['id']] = reason
