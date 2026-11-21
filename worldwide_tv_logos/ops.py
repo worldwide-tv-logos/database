@@ -86,3 +86,9 @@ def set_alias(db: Database, epg_id: str, source: str, channel: str, feed: str, i
     old = db.aliases.get(alias.key)
     db.aliases[alias.key] = alias
     return [f'{"changed" if old else "added"} alias {source}:{epg_id} -> {channel}{"@" + feed if feed else ""}']
+
+
+def remove_alias(db: Database, epg_id: str, source: str) -> list[str]:
+    if db.aliases.pop((source, epg_id), None) is None:
+        raise RequestError(f'no alias `{source}:{epg_id}` in this repository')
+    return [f'removed alias {source}:{epg_id}']

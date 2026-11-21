@@ -1,0 +1,43 @@
+name: '🔗 aliases/remove'
+description: Remove a wrong link between a TV guide ID and an iptv-org ID
+title: 'Remove alias: '
+labels: ['aliases:remove']
+
+body:
+  - type: input
+    id: epg_id
+    attributes:
+      label: EPG ID
+      placeholder: 'France3-Alsace.fr'
+    validations:
+      required: true
+
+  - type: input
+    id: epg_source
+    attributes:
+      label: EPG source
+      placeholder: 'iptv-epg-fr'
+    validations:
+      required: true
+
+  - type: input
+    id: channel_id
+    attributes:
+      label: Channel ID
+      description: iptv-org ID the alias currently points to
+      placeholder: 'France3.fr'
+    validations:
+      required: true
+
+  - type: input
+    id: feed_id
+    attributes:
+      label: Feed ID (optional)
+      placeholder: 'Alsace'
+
+  - type: textarea
+    id: reason
+    attributes:
+      label: Reason
+    validations:
+      required: true

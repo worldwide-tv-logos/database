@@ -12,10 +12,27 @@
 A logo must be on a **transparent background** (a white frame is removed automatically), at least **500 px** on its
 longest side; **SVG is preferred**. Use the version currently on air.
 
-## Remove a logo / link a guide ID
+## All the forms
 
-- [Remove form](../../issues/new?template=02_logos_remove.yml): wrong or outdated logo.
-- [Alias form](../../issues/new?template=03_aliases_add.yml): the ID a TV guide uses for the channel.
+| Form | Use it to | Applied by the bot |
+|---|---|---|
+| [logos/add](../../issues/new?template=01_logos_add.yml) | add the logo of a channel that has none here | yes |
+| [logos/edit](../../issues/new?template=02_logos_edit.yml) | replace a logo (new branding, better quality, wrong logo) | yes |
+| [logos/remove](../../issues/new?template=03_logos_remove.yml) | remove a wrong or outdated logo | yes |
+| [logos/request](../../issues/new?template=04_logos_request.yml) | ask for a logo when you do not have the image | no: someone answers with logos/add |
+| [aliases/add](../../issues/new?template=05_aliases_add.yml) | link the ID a TV guide uses to the iptv-org ID | yes |
+| [aliases/remove](../../issues/new?template=06_aliases_remove.yml) | remove a wrong alias | yes |
+
+### A channel that is not in iptv-org
+
+Every logo is attached to an iptv-org channel, so that its name is stable and shared with guides and playlists.
+[Add the channel to iptv-org](https://github.com/iptv-org/database/issues/new?template=01_channels_add.yml) first;
+once it is there (usually the next day), submit its logo here.
+
+### A channel without a TV guide ID
+
+Nothing to do: a guide ID is optional. Logos are found by iptv-org ID; an alias is only useful when a guide uses a
+different ID for the channel.
 
 ## Many logos at once (pull request)
 
@@ -25,7 +42,7 @@ uv run logos import my-logos.csv     # CSV: channel,feed,origin  (origin: https 
 uv run logos validate
 ```
 
-Commit `data/`, `logos/` and `sources/` together. Never rename or edit files by hand: they are derived from
+Commit `data/`, `logos/` and `sources/` together, with a commit message in English. Never rename or edit files by hand: they are derived from
 `data/logos.csv` and the checks refuse anything else.
 
 ## Data scheme

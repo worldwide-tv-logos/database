@@ -165,3 +165,28 @@ def test_update_applies_each_issue_alone_and_skips_faulty_ones(db, monkeypatch):
     assert gh.comments[0][0] == 2 and (2, ['check:failed']) in gh.labels
     assert list(json.loads((db.root / 'temp/changes.json').read_text())) == ['1']
     assert cli.validate(Database(db.root).load(), IPTV) == []
+
+
+def test_every_form_action(db):
+    fake = {'https://example.org/f3-alsace.png': png(1000, 400)}
+    get = fake.__getitem__
+    add = issues.parse(1, ['logos:add'], BODY)
+    issues.apply(add, db, IPTV, downloader=get)
+    assert 'use the logos/edit form' in issues.validate(add, db, IPTV, downloader=get)[0]
+    edit = issues.parse(2, ['logos:edit'], BODY)
+    assert issues.validate(edit, db, IPTV, downloader=get) == []
+    assert issues.apply(edit, db, IPTV, downloader=get)[0].startswith('replaced logos/fr/France3.fr@Alsace.png')
+    new_edit = issues.parse(3, ['logos:edit'], BODY.replace('France3.fr', 'TF1.fr').replace('Alsace', ''))
+    assert 'use the logos/add form' in issues.validate(new_edit, db, IPTV, downloader=get)[0]
+    request = issues.parse(4, ['logos:request'], '### Channel ID\n\nTF1.fr\n')
+    assert issues.validate(request, db, IPTV) == []
+    with pytest.raises(ops.RequestError, match='fulfilled by a logos/add'):
+        issues.apply(request, db, IPTV)
+    alias = '### EPG ID\n\nF3A.fr\n\n### EPG source\n\nx\n\n### Channel ID\n\nFrance3.fr\n\n### Feed ID\n\nAlsace\n'
+    issues.apply(issues.parse(5, ['aliases:add'], alias), db, IPTV)
+    remove = issues.parse(6, ['aliases:remove'], alias)
+    assert issues.validate(remove, db, IPTV) == []
+    assert issues.apply(remove, db, IPTV) == ['removed alias x:F3A.fr']
+    assert 'no alias' in issues.validate(remove, db, IPTV)[0]
+    gone = issues.parse(7, ['logos:remove'], BODY)
+    assert issues.apply(gone, db, IPTV)[0] == 'removed logos/fr/France3.fr@Alsace.png'

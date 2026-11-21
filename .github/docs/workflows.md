@@ -25,4 +25,6 @@ On every push to `main`: `logos export` publishes `logos.json` and `aliases.json
 
 ## Labels to create in the repository
 
-`logos:add`, `logos:remove`, `aliases:add`, `approved`, `check:passed`, `check:failed`.
+`logos:add`, `logos:edit`, `logos:remove`, `logos:request`, `aliases:add`, `aliases:remove`, `approved`,
+`check:passed`, `check:failed`. A `logos:request` issue is only checked (the channel exists and has no logo yet):
+it is closed by hand once a `logos:add` request brings the image.

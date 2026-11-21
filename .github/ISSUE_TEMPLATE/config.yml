@@ -1,5 +1,8 @@
-blank_issues_enabled: true
+blank_issues_enabled: false
 contact_links:
   - name: Missing logos by country
     url: https://github.com/worldwide-tv-logos/database/tree/main/missing
     about: Channels that still need a logo
+  - name: Channel not in iptv-org
+    url: https://github.com/iptv-org/database/issues/new?template=01_channels_add.yml
+    about: Every logo here is attached to an iptv-org channel; add the channel there first

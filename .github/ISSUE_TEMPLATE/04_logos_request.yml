@@ -1,0 +1,32 @@
+name: '🙋 logos/request'
+description: Ask for the logo of a channel when you do not have the image
+title: 'Logo wanted: '
+labels: ['logos:request']
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Anyone who finds a suitable image can then submit it with the **logos/add** form, mentioning this issue.
+        Channels without a logo are also listed by country in [missing/](../tree/main/missing).
+
+  - type: input
+    id: channel_id
+    attributes:
+      label: Channel ID
+      description: iptv-org ID of the channel ([search](https://iptv-org.github.io/))
+      placeholder: 'France3.fr'
+    validations:
+      required: true
+
+  - type: input
+    id: feed_id
+    attributes:
+      label: Feed ID (optional)
+      placeholder: 'Alsace'
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes (optional)
+      description: Where the logo can be seen (official website, social networks)

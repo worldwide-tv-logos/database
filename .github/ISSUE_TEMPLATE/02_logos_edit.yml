@@ -1,0 +1,43 @@
+name: '✏️ logos/edit'
+description: Replace a logo (new branding, better quality, wrong logo)
+title: 'Edit logo: '
+labels: ['logos:edit']
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        The new image replaces the current one under the same address, so every application using it is updated.
+        Same rules as for adding: transparent background, at least 500 px on its longest side (SVG preferred),
+        direct `https://` link.
+
+  - type: input
+    id: channel_id
+    attributes:
+      label: Channel ID
+      placeholder: 'France3.fr'
+    validations:
+      required: true
+
+  - type: input
+    id: feed_id
+    attributes:
+      label: Feed ID (optional)
+      placeholder: 'Alsace'
+
+  - type: input
+    id: logo_url
+    attributes:
+      label: Logo URL
+      description: Direct `https://` link to the new image
+      placeholder: 'https://example.com/logo.svg'
+    validations:
+      required: true
+
+  - type: textarea
+    id: reason
+    attributes:
+      label: Reason
+      description: Why the logo should be replaced (new branding since…, higher resolution, the current one is wrong)
+    validations:
+      required: true
