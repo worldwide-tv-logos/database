@@ -5,12 +5,18 @@ on:
 permissions:
   contents: read
   issues: write
+  id-token: write
+concurrency:
+  group: issue-${{ github.event.issue.number }}
+  cancel-in-progress: true
 jobs:
   validate:
     if: |
       contains(join(github.event.issue.labels.*.name, ','), 'logos:') ||
       contains(join(github.event.issue.labels.*.name, ','), 'aliases:')
     runs-on: ubuntu-latest
+    env:
+      HAS_CLAUDE: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN != '' }}
     steps:
       - name: edited after approval -> approval withdrawn (the new content has not been reviewed)
         if: github.event.action == 'edited' && contains(github.event.issue.labels.*.name, 'approved')
@@ -46,3 +52,21 @@ jobs:
           { echo "This request cannot be applied yet:"; echo; cat temp/errors.md; echo; echo "Edit the issue to fix it: it is checked again automatically."; } > temp/comment.md
           gh issue comment ${{ github.event.issue.number }} -R ${{ github.repository }} --body-file temp/comment.md
           gh issue edit ${{ github.event.issue.number }} -R ${{ github.repository }} --add-label check:failed --remove-label check:passed
+      - name: review by Claude (approves clear cases, sends doubts to a maintainer)
+        if: success() && env.HAS_CLAUDE == 'true' && !contains(github.event.issue.labels.*.name, 'logos:request')
+        uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          prompt: |
+            Repository ${{ github.repository }}, issue #${{ github.event.issue.number }}: a request that passed the
+            automatic checks. Review it following CLAUDE.md ("Reviewing a logo" or "Reviewing other requests").
+            Read the request with `gh issue view ${{ github.event.issue.number }}`. For a logo, the preview is
+            temp/preview/sheet-01.png (proposed logo, and the current one for an edit), on dark and light tiles.
+            Finish with exactly one of:
+            - `gh issue edit ${{ github.event.issue.number }} --add-label approved` and a comment with your review;
+            - `gh issue edit ${{ github.event.issue.number }} --add-label needs:maintainer` and a comment saying what
+              a maintainer must check.
+          claude_args: |
+            --permission-mode default
+            --max-turns 20
+            --allowedTools Read,WebFetch,Bash(gh issue view:*),Bash(gh issue comment:*),Bash(gh issue edit:*)

@@ -299,3 +299,14 @@ def test_reject_restores_the_logo_of_main_and_records_the_url(db, tmp_path_facto
     assert again.logos[('TF1.fr', '', '')].origin == 'https://example.org/old.png'
     assert harvest.load_rejected(db.root) == {('TF1.fr', 'https://example.org/new.png')}
     assert cli.validate(again, IPTV) == []
+
+
+def test_black_drawing_inside_a_white_disc_is_not_darkened():
+    from PIL import Image as PILImage
+    from PIL import ImageDraw as PILDraw
+    disc = PILImage.new('RGBA', (600, 600), (0, 0, 0, 0))
+    d = PILDraw.Draw(disc)
+    d.ellipse((0, 0, 599, 599), fill=(255, 255, 255, 255))
+    d.rectangle((200, 150, 400, 450), fill=(0, 0, 0, 255))                                   # thick black "10"
+    main, white = image.variants(disc)
+    assert main is disc and white is None

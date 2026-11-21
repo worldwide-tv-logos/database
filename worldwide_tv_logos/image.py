@@ -175,7 +175,7 @@ def check_file(path: Path, white: bool = False) -> list[str]:
     return errors
 
 
-WHITE_EDGE = 0.25               # share of the drawing's outline that is white above which it is made for dark screens
+WHITE_EDGE = 0.1                # share of the drawing's outline that is white above which it is made for dark screens
 
 
 def white_edge_share(img: Image.Image) -> float:
@@ -200,6 +200,7 @@ def white_edge_share(img: Image.Image) -> float:
 INK = 20                        # grey level of the dark version of a white logo
 OUTER_MAJORITY = 0.5            # share of the white on the outline above which all the white is turned dark
 MERGE_SHARE = 0.1               # share of black parts touching the white ones above which they would merge
+ENCLOSED_SHARE = 0.05           # share of black parts inside the drawing above which their surroundings count
 
 
 def _dilate(mask: np.ndarray, r: int = 1) -> np.ndarray:
@@ -210,6 +211,14 @@ def _dilate(mask: np.ndarray, r: int = 1) -> np.ndarray:
         for dx in range(2 * r + 1):
             out |= pad[dy:dy + h, dx:dx + w]
     return out
+
+
+def _exterior(a: np.ndarray) -> np.ndarray:
+    """Transparent pixels connected to the edges of the image (the outside of the drawing, not its holes)."""
+    clear = np.pad((a[:, :, 3] < 32).astype(np.uint8) * 255, 1, constant_values=255)
+    mask = Image.fromarray(clear, 'L')
+    ImageDraw.floodfill(mask, (0, 0), 128, thresh=0)
+    return (np.asarray(mask) == 128)[1:-1, 1:-1]
 
 
 def _light(a: np.ndarray) -> np.ndarray:
@@ -240,6 +249,11 @@ def dark_version(img: Image.Image) -> Image.Image | None:
     dark = (a[:, :, 3] > 128) & (rgb.max(axis=2) < DARK_NEUTRAL) & ((rgb.max(axis=2) - rgb.min(axis=2)) < NEUTRAL_SPREAD)
     if not white.any() or dark.any() and (dark & _dilate(white, 2)).sum() > MERGE_SHARE * dark.sum():
         return None
+    inside = dark & ~_dilate(_exterior(a), 2)          # black parts that do not touch the outside
+    if inside.sum() > ENCLOSED_SHARE * dark.sum():
+        ring = _dilate(inside, 3) & ~dark
+        if (ring & white).sum() > 0.5 * ring.sum():     # ...surrounded by the white: they would vanish (CANAL 10)
+            return None
     a[white, 0:3] = INK
     return Image.fromarray(a, 'RGBA')
 

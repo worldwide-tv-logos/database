@@ -31,6 +31,22 @@ harvest pull request, `logos harvest --country <cc> --updates`, `logos import` o
 a pull request from the branch `harvest/<cc>` whose description lists the new logos, the updates (with why) and the
 doubts kept out. Repository setting needed: *Allow GitHub Actions to create and approve pull requests*.
 
+When the secret `CLAUDE_CODE_OAUTH_TOKEN` is set, Claude then reviews the pull request: it looks at the contact
+sheets, rejects the wrong logos with `logos reject` (pushed to the branch) and comments its verdict. A maintainer
+merges.
+
+## Review by Claude (validate_issue)
+
+When the secret `CLAUDE_CODE_OAUTH_TOKEN` is set, a request that passes the checks is reviewed by Claude following
+CLAUDE.md: the preview of the logo (`temp/preview/sheet-01.png`, on dark and light tiles) is compared with the
+channel; a clear case gets `approved` (applied the next night), a doubt gets `needs:maintainer` with what to check.
+Issue texts are treated as data: Claude can only read, comment and label.
+
+## claude
+
+A maintainer (owner, member or collaborator) writes `@claude` in an issue or a pull request: Claude answers there,
+and works on a branch with a pull request when asked to change something.
+
 ## harvest_reject
 
 A comment `/reject <channel id> <reason>` from a maintainer on a harvest pull request: `logos reject` gives the channel
@@ -53,6 +69,6 @@ and `aliases.json`, and publishes it to the `gh-pages` branch: https://worldwide
 ## Labels to create in the repository
 
 `logos:add`, `logos:edit`, `logos:remove`, `logos:request`, `aliases:add`, `aliases:remove`, `approved`,
-`check:passed`, `check:failed`, `iptv-org:changes`, `waiting:iptv-org` (a logo for a channel or feed not in iptv-org yet: kept
+`check:passed`, `check:failed`, `needs:maintainer`, `iptv-org:changes`, `waiting:iptv-org` (a logo for a channel or feed not in iptv-org yet: kept
 `approved`, tried again every night, applied as soon as iptv-org has it). A `logos:request` issue is only checked (the channel exists and has no logo yet):
 it is closed by hand once a `logos:add` request brings the image.

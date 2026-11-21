@@ -10,39 +10,94 @@ on:
 permissions:
   contents: write
   pull-requests: write
+  id-token: write
 concurrency: harvest
 jobs:
-  harvest:
+  countries:
     runs-on: ubuntu-latest
-    timeout-minutes: 300
+    outputs:
+      list: ${{ steps.list.outputs.list }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: followed countries without a harvest pull request under review
+        id: list
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ONLY: ${{ inputs.country }}
+        run: |
+          out=()
+          for cc in $(tail -n +2 data/countries.csv | cut -d, -f1); do
+            if [ -n "$ONLY" ] && [ "$cc" != "$ONLY" ]; then continue; fi
+            if [ -n "$(gh pr list -R "$GITHUB_REPOSITORY" --head "harvest/$cc" --state open --json number --jq '.[0].number')" ]; then
+              echo "$cc: the previous harvest is still under review"; continue
+            fi
+            out+=("\"$cc\"")
+          done
+          echo "list=[$(IFS=,; echo "${out[*]}")]" >> "$GITHUB_OUTPUT"
+
+  harvest:
+    needs: countries
+    if: needs.countries.outputs.list != '[]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    strategy:
+      max-parallel: 1                      # one download at a time
+      fail-fast: false
+      matrix:
+        cc: ${{ fromJSON(needs.countries.outputs.list) }}
+    env:
+      CC: ${{ matrix.cc }}
+      GH_TOKEN: ${{ github.token }}
+      HAS_CLAUDE: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN != '' }}
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - uses: astral-sh/setup-uv@v6
       - run: uv sync
-      - name: one pull request per followed country (skipped while the previous one is under review)
-        env:
-          GH_TOKEN: ${{ github.token }}
-          ONLY: ${{ inputs.country }}
+      - name: harvest, import, validate
+        id: harvest
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          for cc in $(tail -n +2 data/countries.csv | cut -d, -f1); do
-            if [ -n "$ONLY" ] && [ "$cc" != "$ONLY" ]; then continue; fi
-            if [ -n "$(gh pr list --head "harvest/$cc" --state open --json number --jq '.[0].number')" ]; then
-              echo "$cc: the previous harvest is still under review"; continue
-            fi
-            git switch -q -C "harvest/$cc" origin/main
-            uv run logos harvest --country "$cc" --updates
-            if [ "$(wc -l < "temp/harvest/$cc/manifest.csv")" -le 1 ]; then echo "$cc: nothing new"; continue; fi
-            uv run logos import "temp/harvest/$cc/manifest.csv"
-            uv run logos validate
-            git add data logos sources
-            if git diff --cached --quiet; then echo "$cc: nothing new"; continue; fi
-            name=$(grep "^$cc," data/countries.csv | cut -d, -f2)
-            git commit -q -m "Weekly harvest: $name"
-            git push -q -f origin "harvest/$cc"
-            gh pr create --head "harvest/$cc" --base main --title "Weekly harvest: $name" \
-              --body-file "temp/harvest/$cc/summary.md"
-          done
+          git switch -q -C "harvest/$CC" origin/main
+          uv run logos harvest --country "$CC" --updates
+          if [ "$(wc -l < "temp/harvest/$CC/manifest.csv")" -le 1 ]; then echo "nothing new"; exit 0; fi
+          uv run logos import "temp/harvest/$CC/manifest.csv"
+          uv run logos validate
+          git add data logos sources
+          if git diff --cached --quiet; then echo "nothing new"; exit 0; fi
+          name=$(grep "^$CC," data/countries.csv | cut -d, -f2)
+          git commit -q -m "Weekly harvest: $name"
+          git push -q -f origin "harvest/$CC"
+          gh pr create --head "harvest/$CC" --base main --title "Weekly harvest: $name" \
+            --body-file "temp/harvest/$CC/summary.md"
+          echo "pr=$(gh pr view "harvest/$CC" --json number --jq .number)" >> "$GITHUB_OUTPUT"
+      - name: main branch, for logos reject
+        if: steps.harvest.outputs.pr != '' && env.HAS_CLAUDE == 'true'
+        run: git worktree add -q ../base origin/main
+      - name: review by Claude (rejects the wrong logos, sums up for the maintainer)
+        if: steps.harvest.outputs.pr != '' && env.HAS_CLAUDE == 'true'
+        uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          prompt: |
+            Repository ${{ github.repository }}, pull request #${{ steps.harvest.outputs.pr }}: the weekly harvest of
+            the country `${{ matrix.cc }}`. Review every logo following CLAUDE.md ("Reviewing a logo").
+            The list is temp/harvest/${{ matrix.cc }}/summary.md; the logos are on the contact sheets
+            temp/harvest/${{ matrix.cc }}/sheet-*.png (each logo on a dark and a light tile, numbered, with its ID).
+            For each logo that fails, run `uv run logos reject <channel id> --base ../base --reason "<short reason>"`.
+            Do not run any other command that changes files. Then post one comment with
+            `gh pr comment ${{ steps.harvest.outputs.pr }} --body "..."`: the rejected logos with their
+            reason, the logos a maintainer should look at, and your verdict (ready to merge or not).
+          claude_args: |
+            --permission-mode default
+            --max-turns 60
+            --allowedTools Read,WebFetch,Bash(uv run logos reject:*),Bash(gh pr comment:*),Bash(gh pr view:*)
+      - name: push the rejections
+        if: steps.harvest.outputs.pr != '' && env.HAS_CLAUDE == 'true'
+        run: |
+          git add -A data logos sources
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -q -m "Rejected in review by Claude"
+          git push -q origin "harvest/$CC"

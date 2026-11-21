@@ -111,6 +111,30 @@ def cmd_import(args, db: Database) -> int:
     return 0
 
 
+def _preview(db: Database, req) -> None:
+    """temp/preview/sheet-01.png: the proposed logo (and the current one, for an edit) on dark and light tiles, for
+    the review of the request (by a maintainer or by Claude)."""
+    from worldwide_tv_logos import harvest
+    channel, feed = req.get('channel_id'), req.get('feed_id')
+    label = channel + (f'@{feed}' if feed else '')
+    rows = []
+    try:
+        data = net.download(req.get('logo_url'))
+        img = image.prepare(data)[0]
+        rows.append(({'id': label, 'name': f'proposed: {label}'},
+                     harvest.Candidate('request', req.get('logo_url'), data, image.is_svg(data), img.size)))
+        old = db.logos.get((channel, feed, ''))
+        if old is not None and len(db.source_files(old)) == 1:
+            data = db.source_files(old)[0].read_bytes()
+            rows.append(({'id': label, 'name': f'current: {label}'},
+                         harvest.Candidate('current', old.origin, data, image.is_svg(data), image.prepare(data)[0].size)))
+        out = db.root / 'temp' / 'preview'
+        out.mkdir(parents=True, exist_ok=True)
+        harvest.contact_sheets(rows, out)
+    except (image.ImageError, net.DownloadError, OSError) as exc:
+        print(f'no preview ({exc})')
+
+
 def cmd_issue_validate(args, db: Database) -> int:
     body = os.environ.get('RAW_BODY', '') if args.body is None else args.body
     labels = [x.strip() for x in (args.labels or '').split(',') if x.strip()]
@@ -131,6 +155,8 @@ def cmd_issue_validate(args, db: Database) -> int:
          'channel: nothing else to do.') if waiting and not errors else '', encoding='utf-8')
     if waiting and not errors:
         print(f'waiting: {waiting}')
+    if not errors and req.kind in ('logos:add', 'logos:edit'):
+        _preview(db, req)
     for e in errors:
         print(e)
     return 1 if errors else 0

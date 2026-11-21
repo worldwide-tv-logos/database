@@ -5,6 +5,12 @@ Maintainers review requests; the bot does everything else. A maintainer never ed
 
 ## Daily routine
 
+Claude reviews every request and every harvest pull request first (see CLAUDE.md): it approves the clear requests,
+rejects the wrong harvested logos, and labels the rest `needs:maintainer`. Your part is mostly the
+[requests a maintainer must check](../../issues?q=is%3Aopen+label%3Aneeds%3Amaintainer), merging the harvest pull
+requests, and checking Claude's decisions from time to time. Write `@claude` in an issue or pull request to ask it
+something.
+
 1. Open the [requests that passed the checks](../../issues?q=is%3Aopen+label%3Acheck%3Apassed+-label%3Aapproved).
 2. For each one, review it (below), then add the `approved` label, or comment and close it.
 3. Done: the nightly `update` workflow (03:00 UTC) applies each approved request alone, commits it, closes the
