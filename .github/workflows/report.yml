@@ -35,4 +35,4 @@ jobs:
           claude_args: |
             --permission-mode default
             --max-turns 30
-            --allowedTools Read,Bash(git log:*),Bash(gh pr list:*),Bash(gh pr view:*),Bash(gh issue list:*),Bash(gh issue view:*),Bash(gh issue create:*)
+            --allowedTools "Read,Bash(git log:*),Bash(gh pr list:*),Bash(gh pr view:*),Bash(gh issue list:*),Bash(gh issue view:*),Bash(gh issue create:*)"
