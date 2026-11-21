@@ -5,6 +5,9 @@ on:
 permissions:
   contents: write
   pull-requests: write
+concurrency:
+  group: reject-${{ github.event.issue.number }}
+  cancel-in-progress: false
 jobs:
   reject:
     # `/reject <channel id> <reason>` written by a maintainer on a harvest pull request
