@@ -61,15 +61,16 @@ jobs:
           git add data logos sources
           if git diff --cached --quiet; then echo "nothing added"; exit 0; fi
           git commit -q -m "Bulk import of the iptv-org logos: $CC"
-          for attempt in 1 2 3 4 5; do
+          for attempt in 1 2 3 4 5 6 7 8 9 10; do
             if git pull -q --rebase origin main; then
+              # validated once above; here only the data files are rewritten (fast), so that the push comes
+              # before the next country's
               uv run python -c 'from worldwide_tv_logos.db import Database; Database(".").load().save()'
               if ! git diff --quiet -- data; then git add data && git commit -q --amend --no-edit; fi
-              uv run logos validate | grep -v '^warning' | tail -20
               if git push -q origin HEAD:main; then echo "pushed"; exit 0; fi
             else
               git rebase --abort || true
             fi
-            sleep $((attempt * 20))
+            sleep $((RANDOM % 20 + 5))
           done
           echo "could not push"; exit 1
