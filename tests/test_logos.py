@@ -588,3 +588,28 @@ def test_merge_rows_keeps_the_upstream_version_of_rows_this_commit_did_not_chang
     upstream = {'W9': 'new', 'TF1': 'a', 'M6': 'x', 'Arte': 'up'}       # W9 updated, Arte added on main meanwhile
     ours = {'W9': 'old', 'TF1': 'b', 'Gulli': 'ours'}                     # TF1 changed, M6 removed, Gulli added here
     assert merge_rows(base, upstream, ours) == {'W9': 'new', 'TF1': 'b', 'Arte': 'up', 'Gulli': 'ours'}
+
+
+def test_download_quotes_spaces_and_reports_malformed_urls():
+    from worldwide_tv_logos import net
+    seen = []
+
+    class Resp(io.BytesIO):
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *a):
+            return False
+
+    def opener(req, timeout):
+        seen.append(req.full_url)
+        return Resp(b'ok')
+
+    assert net.download('https://a.example/img/LOGO nautical WHITE.svg', opener=opener) == b'ok'
+    assert seen == ['https://a.example/img/LOGO%20nautical%20WHITE.svg']
+
+    def bad(req, timeout):
+        raise ValueError('bad url')
+
+    with pytest.raises(net.DownloadError):
+        net.download('https://a.example/x.png', opener=bad)
