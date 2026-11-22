@@ -151,6 +151,7 @@ def prepare(data: bytes) -> tuple[Image.Image, list[str]]:
     size = (max(1, round(w * scale)), max(1, round(h * scale)))
     if size != img.size:
         img = img.resize(size, Image.Resampling.LANCZOS)
+        img = trim(img)                 # a faint edge row may fade below the trim threshold once resized
     return img, notes
 
 
