@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="logo" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 200 200">
+  <!-- Generator: Adobe Illustrator 30.7.0, SVG Export Plug-In . SVG Version: 2.1.4 Build 114)  -->
+  <defs>
+    <style>
+      .st0 {
+        fill: #d42a1f;
+      }
+
+      .st1 {
+        fill: #0d0e10;
+      }
+    </style>
+  </defs>
+  <path class="st1" d="M35.3,57.1h16.3l10.3,56.6,10.3-56.6h16.3l-22.3,85.8h-8.6l-22.3-85.8Z"/>
+  <g>
+    <rect class="st1" x="93.3" y="58.4" width="13.3" height="55.7"/>
+    <circle class="st0" cx="100" cy="134" r="8.9"/>
+  </g>
+  <path class="st1" d="M164.7,142.9h-16.3l-10.3-56.6-10.3,56.6h-16.3l22.3-85.8h8.6l22.3,85.8Z"/>
+</svg>
