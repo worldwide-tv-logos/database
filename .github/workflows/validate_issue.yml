@@ -62,8 +62,10 @@ jobs:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           prompt: |
             Repository ${{ github.repository }}, issue #${{ github.event.issue.number }}: a request that passed the
-            automatic checks. Review it following CLAUDE.md ("Reviewing a logo" or "Reviewing other requests").
-            Read the request with `gh issue view ${{ github.event.issue.number }}`. For a logo, the preview is
+            automatic checks. Review it following CLAUDE.md ("Reviewing a logo", "Requests made by people" or
+            "Reviewing other requests"): a request made by a person is approved unless you find a concrete reason
+            against it; a logo you could not confirm on the web is approved, saying what you could not check.
+            Read the request with `gh issue view ${{ github.event.issue.number }} --json title,body,author,authorAssociation`. For a logo, the preview is
             temp/preview/sheet-01.png (proposed logo, and the current one for an edit), on dark and light tiles.
             You decide yourself: the best proof is `uv run logos seen-on <channel website page> <logo URL>`
             (FOUND: the logo is on the channel's site; it works where WebFetch is refused), else the web and
@@ -71,9 +73,12 @@ jobs:
             Finish with exactly one of:
             - approve: `gh issue edit ${{ github.event.issue.number }} --add-label approved` and a comment with your
               review;
-            - refuse (wrong, outdated, not clean, or unverifiable after checking):
+            - the intent is clear but the file is not the right one: a comment naming the right file (its URL) so
+              that the author edits the issue (it is checked again), the issue left open;
+            - refuse, only for a concrete reason (another channel, group logo, unrelated image, not clean, or an
+              older branding than a logo you found):
               `gh issue close ${{ github.event.issue.number }} --reason "not planned" --comment "<review>"`, the
-              review saying why and how to submit a better request (a new issue with a source).
+              review saying why and how to submit a better request.
             Only when the request cannot be judged because something is broken (a missing preview, a failing
             tool): `gh issue edit ${{ github.event.issue.number }} --add-label needs:maintainer` and a comment.
           claude_args: |
