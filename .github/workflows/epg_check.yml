@@ -1,0 +1,106 @@
+name: epg-check
+# Friday: current logos whose iptv-epg guide shows another drawing (often a newer branding), for a weekly slice of
+# 30 countries of iptv-org (every country in about 8 weeks). The channel website decides when it can (`logos
+# seen-on`): the guide's drawing on it and not ours -> replaced automatically; the other cases are reviewed by Claude.
+# One pull request per country, merged when Claude says it is ready.
+on:
+  workflow_dispatch:
+    inputs:
+      country:
+        description: 'only these countries (two-letter codes, e.g. "no se"); empty: the slice of this week'
+        required: false
+  schedule:
+    - cron: '0 4 * * 5'
+permissions:
+  contents: write
+  pull-requests: write
+  id-token: write
+concurrency: epg-check
+jobs:
+  countries:
+    runs-on: ubuntu-latest
+    outputs:
+      list: ${{ steps.list.outputs.list }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10.3.3
+      - run: uv sync
+      - id: list
+        env:
+          ONLY: ${{ inputs.country }}
+        run: |
+          uv run python - >> "$GITHUB_OUTPUT" <<'EOF'
+          import datetime, json, os
+          from worldwide_tv_logos import iptvorg
+          only = os.environ.get('ONLY', '').lower().split()
+          iptv = iptvorg.load('.')
+          codes = sorted({(c.get('country') or '').lower() for c in iptv.channels.values()
+                          if c.get('country') and not c.get('closed') and not c.get('is_nsfw')})
+          week = datetime.date.today().isocalendar()[1]
+          size = 30
+          start = (week * size) % len(codes)
+          chosen = only or (codes[start:] + codes[:start])[:size]
+          print('list=' + json.dumps(chosen))
+          EOF
+  country:
+    needs: countries
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        cc: ${{ fromJSON(needs.countries.outputs.list) }}
+    env:
+      CC: ${{ matrix.cc }}
+      GH_TOKEN: ${{ github.token }}
+      AUTO_MERGE: ${{ vars.AUTO_MERGE }}
+      HAS_CLAUDE: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN != '' }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - uses: astral-sh/setup-uv@v10.3.3
+      - run: uv sync
+      - name: compare with the guide
+        id: check
+        run: |
+          uv run logos epg-check --country "$CC"
+          s="temp/epg-check/$CC/summary.md"
+          if [ ! -f "$s" ] || ! grep -qE '^### (Replaced|To review)' "$s"; then echo "nothing to do"; exit 0; fi
+          uv run logos verdict ready "Automatic replacements only (proof: the channel website)."
+          echo "found=yes" >> "$GITHUB_OUTPUT"
+          grep -q '^### To review' "$s" && echo "review=yes" >> "$GITHUB_OUTPUT" || true
+      - name: review by Claude
+        id: review
+        if: steps.check.outputs.review == 'yes' && env.HAS_CLAUDE == 'true'
+        continue-on-error: true
+        uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          prompt: |
+            You review the iptv-epg check of the country `${{ matrix.cc }}` of ${{ github.repository }}, following
+            CLAUDE.md ("Reviewing a logo" and "Autonomous work"). The list is temp/epg-check/${{ matrix.cc }}/summary.md
+            ("To review"); the sheet temp/epg-check/${{ matrix.cc }}/sheet-01.png shows, for each case, our logo
+            then the guide's, each on a dark and a light tile. Look at every case.
+            For each case, find which one is the CURRENT logo of this exact channel: `uv run logos seen-on <page>
+            <logo>` (the channel website, or any page of the channel: FOUND is a proof), WebFetch, WebSearch.
+            - the guide's logo is the current one of this channel: `uv run logos set <id> <guide logo URL>`;
+            - the guide's logo is old, of another channel, or the same drawing as ours (a detail such as ™):
+              `uv run logos dismiss <id> <guide logo URL> --reason "<short reason>"` (never proposed again);
+            - still unverifiable after checking: leave it (it comes back in a later run).
+            Finish with exactly one `uv run logos verdict ready "<report>"`: one line per case with your decision
+            and the page that proved it. Use `hold` only if something is broken.
+          claude_args: |
+            --permission-mode default
+            --max-turns 150
+            --allowedTools "Read,WebFetch,WebSearch,Bash(uv run logos seen-on:*),Bash(uv run logos set:*),Bash(uv run logos dismiss:*),Bash(uv run logos verdict:*),Bash(uv run logos sheet:*)"
+      - name: why Claude stopped
+        if: steps.review.outcome == 'failure'
+        run: |
+          jq -r '.[] | select(.type == "result") | .result // .subtype' "$RUNNER_TEMP/claude-execution-output.json" || true
+          echo "Claude did not finish: the pull request stays on hold and is redone at the next run." >> temp/epg-check/$CC/summary.md
+          rm -f temp/verdict.json
+      - name: pull request (merged when ready unless AUTO_MERGE is false)
+        if: steps.check.outputs.found == 'yes'
+        run: bash .github/scripts/publish.sh "epg/$CC" "iptv-epg check: $CC" "temp/epg-check/$CC/summary.md"

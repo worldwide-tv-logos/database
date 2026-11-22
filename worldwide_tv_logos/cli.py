@@ -444,6 +444,34 @@ def cmd_bulk(args, db: Database) -> int:
     return 0
 
 
+def cmd_epg_check(args, db: Database) -> int:
+    """Current logos whose iptv-epg guide shows another drawing: replaced when the channel website shows the
+    guide's, else listed for review (see harvest.epg_check)."""
+    import shutil
+
+    from worldwide_tv_logos import harvest
+    iptv = iptvorg.load(db.root)
+    for cc in args.country:
+        out = db.root / 'temp' / 'epg-check' / cc.lower()
+        shutil.rmtree(out, ignore_errors=True)
+        harvest.epg_check(db, iptv, cc.lower(), out, review=args.review)
+    return 0
+
+
+def cmd_dismiss(args, db: Database) -> int:
+    """Never propose this logo URL again for this channel (data/rejected.csv): a guide logo kept out after review."""
+    from datetime import date
+    path = db.root / 'data' / 'rejected.csv'
+    new = not path.is_file()
+    with open(path, 'a', encoding='utf-8', newline='') as fh:
+        w = csv.writer(fh, lineterminator='\n')
+        if new:
+            w.writerow(['channel', 'url', 'reason', 'date'])
+        w.writerow([args.id, args.url, args.reason or '', date.today().isoformat()])
+    print(f'{args.url} will not be proposed again for `{args.id}`')
+    return 0
+
+
 def cmd_harvest(args, db: Database) -> int:
     from worldwide_tv_logos import harvest
     cc = args.country.lower()
@@ -663,6 +691,15 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument('--limit', type=int, default=0, help='only the first N channels (test)')
     p.add_argument('--updates', action='store_true', help='also propose newer or better versions of current logos')
     p.set_defaults(func=cmd_harvest)
+    p = sub.add_parser('epg-check', help='current logos whose iptv-epg guide shows another drawing (newer branding?)')
+    p.add_argument('--country', nargs='+', required=True)
+    p.add_argument('--review', type=int, default=15, help='cases listed for review at most, per country')
+    p.set_defaults(func=cmd_epg_check)
+    p = sub.add_parser('dismiss', help='never propose this logo URL again for this channel (data/rejected.csv)')
+    p.add_argument('id')
+    p.add_argument('url')
+    p.add_argument('--reason')
+    p.set_defaults(func=cmd_dismiss)
     p = sub.add_parser('bulk', help='add the iptv-org logos of whole countries directly, without review')
     p.add_argument('--country', nargs='+', required=True)
     p.add_argument('--pause', type=float, default=0.3)

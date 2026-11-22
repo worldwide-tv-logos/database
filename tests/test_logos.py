@@ -556,3 +556,27 @@ def test_bulk_adds_the_iptv_org_logos_that_pass_the_rules(db):
     assert stats == {'todo': 4, 'added': 1, 'doubts': 0}                  # France 3 (too small) and its 2 editions
     assert ('TF1.fr', '', '') in db.logos and db.logos[('TF1.fr', '', '')].origin == 'https://x.org/tf1.svg'
     assert cli.validate(Database(db.root).load(), IPTV) == []
+
+
+def test_epg_sure_match_and_newer_guide_logo_replaced_when_the_website_shows_it(db, tmp_path, monkeypatch):
+    from worldwide_tv_logos import sources
+    guide = [{'id': 'TF1guide', 'names': ['TF1'], 'icon': 'https://g.org/tf1.png'},
+             {'id': 'A', 'names': ['France 3'], 'icon': ''}, {'id': 'B', 'names': ['France 3'], 'icon': ''}]
+    epg = sources.EpgIndex(guide, [], harvest.key)
+    assert epg.sure({'id': 'TF1.fr'}, {harvest.key('TF1')})['id'] == 'TF1guide'
+    assert epg.sure({'id': 'France3.fr'}, {harvest.key('France 3')}) is None              # two guide channels
+    old = Image.new('RGBA', (800, 300), (200, 0, 0, 255))
+    old.paste((0, 0, 200, 255), (0, 0, 300, 300))                                         # blue block on the left
+    new = old.transpose(Image.Transpose.FLIP_LEFT_RIGHT)                                   # another drawing
+    old, new = _png(old), _png(new)
+    ops.set_logo(db, 'TF1.fr', '', old, 'https://x.org/old.png', IPTV)
+    iptv = IptvOrg({'TF1.fr': {'id': 'TF1.fr', 'name': 'TF1', 'country': 'FR', 'website': 'https://tf1.fr/'}}, {})
+    monkeypatch.setattr(harvest, 'load_epg', lambda db, cc, dl, log: epg)
+    get = {'https://g.org/tf1.png': new}.__getitem__
+    run = lambda out, seen: harvest.epg_check(db, iptv, 'fr', tmp_path / out, downloader=lambda u, **k: get(u),
+                                              pause=0, log=lambda s: None, seen_on=seen)
+    assert run('a', lambda page, data, dl: None) == {'checked': 1, 'replaced': 0, 'review': 1}   # website: no proof
+    assert (tmp_path / 'a' / 'sheet-01.png').is_file()
+    assert run('b', lambda page, data, dl: 'found' if data == new else None) == {'checked': 1, 'replaced': 1, 'review': 0}
+    assert db.logos[('TF1.fr', '', '')].origin == 'https://g.org/tf1.png'
+    assert run('c', lambda page, data, dl: None)['checked'] == 0                   # now the guide's URL: nothing to do

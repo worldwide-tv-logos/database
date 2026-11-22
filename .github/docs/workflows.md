@@ -72,6 +72,13 @@ and works on a branch with a pull request when asked to change something.
 A comment `/reject <channel id> <reason>` from a maintainer on a harvest pull request: `logos reject` gives the channel
 back its logo of `main` (or none) and adds the proposed URL to `data/rejected.csv`; the bot commits and answers.
 
+## epg-check
+
+Every Friday at 04:00 UTC (or by hand for given countries): `logos epg-check` for a weekly slice of 30 countries of
+iptv-org (every country in about 8 weeks). Replacements proved by the channel website are automatic; Claude reviews
+the other cases (`logos set` the guide's logo when it is the current one, `logos dismiss` it otherwise, with the page
+that proved it). One pull request per country (branch `epg/<cc>`), merged when Claude says it is ready.
+
 ## bulk
 
 By hand only: `logos bulk` for every country of iptv-org (or the countries given), four at a time, one commit per

@@ -238,6 +238,16 @@ class EpgIndex:
                 found.append(c['icon'])
         return found[:2]
 
+    def sure(self, unit: dict, keys: set[str]) -> dict | None:
+        """The guide channel of a channel or edition when there is no doubt: its guide alias, the same ID, or the
+        only guide channel with one of its names; None otherwise (no match, or several)."""
+        epg_id = self.aliases.get((unit.get('channel', unit['id']), unit.get('feed', '')))
+        for i in (epg_id, unit['id']):
+            if i in self.by_id:
+                return self.by_id[i]
+        found = {c['id'] for k in keys for c in self.by_key.get(k, [])}
+        return self.by_id[found.pop()] if len(found) == 1 else None
+
     def match(self, unit: dict, keys: set[str]) -> str | None:
         """Guide ID of a channel or edition found by name, when exactly one channel of the guide has one of its
         names and that ID differs from the iptv-org ID; None otherwise."""

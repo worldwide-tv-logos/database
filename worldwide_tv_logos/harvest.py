@@ -431,9 +431,10 @@ def summary(cc: str, kept: list[tuple[dict, Candidate]], changes: dict[str, str]
 
 def bulk(db: Database, iptv: IptvOrg, cc: str, iptv_logos: list[dict], pause: float = 0.3, downloader=None,
          log=print, ops_set=None) -> dict[str, int]:
-    """iptv-org logos of a country added directly, without review (maintainer's decision of 2026-11-22: iptv-org's
-    logos are already reviewed there): every channel and edition without a logo here whose iptv-org logo passes the
-    rules once prepared (SVG or at least MIN_SIDE px, under 1 MB). Skipped: an edition whose logo is the drawing of
+    """iptv-org and iptv-epg logos of a country added directly, without review (maintainer's decision of
+    2026-11-22: these logos are already reviewed there): every channel and edition without a logo here whose iptv-org
+    logo, or the logo of its iptv-epg guide channel found without doubt (EpgIndex.sure), passes the rules once
+    prepared (SVG or at least MIN_SIDE px, under 1 MB); the best one is kept (SVG, larger, the guide's at equal size). Skipped: an edition whose logo is the drawing of
     its channel, a URL refused before (data/rejected.csv), and the same drawing as a channel of another family
     (one of them is wrong). Errors and skips go to temp/bulk/<cc>.csv."""
     from worldwide_tv_logos import ops
@@ -448,26 +449,34 @@ def bulk(db: Database, iptv: IptvOrg, cc: str, iptv_logos: list[dict], pause: fl
     report, kept = [], []
     last = 0.0
     todo = [u for u in units(iptv, cc) if u['id'] not in current]
+    epg = load_epg(db, cc, downloader, log) if todo else None
     for u in todo:
         logos = [x for x in by_channel.get((u['channel'], u['feed']), ()) if (u['id'], x['url']) not in rejected
                  and (x.get('format') == 'SVG' or not x.get('width')
                       or max(x.get('width') or 0, x.get('height') or 0) >= image.MIN_SIDE)]
         logos.sort(key=lambda x: (x.get('format') != 'SVG', -(x.get('width') or 0)))
-        best = None
-        for x in logos[:2]:
+        tries = [('iptv-org', x['url']) for x in logos[:2]]
+        guide = epg.sure(u, channel_keys(u)) if epg else None
+        if guide and guide['icon'] and (u['id'], guide['icon']) not in rejected:
+            tries.append(('iptv-epg', guide['icon']))      # often the most recent branding
+        good = []
+        for source, url in tries:
+            if good and good[0].svg:
+                break
             wait = last + pause - time.time()
             if wait > 0:
                 time.sleep(wait)
-            cand = evaluate(Candidate('iptv-org', x['url']), downloader)
+            cand = evaluate(Candidate(source, url), downloader)
             last = time.time()
-            if not cand.error:
-                best = cand
-                break
-            report.append({'id': u['id'], 'url': x['url'], 'result': cand.error})
-        if best is None:
-            if not logos:
-                report.append({'id': u['id'], 'url': '', 'result': 'no iptv-org logo of 500 px or SVG'})
+            if cand.error:
+                report.append({'id': u['id'], 'url': url, 'result': cand.error})
+            else:
+                good.append(cand)
+        if not good:
+            if not tries:
+                report.append({'id': u['id'], 'url': '', 'result': 'no logo of 500 px or SVG (iptv-org, iptv-epg)'})
             continue
+        best = max(good, key=lambda x: (x.score, x.source == 'iptv-epg'))    # equal: the guide's, more recent
         if u['feed'] and same_as_channel(db, u, best, kept):
             report.append({'id': u['id'], 'url': best.url, 'result': 'edition with the logo of its channel'})
             continue
@@ -490,6 +499,82 @@ def bulk(db: Database, iptv: IptvOrg, cc: str, iptv_logos: list[dict], pause: fl
         w = csv.DictWriter(fh, ['id', 'url', 'result'])
         w.writeheader()
         w.writerows(report)
-    log(f'{cc}: {added} logo(s) added from iptv-org among {len(todo)} channels and editions without one, '
+    log(f'{cc}: {added} logo(s) added from iptv-org and iptv-epg among {len(todo)} channels and editions without one, '
         f'{len(doubts)} duplicate(s) skipped; details in {out.as_posix()}')
     return {'todo': len(todo), 'added': added, 'doubts': len(doubts)}
+
+
+def epg_check(db: Database, iptv: IptvOrg, cc: str, out: Path, review: int = 15, pause: float = 0.5,
+              downloader=None, log=print, seen_on=None) -> dict[str, int]:
+    """Current logos of a country whose iptv-epg guide channel (found without doubt) shows another drawing: often a
+    newer branding (NRK 1), sometimes a wrong guide channel. The channel's website (iptv-org field `website`) decides
+    when it can: the guide's drawing on it and not ours -> replaced automatically; otherwise the case goes to review
+    (at most `review` per run, listed in out/summary.md with a contact sheet: ours, then the guide's). A guide logo
+    refused before (data/rejected.csv) is never proposed again."""
+    from worldwide_tv_logos import ops, seen
+    downloader = downloader or net.download
+    seen_on = seen_on or seen.seen_on
+    epg = load_epg(db, cc, downloader, log)
+    if epg is None:
+        return {'checked': 0, 'replaced': 0, 'review': 0}
+    rejected = load_rejected(db.root)
+    current = {x.logo_id: x for x in db.logos.values() if not x.variant}
+    out.mkdir(parents=True, exist_ok=True)
+    checked, replaced, cases, last = 0, [], [], 0.0
+    for u in units(iptv, cc):
+        logo = current.get(u['id'])
+        guide = epg.sure(u, channel_keys(u)) if logo else None
+        if not guide or not guide['icon'] or guide['icon'] == logo.origin or (u['id'], guide['icon']) in rejected:
+            continue
+        wait = last + pause - time.time()
+        if wait > 0:
+            time.sleep(wait)
+        cand = evaluate(Candidate('iptv-epg', guide['icon']), downloader)
+        last = time.time()
+        if cand.error:
+            continue
+        checked += 1
+        ours = Image.open(db.path(logo.file)).convert('RGBA')
+        theirs = image.prepare(cand.data)[0]
+        if any(image.same_drawing(a, b) for a in seen.fingerprints(ours) for b in seen.fingerprints(theirs)):
+            continue                                                  # same drawing: nothing to do
+        verdict = None
+        website = u.get('website') or ''
+        if website.startswith('http'):
+            website = website.replace('http://', 'https://', 1)
+            try:
+                theirs_seen = seen_on(website, cand.data, downloader)
+                ours_seen = seen_on(website, db.source_files(logo)[0].read_bytes(), downloader) if theirs_seen else None
+                verdict = 'replace' if theirs_seen and not ours_seen else None
+            except Exception as exc:  # noqa: BLE001 - a website that cannot be read leaves the case to review
+                log(f'{u["id"]}: website unreadable ({exc})')
+        if verdict == 'replace':
+            ops.set_logo(db, u['channel'], u['feed'], cand.data, cand.url, iptv)
+            replaced.append((u, cand, website))
+            log(f'{u["id"]}: replaced by the guide logo, shown on {website}')
+        elif len(cases) < review:
+            cases.append((u, cand, ours, theirs))
+    db.save()
+    lines = [(f'iptv-epg check of `{cc}`: {checked} logos compared with their guide logo, '
+              f'**{len(replaced)} replaced** (the guide logo is on the channel website, ours is not), '
+              f'**{len(cases)} to review**.'), '']
+    if replaced:
+        lines += ['### Replaced (proof: the channel website)', '']
+        lines += [f'- `{u["id"]}` ({u["name"]}): [guide logo]({c.url}), seen on {w}' for u, c, w in replaced]
+        lines.append('')
+    if cases:
+        lines += ['### To review', '',
+                  'The guide shows another drawing; the website could not decide. Sheet: our logo, then the guide\'s.',
+                  '', '| # | Channel | ID | Guide logo | Website |', '|---|---|---|---|---|']
+        lines += [f'| {i} | {u["name"]} | `{u["id"]}` | {c.url} | {u.get("website") or ""} |'
+                  for i, (u, c, _, _) in enumerate(cases, 1)]
+        tiles = []
+        for i, (u, c, ours, theirs) in enumerate(cases, 1):
+            lo, wo = image.variants(ours)
+            lt, wt = image.variants(theirs)
+            tiles += [(f'{u["name"]} (case {i}): ours', u['id'], wo or lo, lo),
+                      (f'{u["name"]} (case {i}): guide', c.url.rsplit('/', 1)[-1][:40], wt or lt, lt)]
+        render_sheets(tiles, out)
+    (out / 'summary.md').write_text('\n'.join(lines) + '\n', encoding='utf-8', newline='\n')
+    log(f'{cc}: {checked} compared, {len(replaced)} replaced, {len(cases)} to review; {(out / "summary.md").as_posix()}')
+    return {'checked': checked, 'replaced': len(replaced), 'review': len(cases)}
