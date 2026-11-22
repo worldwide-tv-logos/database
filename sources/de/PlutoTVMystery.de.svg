@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" id="PlutoTV_CHANNELS" data-name="PlutoTV CHANNELS" viewBox="0 0 576 288">
+  <defs>
+    <style>.cls-1{fill:#ffc800;}</style>
+  </defs>
+  <g id="PlutoTV_MYSTERY" data-name="PlutoTV MYSTERY">
+    <g id="MYSTERY_-_Color" data-name="MYSTERY - Color">
+      <path class="cls-1" d="M518.08,139.7l-19,7.56v55.48H484V147.26l-19-7.56V89H480.1v40.5l11.43,4.3,11.42-4.3V89h15.13Z"/>
+      <path class="cls-1" d="M453.26,202.74H438.12V161.8l-22.84-9.2v50.14H400.15V89h15.13v11.43l38-15.13v46.87l-26.86,9.94,26.86,10.09ZM438.12,124V107.8l-22.84,9V133Z"/>
+      <path class="cls-1" d="M387.84,202.74H334.73V89h53.11v30.27H372.7V104.09H349.86v34.27l16-6.38v15.88l-16,6.82v32.93H372.7V172.33h15.14Z"/>
+      <path class="cls-1" d="M325.09,104.09H306.84v98.65H291.71V104.09h-18.1V89h51.48Z"/>
+      <path class="cls-1" d="M263.82,202.74H210.71V172.33h15.13v15.28h22.85V149.49l-38,15.13V89h53.11v30.27H248.69V104.09H225.84v38.13l38-15.13Z"/>
+      <path class="cls-1" d="M199,139.7l-19.58,7.42V178H164.28V136.88l19.43-7.42V104.09H161v15.14H145.88V89H199Zm-19.58,63H164.28V187.61h15.13Z"/>
+      <path class="cls-1" d="M134.32,202.74H119.19V107.8l-15.73,6.09V178H88.33V113.74L73.05,107.8v94.94H57.92V85.26L88.33,97.42V89h15.13v8.61l30.86-12.31Z"/>
+    </g>
+  </g>
+</svg>
