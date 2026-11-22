@@ -29,7 +29,7 @@ another family are listed in the summary ("Current logos to check") for the revi
 | `logos seen-on <page> <logo>` | is the logo (URL, `data:image/...`, file or logo ID) shown on the page? Reads it like a browser; FOUND (the SVG written in the page, or one of its images with the same drawing, by perceptual fingerprint) or NOT FOUND: the proof a reviewer gives that a logo is current |
 | `logos hunt --country <cc> [--limit 40] [--sharpen 30]` | like harvest, for a weekly slice of the channels without a logo and of the small logos (under 1000 px, raster original: a sharper version is proposed, marked same or different drawing), every source including the website |
 | `logos verdict ready\|hold "<report>"` | a reviewer's decision for the workflows (temp/verdict.json) |
-| `logos merge-data <base> <ours>` | after a rebase (workflows): `data/logos.csv` and `data/aliases.csv` merged row by row with the commit before the rebase (`ours`) against the common ancestor (`base`): a row that commit did not change keeps main's version |
+| `logos merge-data <base> <ours> [<upstream>]` | after a rebase (workflows): `data/logos.csv` and `data/aliases.csv` rebuilt from `upstream` (default `origin/main`) and the commit before the rebase (`ours`), merged row by row against their common ancestor (`base`): a row that commit did not change keeps main's version |
 | `logos reprocess` | rebuild every logo from its original after a change of the image rules |
 | `logos changes [--dry-run]` | opens, updates or closes the `iptv-org:changes` issue from the warnings of `validate` |
 

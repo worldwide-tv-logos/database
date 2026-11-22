@@ -622,13 +622,13 @@ def cmd_changes(args, db: Database) -> int:
 
 
 def cmd_merge_data(args, db: Database) -> int:
-    """After a rebase: data/logos.csv and data/aliases.csv merged row by row with the commit before the rebase
-    (`ours`) against the common ancestor (`base`), then rewritten."""
+    """After a rebase: data/logos.csv and data/aliases.csv rebuilt from main (`upstream`) and the commit before the
+    rebase (`ours`), merged row by row against their common ancestor (`base`)."""
     import subprocess
     import tempfile
     with tempfile.TemporaryDirectory() as tmp:
         roots = []
-        for name, ref in (('base', args.base), ('ours', args.ours)):
+        for name, ref in (('base', args.base), ('upstream', args.upstream), ('ours', args.ours)):
             root = Path(tmp) / name
             (root / 'data').mkdir(parents=True)
             for f in ('logos.csv', 'aliases.csv'):
@@ -784,6 +784,7 @@ def main(argv: list[str] | None = None) -> int:
     p = sub.add_parser('merge-data', help='after a rebase: merge the data files row by row with the commit before it')
     p.add_argument('base', help='common ancestor (git merge-base before the rebase)')
     p.add_argument('ours', help='the commit before the rebase')
+    p.add_argument('upstream', nargs='?', default='origin/main', help='the branch rebased onto (default: origin/main)')
     p.set_defaults(func=cmd_merge_data)
     p = sub.add_parser('export', help='write .api/ and missing/')
     p.add_argument('--offline', action='store_true', help='skip missing/ (needs iptv-org)')

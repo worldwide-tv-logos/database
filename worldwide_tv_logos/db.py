@@ -139,12 +139,13 @@ class Database:
                 self.countries = {r['code']: r['name'] for r in csv.DictReader(fh)}
         return self
 
-    def merge(self, base: Path, ours: Path) -> None:
-        """Rows of this database (upstream, e.g. after a rebase) merged with those of our commit (`ours`) against
-        their common ancestor (`base`); `base` and `ours` are repository roots holding a data/ folder."""
-        b, o = Database(base).load(), Database(ours).load()
-        self.logos = merge_rows(b.logos, self.logos, o.logos)
-        self.aliases = merge_rows(b.aliases, self.aliases, o.aliases)
+    def merge(self, base: Path, upstream: Path, ours: Path) -> None:
+        """This database's rows replaced by the merge of `upstream` (main) and `ours` (our commit) against their
+        common ancestor (`base`): repository roots holding a data/ folder. The working tree is not used as upstream:
+        after a line-by-line merge it holds both versions of a row, and the older one may be read last."""
+        b, u, o = (Database(p).load() for p in (base, upstream, ours))
+        self.logos = merge_rows(b.logos, u.logos, o.logos)
+        self.aliases = merge_rows(b.aliases, u.aliases, o.aliases)
 
     def save(self) -> None:
         _write(self.data_dir / 'logos.csv', Logo, sorted(self.logos.values(), key=lambda r: tuple(s.lower() for s in r.key)))
