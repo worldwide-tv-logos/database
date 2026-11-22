@@ -54,9 +54,10 @@ jobs:
         run: uv run logos bulk --country "$CC"
       - name: commit and push to main
         run: |
+          set -o pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          uv run logos validate > /dev/null
+          uv run logos validate | grep -v '^warning' | tail -20
           git add data logos sources
           if git diff --cached --quiet; then echo "nothing added"; exit 0; fi
           git commit -q -m "Bulk import of the iptv-org logos: $CC"
@@ -64,10 +65,10 @@ jobs:
             if git pull -q --rebase origin main; then
               uv run python -c 'from worldwide_tv_logos.db import Database; Database(".").load().save()'
               if ! git diff --quiet -- data; then git add data && git commit -q --amend --no-edit; fi
-              uv run logos validate > /dev/null
+              uv run logos validate | grep -v '^warning' | tail -20
               if git push -q origin HEAD:main; then echo "pushed"; exit 0; fi
             else
-              git rebase --abort
+              git rebase --abort || true
             fi
             sleep $((attempt * 20))
           done
