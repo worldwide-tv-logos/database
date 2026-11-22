@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" id="Pluto_TV_CHANNELS" data-name="Pluto TV CHANNELS" viewBox="0 0 576 288">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #004bff;
+      }
+    </style>
+  </defs>
+  <g id="PlutoTV_LEFFAT" data-name="PlutoTV LEFFAT">
+    <g id="LEFFAT_-_Color" data-name="LEFFAT - Color">
+      <path class="cls-1" d="M69.63,90.78v97.1h54.64v9.44H59.59V90.78h10.05Z"/>
+      <path class="cls-1" d="M201.35,90.78v9.44h-48.86v35.16h43.53v9.44h-43.53v43.07h48.86v9.44h-58.9V90.78h58.9Z"/>
+      <path class="cls-1" d="M278.5,90.78v9.44h-48.86v36.07h43.53v9.44h-43.53v51.6h-10.05V90.78h58.9Z"/>
+      <path class="cls-1" d="M355.77,90.78v9.44h-48.86v36.07h43.53v9.44h-43.53v51.6h-10.05V90.78h58.9Z"/>
+      <path class="cls-1" d="M424.49,170.07h-51.75l-10.81,27.24h-10.5l42.77-106.54h9.13l42.77,106.54h-10.81l-10.81-27.24Zm-3.65-9.44l-22.07-55.55-22.22,55.55h44.29Z"/>
+      <path class="cls-1" d="M519.61,100.21h-35.31v97.1h-10.05V100.21h-35.46v-9.44h80.82v9.44Z"/>
+    </g>
+  </g>
+</svg>

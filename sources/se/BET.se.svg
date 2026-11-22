@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 576 288" style="enable-background:new 0 0 576 288;">
+<style type="text/css">
+	.st0{fill:#F24F46;}
+</style>
+<g>
+	<rect x="201.4" y="97.5" class="st0" width="45" height="8.7"/>
+	<rect x="201.4" y="58.5" class="st0" width="45" height="8.7"/>
+	<path class="st0" d="M150.2,7.2v275.7h275.7V7.2H150.2z M300.4,26.6h106.2v31.9h-74v8.7h74v30.4h-74.1v8.7h74.1v32H300.4   L300.4,26.6z M240,263.8h-32.1v-71H240V263.8z M278.5,184.2H169.4v-31.9h109.2V184.2z M285.4,108.1c-1.5,17.3-14.2,30.2-42.8,30.2   h-73.2V26.6h71.3c25.9,0,37.1,9.9,41,25.9c2.8,11.5-2.1,23.9-7.7,29.2C278.8,85.7,286.7,92.4,285.4,108.1z M389.3,263.8l-35.9-27.1   l-35.8,27.1l13.7-43.8l-35.9-27.1l44.3,0l13.7-43.9l13.7,43.9l44.3,0L375.6,220L389.3,263.8z"/>
+</g>
+</svg>
