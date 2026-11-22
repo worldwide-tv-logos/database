@@ -580,3 +580,11 @@ def test_epg_sure_match_and_newer_guide_logo_replaced_when_the_website_shows_it(
     assert run('b', lambda page, data, dl: 'found' if data == new else None) == {'checked': 1, 'replaced': 1, 'review': 0}
     assert db.logos[('TF1.fr', '', '')].origin == 'https://g.org/tf1.png'
     assert run('c', lambda page, data, dl: None)['checked'] == 0                   # now the guide's URL: nothing to do
+
+
+def test_merge_rows_keeps_the_upstream_version_of_rows_this_commit_did_not_change():
+    from worldwide_tv_logos.db import merge_rows
+    base = {'W9': 'old', 'TF1': 'a', 'M6': 'x'}
+    upstream = {'W9': 'new', 'TF1': 'a', 'M6': 'x', 'Arte': 'up'}       # W9 updated, Arte added on main meanwhile
+    ours = {'W9': 'old', 'TF1': 'b', 'Gulli': 'ours'}                     # TF1 changed, M6 removed, Gulli added here
+    assert merge_rows(base, upstream, ours) == {'W9': 'new', 'TF1': 'b', 'Arte': 'up', 'Gulli': 'ours'}
