@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="logo" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 200 200">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #ff8111;
+      }
+
+      .cls-2 {
+        clip-path: url(#clippath-4);
+      }
+
+      .cls-3 {
+        fill: #fff;
+      }
+
+      .cls-4 {
+        mask: url(#mask);
+      }
+
+      .cls-5 {
+        fill: none;
+      }
+
+      .cls-6 {
+        clip-path: url(#clippath-1);
+      }
+
+      .cls-7 {
+        isolation: isolate;
+      }
+
+      .cls-8 {
+        clip-path: url(#clippath-5);
+      }
+
+      .cls-9 {
+        fill: #ffcf8c;
+      }
+
+      .cls-10 {
+        fill: #ff9e18;
+      }
+
+      .cls-11 {
+        clip-path: url(#clippath-2);
+      }
+
+      .cls-12 {
+        clip-path: url(#clippath);
+      }
+
+      .cls-13 {
+        opacity: .5;
+      }
+    </style>
+    <clipPath id="clippath">
+      <polygon class="cls-5" points="162.28 72.5 139.01 126.58 152.47 126.58 175.8 72.5 162.28 72.5"/>
+    </clipPath>
+    <clipPath id="clippath-1">
+      <path class="cls-5" d="M53.82,82.7c9.69,0,16.96,6.9,16.96,17.05s-7.28,17.09-16.96,17.09v10.66c17.02,0,29.63-11.62,29.63-27.5s-12.61-27.5-29.63-27.5v10.2Z"/>
+    </clipPath>
+    <clipPath id="clippath-2">
+      <path class="cls-5" d="M76.65,82.7c4.09,4.71,6.3,10.76,6.3,17.3,0,7.53-2.93,14.4-8.27,19.34-5.22,4.84-12.93,8.06-20.86,8.16,17.02,0,29.63-11.62,29.63-27.5,0-6.71-2.26-12.66-6.14-17.3h-.66Z"/>
+    </clipPath>
+    <mask id="mask" x="-16495.92" y="-15567.94" width="33039.73" height="33039.73" maskUnits="userSpaceOnUse"/>
+    <clipPath id="clippath-4">
+      <rect class="cls-5" x="50.68" y="116.56" width="3.15" height=".29"/>
+    </clipPath>
+    <clipPath id="clippath-5">
+      <path class="cls-5" d="M53.78,82.21c-4.98,0-9.48,1.78-12.67,4.99-.68.69-1.26,1.45-1.75,2.29-1.33,2.23-2.05,4.93-2.34,7.71.95-8.51,8.25-14.68,16.8-14.5h39.92l-.49-.49h-39.47Z"/>
+    </clipPath>
+  </defs>
+  <g id="g6148">
+    <g class="cls-12">
+      <g id="g2061">
+        <image id="image2059" class="cls-7" width="8" height="12" transform="translate(138.88 70.38) scale(4.9)" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAANCAYAAAB7AEQGAAAACXBIWXMAAAJOAAACTgEl1tp0AAAAMUlEQVQYlWP8P0/8PwMewJj0kpEJnwIYoJ4iFoZf/4hQ9PMvtRT9Isok+rqJCEVEAQDNgBPcQwc3cwAAAABJRU5ErkJggg=="/>
+      </g>
+    </g>
+    <path id="path2045" class="cls-10" d="M70.78,99.77c0-10.14-7.28-17.07-16.96-17.07s-16.96,6.93-16.96,17.07,7.28,17.07,16.96,17.07,16.96-6.93,16.96-17.07M24.2,100c0-15.8,12.53-27.5,29.63-27.5s29.62,11.62,29.62,27.5-12.6,27.5-29.62,27.5-29.63-11.7-29.63-27.5"/>
+    <g class="cls-6">
+      <image id="image2052" class="cls-7" width="7" height="12" transform="translate(50.74 70.38) scale(4.9)" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAANCAYAAACUwi84AAAACXBIWXMAAAJOAAACTgEl1tp0AAAARElEQVQYlWP8n8bwnwEHYJzFwMiESxIGKFfAwsDBjEf6LwMLAycLAQVc+BT8ZGBh4GIl4Aa8JjAwsDBw4nMkNcKBIAAAAUEGZobWuPEAAAAASUVORK5CYII="/>
+    </g>
+    <g id="g2070">
+      <path id="path2066" class="cls-10" d="M152.47,126.57l-23.27-54.07H53.82v10.2h39.92v43.87h12.51v-43.87h13.82l18.93,43.87h13.46Z"/>
+      <path id="path2068" class="cls-9" d="M106.26,126.57v-43.87l-.49-.49v43.87l.49.49Z"/>
+    </g>
+    <g class="cls-11">
+      <g id="g2089">
+        <g class="cls-4">
+          <image id="image2085" class="cls-7" width="7" height="10" transform="translate(50.74 80.18) scale(4.9)" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAALCAYAAABCm8wlAAAACXBIWXMAAAJOAAACTgEl1tp0AAAARUlEQVQYlWP8n8bwnwEHYJzFwMjCwMGNS56BgeErAwuDmCweBTcYWBjE5QkokFTEo4CBgYVBUomAAiYmvArwy1JFAUEAAPZTBrqgAEAaAAAAAElFTkSuQmCC"/>
+        </g>
+      </g>
+    </g>
+    <g id="g2109">
+      <path id="path2094" class="cls-1" d="M119.87,82.21h-14.1l.49.49h13.82l-.21-.49Z"/>
+      <path id="path2096" class="cls-9" d="M162.28,72.5l-.21.49h13.01l-22.87,52.96-23-53.46H53.82c-8.52,0-15.93,2.91-21.21,7.81,5.23-4.84,12.79-7.21,20.71-7.32h75.54l23.06,53.58h.54l23.33-54.07h-13.52Z"/>
+      <g id="g2105" class="cls-13">
+        <g class="cls-2">
+          <g id="g2103">
+            <path id="path2101" class="cls-3" d="M50.68,116.58c1.01.17,2.06.26,3.14.26-1.05-.02-2.11-.11-3.14-.26"/>
+          </g>
+        </g>
+      </g>
+      <path id="path2107" class="cls-9" d="M37.02,97.2c.29-2.78,1-5.47,2.34-7.71-1.94,2.88-2.99,6.43-2.99,10.26,0,4.99,1.77,9.5,4.99,12.7,2.37,2.36,5.75,3.62,9.31,4.13-8.07-1.34-13.81-7.82-13.81-16.83-.04-.68.15-2.56.16-2.55"/>
+    </g>
+    <g class="cls-8">
+      <g id="g2116">
+        <image id="image2114" class="cls-7" width="12" height="4" transform="translate(36.05 80.18) scale(4.9)" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAFCAYAAAB1j90SAAAACXBIWXMAAAJOAAACTgEl1tp0AAAAQElEQVQYlZ3NsQ2AMBAEwXkognaphBYJkBMk+4kwoZEnu2B1AXlsqTSuyp1GYj9j6StRx9HrCwNrTISJ9v9x2gMlNhAEpeEvqwAAAABJRU5ErkJggg=="/>
+      </g>
+    </g>
+  </g>
+</svg>
