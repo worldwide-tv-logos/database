@@ -427,3 +427,69 @@ def summary(cc: str, kept: list[tuple[dict, Candidate]], changes: dict[str, str]
         lines += [f'- `{lid}`: same drawing as `{other}`' for lid, other in shared]
         lines.append('')
     return '\n'.join(lines)
+
+
+def bulk(db: Database, iptv: IptvOrg, cc: str, iptv_logos: list[dict], pause: float = 0.3, downloader=None,
+         log=print, ops_set=None) -> dict[str, int]:
+    """iptv-org logos of a country added directly, without review (maintainer's decision of 2026-11-22: iptv-org's
+    logos are already reviewed there): every channel and edition without a logo here whose iptv-org logo passes the
+    rules once prepared (SVG or at least MIN_SIDE px, under 1 MB). Skipped: an edition whose logo is the drawing of
+    its channel, a URL refused before (data/rejected.csv), and the same drawing as a channel of another family
+    (one of them is wrong). Errors and skips go to temp/bulk/<cc>.csv."""
+    from worldwide_tv_logos import ops
+    downloader = downloader or net.download
+    ops_set = ops_set or ops.set_logo
+    current = {x.logo_id for x in db.logos.values()}
+    rejected = load_rejected(db.root)
+    by_channel: dict[tuple[str, str], list[dict]] = {}
+    for x in iptv_logos:
+        if x.get('in_use', True) and 'white' not in (x.get('tags') or []) and str(x.get('url', '')).startswith('https://'):
+            by_channel.setdefault((x['channel'], x.get('feed') or ''), []).append(x)
+    report, kept = [], []
+    last = 0.0
+    todo = [u for u in units(iptv, cc) if u['id'] not in current]
+    for u in todo:
+        logos = [x for x in by_channel.get((u['channel'], u['feed']), ()) if (u['id'], x['url']) not in rejected
+                 and (x.get('format') == 'SVG' or not x.get('width')
+                      or max(x.get('width') or 0, x.get('height') or 0) >= image.MIN_SIDE)]
+        logos.sort(key=lambda x: (x.get('format') != 'SVG', -(x.get('width') or 0)))
+        best = None
+        for x in logos[:2]:
+            wait = last + pause - time.time()
+            if wait > 0:
+                time.sleep(wait)
+            cand = evaluate(Candidate('iptv-org', x['url']), downloader)
+            last = time.time()
+            if not cand.error:
+                best = cand
+                break
+            report.append({'id': u['id'], 'url': x['url'], 'result': cand.error})
+        if best is None:
+            if not logos:
+                report.append({'id': u['id'], 'url': '', 'result': 'no iptv-org logo of 500 px or SVG'})
+            continue
+        if u['feed'] and same_as_channel(db, u, best, kept):
+            report.append({'id': u['id'], 'url': best.url, 'result': 'edition with the logo of its channel'})
+            continue
+        kept.append((u, best))
+    kept, doubts = split_duplicates(kept, {x.origin: x.logo_id for x in db.logos.values() if not x.variant},
+                                    repo_drawings(db))
+    for u, other in doubts:
+        report.append({'id': u['id'], 'url': '', 'result': f'same drawing as {other}: skipped'})
+    added = 0
+    for u, best in kept:
+        try:
+            ops_set(db, u['channel'], u['feed'], best.data, best.url, iptv)
+            added += 1
+        except ops.RequestError as exc:
+            report.append({'id': u['id'], 'url': best.url, 'result': str(exc)})
+    db.save()
+    out = db.root / 'temp' / 'bulk' / f'{cc}.csv'
+    out.parent.mkdir(parents=True, exist_ok=True)
+    with open(out, 'w', encoding='utf-8', newline='') as fh:
+        w = csv.DictWriter(fh, ['id', 'url', 'result'])
+        w.writeheader()
+        w.writerows(report)
+    log(f'{cc}: {added} logo(s) added from iptv-org among {len(todo)} channels and editions without one, '
+        f'{len(doubts)} duplicate(s) skipped; details in {out.as_posix()}')
+    return {'todo': len(todo), 'added': added, 'doubts': len(doubts)}

@@ -52,7 +52,9 @@ Static files, no key, updated every night. Details and examples: [API page](http
 | The channel's own website | its current logo |
 
 Every candidate goes through the same preparation and checks; the best one is kept (SVG first, then the largest),
-then reviewed on contact sheets (each logo on a dark and a light background).
+then reviewed on contact sheets (each logo on a dark and a light background). The iptv-org logos of every country
+that pass these checks (SVG or at least 500 px) were added in bulk without a review of their own, iptv-org reviewing
+them already; a wrong or outdated one is fixed through the issue forms or by the weekly harvest.
 
 ## How it is maintained
 

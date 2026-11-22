@@ -72,6 +72,11 @@ and works on a branch with a pull request when asked to change something.
 A comment `/reject <channel id> <reason>` from a maintainer on a harvest pull request: `logos reject` gives the channel
 back its logo of `main` (or none) and adds the proposed URL to `data/rejected.csv`; the bot commits and answers.
 
+## bulk
+
+By hand only: `logos bulk` for every country of iptv-org (or the countries given), four at a time, one commit per
+country pushed to main. The iptv-org logos are added without review (maintainer's decision of 2026-11-22).
+
 ## update
 
 Every night at 03:00 UTC (or by hand): `logos update` applies the open issues labelled `approved`, one by one

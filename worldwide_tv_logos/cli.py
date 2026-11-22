@@ -435,6 +435,15 @@ def cmd_hunt(args, db: Database) -> int:
     return 0
 
 
+def cmd_bulk(args, db: Database) -> int:
+    """iptv-org logos of whole countries added directly, without review (see harvest.bulk)."""
+    from worldwide_tv_logos import harvest
+    iptv, logos = iptvorg.load(db.root), iptvorg.load_logos(db.root)
+    for cc in args.country:
+        harvest.bulk(db, iptv, cc.lower(), logos, pause=args.pause)
+    return 0
+
+
 def cmd_harvest(args, db: Database) -> int:
     from worldwide_tv_logos import harvest
     cc = args.country.lower()
@@ -654,6 +663,10 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument('--limit', type=int, default=0, help='only the first N channels (test)')
     p.add_argument('--updates', action='store_true', help='also propose newer or better versions of current logos')
     p.set_defaults(func=cmd_harvest)
+    p = sub.add_parser('bulk', help='add the iptv-org logos of whole countries directly, without review')
+    p.add_argument('--country', nargs='+', required=True)
+    p.add_argument('--pause', type=float, default=0.3)
+    p.set_defaults(func=cmd_bulk)
     p = sub.add_parser('sheet', help='contact sheets of logos of the repository (temp/sheets/)')
     p.add_argument('--changed', action='store_true', help='logos changed since --base')
     p.add_argument('--base', default='origin/main')

@@ -1,0 +1,74 @@
+name: bulk
+# By hand: the iptv-org logos of whole countries added directly, without review (`logos bulk`, maintainer's decision
+# of 2026-11-22): every channel and edition without a logo here whose iptv-org logo passes the rules. One commit per
+# country, pushed to main (the data files of parallel countries are merged line by line, see .gitattributes).
+on:
+  workflow_dispatch:
+    inputs:
+      country:
+        description: 'only these countries (two-letter codes, e.g. "is no"); empty: every country of iptv-org'
+        required: false
+permissions:
+  contents: write
+concurrency: bulk
+jobs:
+  countries:
+    runs-on: ubuntu-latest
+    outputs:
+      list: ${{ steps.list.outputs.list }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10.3.3
+      - run: uv sync
+      - id: list
+        env:
+          ONLY: ${{ inputs.country }}
+        run: |
+          uv run python - >> "$GITHUB_OUTPUT" <<'EOF'
+          import json, os
+          from worldwide_tv_logos import iptvorg
+          only = os.environ.get('ONLY', '').lower().split()
+          iptv = iptvorg.load('.')
+          codes = sorted({(c.get('country') or '').lower() for c in iptv.channels.values()
+                          if c.get('country') and not c.get('closed') and not c.get('is_nsfw')})
+          print('list=' + json.dumps([c for c in codes if not only or c in only]))
+          EOF
+  country:
+    needs: countries
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        cc: ${{ fromJSON(needs.countries.outputs.list) }}
+    env:
+      CC: ${{ matrix.cc }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - uses: astral-sh/setup-uv@v10.3.3
+      - run: uv sync
+      - name: add the logos of the country
+        run: uv run logos bulk --country "$CC"
+      - name: commit and push to main
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          uv run logos validate > /dev/null
+          git add data logos sources
+          if git diff --cached --quiet; then echo "nothing added"; exit 0; fi
+          git commit -q -m "Bulk import of the iptv-org logos: $CC"
+          for attempt in 1 2 3 4 5; do
+            if git pull -q --rebase origin main; then
+              uv run python -c 'from worldwide_tv_logos.db import Database; Database(".").load().save()'
+              if ! git diff --quiet -- data; then git add data && git commit -q --amend --no-edit; fi
+              uv run logos validate > /dev/null
+              if git push -q origin HEAD:main; then echo "pushed"; exit 0; fi
+            else
+              git rebase --abort
+            fi
+            sleep $((attempt * 20))
+          done
+          echo "could not push"; exit 1

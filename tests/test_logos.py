@@ -545,3 +545,14 @@ def test_guide_aliases_only_for_channels_with_a_logo(db, monkeypatch):
     cli.cmd_guide_aliases(argparse.Namespace(country='fr'), db)
     assert [(a.epg_id, a.channel) for a in db.aliases.values()] == [('F3guide', 'France3.fr')]   # TF1: no logo
     assert cli.validate(Database(db.root).load(), IPTV) == []
+
+
+def test_bulk_adds_the_iptv_org_logos_that_pass_the_rules(db):
+    logos = [{'channel': 'TF1.fr', 'feed': '', 'url': 'https://x.org/tf1.svg', 'format': 'SVG'},
+             {'channel': 'France3.fr', 'feed': '', 'url': 'https://x.org/f3.png', 'format': 'PNG', 'width': 300,
+              'height': 100}]
+    files = {'https://x.org/tf1.svg': SVG}
+    stats = harvest.bulk(db, IPTV, 'fr', logos, pause=0, downloader=lambda url, **kw: files[url], log=lambda s: None)
+    assert stats == {'todo': 4, 'added': 1, 'doubts': 0}                  # France 3 (too small) and its 2 editions
+    assert ('TF1.fr', '', '') in db.logos and db.logos[('TF1.fr', '', '')].origin == 'https://x.org/tf1.svg'
+    assert cli.validate(Database(db.root).load(), IPTV) == []
