@@ -1,7 +1,9 @@
 """Changes to the database: add or replace a logo, remove one, add an alias. Used by `import` and `update`."""
 from __future__ import annotations
 
+import tempfile
 from datetime import date
+from pathlib import Path
 
 from worldwide_tv_logos import image
 from worldwide_tv_logos.db import CHANNEL_RE, EPG_ID_RE, FEED_RE, Alias, Database, Logo
@@ -39,6 +41,13 @@ def set_logo(db: Database, channel: str, feed: str, original: bytes, origin: str
     pngs = {v: image.png_bytes(p) for v, p in (('', img), ('white', white)) if p is not None}
     if any(len(b) > image.MAX_FILE for b in pngs.values()):
         raise RequestError(f'logo heavier than {image.MAX_FILE // 1000} KB once converted (too detailed)')
+    with tempfile.TemporaryDirectory() as tmp:       # the files must pass the repository rules before anything is written
+        for variant, data in pngs.items():
+            probe = Path(tmp) / f'{variant or "main"}.png'
+            probe.write_bytes(data)
+            errors = image.check_file(probe, white=variant == 'white')
+            if errors:
+                raise RequestError(f'prepared logo refused by the repository rules: {"; ".join(errors)}')
     for variant, picture in (('', img), ('white', white)):
         key = (channel, feed, variant)
         old = db.logos.get(key)
