@@ -31,11 +31,14 @@ fi
 
 # On top of the current main: a branch based on an older main would seem to revert the workflows changed since,
 # and the pull requests of the other countries, merged meanwhile, touch the same data files. Those are merged line by
-# line (.gitattributes: merge=union), rewritten (sorted, one row per logo or alias) and validated again.
+# line (.gitattributes: merge=union) for the rebase, then row by row (`logos merge-data`: a row this pull request did
+# not change keeps main's version), rewritten (sorted, one row per logo or alias) and validated again.
 sync() {
   git fetch -q origin main
+  local base ours
+  base=$(git merge-base HEAD origin/main); ours=$(git rev-parse HEAD)
   if ! git rebase -q origin/main; then git rebase --abort; echo "rebase on main failed"; return 1; fi
-  uv run python -c 'from worldwide_tv_logos.db import Database; Database(".").load().save()'
+  uv run logos merge-data "$base" "$ours"
   if ! git diff --quiet -- data; then git add data && git commit -q --amend --no-edit; fi
   uv run logos validate > /dev/null || { echo "data no longer valid once on top of main"; return 1; }
 }

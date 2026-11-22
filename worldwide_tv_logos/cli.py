@@ -621,6 +621,26 @@ def cmd_changes(args, db: Database) -> int:
     return 0
 
 
+def cmd_merge_data(args, db: Database) -> int:
+    """After a rebase: data/logos.csv and data/aliases.csv merged row by row with the commit before the rebase
+    (`ours`) against the common ancestor (`base`), then rewritten."""
+    import subprocess
+    import tempfile
+    with tempfile.TemporaryDirectory() as tmp:
+        roots = []
+        for name, ref in (('base', args.base), ('ours', args.ours)):
+            root = Path(tmp) / name
+            (root / 'data').mkdir(parents=True)
+            for f in ('logos.csv', 'aliases.csv'):
+                out = subprocess.run(['git', 'show', f'{ref}:data/{f}'], cwd=db.root, capture_output=True, check=False)
+                if out.returncode == 0:
+                    (root / 'data' / f).write_bytes(out.stdout)
+            roots.append(root)
+        db.merge(*roots)
+    db.save()
+    return 0
+
+
 def cmd_export(args, db: Database) -> int:
     """`.api/` for the gh-pages branch (logos.json, aliases.json and, unless offline, the website and its data),
     and `missing/<cc>.md` for the countries of data/countries.csv."""
@@ -761,6 +781,10 @@ def main(argv: list[str] | None = None) -> int:
     p = sub.add_parser('changes', help='open/update/close the "iptv-org changes" issue (GITHUB_TOKEN)')
     p.add_argument('--dry-run', action='store_true', help='print the issue body instead')
     p.set_defaults(func=cmd_changes)
+    p = sub.add_parser('merge-data', help='after a rebase: merge the data files row by row with the commit before it')
+    p.add_argument('base', help='common ancestor (git merge-base before the rebase)')
+    p.add_argument('ours', help='the commit before the rebase')
+    p.set_defaults(func=cmd_merge_data)
     p = sub.add_parser('export', help='write .api/ and missing/')
     p.add_argument('--offline', action='store_true', help='skip missing/ (needs iptv-org)')
     p.set_defaults(func=cmd_export)

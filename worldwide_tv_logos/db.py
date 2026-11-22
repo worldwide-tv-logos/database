@@ -107,6 +107,18 @@ def _write(path: Path, cls, rows) -> None:
             w.writerow([getattr(r, n) for n in names])
 
 
+def merge_rows(base: dict, upstream: dict, ours: dict) -> dict:
+    """Three-way merge of index rows by key: a row our commit did not change (or delete) takes the upstream version,
+    a row it changed takes ours. A line-by-line merge (merge=union) keeps both versions of a row changed upstream,
+    and the older one could win."""
+    out = {}
+    for key in base.keys() | upstream.keys() | ours.keys():
+        row = upstream.get(key) if ours.get(key) == base.get(key) else ours.get(key)
+        if row is not None:
+            out[key] = row
+    return out
+
+
 class Database:
     def __init__(self, root: Path = ROOT):
         self.root = Path(root)
@@ -126,6 +138,13 @@ class Database:
             with path.open(encoding='utf-8', newline='') as fh:
                 self.countries = {r['code']: r['name'] for r in csv.DictReader(fh)}
         return self
+
+    def merge(self, base: Path, ours: Path) -> None:
+        """Rows of this database (upstream, e.g. after a rebase) merged with those of our commit (`ours`) against
+        their common ancestor (`base`); `base` and `ours` are repository roots holding a data/ folder."""
+        b, o = Database(base).load(), Database(ours).load()
+        self.logos = merge_rows(b.logos, self.logos, o.logos)
+        self.aliases = merge_rows(b.aliases, self.aliases, o.aliases)
 
     def save(self) -> None:
         _write(self.data_dir / 'logos.csv', Logo, sorted(self.logos.values(), key=lambda r: tuple(s.lower() for s in r.key)))

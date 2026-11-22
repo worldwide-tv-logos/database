@@ -62,10 +62,12 @@ jobs:
           if git diff --cached --quiet; then echo "nothing added"; exit 0; fi
           git commit -q -m "Bulk import of the iptv-org logos: $CC"
           for attempt in 1 2 3 4 5 6 7 8 9 10; do
-            if git pull -q --rebase origin main; then
-              # validated once above; here only the data files are rewritten (fast), so that the push comes
-              # before the next country's
-              uv run python -c 'from worldwide_tv_logos.db import Database; Database(".").load().save()'
+            git fetch -q origin main
+            base=$(git merge-base HEAD origin/main); ours=$(git rev-parse HEAD)
+            if git rebase -q origin/main; then
+              # validated once above; here only the data files are merged row by row (fast), so that the push
+              # comes before the next country's
+              uv run logos merge-data "$base" "$ours"
               if ! git diff --quiet -- data; then git add data && git commit -q --amend --no-edit; fi
               if git push -q origin HEAD:main; then echo "pushed"; exit 0; fi
             else
