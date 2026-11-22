@@ -40,6 +40,8 @@ def download(url: str, *, opener: Callable = urllib.request.urlopen, sleep: Call
         return data_uri(url, max_size)
     if not url.startswith('https://'):
         raise DownloadError('only https:// links (or an image copied as data:image/...) are accepted')
+    import urllib.parse
+    url = urllib.parse.quote(url, safe=":/?#[]@!$&'()*+,;=%~")      # spaces in a website's image path
     for _ in range(attempts):
         try:
             req = urllib.request.Request(url, headers={'User-Agent': user_agent, 'Accept': accept})
@@ -52,7 +54,7 @@ def download(url: str, *, opener: Callable = urllib.request.urlopen, sleep: Call
             if exc.code not in (429, 503):
                 raise DownloadError(f'HTTP {exc.code}') from None
             sleep(min(int(exc.headers.get('Retry-After') or 120), 600) + 1)
-        except (urllib.error.URLError, OSError) as exc:
+        except (urllib.error.URLError, OSError, ValueError) as exc:         # ValueError: malformed URL
             raise DownloadError(f'network error ({getattr(exc, "reason", exc)})') from None
     raise DownloadError(f'still refused after {attempts} attempts (site busy)')
 
