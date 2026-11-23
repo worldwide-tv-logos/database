@@ -1,0 +1,72 @@
+name: '🛠️ channels/edit'
+description: Correct a channel (name, website, other names, main channel, closed) or give one of its IDs
+title: 'Edit channel: '
+labels: ['channels:edit']
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Fill in only what changes. The channel keeps its ID (`ch_...`) and its logo: a renamed channel is edited
+        here, never added again. A channel that stopped broadcasting is marked closed; its logo is kept.
+
+  - type: input
+    id: channel_id
+    attributes:
+      label: Channel ID
+      description: our channel ID (`ch_...`, shown on the [website](https://worldwide-tv-logos.github.io/database/)), its slug or its iptv-org ID
+      placeholder: 'ch_1r840gxdj5'
+    validations:
+      required: true
+
+  - type: input
+    id: name
+    attributes:
+      label: Channel name (optional)
+      description: Its new name
+
+  - type: input
+    id: website
+    attributes:
+      label: Website (optional)
+      placeholder: 'https://www.example.tv/'
+
+  - type: input
+    id: aliases
+    attributes:
+      label: Other names (optional)
+      description: All its other names, separated by `;` (they replace the current ones)
+
+  - type: input
+    id: parent
+    attributes:
+      label: Main channel (optional)
+      description: For an edition, the channel it is a version of (our ID, slug or iptv-org ID)
+
+  - type: dropdown
+    id: status
+    attributes:
+      label: Status (optional)
+      options:
+        - active
+        - closed
+
+  - type: input
+    id: iptv
+    attributes:
+      label: iptv-org ID (optional)
+      description: Its ID in iptv-org, when it has one there
+
+  - type: input
+    id: wikidata
+    attributes:
+      label: Wikidata ID (optional)
+      placeholder: 'Q1234567'
+
+  - type: textarea
+    id: reason
+    attributes:
+      label: Reason
+      description: What changed, with a link that shows it (the channel's website, a news article)
+    validations:
+      required: true

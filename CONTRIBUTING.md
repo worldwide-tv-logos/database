@@ -22,13 +22,18 @@ longest side; **SVG is preferred**. Use the version currently on air.
 | [logos/request](../../issues/new?template=04_logos_request.yml) | ask for a logo when you do not have the image | no: someone answers with logos/add |
 | [aliases/add](../../issues/new?template=05_aliases_add.yml) | link the ID a TV guide uses to a channel | yes |
 | [aliases/remove](../../issues/new?template=06_aliases_remove.yml) | remove a wrong alias | yes |
+| [channels/add](../../issues/new?template=07_channels_add.yml) | add a channel that is not listed yet (in iptv-org or not) | yes |
+| [channels/edit](../../issues/new?template=08_channels_edit.yml) | correct a channel: new name, website, closed, main channel, iptv-org or Wikidata ID | yes |
 
 ### A channel that is not on the website
 
-Channels of iptv-org (followed countries) are added every night. For a channel added to iptv-org meanwhile, submit
-the logo with its iptv-org ID: the bot checks the image, labels the request `waiting:channel` and, once approved,
-checks it again every night; the logo is added as soon as the channel is here. A form to add channels that are not
-in iptv-org is coming (see [roadmap](roadmap/README.md)).
+Add it with the [channels/add](../../issues/new?template=07_channels_add.yml) form (name, country, website; for a
+regional version, its main channel): it gets its own ID the night after approval, without waiting for iptv-org. Then
+add its logo, or let the weekly search find it. A renamed channel is corrected with channels/edit, never added again:
+it keeps its ID and its logo.
+
+Channels added to iptv-org are also registered every night (followed countries): a logo submitted with such an
+iptv-org ID waits (`waiting:channel`) until then.
 
 ### A channel without a TV guide ID
 

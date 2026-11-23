@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import argparse
+import copy
 import csv
 import json
 import os
@@ -171,18 +172,18 @@ def cmd_update(args, db: Database) -> int:
     done, notes = [], {}
     for raw in gh.approved_issues():
         labels = [label['name'] for label in raw['labels']]
-        snapshot = (dict(db.logos), dict(db.aliases))
+        snapshot = (dict(db.logos), dict(db.aliases), copy.deepcopy(db.channels), dict(db.external_ids))
         try:
             req = issues.parse(raw['number'], labels, raw.get('body') or '')
             changes = issues.apply(req, db)
         except ops.NotRegistered as exc:
-            db.logos, db.aliases = snapshot
+            db.logos, db.aliases, db.channels, db.external_ids = snapshot
             print(f'#{raw["number"]}: waiting — {exc}')
             if 'waiting:channel' not in labels:
                 gh.add_labels(raw['number'], ['waiting:channel'])
             continue
         except ops.RequestError as exc:
-            db.logos, db.aliases = snapshot
+            db.logos, db.aliases, db.channels, db.external_ids = snapshot
             print(f'#{raw["number"]}: skipped — {exc}')
             gh.comment(raw['number'], f'This request could not be applied:\n\n- {exc}\n\n'
                                       'Please edit the issue to fix it; it will be checked again.')
@@ -893,9 +894,16 @@ def _channel(db: Database, ref: str):
 
 
 def cmd_channel(args, db: Database) -> int:
-    c = _channel(db, args.ref)
-    if c is None:
-        return 1
+    c = registry.resolve(db, args.ref)
+    if c is None:                                       # not an ID: channels whose name contains these words
+        key = registry.slug_base(args.ref)
+        found = sorted((x for x in db.channels.values()
+                        if key and any(key in registry.slug_base(n) for n in [x.name, *x.alias_list])),
+                       key=lambda x: (x.country, x.name.lower()))
+        for x in found[:50]:
+            print(f'{x.id}  {x.slug}  {x.name}  ({x.status}{", edition of " + x.parent if x.parent else ""})')
+        print(f'{len(found)} channel(s) named like `{args.ref}`' if found else f'`{args.ref}`: no such channel')
+        return 0 if found else 1
     for k, v in vars(c).items():
         if v:
             print(f'{k}: {v}')
@@ -1119,7 +1127,7 @@ def main(argv: list[str] | None = None) -> int:
     p.set_defaults(func=cmd_migrate_ids)
     p = sub.add_parser('channels-init', help='register the iptv-org channels we need in our registry (adds only)')
     p.set_defaults(func=cmd_channels_init)
-    p = sub.add_parser('channel', help='show a channel of the registry (our ID, slug, iptv-org or Wikidata ID)')
+    p = sub.add_parser('channel', help='show a channel of the registry (our ID, slug, iptv-org or Wikidata ID), or find channels by name')
     p.add_argument('ref')
     p.set_defaults(func=cmd_channel)
     p = sub.add_parser('channel-add', help='add a channel to the registry (a new ch_ ID)')

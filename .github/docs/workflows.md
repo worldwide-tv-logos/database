@@ -10,7 +10,7 @@ On every push and pull request: every workflow file parses as YAML (GitHub silen
 
 ## validate_issue
 
-When an issue with a `logos:*` or `aliases:*` label is opened or edited (an edit withdraws `approved`: the new
+When an issue with a `logos:*`, `aliases:*` or `channels:*` label is opened or edited (an edit withdraws `approved`: the new
 content must be reviewed again): `logos issue-validate` downloads and
 checks the logo, then labels the issue `check:passed`, or comments the problems and labels it `check:failed`. A
 Wikipedia or Wikimedia Commons file page (`.../wiki/File:X.svg`, `...#/media/Fichier:X.png`) is read as the image

@@ -159,6 +159,7 @@ export const forms = {
   remove: (c: string, f?: string | null) => form('03_logos_remove.yml', { title: `Remove logo: ${logoId(c, f)}`, ...ids(c, f) }),
   request: (c: string, f?: string | null) => form('04_logos_request.yml', { title: `Logo wanted: ${logoId(c, f)}`, ...ids(c, f) }),
   aliasAdd: (c: string, f?: string | null) => form('05_aliases_add.yml', { title: `Alias: ${logoId(c, f)}`, ...ids(c, f) }),
+  channelAdd: (cc: string) => form('07_channels_add.yml', { title: 'Add channel: ', country: cc }),
   aliasRemove: (c: string, a: Alias) => form('06_aliases_remove.yml', {
     title: `Remove alias: ${a.source}:${a.epg_id}`, epg_id: a.epg_id, epg_source: a.source, ...ids(c, a.feed)
   })

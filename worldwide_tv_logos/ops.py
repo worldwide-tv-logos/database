@@ -24,7 +24,8 @@ def channel_of(db: Database, ref: str) -> Channel:
         raise NotRegistered(f'`{ref}` is not a channel of our registry yet (iptv-org channels of the followed '
                             'countries are registered every night)')
     if c is None:
-        raise RequestError(f'`{ref}`: unknown channel (give our ID `ch_...`, its slug, or its iptv-org ID)')
+        raise RequestError(f'`{ref}`: unknown channel (give our ID `ch_...`, its slug, or its iptv-org ID; a channel '
+                           'not listed yet is added with the channels/add form)')
     return c
 
 
