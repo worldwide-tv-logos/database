@@ -23,7 +23,7 @@ def gh(*args: str) -> str:
 
 
 def ago(iso: str, now: datetime.datetime) -> float:
-    return (now - datetime.datetime.fromisoformat(iso.replace('Z', '+00:00'))).total_seconds() / 86400
+    return (now - datetime.datetime.fromisoformat(iso)).total_seconds() / 86400
 
 
 def problems(now: datetime.datetime) -> list[str]:
