@@ -1,0 +1,40 @@
+name: retry
+# Pull requests of the bot that their review said ready (label review:ready) but that could not be merged when they
+# were published (main moved meanwhile): put on top of main again and merged, every 3 hours. Without this, such a pull
+# request waited for a maintainer and its country was skipped by the next harvests.
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '45 */3 * * *'
+permissions:
+  contents: write
+  pull-requests: write
+concurrency: retry
+jobs:
+  retry:
+    if: vars.AUTO_MERGE != 'false'
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - uses: astral-sh/setup-uv@v10.3.3
+      - run: uv sync
+      - name: merge the ready pull requests
+        run: |
+          source .github/scripts/sync.sh
+          git_setup
+          cp .github/scripts/merge.sh .github/scripts/sync.sh "$RUNNER_TEMP/"   # the branches may hold older copies
+          failed=0
+          for row in $(gh pr list --label review:ready --state open --json number,headRefName \
+                        --jq '.[] | "\(.number):\(.headRefName)"'); do
+            number=${row%%:*} branch=${row#*:}
+            echo "::group::#$number ($branch)"
+            git fetch -q origin "$branch" && git switch -q -C "$branch" "origin/$branch"
+            bash "$RUNNER_TEMP/merge.sh" "$number" "$branch" || failed=1
+            git switch -q --detach origin/main 2>/dev/null || true
+            echo "::endgroup::"
+          done
+          exit $failed

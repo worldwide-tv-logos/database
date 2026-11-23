@@ -621,24 +621,95 @@ def cmd_changes(args, db: Database) -> int:
     return 0
 
 
-def cmd_merge_data(args, db: Database) -> int:
-    """After a rebase: data/logos.csv and data/aliases.csv rebuilt from main (`upstream`) and the commit before the
-    rebase (`ours`), merged row by row against their common ancestor (`base`)."""
+def _git(root: Path, *args: str) -> bytes:
     import subprocess
+    return subprocess.run(['git', *args], cwd=root, capture_output=True, check=True).stdout
+
+
+def _data_root(root: Path, ref: str, dest: Path) -> Path:
+    """A folder holding the data/ index files of a git ref (missing files are left out)."""
+    import subprocess
+    (dest / 'data').mkdir(parents=True)
+    for f in ('logos.csv', 'aliases.csv'):
+        out = subprocess.run(['git', 'show', f'{ref}:data/{f}'], cwd=root, capture_output=True, check=False)
+        if out.returncode == 0:
+            (dest / 'data' / f).write_bytes(out.stdout)
+    return dest
+
+
+FILE_DIRS = ('logos', 'sources', 'missing')
+
+
+def apply_files(root: Path, base: str, ours: str) -> None:
+    """The working tree holds main: the files our commit added, replaced or deleted since `base` (logos/, sources/,
+    missing/) are applied on top of it, so that a logo's files follow its row (ours wins for a row both changed). A
+    source of main for the same logo under another extension is removed: a logo has one source. data/rejected.csv
+    keeps main's rows and adds ours."""
+    out = _git(root, 'diff', '--no-renames', '--name-status', '-z', base, ours, '--', *FILE_DIRS).split(b'\0')
+    for status, path in zip(out[0::2], out[1::2]):
+        if not path:
+            continue
+        rel = path.decode('utf-8')
+        target = root / rel
+        if status.startswith(b'D'):
+            target.unlink(missing_ok=True)
+            continue
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_bytes(_git(root, 'show', f'{ours}:{rel}'))
+        if rel.startswith('sources/'):
+            stem = target.name.rsplit('.', 1)[0]
+            for other in target.parent.iterdir():
+                if other != target and other.name.rsplit('.', 1)[0] == stem:
+                    other.unlink()
+    rejected = root / 'data' / 'rejected.csv'
+    import subprocess
+    try:
+        theirs = _git(root, 'show', f'{ours}:data/rejected.csv').decode('utf-8').splitlines()
+    except subprocess.CalledProcessError:                  # no rejected.csv in our commit
+        return
+    lines = rejected.read_text(encoding='utf-8').splitlines() if rejected.exists() else theirs[:1]
+    known = set(lines)
+    lines += [line for line in theirs[1:] if line not in known]
+    rejected.write_text('\n'.join(lines) + '\n', encoding='utf-8', newline='\n')
+
+
+def cmd_merge_data(args, db: Database) -> int:
+    """data/logos.csv and data/aliases.csv rebuilt from main (`upstream`) and our commit (`ours`), merged row by row
+    against their common ancestor (`base`). With --files, the working tree must hold main (`git reset --hard
+    origin/main`): our commit's logo files are applied on top of it too, so that no rebase (and no conflict between
+    two versions of an image) is needed."""
     import tempfile
     with tempfile.TemporaryDirectory() as tmp:
-        roots = []
-        for name, ref in (('base', args.base), ('upstream', args.upstream), ('ours', args.ours)):
-            root = Path(tmp) / name
-            (root / 'data').mkdir(parents=True)
-            for f in ('logos.csv', 'aliases.csv'):
-                out = subprocess.run(['git', 'show', f'{ref}:data/{f}'], cwd=db.root, capture_output=True, check=False)
-                if out.returncode == 0:
-                    (root / 'data' / f).write_bytes(out.stdout)
-            roots.append(root)
-        db.merge(*roots)
+        db.merge(*(_data_root(db.root, ref, Path(tmp) / name)
+                   for name, ref in (('base', args.base), ('upstream', args.upstream), ('ours', args.ours))))
     db.save()
+    if args.files:
+        apply_files(db.root, args.base, args.ours)
     return 0
+
+
+def regressions(db: Database, ref: Database) -> list[str]:
+    """Logos whose last replacement is older here than in `ref`: an older version of the logo would come back, as a
+    line-by-line merge of two versions of a row can do."""
+    out = []
+    for key, old in ref.logos.items():
+        new = db.logos.get(key)
+        if new and (new.updated or new.added) < (old.updated or old.added):
+            out.append(f'{new.stem}: version of {new.updated or new.added}, older than the one of '
+                       f'{old.updated or old.added}')
+    return sorted(out)
+
+
+def cmd_regress_check(args, db: Database) -> int:
+    """Fails when this change brings back an older version of a logo than `ref` has (the commit it starts from)."""
+    import tempfile
+    with tempfile.TemporaryDirectory() as tmp:
+        ref = Database(_data_root(db.root, args.ref, Path(tmp) / 'ref')).load()
+    found = regressions(db, ref)
+    for line in found:
+        print(f'error: {line}')
+    print(f'{len(found)} logo(s) older than in {args.ref}')
+    return 1 if found else 0
 
 
 def cmd_export(args, db: Database) -> int:
@@ -785,7 +856,12 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument('base', help='common ancestor (git merge-base before the rebase)')
     p.add_argument('ours', help='the commit before the rebase')
     p.add_argument('upstream', nargs='?', default='origin/main', help='the branch rebased onto (default: origin/main)')
+    p.add_argument('--files', action='store_true',
+                   help='the working tree holds upstream: apply our logo files on top too (no rebase needed)')
     p.set_defaults(func=cmd_merge_data)
+    p = sub.add_parser('regress-check', help='fail when a logo is older than in a git ref (an older version back)')
+    p.add_argument('ref', help='the commit this change starts from (e.g. origin/main, or the merge base of a PR)')
+    p.set_defaults(func=cmd_regress_check)
     p = sub.add_parser('export', help='write .api/ and missing/')
     p.add_argument('--offline', action='store_true', help='skip missing/ (needs iptv-org)')
     p.set_defaults(func=cmd_export)

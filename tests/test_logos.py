@@ -613,3 +613,68 @@ def test_download_quotes_spaces_and_reports_malformed_urls():
 
     with pytest.raises(net.DownloadError):
         net.download('https://a.example/x.png', opener=bad)
+
+
+def _git_repo(root):
+    import subprocess
+
+    def git(*args):
+        return subprocess.run(['git', *args], cwd=root, capture_output=True, check=True, text=True).stdout.strip()
+    git('init', '-q', '-b', 'main')
+    git('config', 'user.email', 't@t')
+    git('config', 'user.name', 't')
+    return git
+
+
+def _write(root, rel, data):
+    path = root / rel
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_bytes(data if isinstance(data, bytes) else data.encode())
+
+
+HEADER = 'channel,feed,variant,width,height,origin,added,updated\n'
+
+
+def test_merge_data_files_applies_our_logo_files_on_top_of_main_without_a_rebase(tmp_path):
+    git = _git_repo(tmp_path)
+    _write(tmp_path, 'data/logos.csv', HEADER + 'TF1.fr,,,10,10,a,2026-01-01,\n')
+    _write(tmp_path, 'data/rejected.csv', 'channel,url,reason,date\n')
+    _write(tmp_path, 'logos/fr/TF1.fr.png', b'tf1')
+    git('add', '-A')
+    git('commit', '-qm', 'base')
+    base = git('rev-parse', 'HEAD')
+    # main meanwhile: Telesambre added with a PNG source, TF1 untouched
+    _write(tmp_path, 'data/logos.csv', HEADER + 'Telesambre.be,,,10,10,main,2026-02-01,\nTF1.fr,,,10,10,a,2026-01-01,\n')
+    _write(tmp_path, 'logos/be/Telesambre.be.png', b'main')
+    _write(tmp_path, 'sources/be/Telesambre.be.png', b'main source')
+    _write(tmp_path, 'data/rejected.csv', 'channel,url,reason,date\nA.fr,u1,r,2026-02-01\n')
+    git('add', '-A')
+    git('commit', '-qm', 'main')
+    upstream = git('rev-parse', 'HEAD')
+    # our change, from base: the same logo from a JPG source, and a rejection
+    git('checkout', '-q', base)
+    _write(tmp_path, 'data/logos.csv', HEADER + 'Telesambre.be,,,10,10,ours,2026-02-02,\nTF1.fr,,,10,10,a,2026-01-01,\n')
+    _write(tmp_path, 'logos/be/Telesambre.be.png', b'ours')
+    _write(tmp_path, 'sources/be/Telesambre.be.jpg', b'ours source')
+    _write(tmp_path, 'data/rejected.csv', 'channel,url,reason,date\nB.fr,u2,r,2026-02-02\n')
+    git('add', '-A')
+    git('commit', '-qm', 'ours')
+    ours = git('rev-parse', 'HEAD')
+    git('checkout', '-q', upstream)                    # the working tree holds main (git reset --hard origin/main)
+    assert cli.main(['--root', str(tmp_path), 'merge-data', base, ours, upstream, '--files']) == 0
+    assert (tmp_path / 'logos/be/Telesambre.be.png').read_bytes() == b'ours'
+    assert sorted(p.name for p in (tmp_path / 'sources/be').iterdir()) == ['Telesambre.be.jpg']   # one source
+    assert 'Telesambre.be,,,10,10,ours,' in (tmp_path / 'data/logos.csv').read_text()
+    assert (tmp_path / 'data/rejected.csv').read_text().splitlines()[1:] == ['A.fr,u1,r,2026-02-01',
+                                                                               'B.fr,u2,r,2026-02-02']
+
+
+def test_regress_check_fails_when_an_older_version_of_a_logo_comes_back(tmp_path):
+    git = _git_repo(tmp_path)
+    _write(tmp_path, 'data/logos.csv', HEADER + 'W9.fr,,,10,10,new,2025-01-01,2026-11-22\nTF1.fr,,,10,10,a,2026-01-01,\n')
+    git('add', '-A')
+    git('commit', '-qm', 'main')
+    root = ['--root', str(tmp_path)]
+    assert cli.main([*root, 'regress-check', 'HEAD']) == 0
+    _write(tmp_path, 'data/logos.csv', HEADER + 'W9.fr,,,10,10,old,2025-01-01,2026-03-01\nTF1.fr,,,10,10,b,2026-01-01,2026-11-23\n')
+    assert cli.main([*root, 'regress-check', 'HEAD']) == 1
