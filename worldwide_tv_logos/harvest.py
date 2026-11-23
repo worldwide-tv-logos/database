@@ -204,7 +204,7 @@ def split_duplicates(kept: list[tuple[dict, Candidate]], existing: dict[str, str
     in the repository (`drawings`), is a doubt: within a group only the channel with the shortest name keeps it
     (24 Horas, not 24 Horas Canarias)."""
     existing = existing or {}
-    groups: dict[int, list[tuple[dict, Candidate]]] = {}
+    groups: list[list[tuple[dict, Candidate]]] = []
     doubts = []
     for c, cand in kept:
         if existing.get(cand.url, c['id']) != c['id']:
@@ -214,17 +214,44 @@ def split_duplicates(kept: list[tuple[dict, Candidate]], existing: dict[str, str
         if other:
             doubts.append((c, other))
             continue
-        group = next((g for fp, g in groups.items() if image.same_drawing(fp, cand.fp)), None)
+        group = next((g for g in groups if all(same_image(c, cand, gc, gcand) for gc, gcand in g)), None)
         if group is None:
-            groups[cand.fp or int(hashlib.sha1(cand.data).hexdigest(), 16)] = group = []
+            groups.append(group := [])
         group.append((c, cand))
     out = []
-    for group in groups.values():
+    for group in groups:
         group.sort(key=lambda x: (len(x[0]['name']), x[0]['name']))
+        numbered = {number(c) for c, _ in group if number(c)}
+        if len(numbered) > 1:
+            # one image for Sport 1, Sport 2...: the brand logo without the number, never the logo of one of them
+            names = ', '.join(c['id'] for c, _ in group)
+            plain = [x for x in group if not number(x[0])]
+            out += plain[:1]
+            doubts += [(c, f'{names} (a brand logo without the channel number)') for c, _ in group
+                       if not plain or c is not plain[0][0]]
+            continue
         out.append(group[0])
         doubts += [(c, group[0][0]['id']) for c, _ in group[1:]]
     out.sort(key=lambda x: x[0]['name'].lower())
     return out, doubts
+
+
+def number(c: dict) -> str:
+    """The number in a channel's name (`Sky Sport 2` -> '2', `TSN3` -> '3'), '' when it has none."""
+    return ' '.join(re.findall(r'\d+', c.get('name') or c['id'].split('.')[0]))
+
+
+def same_image(c: dict, cand: Candidate, other: dict, other_cand: Candidate) -> bool:
+    """The same image for two channels. Numbered channels of one family (Sport 1, Sport 2) have logos that differ by
+    the digit only, which the fingerprint does not see: for them only the same file counts."""
+    exact = cand.url == other_cand.url or (bool(cand.data) and cand.data == other_cand.data)
+    if exact:
+        return True
+    if family(c['channel']) == family(other['channel']) and number(c) != number(other):
+        return False
+    a = cand.fp or int(hashlib.sha1(cand.data).hexdigest(), 16)
+    b = other_cand.fp or int(hashlib.sha1(other_cand.data).hexdigest(), 16)
+    return image.same_drawing(a, b)
 
 
 def load_rejected(root: Path) -> set[tuple[str, str]]:

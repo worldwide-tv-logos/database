@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import time
 import urllib.error
 import urllib.request
@@ -33,6 +34,18 @@ def data_uri(url: str, max_size: int = MAX_DOWNLOAD) -> bytes:
     return data
 
 
+WIKI_FILE_RE = re.compile(r'^https://([a-z0-9.-]+\.(?:wikipedia|wikimedia)\.org)/wiki/[^#]*?(?:#/media/)?'
+                          r'(?:File|Fichier|Datei|Archivo|Ficheiro|Arquivo|Bestand|Plik|Immagine|Fil|Tiedosto|Soubor|'
+                          r'Fitxer|Dosya|Файл|ملف):([^/#?]+)$', re.IGNORECASE)
+
+
+def image_url(url: str) -> str:
+    """The image itself for the page of a Wikipedia or Wikimedia Commons file (`.../wiki/File:X.svg`, or an article
+    opened on it: `.../wiki/Article#/media/Fichier:X.png`): what people copy from the address bar."""
+    m = WIKI_FILE_RE.match(url.strip())
+    return f'https://{m.group(1)}/wiki/Special:FilePath/{m.group(2)}' if m else url
+
+
 def download(url: str, *, opener: Callable = urllib.request.urlopen, sleep: Callable = time.sleep,
              attempts: int = 3, accept: str = 'image/*,*/*;q=0.5', max_size: int = MAX_DOWNLOAD,
              user_agent: str = USER_AGENT) -> bytes:
@@ -41,6 +54,7 @@ def download(url: str, *, opener: Callable = urllib.request.urlopen, sleep: Call
     if not url.startswith('https://'):
         raise DownloadError('only https:// links (or an image copied as data:image/...) are accepted')
     import urllib.parse
+    url = image_url(url)
     url = urllib.parse.quote(url, safe=":/?#[]@!$&'()*+,;=%~")      # spaces in a website's image path
     for _ in range(attempts):
         try:

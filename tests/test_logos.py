@@ -678,3 +678,33 @@ def test_regress_check_fails_when_an_older_version_of_a_logo_comes_back(tmp_path
     assert cli.main([*root, 'regress-check', 'HEAD']) == 0
     _write(tmp_path, 'data/logos.csv', HEADER + 'W9.fr,,,10,10,old,2025-01-01,2026-03-01\nTF1.fr,,,10,10,b,2026-01-01,2026-11-23\n')
     assert cli.main([*root, 'regress-check', 'HEAD']) == 1
+
+
+def test_one_image_for_numbered_channels_is_a_brand_logo_without_the_number():
+    def ch(cid, name):
+        return {'id': cid, 'channel': cid, 'name': name}
+    generic = b'generic sky sport'
+    kept, doubts = harvest.split_duplicates([
+        (ch('SkySport1.de', 'Sky Sport 1'), harvest.Candidate('iptv-epg', 'https://e/sky.png', data=generic, fp=7)),
+        (ch('SkySport2.de', 'Sky Sport 2'), harvest.Candidate('iptv-epg', 'https://e/sky.png', data=generic, fp=7)),
+        (ch('SkySport.de', 'Sky Sport'), harvest.Candidate('iptv-epg', 'https://e/sky.png', data=generic, fp=7)),
+    ])
+    assert [c['id'] for c, _ in kept] == ['SkySport.de']                    # the brand keeps its logo
+    assert sorted(c['id'] for c, _ in doubts) == ['SkySport1.de', 'SkySport2.de']
+    assert 'without the channel number' in doubts[0][1]
+    # their own logos differ by the digit only (same fingerprint): each channel keeps its own
+    kept, doubts = harvest.split_duplicates([
+        (ch('Eurosport1.fr', 'Eurosport 1'), harvest.Candidate('wikidata', 'https://w/1.svg', data=b'1', fp=7)),
+        (ch('Eurosport2.fr', 'Eurosport 2'), harvest.Candidate('wikidata', 'https://w/2.svg', data=b'2', fp=7)),
+    ])
+    assert len(kept) == 2 and doubts == []
+
+
+def test_a_wikipedia_file_page_gives_the_image_itself():
+    from worldwide_tv_logos import net
+    assert net.image_url('https://fr.wikipedia.org/wiki/Le_Figaro_TV#/media/Fichier:Le_Figaro_TV_IDF_(2023).png') == \
+        'https://fr.wikipedia.org/wiki/Special:FilePath/Le_Figaro_TV_IDF_(2023).png'
+    assert net.image_url('https://commons.wikimedia.org/wiki/File:TF1_logo_2013.svg') == \
+        'https://commons.wikimedia.org/wiki/Special:FilePath/TF1_logo_2013.svg'
+    assert net.image_url('https://fr.wikipedia.org/wiki/TF1') == 'https://fr.wikipedia.org/wiki/TF1'
+    assert net.image_url('https://example.org/wiki/File:x.png') == 'https://example.org/wiki/File:x.png'
