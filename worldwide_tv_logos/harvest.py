@@ -14,6 +14,7 @@ report.csv, contact sheets to review by eye). Only the reviewed manifest is impo
 from __future__ import annotations
 
 import csv
+import functools
 import hashlib
 import re
 import time
@@ -23,8 +24,8 @@ from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageFont
 
-from worldwide_tv_logos import image, net, sources
-from worldwide_tv_logos.db import Database
+from worldwide_tv_logos import image, iptvorg, net, sources
+from worldwide_tv_logos.db import SITE_BASE, Database
 from worldwide_tv_logos.iptvorg import IptvOrg
 
 QUALITY_FEED = re.compile(r'^(SD|HD|FHD|UHD|QHD|4K|8K|HDR|H265|HEVC|1080p?|720p?|Plus\d+)$', re.IGNORECASE)  # quality and timeshift (+1)
@@ -166,6 +167,34 @@ def family(channel_id: str) -> str:
     return re.sub(r'\d+', '', channel_id.split('@')[0].rsplit('.', 1)[0]).lower()
 
 
+REGION_WORDS = {'international', 'intl', 'europe', 'europa', 'european', 'africa', 'afrique', 'asia', 'latino', 'latina',
+                'latinamerica', 'latam', 'arabia', 'arabic', 'middleeast', 'mena', 'nordic', 'scandinavia', 'balkans',
+                'adria', 'benelux', 'global', 'world', 'america', 'americas', 'pacific', 'emea', 'cee'}
+COUNTRY_WORDS: set[str] = set()
+
+
+def set_countries(countries: list[dict]) -> None:
+    """Country names of iptv-org (countries.json), used by `brand`."""
+    COUNTRY_WORDS.update(w for w in (re.sub(r'[^a-z]', '', c.get('name', '').lower()) for c in countries) if len(w) > 3)
+    _region_suffix.cache_clear()
+    brand.cache_clear()
+
+
+@functools.cache
+def _region_suffix() -> re.Pattern:
+    words = sorted(REGION_WORDS | COUNTRY_WORDS, key=len, reverse=True)
+    return re.compile(r'^(.{2,}?)(?:' + '|'.join(map(re.escape, words)) + r')$')
+
+
+@functools.cache
+def brand(channel_id: str) -> str:
+    """The family without a country or region at the end: HGTVSouthAfrica.za and HGTV.be are one brand, whose logo
+    is the same in every country."""
+    f = family(channel_id)
+    m = _region_suffix().match(f)
+    return m.group(1) if m else f
+
+
 def repo_drawings(db: Database) -> list[tuple[str, str, int]]:
     """(channel, logo id, fingerprint) of every logo of the repository (main version, every country)."""
     out = []
@@ -180,9 +209,9 @@ def repo_drawings(db: Database) -> list[tuple[str, str, int]]:
 
 
 def drawing_of_other(channel: str, fp: int, drawings: list[tuple[str, str, int]]) -> str | None:
-    """Logo ID of another channel, outside the family of `channel`, that has this drawing (a logo given to the
-    wrong channel: Action.fr's logo found for BlueAction.ch)."""
-    return next((lid for ch, lid, f in drawings if ch != channel and family(ch) != family(channel)
+    """Logo ID of another channel, outside the family and brand of `channel`, that has this drawing (a logo given to
+    the wrong channel: Action.fr's logo found for BlueAction.ch; not HGTV.be's for HGTVSouthAfrica.za)."""
+    return next((lid for ch, lid, f in drawings if ch != channel and brand(ch) != brand(channel)
                  and (f ^ fp).bit_count() <= CROSS_TOLERANCE), None)
 
 
@@ -207,8 +236,10 @@ def split_duplicates(kept: list[tuple[dict, Candidate]], existing: dict[str, str
     groups: list[list[tuple[dict, Candidate]]] = []
     doubts = []
     for c, cand in kept:
-        if existing.get(cand.url, c['id']) != c['id']:
-            doubts.append((c, existing[cand.url]))
+        owner = existing.get(cand.url, c['id'])
+        owner_channel = owner.split('@')[0]
+        if owner != c['id'] and (owner_channel == c['channel'] or brand(owner_channel) != brand(c['channel'])):
+            doubts.append((c, owner))                    # an edition given its channel's file, or another brand's
             continue
         other = drawing_of_other(c['channel'], cand.fp, drawings or []) if cand.fp else None
         if other:
@@ -252,6 +283,23 @@ def same_image(c: dict, cand: Candidate, other: dict, other_cand: Candidate) -> 
     a = cand.fp or int(hashlib.sha1(cand.data).hexdigest(), 16)
     b = other_cand.fp or int(hashlib.sha1(other_cand.data).hexdigest(), 16)
     return image.same_drawing(a, b)
+
+
+def logo_url(logo_id: str) -> str:
+    return f'{SITE_BASE}logos/{logo_id.split("@")[0].rsplit(".", 1)[-1]}/{logo_id}.png'
+
+
+def brand_differences(kept: list[tuple[dict, Candidate]], drawings: list[tuple[str, str, int]]) -> list[tuple[str, list[str]]]:
+    """Logos found that differ from every logo of the same brand already in the repository (other countries): often
+    an older branding (the repository has the current one), sometimes a regional one. (channel id, brand logo IDs)."""
+    out = []
+    for c, cand in kept:
+        if not cand.fp:
+            continue
+        others = [(lid, fp) for ch, lid, fp in drawings if ch != c['channel'] and brand(ch) == brand(c['channel'])]
+        if others and not any(image.same_drawing(fp, cand.fp) for _, fp in others):
+            out.append((c['id'], [lid for lid, _ in others][:4]))
+    return out
 
 
 def load_rejected(root: Path) -> set[tuple[str, str]]:
@@ -347,6 +395,10 @@ def harvest(db: Database, iptv: IptvOrg, cc: str, iptv_logos: list[dict], out: P
     `only`: these channel IDs only (logos hunt)."""
     downloader = downloader or net.download
     current = {x.logo_id: x for x in db.logos.values() if not x.variant}
+    try:
+        set_countries(iptvorg.load_countries(db.root))
+    except Exception as exc:  # noqa: BLE001 - without country names, brands are only matched by family
+        log(f'iptv-org countries unavailable ({exc})')
     channels = [u for u in units(iptv, cc) if updates or u['id'] not in current]
     if only is not None:
         channels = [c for c in channels if c['id'] in set(only)]
@@ -397,6 +449,7 @@ def harvest(db: Database, iptv: IptvOrg, cc: str, iptv_logos: list[dict], out: P
     drawings = repo_drawings(db)
     kept, doubts = split_duplicates(kept, {x.origin: k for k, x in current.items()}, drawings)
     shared = shared_drawings(cc, drawings)
+    differs = brand_differences(kept, drawings)
     for c, other in doubts:
         log(f'{c["id"]}: DOUBT, same image as {other} (kept out)')
         changes.pop(c['id'], None)
@@ -417,7 +470,7 @@ def harvest(db: Database, iptv: IptvOrg, cc: str, iptv_logos: list[dict], out: P
         w = csv.writer(fh)
         w.writerow(['channel', 'reason'])
         w.writerows([(c['id'], f'same image as {other}') for c, other in doubts])
-    (out / 'summary.md').write_text(summary(cc, kept, changes, doubts, len(channels), shared), encoding='utf-8',
+    (out / 'summary.md').write_text(summary(cc, kept, changes, doubts, len(channels), shared, differs), encoding='utf-8',
                                     newline='\n')
     sheets = contact_sheets(kept, out)
     return {'channels': len(channels), 'kept': len(kept), 'updates': len(changes), 'doubts': len(doubts),
@@ -425,7 +478,7 @@ def harvest(db: Database, iptv: IptvOrg, cc: str, iptv_logos: list[dict], out: P
 
 
 def summary(cc: str, kept: list[tuple[dict, Candidate]], changes: dict[str, str], doubts: list, checked: int,
-            shared: list[tuple[str, str]] = ()) -> str:
+            shared: list[tuple[str, str]] = (), differs: list[tuple[str, list[str]]] = ()) -> str:
     """Body of the harvest pull request."""
     new = [(c, b) for c, b in kept if c['id'] not in changes]
     upd = [(c, b) for c, b in kept if c['id'] in changes]
@@ -446,6 +499,15 @@ def summary(cc: str, kept: list[tuple[dict, Candidate]], changes: dict[str, str]
     if doubts:
         lines += ['### Kept out (doubts)', '']
         lines += [f'- `{c["id"]}`: same image as `{other}`' for c, other in doubts]
+        lines.append('')
+    if differs:
+        lines += ["### Different from the brand's logo in other countries", '',
+                  ('Logos found above that differ from every logo of the same brand in this repository: often an older '
+                  'branding (the repository has the current one), sometimes a regional one. Compare them '
+                  "(`uv run logos sheet --channels <a>,<b>`); when the brand's logo is the current one, apply it with "
+                  '`uv run logos set <channel id> <URL of that logo>`.'), '']
+        lines += [f'- `{cid}`: differs from ' + ', '.join(f'[`{x}`]({logo_url(x)})' for x in others)
+                  for cid, others in differs]
         lines.append('')
     if shared:
         lines += ['### Current logos to check', '',

@@ -47,7 +47,10 @@ The logos found are imported, then Claude looks at every one of them on the cont
 back), opens the pull request with Claude's report, and when Claude said `ready` labels it `review:ready` and merges
 it (`.github/scripts/merge.sh`), unless the repository variable `AUTO_MERGE` is `false`. Claude decides every logo
 itself (a doubt is rejected, never published; one image found for several numbered channels of a family, such as
-Sport 1 and Sport 2, is the brand logo without the number and is kept out of all of them) and says `hold` only when the change is broken: the pull request then
+Sport 1 and Sport 2, is the brand logo without the number and is kept out of all of them). One brand shares its logo across countries
+(HGTV.be and HGTVSouthAfrica.za: the name without a country or region at the end): that is never a doubt, and a logo
+found that differs from the brand's logo published for other countries (often an older branding) is listed for the
+review and says `hold` only when the change is broken: the pull request then
 waits for a maintainer (`needs:maintainer`), and the next harvest of the country redoes it.
 
 ## retry
