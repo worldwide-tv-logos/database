@@ -11,6 +11,8 @@ jobs:
       - uses: actions/checkout@v7
       - uses: astral-sh/setup-uv@v10.3.3
       - run: uv sync
+      - name: workflow files are valid YAML (GitHub silently skips an invalid one)
+        run: uv run --with pyyaml python -c "import sys, yaml; [yaml.safe_load(open(f, encoding='utf-8')) for f in sys.argv[1:]]" .github/workflows/*.yml
       - run: uv run ruff check worldwide_tv_logos tests
       - run: uv run pytest -q
       - run: uv run logos validate
