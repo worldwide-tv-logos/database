@@ -20,6 +20,13 @@ something.
 A request labelled `check:failed` waits for its author: the bot has already explained what to fix, and checks it
 again when the issue is edited. Close it after 30 days without an answer.
 
+## Channel registry
+
+`data/channels.csv` gives every channel our own ID (`ch_` + 10 characters, never changed, never reused) and a
+readable slug; `data/external_ids.csv` maps its iptv-org and Wikidata IDs. The nightly `update` registers new
+iptv-org channels and logos (`logos channels-init`); changes go through `logos channel-add`, `channel-edit` and
+`channel-map`, never by hand. The plan is in [roadmap/](roadmap/README.md).
+
 ## Reviewing a request
 
 | Request | Check |

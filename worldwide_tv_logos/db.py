@@ -1,4 +1,5 @@
-"""The database: data/logos.csv, data/aliases.csv, data/countries.csv, and the files they describe.
+"""The database: data/logos.csv, data/aliases.csv, data/countries.csv, and the files they describe; our channel
+registry, data/channels.csv and data/external_ids.csv (see registry.py).
 
 Naming is derived from the iptv-org id and never chosen by hand:
 
@@ -76,6 +77,44 @@ class Alias:
         return self.source, self.epg_id
 
 
+@dataclass
+class Channel:
+    """A channel of our registry (data/channels.csv): `id` never changes and is never reused (see registry.py)."""
+    id: str                   # ch_ + 10 Crockford base32 characters
+    slug: str                 # readable and unique (france-3-alsace.fr); may change on a rename, never a key
+    name: str
+    aliases: str = ''         # other names, separated by `;`
+    country: str = ''         # two-letter code (iptv-org's: `uk` for the United Kingdom)
+    status: str = 'active'    # active | closed | merged
+    parent: str = ''          # edition (regional, timeshift): its main channel; merged: the channel it became
+    website: str = ''
+    added: str = ''           # YYYY-MM-DD
+    updated: str = ''         # YYYY-MM-DD
+
+    @property
+    def key(self) -> str:
+        return self.id
+
+    @property
+    def alias_list(self) -> list[str]:
+        return [a.strip() for a in self.aliases.split(';') if a.strip()]
+
+
+@dataclass
+class ExternalId:
+    """An ID another project gives to one of our channels (data/external_ids.csv): iptv-org and Wikidata only;
+    guide IDs are never stored (they change on the guides' side)."""
+    channel_id: str
+    source: str               # iptv-org | iptv-org-feed | wikidata
+    external_id: str
+    method: str = ''          # import | match | review
+    added: str = ''
+
+    @property
+    def key(self) -> tuple[str, str]:
+        return self.source, self.external_id
+
+
 def parse_logo_id(value: str) -> tuple[str, str]:
     """`France3.fr@Alsace` -> ('France3.fr', 'Alsace')."""
     channel, _, feed = value.strip().partition('@')
@@ -125,6 +164,8 @@ class Database:
         self.logos: dict[tuple[str, str, str], Logo] = {}
         self.aliases: dict[tuple[str, str], Alias] = {}
         self.countries: dict[str, str] = {}
+        self.channels: dict[str, Channel] = {}
+        self.external_ids: dict[tuple[str, str], ExternalId] = {}
 
     @property
     def data_dir(self) -> Path:
@@ -133,6 +174,8 @@ class Database:
     def load(self) -> Database:
         self.logos = {r.key: r for r in _read(self.data_dir / 'logos.csv', Logo)}
         self.aliases = {r.key: r for r in _read(self.data_dir / 'aliases.csv', Alias)}
+        self.channels = {r.key: r for r in _read(self.data_dir / 'channels.csv', Channel)}
+        self.external_ids = {r.key: r for r in _read(self.data_dir / 'external_ids.csv', ExternalId)}
         path = self.data_dir / 'countries.csv'
         if path.exists():
             with path.open(encoding='utf-8', newline='') as fh:
@@ -146,10 +189,16 @@ class Database:
         b, u, o = (Database(p).load() for p in (base, upstream, ours))
         self.logos = merge_rows(b.logos, u.logos, o.logos)
         self.aliases = merge_rows(b.aliases, u.aliases, o.aliases)
+        self.channels = merge_rows(b.channels, u.channels, o.channels)
+        self.external_ids = merge_rows(b.external_ids, u.external_ids, o.external_ids)
 
     def save(self) -> None:
         _write(self.data_dir / 'logos.csv', Logo, sorted(self.logos.values(), key=lambda r: tuple(s.lower() for s in r.key)))
         _write(self.data_dir / 'aliases.csv', Alias, sorted(self.aliases.values(), key=lambda r: r.key))
+        if self.channels or (self.data_dir / 'channels.csv').exists():
+            _write(self.data_dir / 'channels.csv', Channel, sorted(self.channels.values(), key=lambda r: r.slug))
+            _write(self.data_dir / 'external_ids.csv', ExternalId,
+                   sorted(self.external_ids.values(), key=lambda r: (r.source, r.external_id.lower())))
 
     def path(self, rel: str) -> Path:
         return self.root / rel

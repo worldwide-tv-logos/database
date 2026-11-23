@@ -12,7 +12,7 @@ from pathlib import Path
 
 from PIL import Image
 
-from worldwide_tv_logos import image, iptvorg, issues, net, ops, sources
+from worldwide_tv_logos import image, iptvorg, issues, net, ops, registry, sources
 from worldwide_tv_logos.db import CHANNEL_RE, FEED_RE, VARIANTS, Database, parse_logo_id
 
 DATE_RE = re.compile(r'^\d{4}-\d{2}-\d{2}$')
@@ -70,7 +70,7 @@ def validate(db: Database, iptv, warnings: list[str] | None = None) -> list[str]
     for code in db.countries:
         if not re.match(r'^[a-z]{2}$', code):
             errors.append(f'data/countries.csv: `{code}` must be a lowercase two-letter code')
-    return errors
+    return errors + registry.check(db, warnings)
 
 
 def cmd_validate(args, db: Database) -> int:
@@ -80,7 +80,8 @@ def cmd_validate(args, db: Database) -> int:
         print(f'warning: {w}')
     for e in errors:
         print(e)
-    print(f'{len(db.logos)} logos, {len(db.aliases)} aliases, {len(errors)} error(s), {len(warnings)} warning(s)')
+    print(f'{len(db.logos)} logos, {len(db.aliases)} aliases, {len(db.channels)} channels, {len(errors)} error(s), '
+          f'{len(warnings)} warning(s)')
     return 1 if errors else 0
 
 
@@ -709,7 +710,7 @@ def _data_root(root: Path, ref: str, dest: Path) -> Path:
     """A folder holding the data/ index files of a git ref (missing files are left out)."""
     import subprocess
     (dest / 'data').mkdir(parents=True)
-    for f in ('logos.csv', 'aliases.csv'):
+    for f in ('logos.csv', 'aliases.csv', 'channels.csv', 'external_ids.csv'):
         out = subprocess.run(['git', 'show', f'{ref}:data/{f}'], cwd=root, capture_output=True, check=False)
         if out.returncode == 0:
             (dest / 'data' / f).write_bytes(out.stdout)
@@ -826,6 +827,111 @@ def cmd_export(args, db: Database) -> int:
         lines += [f'| `{c["id"]}` | {c["name"]} |' for c in todo]
         (missing_dir / f'{cc}.md').write_text('\n'.join(lines) + '\n', encoding='utf-8', newline='\n')
         print(f'missing/{cc}.md: {len(todo)} of {len(channels)}')
+    return 0
+
+
+def cmd_channels_init(args, db: Database) -> int:
+    """Register (data/channels.csv, data/external_ids.csv) every iptv-org channel and edition we need: those of the
+    followed countries, every one with a logo. Only adds what is missing: run every night by the update workflow."""
+    stats = registry.init(db, iptvorg.load(db.root), sorted(db.countries))
+    db.save()
+    print(f'{stats["channels"]} channel(s) and {stats["editions"]} edition(s) registered, {stats["already"]} already '
+          f'there; {len(db.channels)} in the registry')
+    return 0
+
+
+def _channel(db: Database, ref: str):
+    c = registry.resolve(db, ref)
+    if c is None:
+        print(f'`{ref}`: no such channel (our ID, slug, iptv-org or Wikidata ID)')
+    return c
+
+
+def cmd_channel(args, db: Database) -> int:
+    c = _channel(db, args.ref)
+    if c is None:
+        return 1
+    for k, v in vars(c).items():
+        if v:
+            print(f'{k}: {v}')
+    for x in sorted((x for x in db.external_ids.values() if x.channel_id == c.id), key=lambda x: x.key):
+        print(f'{x.source}: {x.external_id} ({x.method}, {x.added})')
+    for e in (e for e in db.channels.values() if e.parent == c.id):
+        print(f'{"edition" if e.status != "merged" else "merged into it"}: {e.id} {e.slug} ({e.name})')
+    return 0
+
+
+def cmd_channel_add(args, db: Database) -> int:
+    if args.country.lower() not in db.countries and not args.any_country:
+        print(f'`{args.country}` is not a followed country (data/countries.csv); --any-country to add it anyway')
+        return 1
+    parent = _channel(db, args.parent) if args.parent else None
+    if args.parent and parent is None:
+        return 1
+    same = [c for c in db.channels.values() if c.country == args.country.lower()
+            and registry.slug_base(args.name) in {registry.slug_base(n) for n in [c.name, *c.alias_list]}]
+    if same and not args.force:
+        print(f'already in the registry: {", ".join(f"{c.id} ({c.name})" for c in same)}; --force to add anyway')
+        return 1
+    c = registry.add_channel(db, args.name, args.country, aliases=args.alias or (), website=args.website or '',
+                             parent=parent.id if parent else '')
+    db.save()
+    print(f'{c.id} {c.slug}')
+    return 0
+
+
+def cmd_channel_edit(args, db: Database) -> int:
+    c = _channel(db, args.ref)
+    if c is None:
+        return 1
+    if args.name:
+        c.name = args.name
+        if not args.slug:
+            c.slug = registry.make_slug(c.name, c.country, {x.slug for x in db.channels.values() if x.id != c.id})
+    if args.slug:
+        c.slug = args.slug
+    if args.alias is not None:
+        c.aliases = ';'.join(a for a in args.alias if a)
+    if args.website is not None:
+        c.website = args.website
+    if args.status:
+        c.status = args.status
+    if args.parent is not None:
+        parent = _channel(db, args.parent) if args.parent else None
+        if args.parent and parent is None:
+            return 1
+        c.parent = parent.id if parent else ''
+    c.updated = registry.today()
+    errors = registry.check(db)
+    if errors:
+        print('\n'.join(errors))
+        return 1
+    db.save()
+    print(f'{c.id} {c.slug}')
+    return 0
+
+
+def cmd_channel_map(args, db: Database) -> int:
+    c = _channel(db, args.ref)
+    if c is None:
+        return 1
+    key = (args.source, args.external_id)
+    if args.remove:
+        if db.external_ids.get(key) is None or db.external_ids[key].channel_id != c.id:
+            print(f'{args.source}:{args.external_id} is not mapped to {c.id}')
+            return 1
+        del db.external_ids[key]
+    else:
+        if args.source not in registry.SOURCES or not registry.SOURCES[args.source].match(args.external_id):
+            print(f'{args.source}:{args.external_id}: unknown source or malformed ID ({", ".join(registry.SOURCES)})')
+            return 1
+        other = db.external_ids.get(key)
+        if other is not None and other.channel_id != c.id:
+            print(f'{args.source}:{args.external_id} is already mapped to {other.channel_id}')
+            return 1
+        registry.map_id(db, c, args.source, args.external_id, args.method)
+    db.save()
+    print(f'{c.id}: {args.source}:{args.external_id} {"removed" if args.remove else "mapped"}')
     return 0
 
 
@@ -962,6 +1068,36 @@ def main(argv: list[str] | None = None) -> int:
     p = sub.add_parser('export', help='write .api/ and missing/')
     p.add_argument('--offline', action='store_true', help='skip missing/ (needs iptv-org)')
     p.set_defaults(func=cmd_export)
+    p = sub.add_parser('channels-init', help='register the iptv-org channels we need in our registry (adds only)')
+    p.set_defaults(func=cmd_channels_init)
+    p = sub.add_parser('channel', help='show a channel of the registry (our ID, slug, iptv-org or Wikidata ID)')
+    p.add_argument('ref')
+    p.set_defaults(func=cmd_channel)
+    p = sub.add_parser('channel-add', help='add a channel to the registry (a new ch_ ID)')
+    p.add_argument('name')
+    p.add_argument('--country', required=True, help='two-letter code')
+    p.add_argument('--alias', action='append', help='another name (repeat for several)')
+    p.add_argument('--website')
+    p.add_argument('--parent', help='main channel of this edition')
+    p.add_argument('--any-country', action='store_true', help='allow a country that is not followed')
+    p.add_argument('--force', action='store_true', help='add even if a channel of the country has the same name')
+    p.set_defaults(func=cmd_channel_add)
+    p = sub.add_parser('channel-edit', help='change a channel of the registry (its ID never changes)')
+    p.add_argument('ref')
+    p.add_argument('--name', help='new name (the slug follows unless --slug)')
+    p.add_argument('--slug')
+    p.add_argument('--alias', action='append', help='other names, replacing the current ones (repeat; "" for none)')
+    p.add_argument('--website')
+    p.add_argument('--status', choices=registry.STATUSES)
+    p.add_argument('--parent', help='main channel, or the channel it merged into ("" for none)')
+    p.set_defaults(func=cmd_channel_edit)
+    p = sub.add_parser('channel-map', help='map an iptv-org or Wikidata ID to a channel of the registry')
+    p.add_argument('ref')
+    p.add_argument('source', choices=sorted(registry.SOURCES))
+    p.add_argument('external_id')
+    p.add_argument('--method', default='review', choices=registry.METHODS)
+    p.add_argument('--remove', action='store_true')
+    p.set_defaults(func=cmd_channel_map)
     args = ap.parse_args(argv)
     db = Database(Path(args.root)) if args.root else Database()
     db.load()

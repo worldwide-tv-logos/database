@@ -4,7 +4,7 @@ import json
 import pytest
 from PIL import Image
 
-from worldwide_tv_logos import cli, harvest, image, issues, ops
+from worldwide_tv_logos import cli, harvest, image, issues, ops, registry
 from worldwide_tv_logos.db import Database, Logo, parse_logo_id
 from worldwide_tv_logos.iptvorg import IptvOrg
 
@@ -883,3 +883,86 @@ def test_site_check_slices_and_compares_logos():
     ImageDraw = __import__('PIL.ImageDraw', fromlist=['ImageDraw'])
     ImageDraw.Draw(b).ellipse((0, 0, 300, 300), fill=(0, 0, 200, 255))
     assert sitecheck.same_logo(a, a) and not sitecheck.same_logo(a, _png(b))
+
+
+# --- channel registry (roadmap/01-channel-registry.md) ---
+
+REG_IPTV = IptvOrg({'France3.fr': {'id': 'France3.fr', 'name': 'France 3', 'country': 'FR', 'alt_names': ['FR3']},
+                    'TF1.fr': {'id': 'TF1.fr', 'name': 'TF1', 'country': 'FR', 'website': 'https://www.tf1.fr'},
+                    'OldTV.fr': {'id': 'OldTV.fr', 'name': 'Old TV', 'country': 'FR', 'closed': '2020-01-01',
+                                 'replaced_by': 'NewTV.fr'},
+                    'NewTV.fr': {'id': 'NewTV.fr', 'name': 'New TV', 'country': 'FR'},
+                    'ZDF.de': {'id': 'ZDF.de', 'name': 'ZDF', 'country': 'DE'}},
+                   {('France3.fr', 'Alsace'): {'name': 'Alsace'}, ('TF1.fr', 'HD'): {'name': 'HD'}})
+
+
+def test_registry_ids_and_slugs():
+    taken = set()
+    for _ in range(200):
+        cid = registry.new_id(taken)
+        assert registry.ID_RE.match(cid) and cid not in taken
+        taken.add(cid)
+    assert registry.slug_base('Canal+ Sport') == 'canal-plus-sport'
+    assert registry.slug_base('Télé Monte-Carlo') == 'tele-monte-carlo'
+    assert registry.make_slug('TF1', 'fr', {'tf1.fr'}) == 'tf1-2.fr'
+    assert registry.make_slug('الجزيرة', 'qa', set(), fallback='AlJazeera') == 'aljazeera.qa'
+
+
+def test_registry_init_is_complete_and_can_run_again(db):
+    db.logos[('ZDF.de', '', '')] = Logo('ZDF.de')                # a logo of a country not followed
+    db.logos[('OldTV.fr', '', '')] = Logo('OldTV.fr')            # closed: registered because it has a logo
+    stats = registry.init(db, REG_IPTV, ['fr'])
+    assert stats == {'channels': 5, 'editions': 1, 'already': 0}  # TF1@HD is a quality feed: not an edition
+    f3 = registry.resolve(db, 'France3.fr')
+    alsace = registry.resolve(db, 'France3.fr@Alsace')
+    assert (f3.slug, f3.alias_list, alsace.slug, alsace.parent) == ('france-3.fr', ['FR3'], 'france-3-alsace.fr', f3.id)
+    assert registry.resolve(db, 'zdf.de').name == 'ZDF'
+    old, new = registry.resolve(db, 'OldTV.fr'), registry.resolve(db, 'NewTV.fr')
+    assert (old.status, old.parent) == ('merged', new.id)
+    assert registry.resolve(db, f3.id) is f3 and registry.resolve(db, 'nothing') is None
+    assert registry.check(db) == []
+    before = dict(db.channels)
+    assert registry.init(db, REG_IPTV, ['fr'])['already'] == 6 and db.channels == before
+
+
+def test_registry_check_and_merge(db, tmp_path):
+    db.logos[('OldTV.fr', '', '')] = Logo('OldTV.fr')
+    registry.init(db, REG_IPTV, ['fr'])
+    db.save()
+    tf1 = registry.resolve(db, 'TF1.fr')
+    other = registry.resolve(db, 'France3.fr')
+    tf1.slug = other.slug
+    db.external_ids[('iptv-epg', 'TF1.fr')] = registry.ExternalId(tf1.id, 'iptv-epg', 'TF1.fr', 'match', '2026-11-23')
+    errors = registry.check(db)
+    assert any('already used' in e for e in errors) and any('guide IDs are not stored' in e for e in errors)
+    # three-way merge: a channel renamed on one side, another added on the other side, both kept
+    base = Database(db.root).load()
+    up, ours = Database(db.root).load(), Database(db.root).load()
+    c = registry.resolve(up, 'TF1.fr')
+    c.name = 'TF1 renamed'
+    added = registry.add_channel(ours, 'Brand New', 'fr')
+    for name, d in (('base', base), ('up', up), ('ours', ours)):
+        d.root = tmp_path / name
+        (d.root / 'data').mkdir(parents=True)
+        d.save()
+    db.merge(base.root, up.root, ours.root)
+    assert registry.resolve(db, 'TF1.fr').name == 'TF1 renamed' and added.id in db.channels
+
+
+def test_registry_commands(db):
+    db.logos[('OldTV.fr', '', '')] = Logo('OldTV.fr')
+    registry.init(db, REG_IPTV, ['fr'])
+    db.save()
+    root = ['--root', str(db.root)]
+    assert cli.main([*root, 'channel-add', 'TF1', '--country', 'fr']) == 1            # same name in the country
+    assert cli.main([*root, 'channel-add', 'Brand New', '--country', 'fr']) == 0
+    assert cli.main([*root, 'channel-add', 'Brand New', '--country', 'es']) == 1      # country not followed
+    d = Database(db.root).load()
+    new = registry.resolve(d, 'brand-new.fr')
+    assert new is not None and new.status == 'active'
+    assert cli.main([*root, 'channel-edit', 'brand-new.fr', '--name', 'Brand Newer']) == 0
+    assert cli.main([*root, 'channel-map', 'brand-newer.fr', 'wikidata', 'Q42']) == 0
+    assert cli.main([*root, 'channel-map', 'TF1.fr', 'wikidata', 'Q42']) == 1         # already mapped elsewhere
+    assert cli.main([*root, 'channel-map', 'TF1.fr', 'wikidata', 'TF1']) == 1         # malformed
+    d = Database(db.root).load()
+    assert registry.resolve(d, 'Q42').id == new.id and registry.resolve(d, new.id).slug == 'brand-newer.fr'
