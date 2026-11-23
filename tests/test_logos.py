@@ -805,3 +805,70 @@ def test_collect_asks_the_costly_sources_for_missing_channels_only(tmp_path, mon
     ctx.deep = True
     sources.collect({'id': 'TF1.fr', 'name': 'TF1'}, ctx)
     assert set(asked) == {s.name for s in fake}
+
+
+def test_the_website_of_a_channel_is_found_and_confirmed(tmp_path):
+    from worldwide_tv_logos import sites, web
+    pages = {
+        'https://ceutatv.com/pag/directo': web.Page('https://ceutatv.com/pag/directo', status=404, error='HTTP 404'),
+        'https://ceutatv.com/': web.Page('https://ceutatv.com/', html='<title>Ceuta TV - Inicio</title>', status=200),
+        'https://www.gol.com/': web.Page('https://www.gol.com/', html='<title>Golf shop</title>', status=200),
+    }
+    fetch = lambda url, **kw: pages.get(url, web.Page(url, error='URLError'))
+    ctx = _ctx(tmp_path, {}, cc='es')
+    ctx._items['CeutaTV.es'] = []
+    site = sites.find({'id': 'CeutaTV.es', 'name': 'Ceuta TV', 'website': 'http://ceutatv.com/pag/directo'}, ctx, fetch)
+    assert (site.url, site.how, site.confirmed) == ('https://ceutatv.com/', 'home page', True)
+    ctx._items['Gol.es'] = []
+    assert sites.find({'id': 'Gol.es', 'name': 'Gol'}, ctx, fetch) is None      # gol.com: the name is not in its title
+    assert sites.guesses({'name': 'Ceuta TV'}, 'es')[:2] == ['https://www.ceutatv.es/', 'https://www.ceutatv.com/']
+    assert sites.guesses({'name': 'Dave'}, 'uk')[:2] == ['https://www.dave.co.uk/', 'https://www.dave.com/']
+
+
+def test_picons_skip_names_shared_by_channels_of_several_countries(tmp_path):
+    from worldwide_tv_logos.sources import names, picons
+    iptv = IptvOrg({'TV4.se': {'id': 'TV4.se', 'name': 'TV4', 'country': 'SE'},
+                    'TV4.es': {'id': 'TV4.es', 'name': 'TV4', 'country': 'ES'},
+                    'Neox.es': {'id': 'Neox.es', 'name': 'Neox', 'country': 'ES'}}, {})
+    ambiguous = names.ambiguous_keys(iptv)
+    assert 'tv4' in ambiguous and 'neox' not in ambiguous
+    ctx = _ctx(tmp_path, {'api.github.com': {'tree': [{'path': 'tv4.default.svg', 'type': 'blob'},
+                                                       {'path': 'neox.default.svg', 'type': 'blob'}]},
+                          'utf8snp.index': b''}, ambiguous=ambiguous)
+    assert picons.find({'id': 'TV4.es', 'name': 'TV4'}, ctx) == []
+    assert picons.find({'id': 'Neox.es', 'name': 'Neox'}, ctx) == [picons.RAW + 'logos/neox.default.svg']
+
+
+def test_harvest_proof_says_where_the_logo_was_seen(tmp_path, monkeypatch):
+    from worldwide_tv_logos import sites
+    from worldwide_tv_logos.harvest import proofs
+    monkeypatch.setattr(sites, 'find', lambda unit, ctx: sites.Site('https://www.canalcostatv.es/', 'iptv-org', True))
+    monkeypatch.setattr(proofs.seen, 'seen_on', lambda url, data, log=None: 'same drawing as the image x')
+    monkeypatch.setattr(proofs.web, 'screenshot', lambda url: None)
+    proof = proofs.check({'id': 'CanalCosta.es', 'name': 'CanalCosta'}, harvest.Candidate('picons', 'u', b'x'),
+                         _ctx(tmp_path, {}))
+    assert proof.text() == 'FOUND on www.canalcostatv.es'
+    monkeypatch.setattr(sites, 'find', lambda unit, ctx: None)
+    assert proofs.check({'id': 'X.es', 'name': 'X'}, harvest.Candidate('picons', 'u', b'x'),
+                        _ctx(tmp_path, {})).text() == 'no website found'
+
+
+def test_unreject_proposes_again_the_logos_set_aside(db):
+    path = db.root / 'data' / 'rejected.csv'
+    path.write_text('channel,url,reason,date\nA.es,u1,picons logo not confirmed as current,2026-11-23\n'
+                    'B.es,u2,wrong channel,2026-11-23\nC.es,u3,not confirmed,2026-11-20\n', encoding='utf-8')
+    assert cli.main(['--root', str(db.root), 'unreject', '--date', '2026-11-23', '--reason-contains', 'not confirmed']) == 0
+    assert [r.split(',')[0] for r in path.read_text(encoding='utf-8').splitlines()[1:]] == ['B.es', 'C.es']
+
+
+def test_silhouette_tells_the_same_logo_shifted_from_another_one():
+    from PIL import ImageDraw
+    def logo(text, dx=0):
+        img = Image.new('RGBA', (400, 100), (0, 0, 0, 0))
+        d = ImageDraw.Draw(img)
+        d.rectangle((10 + dx, 10, 90 + dx, 90), fill=(200, 0, 0, 255))
+        d.text((110 + dx, 30), text, fill=(0, 0, 0, 255), font_size=40)
+        return image.trim(img)
+    assert image.silhouette(logo('ceuta tv'), logo('ceuta tv', 3)) > 0.9
+    assert image.silhouette(logo('ceuta tv'), logo('mar tv', 0)) < image.silhouette(logo('ceuta tv'), logo('ceuta tv', 3))
+    assert image.silhouette(logo('ceuta tv'), Image.new('RGBA', (100, 300), (0, 0, 0, 255))) == 0.0   # proportions

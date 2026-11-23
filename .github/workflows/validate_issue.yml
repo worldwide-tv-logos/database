@@ -30,7 +30,9 @@ jobs:
           gh issue comment ${{ github.event.issue.number }} -R ${{ github.repository }} --body "This request was edited after its approval: it needs to be approved again."
       - uses: actions/checkout@v7
       - uses: astral-sh/setup-uv@v10.3.3
-      - run: uv sync
+      - run: uv sync --extra browser
+      - name: headless browser for the channel websites (web.py)
+        run: uv run playwright install --with-deps chromium
       - name: issue-validate
         id: validator
         env:

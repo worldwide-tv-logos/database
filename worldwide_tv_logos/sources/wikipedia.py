@@ -3,7 +3,8 @@ edition only, not by Wikimedia Commons: Wikidata does not have them (almost ever
 Italian and Spanish channels).
 
 The articles are the Wikidata item's (its sitelinks), in the country's languages then English; without an item, the
-article named like the channel, if it is not a disambiguation page and its title is the channel's name. The image is
+article named like the channel, if it is not a disambiguation page, its title is the channel's name and no
+channel of another country has that name (TV4: Spain and Sweden). The image is
 read with the MediaWiki API (`prop=pageimages`, its original file, one request per article, cached thirty days).
 Kept only when its file name says "logo" or is an SVG, and does not give a period already over ("2011-2017").
 """
@@ -47,7 +48,7 @@ def articles(unit: dict, ctx) -> list[tuple[str, str]]:
         for lang, title in item.get('sitelinks', {}).items():
             links.setdefault(lang, title)
     found = [(lang, links[lang]) for lang in ctx.languages if lang in links]
-    if not found and unit.get('name'):
+    if not found and unit.get('name') and not names.channel_keys(unit) & ctx.ambiguous:
         found = [(lang, unit['name']) for lang in ctx.languages[:2]]          # by name: checked below
     return found
 

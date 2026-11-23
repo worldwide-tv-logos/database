@@ -285,6 +285,7 @@ def cmd_find(args, db: Database) -> int:
     logos = [x for x in iptvorg.load_logos(db.root) if x['channel'] == channel and (x.get('feed') or '') == feed]
     unit = next((u for u in harvest.units(iptv, cc) if u['id'] == args.id), dict(c, channel=channel, feed=feed))
     ctx = sources.Context.for_country(db.root, cc, iptv_logos={(channel, feed): logos}, deep=True,
+                                      ambiguous=sources.names.ambiguous_keys(iptv),
                                       wikidata=not args.no_wikidata, epg=harvest.load_epg(db, cc, net.download, print))
     cands = [harvest.Candidate(src, url) for src, url in sources.collect(unit, ctx)]
     rejected = harvest.load_rejected(db.root)
@@ -527,7 +528,8 @@ def cmd_harvest(args, db: Database) -> int:
 
 def cmd_reject(args, db: Database) -> int:
     """Refuse a logo proposed in a harvest pull request: the channel gets back its logo of `--base` (the main
-    branch), and its URL goes to data/rejected.csv so that it is never proposed again."""
+    branch), and its URL goes to data/rejected.csv so that it is never proposed again; with `--unconfirmed` (right
+    perhaps, but no proof found), it is only removed from this pull request and proposed again at the next harvest."""
     from datetime import date
     channel, feed = parse_logo_id(args.channel)
     if not CHANNEL_RE.match(channel) or (feed and not FEED_RE.match(feed)):
@@ -554,6 +556,9 @@ def cmd_reject(args, db: Database) -> int:
         if (alias.channel, alias.feed, '') not in db.logos:
             del db.aliases[key]
     db.save()
+    if args.unconfirmed:
+        print(f'removed {logo.origin} for `{args.channel}` from this pull request (proposed again next time)')
+        return 0
     path = db.root / 'data' / 'rejected.csv'
     new = not path.is_file()
     with open(path, 'a', encoding='utf-8', newline='') as fh:
@@ -562,6 +567,25 @@ def cmd_reject(args, db: Database) -> int:
             w.writerow(['channel', 'url', 'reason', 'date'])
         w.writerow([args.channel, logo.origin, args.reason or '', date.today().isoformat()])
     print(f'rejected {logo.origin} for `{args.channel}`')
+    return 0
+
+
+def cmd_unreject(args, db: Database) -> int:
+    """Remove rows of data/rejected.csv (every filter given must match): those logos are proposed again."""
+    if not (args.channel or args.date or args.reason_contains):
+        print('give at least one filter (--channel, --date, --reason-contains)')
+        return 1
+    path = db.root / 'data' / 'rejected.csv'
+    with open(path, encoding='utf-8', newline='') as fh:
+        rows = list(csv.DictReader(fh))
+    keep = [r for r in rows if not ((not args.channel or r['channel'] == args.channel)
+                                    and (not args.date or r['date'] == args.date)
+                                    and args.reason_contains.lower() in r['reason'].lower())]
+    with open(path, 'w', encoding='utf-8', newline='') as fh:
+        w = csv.DictWriter(fh, ['channel', 'url', 'reason', 'date'], lineterminator='\n')
+        w.writeheader()
+        w.writerows(keep)
+    print(f'{len(rows) - len(keep)} refused logo(s) proposed again')
     return 0
 
 
@@ -885,7 +909,14 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument('channel')
     p.add_argument('--reason', default='')
     p.add_argument('--base', required=True, help='checkout of the main branch')
+    p.add_argument('--unconfirmed', action='store_true',
+                   help='no proof found (not wrong): removed from this pull request, proposed again next time')
     p.set_defaults(func=cmd_reject)
+    p = sub.add_parser('unreject', help='propose again logos refused before (rows of data/rejected.csv)')
+    p.add_argument('--channel', default='', help='this channel or feed only')
+    p.add_argument('--date', default='', help='refused on this day only (YYYY-MM-DD)')
+    p.add_argument('--reason-contains', default='', help='whose reason contains this text')
+    p.set_defaults(func=cmd_unreject)
     p = sub.add_parser('guide-aliases', help='add the aliases of the iptv-epg guide of a country found by name')
     p.add_argument('--country', required=True)
     p.set_defaults(func=cmd_guide_aliases)

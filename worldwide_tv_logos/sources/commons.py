@@ -1,6 +1,7 @@
 """Wikimedia Commons: files whose title has the channel's name and the word "logo" (search in the File namespace),
 for logos that no Wikidata item links to. One request per channel, cached thirty days. Files giving a period already
-over ("2011-2017") are left out; SVG first."""
+over ("2011-2017") are left out; SVG first. Not asked for a name that channels of several countries share.
+"""
 from __future__ import annotations
 
 import re
@@ -26,9 +27,7 @@ NOISE = {'logo', 'logotipo', 'logotype', 'svg', 'png', 'jpg', 'jpeg', 'webp', 'g
          'official'}
 
 
-def words(text: str) -> list[str]:
-    """Words of a name or a file title, compared like names ("Plus+" and "Canal+" keep their "+")."""
-    return [w for w in (names.key(x.replace('+', 'plus')) for x in re.split(r'[\s_\-.,()]+', text)) if w]
+words = names.words
 
 
 GROUP_WORDS = {'network', 'networks', 'group', 'media', 'corporation', 'corp', 'inc', 'company', 'holdings',
@@ -51,8 +50,8 @@ def named_after(title: str, name: str) -> bool:
 
 def find(unit: dict, ctx) -> list[str]:
     name = unit.get('name') or ''
-    if len(names.key(name)) < 3:
-        return []
+    if len(names.key(name)) < 3 or names.channel_keys(unit) & ctx.ambiguous:
+        return []                                # a name of channels of several countries: whose logo is it?
     files = []
     for title in search(name, ctx):
         low = title.lower()

@@ -72,3 +72,36 @@ def repo_sheets(db: Database, stems: list[str], out: Path, per_page: int = 30) -
         origin = re.sub(r'^https://([^/]+)/.*', r'\1', main.origin)
         tiles.append((stem, f'{main.width}x{main.height}  {origin}', dark, light))
     return render_sheets(tiles, out, per_page)
+
+
+def website_sheets(rows: list[tuple[str, bytes, Image.Image]], out: Path, per_page: int = 6) -> list[Path]:
+    """Each logo found (on a dark and a light tile) next to the top of its channel's website as people see it, one
+    per line: `sites-NN.png`."""
+    lw, lh, sw, cap = 300, 160, 1000, 30
+    sh = int(sw * 420 / 1280)
+    font = _font(16)
+    out.mkdir(parents=True, exist_ok=True)
+    pages = []
+    for p in range(0, len(rows), per_page):
+        chunk = rows[p:p + per_page]
+        sheet = Image.new('RGB', (lw + sw + 30, len(chunk) * (sh + cap + 14) + 10), '#ffffff')
+        draw = ImageDraw.Draw(sheet)
+        for i, (title, data, shot) in enumerate(chunk):
+            y = i * (sh + cap + 14) + 10
+            try:
+                img, white = image.variants(image.prepare(data)[0])
+            except Exception:  # noqa: BLE001 - shown without its logo
+                img = white = None
+            for j, (bg, pic) in enumerate((('#14181f', white or img), ('#eceef1', img))):
+                tile = Image.new('RGB', (lw, lh), bg)
+                if pic is not None:
+                    pic = pic.copy()
+                    pic.thumbnail((int(lw * .85), int(lh * .8)))
+                    tile.paste(pic, ((lw - pic.width) // 2, (lh - pic.height) // 2), pic)
+                sheet.paste(tile, (10, y + j * (lh + 4)))
+            sheet.paste(shot.resize((sw, sh)), (lw + 20, y))
+            draw.text((10, y + sh + 6), f'{p + i + 1}. {title}', fill='#111111', font=font)
+        path = out / f'sites-{p // per_page + 1:02d}.png'
+        sheet.save(path)
+        pages.append(path)
+    return pages

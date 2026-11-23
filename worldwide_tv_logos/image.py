@@ -55,12 +55,12 @@ def extension(data: bytes) -> str:
         return 'bin'
 
 
-def open_image(data: bytes) -> tuple[Image.Image, bool]:
+def open_image(data: bytes, svg_width: int = TARGET_WIDTH * 3) -> tuple[Image.Image, bool]:
     """(RGBA image, vector?)"""
     if is_svg(data):
         import resvg_py
         try:
-            png = bytes(resvg_py.svg_to_bytes(svg_string=data.decode('utf-8'), width=TARGET_WIDTH * 3))
+            png = bytes(resvg_py.svg_to_bytes(svg_string=data.decode('utf-8'), width=svg_width))
         except (ValueError, UnicodeDecodeError) as exc:
             raise ImageError(f'unreadable SVG ({exc})') from None
         return Image.open(io.BytesIO(png)).convert('RGBA'), True
@@ -355,3 +355,34 @@ def variants(img: Image.Image) -> tuple[Image.Image, Image.Image | None]:
     if white_edge_share(img) > WHITE_EDGE and (dark := dark_version(img)) is not None:
         return dark, img
     return img, white_variant(img)
+
+
+def _ink(img: Image.Image) -> np.ndarray:
+    """Where the drawing is (0..1): its opacity, or for an opaque image its distance to the colour of its border."""
+    a = np.asarray(img.convert('RGBA'), dtype=np.float32)
+    alpha = a[:, :, 3] / 255
+    if alpha.min() < 0.95:
+        return alpha
+    border = np.concatenate([a[0, :, :3], a[-1, :, :3], a[:, 0, :3], a[:, -1, :3]])
+    ground = np.median(border, axis=0)
+    return np.clip(np.abs(a[:, :, :3] - ground).max(axis=2) / 128, 0, 1)
+
+
+def silhouette(a: Image.Image, b: Image.Image, width: int = 160) -> float:
+    """How much two drawings have the same shape (-1..1, 1: identical): both shapes at the same size, slightly
+    blurred, correlated. Unlike the fingerprint, a small shift or another spacing barely changes it (the logo of
+    Ceuta TV on its website and in picons: 0.89; two logos of different channels: 0.10 at most). Drawings whose
+    proportions differ by more than a quarter are not compared (0)."""
+    from PIL import ImageFilter
+    ra, rb = a.width / max(a.height, 1), b.width / max(b.height, 1)
+    if min(ra, rb) <= 0 or max(ra, rb) / min(ra, rb) > 1.25:
+        return 0.0
+    height = max(8, round(width / ((ra + rb) / 2)))
+    shapes = []
+    for img in (a, b):
+        ink = Image.fromarray((_ink(img) * 255).astype(np.uint8)).resize((width, height), Image.LANCZOS)
+        v = np.asarray(ink.filter(ImageFilter.GaussianBlur(2)), dtype=np.float32)
+        shapes.append(v - v.mean())
+    x, y = shapes
+    norm = float(np.sqrt((x * x).sum() * (y * y).sum()))
+    return float((x * y).sum() / norm) if norm else 0.0

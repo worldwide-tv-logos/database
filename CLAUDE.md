@@ -77,11 +77,17 @@ old branding and is never proposed. The website of the channel is the best proof
   the channel's own website (iptv-org, iptv-epg, picons, xmltv-se, a Commons file found by name, image hosts such as
   imgur or ibb, app stores, other sites): open the channel's website (iptv-org field
   `website`, or found with a web search) or search for its current logo, and compare. A logo you could not confirm
-  as the current one is rejected. A clear sheet is not a proof: a logo can be clean and outdated.
+  as the current one is not published: set it aside (`logos reject --unconfirmed`), it is proposed again next time.
+  A clear sheet is not a proof: a logo can be clean and outdated.
 - **The best proof** is `uv run logos seen-on <page> <logo>` (`<logo>`: the request's URL or `data:image/...`, a
   candidate's URL, or a logo ID of this repository): it reads the page like a browser (many channel websites refuse
   WebFetch) and says whether the same drawing is on it (the SVG written in the page, or one of its images). FOUND on
   the channel's own website proves the logo is current. Use it whenever WebFetch is refused or the page is long.
+- **Harvests check the websites themselves**: the summary's Website column says whether the same drawing is on the
+  channel's website (found by `sites.py`: iptv-org's address, Wikidata's, the home page, or one made from the name,
+  confirmed when the name is in its title or domain; read plainly or by a headless browser), and `sites-NN.png` shows
+  each logo next to the top of the website. "FOUND" on a confirmed site is a proof; the logo visible on the website
+  capture is one too.
 - In your report, give for every kept logo from such a source the page that confirmed it (one short line each),
   so that anyone can check your decisions.
 - Prefer, in this order: the logo on the channel's own website or press kit, a current Wikidata/Wikimedia Commons
@@ -94,7 +100,10 @@ old branding and is never proposed. The website of the channel is the best proof
   it differs from its channel's (regional logos); quality and timeshift versions (HD, 4K, +1) never get one: they use the channel logo.
   Check that an edition logo names the right region or market.
 - Every logo of a change gets a decision: **kept** (right and current), **replaced** (`find` gives a clearly right
-  one: `logos set`) or **rejected** (`logos reject`). A rejected new logo leaves the channel in `missing/`, looked for
+  one: `logos set`), **rejected** for a concrete reason (`logos reject`: another channel, a group logo, an old
+  branding, not clean: never proposed again) or **set aside** when no proof could be found (`logos reject
+  --unconfirmed`: removed from the pull request, proposed again at the next harvest, when the website may be
+  readable). A rejected new logo leaves the channel in `missing/`, looked for
   again the next week; a rejected update keeps the current logo. Fewer logos is better than one wrong logo.
 - Then `verdict ready`: what remains is merged automatically. Your report lists every rejected or replaced logo with
   its reason, so that anyone can check your decisions later.
