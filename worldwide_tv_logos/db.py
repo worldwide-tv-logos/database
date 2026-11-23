@@ -1,12 +1,12 @@
 """The database: data/logos.csv, data/aliases.csv, data/countries.csv, and the files they describe; our channel
 registry, data/channels.csv and data/external_ids.csv (see registry.py).
 
-Naming is derived from the iptv-org id and never chosen by hand:
+Naming is derived from our channel ID (`ch_` + 10 characters, never changed) and never chosen by hand:
 
-    logos/<cc>/<channel>[@<feed>][.<variant>].png     the logo served
-    sources/<cc>/<channel>[@<feed>][.<variant>].<ext>  the original it was built from
+    logos/<id>[.<variant>].png       the logo served
+    sources/<id>.<ext>               the original it was built from
 
-`<cc>` is the country code at the end of the channel id (`France3.fr` -> `fr`).
+A path never changes: a channel renamed, or moved to another country, keeps its ID.
 """
 from __future__ import annotations
 
@@ -18,7 +18,6 @@ from pathlib import Path
 
 ROOT = Path(os.getenv('LOGOS_ROOT') or Path(__file__).resolve().parent.parent)
 CHANNEL_RE = re.compile(r'^[A-Za-z0-9]+\.[a-z]{2}$')        # iptv-org channel id: Latin letters, digits, `.cc`
-FEED_RE = re.compile(r'^[A-Za-z0-9]+$')
 EPG_ID_RE = re.compile(r'^[^,"\s]+$')
 VARIANTS = ('', 'white')                                     # '' : the logo itself; white : for dark backgrounds
 RAW_BASE = 'https://raw.githubusercontent.com/worldwide-tv-logos/database/main/'
@@ -27,8 +26,7 @@ SITE_BASE = 'https://worldwide-tv-logos.github.io/database/'   # GitHub Pages (C
 
 @dataclass
 class Logo:
-    channel: str
-    feed: str = ''
+    channel: str              # our channel ID (data/channels.csv)
     variant: str = ''
     width: int = 0
     height: int = 0
@@ -37,24 +35,20 @@ class Logo:
     updated: str = ''         # YYYY-MM-DD, last replacement of the file
 
     @property
-    def key(self) -> tuple[str, str, str]:
-        return self.channel, self.feed, self.variant
+    def key(self) -> tuple[str, str]:
+        return self.channel, self.variant
 
     @property
     def logo_id(self) -> str:
-        return self.channel + (f'@{self.feed}' if self.feed else '')
-
-    @property
-    def country(self) -> str:
-        return self.channel.rsplit('.', 1)[-1]
+        return self.channel
 
     @property
     def stem(self) -> str:
-        return self.logo_id + (f'.{self.variant}' if self.variant else '')
+        return self.channel + (f'.{self.variant}' if self.variant else '')
 
     @property
     def file(self) -> str:
-        return f'logos/{self.country}/{self.stem}.png'
+        return f'logos/{self.stem}.png'
 
     @property
     def url(self) -> str:
@@ -69,8 +63,7 @@ class Logo:
 class Alias:
     epg_id: str               # id of the channel in an EPG source (e.g. France3-Alsace.fr)
     source: str               # EPG source (e.g. iptv-epg-fr)
-    channel: str
-    feed: str = ''
+    channel: str              # our channel ID
 
     @property
     def key(self) -> tuple[str, str]:
@@ -115,12 +108,6 @@ class ExternalId:
         return self.source, self.external_id
 
 
-def parse_logo_id(value: str) -> tuple[str, str]:
-    """`France3.fr@Alsace` -> ('France3.fr', 'Alsace')."""
-    channel, _, feed = value.strip().partition('@')
-    return channel, feed
-
-
 def _read(path: Path, cls):
     if not path.exists():
         return []
@@ -161,7 +148,7 @@ def merge_rows(base: dict, upstream: dict, ours: dict) -> dict:
 class Database:
     def __init__(self, root: Path = ROOT):
         self.root = Path(root)
-        self.logos: dict[tuple[str, str, str], Logo] = {}
+        self.logos: dict[tuple[str, str], Logo] = {}
         self.aliases: dict[tuple[str, str], Alias] = {}
         self.countries: dict[str, str] = {}
         self.channels: dict[str, Channel] = {}
@@ -204,5 +191,8 @@ class Database:
         return self.root / rel
 
     def source_files(self, logo: Logo) -> list[Path]:
-        folder = self.root / 'sources' / logo.country
-        return sorted(folder.glob(f'{logo.stem}.*')) if folder.is_dir() else []
+        """The original of a logo (one expected); none for a variant, made from the logo's original."""
+        folder = self.root / 'sources'
+        if logo.variant:
+            return []
+        return sorted(folder.glob(f'{logo.channel}.*')) if folder.is_dir() else []

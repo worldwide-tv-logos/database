@@ -5,7 +5,7 @@ import pytest
 from PIL import Image
 
 from worldwide_tv_logos import cli, harvest, image, issues, ops, registry
-from worldwide_tv_logos.db import Database, Logo, parse_logo_id
+from worldwide_tv_logos.db import Channel, Database, ExternalId, Logo
 from worldwide_tv_logos.iptvorg import IptvOrg
 
 IPTV = IptvOrg({'France3.fr': {'id': 'France3.fr', 'name': 'France 3', 'country': 'FR'},
@@ -24,18 +24,36 @@ def png(w, h, color=(200, 0, 0, 255), bg=(0, 0, 0, 0), margin=0):
 SVG = b'<svg xmlns="http://www.w3.org/2000/svg" width="40" height="20"><rect x="5" y="5" width="30" height="10" fill="#111"/></svg>'
 
 
+F3, ALS, TF1, BIS = 'ch_france3000', 'ch_f3a5ace000', 'ch_tf1000000a', 'ch_tf1b000000'   # channels of the test registry
+
+
 @pytest.fixture
-def db(tmp_path):
+def bare(tmp_path):
+    """A repository with an empty registry."""
     (tmp_path / 'data').mkdir()
     (tmp_path / 'data' / 'countries.csv').write_text('code,name\nfr,France\n', encoding='utf-8')
     return Database(tmp_path).load()
 
 
-def test_names_are_derived_from_the_iptv_org_id():
-    logo = Logo('France3.fr', 'Alsace', 'white')
-    assert (logo.file, logo.logo_id) == ('logos/fr/France3.fr@Alsace.white.png', 'France3.fr@Alsace')
-    assert Logo('TF1.fr').file == 'logos/fr/TF1.fr.png'
-    assert parse_logo_id('France3.fr@Alsace') == ('France3.fr', 'Alsace')
+@pytest.fixture
+def db(bare):
+    """France 3 with its edition France 3 Alsace, TF1, and TF1 Bis (no iptv-org ID), in the registry."""
+    for cid, slug, name, parent, source, ext in (
+            (F3, 'france-3.fr', 'France 3', '', 'iptv-org', 'France3.fr'),
+            (ALS, 'france-3-alsace.fr', 'France 3 Alsace', F3, 'iptv-org-feed', 'France3.fr@Alsace'),
+            (TF1, 'tf1.fr', 'TF1', '', 'iptv-org', 'TF1.fr'),
+            (BIS, 'tf1-bis.fr', 'TF1 Bis', '', '', '')):
+        bare.channels[cid] = Channel(cid, slug, name, '', 'fr', 'active', parent, '', '2026-11-23', '')
+        if source:
+            bare.external_ids[(source, ext)] = ExternalId(cid, source, ext, 'import', '2026-11-23')
+    bare.save()
+    return Database(bare.root).load()
+
+
+def test_names_are_derived_from_our_channel_id():
+    logo = Logo(ALS, 'white')
+    assert (logo.file, logo.logo_id) == (f'logos/{ALS}.white.png', ALS)
+    assert Logo(TF1).file == f'logos/{TF1}.png'
 
 
 def test_prepare_trims_removes_white_frame_and_refuses_bad_images():
@@ -89,39 +107,41 @@ def test_svg_is_rendered_at_target_width_and_dark_logo_gets_white_variant():
 
 
 def test_set_logo_writes_logo_original_variant_and_validates(db):
-    changes = ops.set_logo(db, 'France3.fr', 'Alsace', SVG, 'https://example.org/f3.svg', IPTV, today='2026-11-21')
+    changes = ops.set_logo(db, ALS, SVG, 'https://example.org/f3.svg', today='2026-11-21')
     assert len(changes) == 2
     db.save()
-    assert (db.root / 'logos/fr/France3.fr@Alsace.png').is_file()
-    assert (db.root / 'logos/fr/France3.fr@Alsace.white.png').is_file()
-    assert (db.root / 'sources/fr/France3.fr@Alsace.svg').read_bytes() == SVG
+    assert (db.root / f'logos/{ALS}.png').is_file()
+    assert (db.root / f'logos/{ALS}.white.png').is_file()
+    assert (db.root / f'sources/{ALS}.svg').read_bytes() == SVG
     assert cli.validate(Database(db.root).load(), IPTV) == []
     # replacement by a coloured logo: same file names, no white variant any more, dates kept / updated
-    ops.set_logo(db, 'France3.fr', 'Alsace', png(900, 300), 'issue #3', IPTV, today='2026-12-01')
+    ops.set_logo(db, ALS, png(900, 300), 'issue #3', today='2026-12-01')
     db.save()
     again = Database(db.root).load()
-    logo = again.logos[('France3.fr', 'Alsace', '')]
+    logo = again.logos[(ALS, '')]
     assert (logo.added, logo.updated, logo.origin) == ('2026-11-21', '2026-12-01', 'issue #3')
-    assert ('France3.fr', 'Alsace', 'white') not in again.logos
-    assert not (db.root / 'logos/fr/France3.fr@Alsace.white.png').exists()
-    assert [p.name for p in (db.root / 'sources/fr').iterdir()] == ['France3.fr@Alsace.png']
+    assert (ALS, 'white') not in again.logos
+    assert not (db.root / f'logos/{ALS}.white.png').exists()
+    assert [p.name for p in (db.root / 'sources').iterdir()] == [f'{ALS}.png']
     assert cli.validate(again, IPTV) == []
 
 
 def test_unknown_ids_are_refused(db):
-    with pytest.raises(ops.NotInIptvOrg, match='does not exist in iptv-org'):
-        ops.set_logo(db, 'Nope.fr', '', png(800, 300), 'x', IPTV)
-    with pytest.raises(ops.RequestError, match='known: Alsace, National'):
-        ops.set_logo(db, 'France3.fr', 'Mars', png(800, 300), 'x', IPTV)
-    with pytest.raises(ops.RequestError, match='not an iptv-org channel id'):
-        ops.set_logo(db, 'France 3', '', png(800, 300), 'x', IPTV)
+    with pytest.raises(ops.RequestError, match='not a channel ID of our registry'):
+        ops.set_logo(db, 'ch_0000000000', png(800, 300), 'x')
+    with pytest.raises(ops.NotRegistered, match='not a channel of our registry yet'):
+        ops.channel_of(db, 'Nope.fr')                                   # an iptv-org ID: may come, waits
+    with pytest.raises(ops.RequestError, match='unknown channel') as exc:
+        ops.channel_of(db, 'France 3')
+    assert not isinstance(exc.value, ops.NotRegistered)
+    assert ops.channel_of(db, 'France3.fr@Alsace').id == ALS and ops.channel_of(db, 'tf1.fr').id == TF1
 
 
 def test_validate_finds_stray_and_misnamed_files(db):
-    ops.set_logo(db, 'TF1.fr', '', png(800, 300), 'x', IPTV)
+    ops.set_logo(db, TF1, png(800, 300), 'x')
     db.save()
-    (db.root / 'logos/fr/tf1-fr.png').write_bytes(png(800, 300))
-    (db.root / 'sources/fr/Old.fr.png').write_bytes(b'x')
+    (db.root / 'logos/tf1-fr.png').write_bytes(png(800, 300))
+    (db.root / 'sources/Old.fr.png').write_bytes(b'x')
     errors = cli.validate(Database(db.root).load(), IPTV)
     assert any('tf1-fr.png: not listed' in e for e in errors)
     assert any('Old.fr.png: original of no logo' in e for e in errors)
@@ -146,19 +166,21 @@ _No response_
 
 
 def test_issue_form_is_parsed_validated_and_applied(db):
-    req = issues.parse(12, ['logos:add', 'approved'], BODY)
+    req = issues.parse(12, ['logos:add', 'approved'], BODY)                 # an older form: iptv-org channel + feed
     assert (req.kind, req.get('channel'), req.get('feed'), req.get('notes')) == ('logos:add', 'France3.fr', 'Alsace', '')
     fake = {'https://example.org/f3-alsace.png': png(1000, 400)}
-    assert issues.validate(req, db, IPTV, downloader=fake.__getitem__) == []
-    changes = issues.apply(req, db, IPTV, downloader=fake.__getitem__)
-    assert changes[0].startswith('added logos/fr/France3.fr@Alsace.png')
-    assert db.logos[('France3.fr', 'Alsace', '')].origin == 'issue #12'
+    assert issues.validate(req, db, downloader=fake.__getitem__) == []
+    changes = issues.apply(req, db, downloader=fake.__getitem__)
+    assert changes[0].startswith(f'added logos/{ALS}.png')
+    assert db.logos[(ALS, '')].origin == 'issue #12'
     bad = issues.parse(13, ['logos:add'], BODY.replace('Alsace', 'Mars'))
-    assert issues.validate(bad, db, IPTV, downloader=fake.__getitem__) == []     # unknown feed: waits for iptv-org
-    assert 'Mars' in bad.waiting and 'known: Alsace, National' in bad.waiting
+    assert issues.validate(bad, db, downloader=fake.__getitem__) == []     # not registered yet: waits
+    assert 'France3.fr@Mars' in bad.waiting
+    ours = issues.parse(16, ['logos:edit'], f'### Channel ID\n\n{ALS}\n\n### Logo URL\n\nhttps://example.org/f3-alsace.png\n')
+    assert issues.validate(ours, db, downloader=fake.__getitem__) == []    # our ID
     alias = issues.parse(14, ['aliases:add'], '### EPG ID\n\nFrance3-Alsace.fr\n\n### EPG source\n\niptv-epg-fr\n\n'
-                                               '### Channel ID\n\nFrance3.fr\n\n### Feed ID (optional)\n\nAlsace\n')
-    assert issues.apply(alias, db, IPTV) == ['added alias iptv-epg-fr:France3-Alsace.fr -> France3.fr@Alsace']
+                                               '### Channel ID\n\nfrance-3-alsace.fr\n')
+    assert issues.apply(alias, db) == [f'added alias iptv-epg-fr:France3-Alsace.fr -> {ALS}']
 
 
 class FakeGitHub:
@@ -185,8 +207,8 @@ def test_update_applies_each_issue_alone_and_skips_faulty_ones(db, monkeypatch):
     monkeypatch.setattr(cli.net, 'GitHub', lambda: gh)
     monkeypatch.setattr(cli.iptvorg, 'load', lambda root: IPTV)
     monkeypatch.setattr(issues.net, 'download', lambda url: png(1000, 400))
-    monkeypatch.setattr(issues, 'apply', lambda req, db_, iptv, downloader=None, _a=issues.apply:
-                        _a(req, db_, iptv, downloader=lambda u: png(1000, 400)))
+    monkeypatch.setattr(issues, 'apply', lambda req, db_, downloader=None, _a=issues.apply:
+                        _a(req, db_, downloader=lambda u: png(1000, 400)))
     assert cli.main(['--root', str(db.root), 'update']) == 0
     assert (db.root / 'temp/processed.txt').read_text() == 'Closes #1'
     assert gh.comments[0][0] == 2 and (2, ['check:failed']) in gh.labels
@@ -198,54 +220,54 @@ def test_every_form_action(db):
     fake = {'https://example.org/f3-alsace.png': png(1000, 400)}
     get = fake.__getitem__
     add = issues.parse(1, ['logos:add'], BODY)
-    issues.apply(add, db, IPTV, downloader=get)
-    assert 'use the logos/edit form' in issues.validate(add, db, IPTV, downloader=get)[0]
+    issues.apply(add, db, downloader=get)
+    assert 'use the logos/edit form' in issues.validate(add, db, downloader=get)[0]
     edit = issues.parse(2, ['logos:edit'], BODY)
-    assert issues.validate(edit, db, IPTV, downloader=get) == []
-    assert issues.apply(edit, db, IPTV, downloader=get)[0].startswith('replaced logos/fr/France3.fr@Alsace.png')
+    assert issues.validate(edit, db, downloader=get) == []
+    assert issues.apply(edit, db, downloader=get)[0].startswith(f'replaced logos/{ALS}.png')
     new_edit = issues.parse(3, ['logos:edit'], BODY.replace('France3.fr', 'TF1.fr').replace('Alsace', ''))
-    assert 'use the logos/add form' in issues.validate(new_edit, db, IPTV, downloader=get)[0]
+    assert 'use the logos/add form' in issues.validate(new_edit, db, downloader=get)[0]
     request = issues.parse(4, ['logos:request'], '### Channel ID\n\nTF1.fr\n')
-    assert issues.validate(request, db, IPTV) == []
+    assert issues.validate(request, db) == []
     with pytest.raises(ops.RequestError, match='fulfilled by a logos/add'):
-        issues.apply(request, db, IPTV)
+        issues.apply(request, db)
     alias = '### EPG ID\n\nF3A.fr\n\n### EPG source\n\nx\n\n### Channel ID\n\nFrance3.fr\n\n### Feed ID\n\nAlsace\n'
-    issues.apply(issues.parse(5, ['aliases:add'], alias), db, IPTV)
+    issues.apply(issues.parse(5, ['aliases:add'], alias), db)
     remove = issues.parse(6, ['aliases:remove'], alias)
-    assert issues.validate(remove, db, IPTV) == []
-    assert issues.apply(remove, db, IPTV) == ['removed alias x:F3A.fr']
-    assert 'no alias' in issues.validate(remove, db, IPTV)[0]
+    assert issues.validate(remove, db) == []
+    assert issues.apply(remove, db) == ['removed alias x:F3A.fr']
+    assert 'no alias' in issues.validate(remove, db)[0]
     gone = issues.parse(7, ['logos:remove'], BODY)
-    assert issues.apply(gone, db, IPTV)[0] == 'removed logos/fr/France3.fr@Alsace.png'
+    assert issues.apply(gone, db)[0] == f'removed logos/{ALS}.png'
 
 
-def test_a_logo_can_wait_for_its_channel_in_iptv_org(db, monkeypatch):
+def test_a_logo_can_wait_for_its_channel_in_the_registry(db, monkeypatch):
     body = BODY.replace('France3.fr', 'NewChannel.fr').replace('Alsace', '')
     fake = {'https://example.org/f3-alsace.png': png(1000, 400)}
     req = issues.parse(9, ['logos:add'], body)
-    assert issues.validate(req, db, IPTV, downloader=fake.__getitem__) == []
+    assert issues.validate(req, db, downloader=fake.__getitem__) == []
     assert 'NewChannel.fr' in req.waiting                                  # image checked, channel awaited
     edit = issues.parse(10, ['logos:edit'], body)
-    assert 'does not exist' in issues.validate(edit, db, IPTV, downloader=fake.__getitem__)[0]
+    assert 'not a channel of our registry' in issues.validate(edit, db, downloader=fake.__getitem__)[0]
     item = {'number': 9, 'labels': [{'name': 'logos:add'}, {'name': 'approved'}], 'body': body}
     gh = FakeGitHub([item])
     monkeypatch.setattr(cli.net, 'GitHub', lambda: gh)
     monkeypatch.setattr(issues.net, 'download', lambda url: png(1000, 400))
-    monkeypatch.setattr(cli.iptvorg, 'load', lambda root: IPTV)
     cli.main(['--root', str(db.root), 'update'])
     assert (db.root / 'temp/processed.txt').read_text() == ''
-    assert gh.labels == [(9, ['waiting:iptv-org'])] and gh.comments == []  # kept approved, no failure
-    later = IptvOrg({**IPTV.channels, 'NewChannel.fr': {'id': 'NewChannel.fr', 'country': 'FR'}}, IPTV.feeds)
-    monkeypatch.setattr(cli.iptvorg, 'load', lambda root: later)
-    item['labels'].append({'name': 'waiting:iptv-org'})
+    assert gh.labels == [(9, ['waiting:channel'])] and gh.comments == []   # kept approved, no failure
+    later = Database(db.root).load()                                       # registered by the nightly channels-init
+    registry.map_id(later, registry.add_channel(later, 'New Channel', 'fr'), 'iptv-org', 'NewChannel.fr', 'import')
+    later.save()
+    item['labels'].append({'name': 'waiting:channel'})
     cli.main(['--root', str(db.root), 'update'])
     assert (db.root / 'temp/processed.txt').read_text() == 'Closes #9'
-    assert (9, '-waiting:iptv-org') in gh.labels
+    assert (9, '-waiting:channel') in gh.labels
 
 
 def test_iptv_org_changes_are_warnings_and_aliases_follow_their_logo(db):
-    ops.set_logo(db, 'TF1.fr', '', png(800, 300), 'x', IPTV)
-    ops.set_alias(db, 'TF1-HD.fr', 'iptv-epg-fr', 'TF1.fr', '', IPTV)
+    ops.set_logo(db, TF1, png(800, 300), 'x')
+    ops.set_alias(db, 'TF1-HD.fr', 'iptv-epg-fr', TF1)
     db.save()
     later = IptvOrg({'TF1.fr': {'id': 'TF1.fr', 'country': 'FR', 'replaced_by': 'TF1New.fr'}}, {})
     warnings = []
@@ -255,7 +277,7 @@ def test_iptv_org_changes_are_warnings_and_aliases_follow_their_logo(db):
     warnings = []
     assert cli.validate(Database(db.root).load(), gone, warnings) == []
     assert 'no longer in iptv-org' in warnings[0]
-    assert ops.remove_logo(db, 'TF1.fr', '') == ['removed logos/fr/TF1.fr.png', 'removed alias iptv-epg-fr:TF1-HD.fr']
+    assert ops.remove_logo(db, TF1) == [f'removed logos/{TF1}.png', 'removed alias iptv-epg-fr:TF1-HD.fr']
     db.save()
     assert cli.validate(Database(db.root).load(), IPTV) == []
 
@@ -263,10 +285,10 @@ def test_iptv_org_changes_are_warnings_and_aliases_follow_their_logo(db):
 def test_second_addition_the_same_night_is_refused(db):
     fake = {'https://example.org/f3-alsace.png': png(1000, 400)}
     first, second = issues.parse(1, ['logos:add'], BODY), issues.parse(2, ['logos:add'], BODY)
-    assert issues.validate(second, db, IPTV, downloader=fake.__getitem__) == []    # valid when submitted
-    issues.apply(first, db, IPTV, downloader=fake.__getitem__)
+    assert issues.validate(second, db, downloader=fake.__getitem__) == []    # valid when submitted
+    issues.apply(first, db, downloader=fake.__getitem__)
     with pytest.raises(ops.RequestError, match='already has a logo'):
-        issues.apply(second, db, IPTV, downloader=fake.__getitem__)
+        issues.apply(second, db, downloader=fake.__getitem__)
 
 
 def test_changes_issue_body_lists_each_warning():
@@ -276,25 +298,28 @@ def test_changes_issue_body_lists_each_warning():
 
 def test_site_data(db, tmp_path):
     from worldwide_tv_logos import site
-    ops.set_logo(db, 'TF1.fr', '', png(800, 300), 'x', IPTV)
+    ops.set_logo(db, TF1, png(800, 300), 'x')
+    ops.set_logo(db, ALS, png(800, 300), 'y')
     db.save()
     out = tmp_path / 'api'
     stats = site.build(db, IPTV, [{'code': 'FR', 'name': 'France', 'flag': ''}], out)
-    assert stats['with_logo'] == 1
+    assert stats['with_logo'] == 2                                           # TF1, and France 3 by its edition
     import json
     fr = json.loads((out / 'countries' / 'fr.json').read_text(encoding='utf-8'))
-    tf1 = next(c for c in fr['channels'] if c['id'] == 'TF1.fr')
-    assert tf1['logos'][0]['url'].endswith('logos/fr/TF1.fr.png')
+    tf1 = next(c for c in fr['channels'] if c['id'] == TF1)
+    assert tf1['logos'][0]['url'].endswith(f'logos/{TF1}.png') and tf1['iptv'] == 'TF1.fr'
+    f3 = next(c for c in fr['channels'] if c['id'] == F3)
+    assert [f['id'] for f in f3['feeds']] == [ALS] and f3['logos'][0]['feed'] == ALS
+    assert ALS not in {c['id'] for c in fr['channels']}                      # listed with its channel
     assert json.loads((out / 'countries.json').read_text(encoding='utf-8'))[0]['name'] == 'France'
 
 
-def test_logos_json_is_a_drop_in_for_iptv_org(db):
-    ops.set_logo(db, 'TF1.fr', '', png(800, 300), 'x', IPTV)
-    rec = cli.logo_record(db.logos[('TF1.fr', '', '')])
-    iptv_org_fields = ['channel', 'feed', 'in_use', 'tags', 'width', 'height', 'format', 'url']
-    assert list(rec)[:8] == iptv_org_fields
-    assert rec['url'] == 'https://worldwide-tv-logos.github.io/database/logos/fr/TF1.fr.png'
-    assert rec['country'] == 'fr' and rec['format'] == 'PNG' and rec['tags'] == []
+def test_logos_json_gives_our_id_its_slug_and_iptv_org_id(db):
+    ops.set_logo(db, ALS, png(800, 300), 'x')
+    rec = cli.logo_record(db, db.logos[(ALS, '')])
+    assert (rec['channel'], rec['slug'], rec['iptv'], rec['parent']) == (ALS, 'france-3-alsace.fr', 'France3.fr@Alsace', F3)
+    assert rec['url'] == f'https://worldwide-tv-logos.github.io/database/logos/{ALS}.png'
+    assert rec['country'] == 'fr' and rec['format'] == 'PNG' and rec['variant'] is None
 
 
 def test_white_logo_gets_a_dark_version_and_white_box_with_black_text_is_kept():
@@ -313,17 +338,17 @@ def test_white_logo_gets_a_dark_version_and_white_box_with_black_text_is_kept():
 
 def test_reject_restores_the_logo_of_main_and_records_the_url(db, tmp_path_factory):
     import shutil
-    ops.set_logo(db, 'TF1.fr', '', png(800, 300), 'https://example.org/old.png', IPTV)
+    ops.set_logo(db, TF1, png(800, 300), 'https://example.org/old.png')
     db.save()
     base = tmp_path_factory.mktemp('base')
     shutil.copytree(db.root, base, dirs_exist_ok=True)
-    ops.set_logo(db, 'TF1.fr', '', png(1000, 300), 'https://example.org/new.png', IPTV)   # proposed update
+    ops.set_logo(db, TF1, png(1000, 300), 'https://example.org/new.png')   # proposed update
     db.save()
-    assert cli.main(['--root', str(db.root), 'reject', 'TF1.fr', '--reason', 'old branding',
+    assert cli.main(['--root', str(db.root), 'reject', 'tf1.fr', '--reason', 'old branding',
                      '--base', str(base)]) == 0
     again = Database(db.root).load()
-    assert again.logos[('TF1.fr', '', '')].origin == 'https://example.org/old.png'
-    assert harvest.load_rejected(db.root) == {('TF1.fr', 'https://example.org/new.png')}
+    assert again.logos[(TF1, '')].origin == 'https://example.org/old.png'
+    assert harvest.load_rejected(db.root) == {(TF1, 'https://example.org/new.png')}
     assert cli.validate(again, IPTV) == []
 
 
@@ -366,19 +391,18 @@ def test_website_logos_and_old_file_names():
     assert harvest.evaluate(cand, lambda url: b'').error.startswith('old branding')
 
 
-def test_move_channel_moves_logos_sources_and_aliases(db):
-    later = IptvOrg({**IPTV.channels, 'TF1New.fr': {'id': 'TF1New.fr', 'name': 'TF1', 'country': 'FR'}}, IPTV.feeds)
-    ops.set_logo(db, 'TF1.fr', '', png(800, 300), 'x', IPTV)
-    ops.set_alias(db, 'TF1-HD.fr', 'iptv-epg-fr', 'TF1.fr', '', IPTV)
+def test_move_logos_to_another_channel_moves_logos_sources_and_aliases(db):
+    ops.set_logo(db, TF1, png(800, 300), 'x')
+    ops.set_alias(db, 'TF1-HD.fr', 'iptv-epg-fr', TF1)
     db.save()
-    ops.move_channel(db, 'TF1.fr', 'TF1New.fr', later)
+    ops.move_logos(db, TF1, BIS)
     db.save()
     again = Database(db.root).load()
-    assert ('TF1New.fr', '', '') in again.logos and ('TF1.fr', '', '') not in again.logos
-    assert next(iter(again.aliases.values())).channel == 'TF1New.fr'
-    assert cli.validate(again, later) == []
+    assert (BIS, '') in again.logos and (TF1, '') not in again.logos
+    assert next(iter(again.aliases.values())).channel == BIS
+    assert cli.validate(again, IPTV) == []
     with pytest.raises(ops.RequestError):
-        ops.move_channel(db, 'TF1New.fr', 'Nope.fr', later)
+        ops.move_logos(db, BIS, 'ch_0000000000')
 
 
 def test_navy_letters_get_a_white_variant_but_not_a_gradient():
@@ -397,15 +421,24 @@ def test_navy_letters_get_a_white_variant_but_not_a_gradient():
     assert image.white_variant(gradient) is None
 
 
-def test_editions_are_harvest_units_except_quality_versions():
+def test_harvest_units_come_from_the_registry():
     iptv = IptvOrg({'France3.fr': {'id': 'France3.fr', 'name': 'France 3', 'country': 'FR'}},
                    {('France3.fr', 'National'): {'id': 'National', 'is_main': True},
                     ('France3.fr', 'Alsace'): {'id': 'Alsace', 'name': 'Alsace'},
                     ('France3.fr', 'HD'): {'id': 'HD', 'name': 'HD'}})
-    units = harvest.units(iptv, 'fr')
-    assert [(u['id'], u['name']) for u in units] == [('France3.fr', 'France 3'),
-                                                     ('France3.fr@Alsace', 'France 3 Alsace')]
-    assert harvest.channel_keys(units[1]) == {'france3alsace'}            # never the key of the channel itself
+    assert [(u['id'], u['name']) for u in registry.iptv_units(iptv, 'fr')] == [
+        ('France3.fr', 'France 3'), ('France3.fr@Alsace', 'France 3 Alsace')]     # quality versions left out
+
+
+def test_registry_units_are_channels_then_their_editions(db):
+    units = harvest.units(db, 'fr')
+    assert [u['id'] for u in units] == [F3, ALS, TF1, BIS]
+    f3, als = units[0], units[1]
+    assert (als['parent'], als['iptv'], als['channel'], als['feed']) == (F3, 'France3.fr@Alsace', 'France3.fr', 'Alsace')
+    assert harvest.iptv_key(als) == ('France3.fr', 'Alsace') and harvest.iptv_key(units[3]) == ('', '')
+    assert units[3]['channel'] == 'tf1bis.fr'                                   # family name made from the slug
+    assert harvest.channel_keys(als) == {'france3alsace'}            # never the key of the channel itself
+    assert 'france3' in harvest.channel_keys(f3)
 
 
 def test_fingerprint_sees_the_same_drawing_through_resizing():
@@ -436,11 +469,12 @@ def test_iptv_epg_guide_logos_by_alias_id_and_name(tmp_path):
     assert sources.load_iptv_epg(tmp_path, 'es', lambda *a, **k: gzip.compress(xml)) == channels
     assert sources.load_iptv_epg(tmp_path, 'es', lambda *a, **k: b'') == channels  # cached one day
 
-    alias = SimpleNamespace(epg_id='Mega.es', source='iptv-epg.org', channel='MegaTV.es', feed='')
+    alias = SimpleNamespace(epg_id='Mega.es', source='iptv-epg.org', channel='ch_mega000000')
     epg = sources.EpgIndex(channels, [alias], harvest.key)
     assert epg.logos({'id': 'La1.es'}, set()) == ['https://e/la1']
     assert epg.logos({'id': 'Telecinco.es'}, {harvest.key('Telecinco')}) == ['https://e/t5']
-    assert epg.logos({'id': 'MegaTV.es', 'channel': 'MegaTV.es', 'feed': ''}, set()) == ['https://e/mega']
+    assert epg.logos({'id': 'ch_mega000000', 'iptv': 'MegaTV.es'}, set()) == ['https://e/mega']
+    assert epg.logos({'id': 'ch_1a1000000a', 'iptv': 'La1.es'}, set()) == ['https://e/la1']          # same ID
     assert epg.logos({'id': 'Other.es'}, {harvest.key('Other')}) == []
     assert epg.logos({'id': 'Cuatro.es'}, set()) == []                                          # no icon
     assert epg.match({'id': 'Telecinco.es'}, {harvest.key('Telecinco')}) == 'Tele5Guide'
@@ -499,7 +533,7 @@ def test_white_version_rules_for_dark_logos():
 def test_sharper_version_says_whether_it_is_the_same_drawing(tmp_path):
     src = tmp_path / 'X.fr.png'
     src.write_bytes(png(512, 200))
-    logo = Logo('X.fr', '', '', 512, 200, 'https://example.org/x.png')
+    logo = Logo('ch_x000000000', '', 512, 200, 'https://example.org/x.png')
     current = 0x5A5A5A5A5A5A5A5A                                           # fingerprint of the current logo
     same = harvest.Candidate('website', 'https://x.fr/logo.svg', data=SVG, svg=True, size=(1200, 400), fp=current)
     assert harvest.update_reason(logo, src, same, set(), [current]) == 'vector (SVG) version found, same drawing'
@@ -537,13 +571,12 @@ def test_seen_on_finds_a_logo_drawn_or_shown_in_a_page():
 def test_guide_aliases_only_for_channels_with_a_logo(db, monkeypatch):
     import argparse
 
-    from worldwide_tv_logos import iptvorg, sources
-    ops.set_logo(db, 'France3.fr', '', SVG, 'https://example.org/f3.svg', IPTV)
+    from worldwide_tv_logos import sources
+    ops.set_logo(db, F3, SVG, 'https://example.org/f3.svg')
     guide = [{'id': 'F3guide', 'names': ['France 3'], 'icon': ''}, {'id': 'TF1guide', 'names': ['TF1'], 'icon': ''}]
-    monkeypatch.setattr(iptvorg, 'load', lambda root: IPTV)
     monkeypatch.setattr(harvest, 'load_epg', lambda db, cc, dl, log: sources.EpgIndex(guide, [], harvest.key))
     cli.cmd_guide_aliases(argparse.Namespace(country='fr'), db)
-    assert [(a.epg_id, a.channel) for a in db.aliases.values()] == [('F3guide', 'France3.fr')]   # TF1: no logo
+    assert [(a.epg_id, a.channel) for a in db.aliases.values()] == [('F3guide', F3)]   # TF1: no logo
     assert cli.validate(Database(db.root).load(), IPTV) == []
 
 
@@ -553,8 +586,8 @@ def test_bulk_adds_the_iptv_org_logos_that_pass_the_rules(db):
               'height': 100}]
     files = {'https://x.org/tf1.svg': SVG}
     stats = harvest.bulk(db, IPTV, 'fr', logos, pause=0, downloader=lambda url, **kw: files[url], log=lambda s: None)
-    assert stats == {'todo': 4, 'added': 1, 'doubts': 0}                  # France 3 (too small) and its 2 editions
-    assert ('TF1.fr', '', '') in db.logos and db.logos[('TF1.fr', '', '')].origin == 'https://x.org/tf1.svg'
+    assert stats == {'todo': 4, 'added': 1, 'doubts': 0}                  # France 3 (too small), Alsace, TF1 Bis
+    assert (TF1, '') in db.logos and db.logos[(TF1, '')].origin == 'https://x.org/tf1.svg'
     assert cli.validate(Database(db.root).load(), IPTV) == []
 
 
@@ -563,13 +596,14 @@ def test_epg_sure_match_and_newer_guide_logo_replaced_when_the_website_shows_it(
     guide = [{'id': 'TF1guide', 'names': ['TF1'], 'icon': 'https://g.org/tf1.png'},
              {'id': 'A', 'names': ['France 3'], 'icon': ''}, {'id': 'B', 'names': ['France 3'], 'icon': ''}]
     epg = sources.EpgIndex(guide, [], harvest.key)
-    assert epg.sure({'id': 'TF1.fr'}, {harvest.key('TF1')})['id'] == 'TF1guide'
-    assert epg.sure({'id': 'France3.fr'}, {harvest.key('France 3')}) is None              # two guide channels
+    assert epg.sure({'id': TF1, 'iptv': 'TF1.fr'}, {harvest.key('TF1')})['id'] == 'TF1guide'
+    assert epg.sure({'id': F3, 'iptv': 'France3.fr'}, {harvest.key('France 3')}) is None      # two guide channels
     old = Image.new('RGBA', (800, 300), (200, 0, 0, 255))
     old.paste((0, 0, 200, 255), (0, 0, 300, 300))                                         # blue block on the left
     new = old.transpose(Image.Transpose.FLIP_LEFT_RIGHT)                                   # another drawing
     old, new = _png(old), _png(new)
-    ops.set_logo(db, 'TF1.fr', '', old, 'https://x.org/old.png', IPTV)
+    ops.set_logo(db, TF1, old, 'https://x.org/old.png')
+    db.channels[TF1].website = 'https://tf1.fr/'
     iptv = IptvOrg({'TF1.fr': {'id': 'TF1.fr', 'name': 'TF1', 'country': 'FR', 'website': 'https://tf1.fr/'}}, {})
     monkeypatch.setattr(harvest.run, 'load_epg', lambda db, cc, dl, log: epg)
     get = {'https://g.org/tf1.png': new}.__getitem__
@@ -578,7 +612,7 @@ def test_epg_sure_match_and_newer_guide_logo_replaced_when_the_website_shows_it(
     assert run('a', lambda page, data, dl: None) == {'checked': 1, 'replaced': 0, 'review': 1}   # website: no proof
     assert (tmp_path / 'a' / 'sheet-01.png').is_file()
     assert run('b', lambda page, data, dl: 'found' if data == new else None) == {'checked': 1, 'replaced': 1, 'review': 0}
-    assert db.logos[('TF1.fr', '', '')].origin == 'https://g.org/tf1.png'
+    assert db.logos[(TF1, '')].origin == 'https://g.org/tf1.png'
     assert run('c', lambda page, data, dl: None)['checked'] == 0                   # now the guide's URL: nothing to do
 
 
@@ -632,51 +666,52 @@ def _write(root, rel, data):
     path.write_bytes(data if isinstance(data, bytes) else data.encode())
 
 
-HEADER = 'channel,feed,variant,width,height,origin,added,updated\n'
+HEADER = 'channel,variant,width,height,origin,added,updated\n'
+TS, W9 = 'ch_te1esamb00', 'ch_w9w9w9w9w9'
 
 
 def test_merge_data_files_applies_our_logo_files_on_top_of_main_without_a_rebase(tmp_path):
     git = _git_repo(tmp_path)
-    _write(tmp_path, 'data/logos.csv', HEADER + 'TF1.fr,,,10,10,a,2026-01-01,\n')
+    _write(tmp_path, 'data/logos.csv', HEADER + f'{TF1},,10,10,a,2026-01-01,\n')
     _write(tmp_path, 'data/rejected.csv', 'channel,url,reason,date\n')
-    _write(tmp_path, 'logos/fr/TF1.fr.png', b'tf1')
+    _write(tmp_path, f'logos/{TF1}.png', b'tf1')
     git('add', '-A')
     git('commit', '-qm', 'base')
     base = git('rev-parse', 'HEAD')
     # main meanwhile: Telesambre added with a PNG source, TF1 untouched
-    _write(tmp_path, 'data/logos.csv', HEADER + 'Telesambre.be,,,10,10,main,2026-02-01,\nTF1.fr,,,10,10,a,2026-01-01,\n')
-    _write(tmp_path, 'logos/be/Telesambre.be.png', b'main')
-    _write(tmp_path, 'sources/be/Telesambre.be.png', b'main source')
+    _write(tmp_path, 'data/logos.csv', HEADER + f'{TS},,10,10,main,2026-02-01,\n{TF1},,10,10,a,2026-01-01,\n')
+    _write(tmp_path, f'logos/{TS}.png', b'main')
+    _write(tmp_path, f'sources/{TS}.png', b'main source')
     _write(tmp_path, 'data/rejected.csv', 'channel,url,reason,date\nA.fr,u1,r,2026-02-01\n')
     git('add', '-A')
     git('commit', '-qm', 'main')
     upstream = git('rev-parse', 'HEAD')
     # our change, from base: the same logo from a JPG source, and a rejection
     git('checkout', '-q', base)
-    _write(tmp_path, 'data/logos.csv', HEADER + 'Telesambre.be,,,10,10,ours,2026-02-02,\nTF1.fr,,,10,10,a,2026-01-01,\n')
-    _write(tmp_path, 'logos/be/Telesambre.be.png', b'ours')
-    _write(tmp_path, 'sources/be/Telesambre.be.jpg', b'ours source')
+    _write(tmp_path, 'data/logos.csv', HEADER + f'{TS},,10,10,ours,2026-02-02,\n{TF1},,10,10,a,2026-01-01,\n')
+    _write(tmp_path, f'logos/{TS}.png', b'ours')
+    _write(tmp_path, f'sources/{TS}.jpg', b'ours source')
     _write(tmp_path, 'data/rejected.csv', 'channel,url,reason,date\nB.fr,u2,r,2026-02-02\n')
     git('add', '-A')
     git('commit', '-qm', 'ours')
     ours = git('rev-parse', 'HEAD')
     git('checkout', '-q', upstream)                    # the working tree holds main (git reset --hard origin/main)
     assert cli.main(['--root', str(tmp_path), 'merge-data', base, ours, upstream, '--files']) == 0
-    assert (tmp_path / 'logos/be/Telesambre.be.png').read_bytes() == b'ours'
-    assert sorted(p.name for p in (tmp_path / 'sources/be').iterdir()) == ['Telesambre.be.jpg']   # one source
-    assert 'Telesambre.be,,,10,10,ours,' in (tmp_path / 'data/logos.csv').read_text()
+    assert (tmp_path / f'logos/{TS}.png').read_bytes() == b'ours'
+    assert sorted(p.name for p in (tmp_path / 'sources').iterdir()) == [f'{TS}.jpg']   # one source
+    assert f'{TS},,10,10,ours,' in (tmp_path / 'data/logos.csv').read_text()
     assert (tmp_path / 'data/rejected.csv').read_text().splitlines()[1:] == ['A.fr,u1,r,2026-02-01',
                                                                                'B.fr,u2,r,2026-02-02']
 
 
 def test_regress_check_fails_when_an_older_version_of_a_logo_comes_back(tmp_path):
     git = _git_repo(tmp_path)
-    _write(tmp_path, 'data/logos.csv', HEADER + 'W9.fr,,,10,10,new,2025-01-01,2026-11-22\nTF1.fr,,,10,10,a,2026-01-01,\n')
+    _write(tmp_path, 'data/logos.csv', HEADER + f'{W9},,10,10,new,2025-01-01,2026-11-22\n{TF1},,10,10,a,2026-01-01,\n')
     git('add', '-A')
     git('commit', '-qm', 'main')
     root = ['--root', str(tmp_path)]
     assert cli.main([*root, 'regress-check', 'HEAD']) == 0
-    _write(tmp_path, 'data/logos.csv', HEADER + 'W9.fr,,,10,10,old,2025-01-01,2026-03-01\nTF1.fr,,,10,10,b,2026-01-01,2026-11-23\n')
+    _write(tmp_path, 'data/logos.csv', HEADER + f'{W9},,10,10,old,2025-01-01,2026-03-01\n{TF1},,10,10,b,2026-01-01,2026-11-23\n')
     assert cli.main([*root, 'regress-check', 'HEAD']) == 1
 
 
@@ -724,7 +759,7 @@ def test_one_brand_shares_its_logo_across_countries_and_differences_are_listed()
     assert harvest.brand_differences(kept, drawings) == [('NickJr.fr', ['NickJr.pl'])]
     kept[0][1].fp = nick
     assert harvest.brand_differences(kept, drawings) == []
-    assert harvest.logo_url('France3.fr@Alsace').endswith('/logos/fr/France3.fr@Alsace.png')
+    assert harvest.logo_url(ALS).endswith(f'/logos/{ALS}.png')
 
 
 def _ctx(tmp_path, responses, **kw):
@@ -911,13 +946,12 @@ def test_registry_ids_and_slugs():
     assert registry.make_slug('الجزيرة', 'qa', set(), fallback='AlJazeera') == 'aljazeera.qa'
 
 
-def test_registry_init_is_complete_and_can_run_again(db):
-    db.logos[('ZDF.de', '', '')] = Logo('ZDF.de')                # a logo of a country not followed
-    db.logos[('OldTV.fr', '', '')] = Logo('OldTV.fr')            # closed: registered because it has a logo
-    db.logos[('ZDF.de', 'Europe', '')] = Logo('ZDF.de', 'Europe')
-    stats = registry.init(db, REG_IPTV, ['fr'])
-    # TF1@HD is a quality feed: not an edition
-    assert stats == {'channels': 5, 'editions': 3, 'already': 0, 'country changed': 0}
+def test_registry_init_is_complete_and_can_run_again(bare):
+    db = bare
+    stats = registry.init(db, REG_IPTV, ['fr', 'de'])
+    # TF1@HD is a quality feed: not an edition; Old TV is closed
+    assert stats == {'channels': 4, 'editions': 3, 'already': 0, 'country changed': 0}
+    assert registry.resolve(db, 'OldTV.fr') is None
     # an edition broadcast in one other country takes it; a region keeps its channel's
     assert registry.resolve(db, 'TF1.fr@Belgique').slug == 'tf1-belgique.be'
     assert registry.resolve(db, 'ZDF.de@Europe').country == 'de'
@@ -925,12 +959,10 @@ def test_registry_init_is_complete_and_can_run_again(db):
     alsace = registry.resolve(db, 'France3.fr@Alsace')
     assert (f3.slug, f3.alias_list, alsace.slug, alsace.parent) == ('france-3.fr', ['FR3'], 'france-3-alsace.fr', f3.id)
     assert registry.resolve(db, 'zdf.de').name == 'ZDF'
-    old, new = registry.resolve(db, 'OldTV.fr'), registry.resolve(db, 'NewTV.fr')
-    assert (old.status, old.parent) == ('merged', new.id)
     assert registry.resolve(db, f3.id) is f3 and registry.resolve(db, 'nothing') is None
     assert registry.check(db) == []
     before = dict(db.channels)
-    assert registry.init(db, REG_IPTV, ['fr'])['already'] == 8 and db.channels == before
+    assert registry.init(db, REG_IPTV, ['fr', 'de'])['already'] == 7 and db.channels == before
     # an edition loaded before with its channel's country follows its broadcast country
     be = registry.resolve(db, 'TF1.fr@Belgique')
     be.country, be.slug = 'fr', 'tf1-belgique.fr'
@@ -939,8 +971,8 @@ def test_registry_init_is_complete_and_can_run_again(db):
     assert registry.refresh_editions(db, REG_IPTV) == 0
 
 
-def test_registry_check_and_merge(db, tmp_path):
-    db.logos[('OldTV.fr', '', '')] = Logo('OldTV.fr')
+def test_registry_check_and_merge(bare, tmp_path):
+    db = bare
     registry.init(db, REG_IPTV, ['fr'])
     db.save()
     tf1 = registry.resolve(db, 'TF1.fr')
@@ -963,8 +995,8 @@ def test_registry_check_and_merge(db, tmp_path):
     assert registry.resolve(db, 'TF1.fr').name == 'TF1 renamed' and added.id in db.channels
 
 
-def test_registry_commands(db):
-    db.logos[('OldTV.fr', '', '')] = Logo('OldTV.fr')
+def test_registry_commands(bare):
+    db = bare
     registry.init(db, REG_IPTV, ['fr'])
     db.save()
     root = ['--root', str(db.root)]

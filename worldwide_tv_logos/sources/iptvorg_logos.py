@@ -4,7 +4,8 @@ from __future__ import annotations
 
 
 def find(unit: dict, ctx) -> list[str]:
-    logos = sorted((x for x in ctx.iptv_logos.get((unit.get('channel', unit['id']), unit.get('feed', '')), ())
+    channel, _, feed = unit.get('iptv', unit['id']).partition('@')
+    logos = sorted((x for x in ctx.iptv_logos.get((channel, feed), ())
                     if x.get('in_use', True)
                     and 'white' not in (x.get('tags') or []) and str(x.get('url', '')).startswith('https://')),
                    key=lambda x: (x.get('format') != 'SVG', -(x.get('width') or 0)))

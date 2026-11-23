@@ -19,6 +19,9 @@ export interface Logo {
 
 export interface Feed {
   id: string
+  slug: string
+  country: string
+  closed: boolean
   name: string
   is_main: boolean
   format: string | null
@@ -32,6 +35,9 @@ export interface Alias {
 
 export interface Channel {
   id: string
+  slug: string
+  iptv: string | null
+  country: string
   name: string
   alt_names: string[] | null
   network: string | null
@@ -40,6 +46,7 @@ export interface Channel {
   launched: string | null
   closed: string | null
   replaced_by: string | null
+  replaced_by_country: string | null
   feeds: Feed[]
   logos: Logo[]
   aliases: Alias[]
@@ -58,7 +65,9 @@ export type SearchRow = [string, string, string, number]
 /** One record of logos.json (the public API). */
 export interface ApiLogo {
   channel: string
-  feed: string | null
+  slug: string | null
+  iptv: string | null
+  parent: string | null
   variant: string | null
   url: string
   width: number
@@ -103,17 +112,13 @@ export function fold(s: string | null | undefined): string {
   return String(s ?? '').normalize('NFKD').replace(/[̀-ͯ]/g, '').toLowerCase()
 }
 
+/** Our ID of a channel, or of one of its editions. */
 export function logoId(channel: string, feed?: string | null): string {
-  return feed ? `${channel}@${feed}` : channel
+  return feed || channel
 }
 
-/** Country of a channel ID (`TF1.fr` -> `fr`). */
-export function countryOf(id: string): string {
-  return id.split('@')[0]!.split('.').pop()!.toLowerCase()
-}
-
-export function channelLink(id: string) {
-  return { path: `/countries/${countryOf(id)}`, query: { channel: id } }
+export function channelLink(id: string, cc: string) {
+  return { path: `/countries/${cc.toLowerCase()}`, query: { channel: id } }
 }
 
 /** Quality and timeshift versions of a channel (TF1@HD, Boomerang@Plus1) always use the channel logo (same rule as the harvest). */
@@ -142,7 +147,7 @@ function form(template: string, fields: Record<string, string>): string {
 }
 
 function ids(c: string, f?: string | null): Record<string, string> {
-  return { channel_id: c, ...(f ? { feed_id: f } : {}) }
+  return { channel_id: f || c }
 }
 
 /** Issue forms, prefilled with the channel and the edition. */

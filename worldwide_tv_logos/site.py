@@ -1,10 +1,13 @@
-"""Data of the website (GitHub Pages): every iptv-org country and channel, with the logos of this repository.
+"""Data of the website (GitHub Pages): the channels of our registry (data/channels.csv), with their editions and
+the logos of this repository.
 
     countries.json            [{code, name, flag, channels, logos}]   countries with at least one channel
-    countries/<cc>.json       {code, name, flag, channels: [...]}     channels of a country, their feeds and logos
+    countries/<cc>.json       {code, name, flag, channels: [...]}     channels of a country, their editions and logos
     search.json               [[id, name, cc, logos]]                 every channel, for the global search
 
-NSFW channels are left out. The website itself (site/, Nuxt) reads these files; it is built by `npm run generate`.
+A channel is listed in its country with its editions (`feeds`: our IDs of its regional or market versions, wherever
+they are broadcast). NSFW channels of iptv-org are left out. The website itself (site/, Nuxt) reads these files; it
+is built by `npm run generate`.
 """
 from __future__ import annotations
 
@@ -12,10 +15,11 @@ import json
 from collections import defaultdict
 from pathlib import Path
 
+from worldwide_tv_logos import registry
 from worldwide_tv_logos.db import Database
 from worldwide_tv_logos.iptvorg import IptvOrg
 
-CHANNEL_KEYS = ('name', 'alt_names', 'network', 'categories', 'website', 'launched', 'closed', 'replaced_by')
+IPTV_KEYS = ('network', 'categories', 'launched')
 
 
 def _dump(path: Path, data) -> None:
@@ -24,26 +28,41 @@ def _dump(path: Path, data) -> None:
 
 
 def build(db: Database, iptv: IptvOrg, countries: list[dict], out: Path) -> dict[str, int]:
-    logos = defaultdict(list)
-    for x in db.logos.values():
-        logos[x.channel].append({'feed': x.feed or None, 'variant': x.variant or None, 'url': x.url,
-                                 'width': x.width, 'height': x.height, 'updated': x.updated or x.added})
+    def logos_of(cid: str, feed: str | None) -> list[dict]:
+        return [{'feed': feed, 'variant': x.variant or None, 'url': x.url, 'width': x.width, 'height': x.height,
+                 'updated': x.updated or x.added}
+                for x in (db.logos.get((cid, v)) for v in ('', 'white')) if x is not None]
+
     aliases = defaultdict(list)
     for a in db.aliases.values():
-        aliases[a.channel].append({'epg_id': a.epg_id, 'source': a.source, 'feed': a.feed or None})
-    feeds = defaultdict(list)
-    for (channel, fid), f in iptv.feeds.items():
-        feeds[channel].append({'id': fid, 'name': f.get('name') or fid, 'is_main': bool(f.get('is_main')),
-                               'format': f.get('format')})
+        aliases[a.channel].append({'epg_id': a.epg_id, 'source': a.source})
+    editions = defaultdict(list)
+    for c in db.channels.values():
+        if c.parent and c.status != 'merged':
+            editions[c.parent].append(c)
     by_country = defaultdict(list)
-    for c in iptv.channels.values():
-        if c.get('is_nsfw'):
+    for c in db.channels.values():
+        if c.parent and c.status != 'merged':
+            continue                                               # listed with its channel
+        ident = registry.iptv_id(db, c.id)
+        rec = iptv.channels.get(ident.split('@')[0]) or {} if ident else {}
+        if rec.get('is_nsfw'):
             continue
-        record = {'id': c['id'], **{k: c.get(k) for k in CHANNEL_KEYS},
-                  'feeds': sorted(feeds.get(c['id'], []), key=lambda f: (not f['is_main'], f['name'].lower())),
-                  'logos': sorted(logos.get(c['id'], []), key=lambda x: (x['feed'] or '', x['variant'] or '')),
-                  'aliases': aliases.get(c['id'], [])}
-        by_country[(c.get('country') or '').lower()].append(record)
+        merged = db.channels.get(c.parent) if c.status == 'merged' else None
+        record = {'id': c.id, 'slug': c.slug, 'iptv': ident or None, 'country': c.country, 'name': c.name,
+                  'alt_names': c.alias_list,
+                  **{k: rec.get(k) for k in IPTV_KEYS}, 'website': c.website or None,
+                  'closed': (rec.get('closed') or 'yes') if c.status in ('closed', 'merged') else None,
+                  'replaced_by': merged.id if merged else None,
+                  'replaced_by_country': merged.country if merged else None,
+                  'feeds': [], 'logos': logos_of(c.id, None),
+                  'aliases': [dict(a, feed=None) for a in aliases.get(c.id, [])]}
+        for e in sorted(editions.get(c.id, []), key=lambda e: e.name.lower()):
+            record['feeds'].append({'id': e.id, 'slug': e.slug, 'name': e.name, 'is_main': False, 'format': None,
+                                    'country': e.country, 'closed': e.status == 'closed'})
+            record['logos'] += logos_of(e.id, e.id)
+            record['aliases'] += [dict(a, feed=e.id) for a in aliases.get(e.id, [])]
+        by_country[c.country].append(record)
     names = {x['code'].lower(): x for x in countries}
     index, search = [], []
     for cc, channels in sorted(by_country.items()):

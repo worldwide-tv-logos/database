@@ -61,7 +61,7 @@ const editions = computed(() => ch.value.feeds.filter(f => !(f.is_main && !mainL
       >
         Replaced by
         <ULink
-          :to="channelLink(ch.replaced_by)"
+          :to="channelLink(ch.replaced_by, ch.replaced_by_country || ch.country)"
           class="font-mono text-primary"
         >{{ ch.replaced_by }}</ULink>
       </p>
@@ -78,7 +78,8 @@ const editions = computed(() => ch.value.feeds.filter(f => !(f.is_main && !mainL
           size="sm"
         />
         <UButton
-          :to="`https://iptv-org.github.io/?q=${encodeURIComponent(ch.id)}`"
+          v-if="ch.iptv"
+          :to="`https://iptv-org.github.io/?q=${encodeURIComponent(ch.iptv ?? '')}`"
           target="_blank"
           icon="i-lucide-tv"
           label="View on iptv-org"
@@ -101,7 +102,7 @@ const editions = computed(() => ch.value.feeds.filter(f => !(f.is_main && !mainL
         Editions
       </h3>
       <p class="mb-3 text-sm text-muted">
-        Regional or local versions of the channel (iptv-org feeds). An edition without its own logo uses the channel logo.
+        Regional or local versions of the channel, each with its own ID. An edition without its own logo uses the channel logo.
       </p>
       <div class="space-y-2">
         <EditionRow
@@ -118,7 +119,7 @@ const editions = computed(() => ch.value.feeds.filter(f => !(f.is_main && !mainL
         TV guide IDs
       </h3>
       <p class="mb-3 text-sm text-muted">
-        IDs that TV guides (EPG) use for this channel when they differ from the iptv-org ID.
+        IDs that TV guides (EPG) use for this channel or its editions.
       </p>
       <UTable
         v-if="ch.aliases.length"

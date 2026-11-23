@@ -28,7 +28,7 @@ const base = `${SITE}logos`
     <figure class="space-y-2">
       <div class="bg-checker flex aspect-[16/9] items-center justify-center rounded-xl p-6 ring-1 ring-default">
         <img
-          :src="`${base}/es/TelemadridINT.es.png`"
+          :src="`${base}/ch_93xv95ybg6.png`"
           alt="Published logo: transparent PNG"
           class="max-h-full max-w-full object-contain"
         >
@@ -46,7 +46,7 @@ const base = `${SITE}logos`
     <figure class="space-y-2">
       <div class="flex aspect-[16/9] items-center justify-center rounded-xl bg-tile-light p-6 ring-1 ring-default">
         <img
-          :src="`${base}/fr/France3.fr.png`"
+          :src="`${base}/ch_1r840gxdj5.png`"
           alt="France 3 logo on a light background"
           class="max-h-full max-w-full object-contain"
         >
@@ -64,7 +64,7 @@ const base = `${SITE}logos`
     <figure class="space-y-2">
       <div class="flex aspect-[16/9] items-center justify-center rounded-xl bg-tile-dark p-6 ring-1 ring-default">
         <img
-          :src="`${base}/fr/France3.fr.white.png`"
+          :src="`${base}/ch_1r840gxdj5.white.png`"
           alt="France 3 white version on a dark background"
           class="max-h-full max-w-full object-contain"
         >

@@ -2,7 +2,8 @@
 
 <h1 align="center">Worldwide TV Logos</h1>
 
-Clean TV channel logos from all over the world, keyed by [iptv-org](https://github.com/iptv-org/database) channel ID.
+Clean TV channel logos from all over the world, under a channel ID of our own that never changes, with each
+channel's [iptv-org](https://github.com/iptv-org/database) ID when it has one.
 
 **Browse them by country, channel and edition: https://worldwide-tv-logos.github.io/database/** (every page has
 buttons to add, replace or request a logo).
@@ -11,24 +12,27 @@ buttons to add, replace or request a logo).
   side 500 to 2000 px, never upscaled).
 - **Readable everywhere**: a white variant for logos that are black, grey or very dark (navy letters), so they stay
   readable on dark screens; a logo made for dark screens (white letters) gets a dark version for light ones.
-- **One stable address per logo**, derived from the iptv-org ID: no guessing, no renaming.
+- **One stable address per logo**, derived from our channel ID: a channel renamed or moved keeps it.
 - **Current logos only**: old brandings are refused (dated by Wikidata or by the file name), and every logo is
   checked by eye on contact sheets before it is published.
-- **Aliases** for the IDs used by TV guides (EPG) that differ from iptv-org.
+- **Aliases** for the IDs used by TV guides (EPG).
 
 ## Use
 
 ```
-https://worldwide-tv-logos.github.io/database/logos/<cc>/<channel>[@<feed>][.white].png
+https://worldwide-tv-logos.github.io/database/logos/<id>[.white].png
 ```
+
+`<id>` is our channel ID (`ch_` and 10 characters, shown on each channel page; `data/channels.csv`): it never
+changes and is never reused.
 
 | Logo | Address (after `https://worldwide-tv-logos.github.io/database/`) |
 |---|---|
-| TF1 | `logos/fr/TF1.fr.png` |
-| France 3 Alsace (feed `Alsace` of `France3.fr`) | `logos/fr/France3.fr@Alsace.png` |
-| its version for dark backgrounds | `logos/fr/France3.fr@Alsace.white.png` |
+| TF1 (`ch_rxxkmndvjh`, iptv-org `TF1.fr`) | `logos/ch_rxxkmndvjh.png` |
+| France 3 Alsace (`ch_dhk02zjhwa`, iptv-org `France3.fr@Alsace`) | `logos/ch_dhk02zjhwa.png` |
+| its version for dark backgrounds | `logos/ch_dhk02zjhwa.white.png` |
 
-An edition without its own logo uses the logo of its channel. Images are served by GitHub Pages (a CDN); the same
+An edition without its own logo uses the logo of its channel (`parent` in `logos.json`). Images are served by GitHub Pages (a CDN); the same
 paths also work under `https://raw.githubusercontent.com/worldwide-tv-logos/database/main/`, which is not meant for
 heavy use.
 
@@ -36,8 +40,8 @@ heavy use.
 
 | File | Content |
 |---|---|
-| [`logos.json`](https://worldwide-tv-logos.github.io/database/logos.json) | every logo; a drop-in replacement for iptv-org's `logos.json` (same fields: `channel`, `feed`, `in_use`, `tags`, `width`, `height`, `format`, `url`), plus `country`, `variant` and `updated` |
-| [`aliases.json`](https://worldwide-tv-logos.github.io/database/aliases.json) | TV guide IDs that differ from iptv-org: `epg_id`, `source`, `channel`, `feed` |
+| [`logos.json`](https://worldwide-tv-logos.github.io/database/logos.json) | every logo: `channel` (our ID), `slug`, `iptv` (its iptv-org ID), `country`, `parent` (an edition's channel), `variant`, `width`, `height`, `format`, `url`, `updated` |
+| [`aliases.json`](https://worldwide-tv-logos.github.io/database/aliases.json) | TV guide IDs of channels: `epg_id`, `source`, `channel` |
 
 Static files, no key, updated every night. Details and examples: [API page](https://worldwide-tv-logos.github.io/database/docs/getting-started/api).
 
@@ -93,13 +97,16 @@ Maintainers: [MAINTAINING.md](MAINTAINING.md). Everyone: [code of conduct](CODE_
 ## Layout
 
 ```
-data/logos.csv       the index: channel, feed, variant, width, height, origin, added, updated
-data/aliases.csv     guide IDs -> iptv-org IDs: epg_id, source, channel, feed
+data/channels.csv    our channels: id, slug, name, aliases, country, status, parent, website, added, updated
+data/external_ids.csv their iptv-org and Wikidata IDs: channel_id, source, external_id, method, added
+data/logos.csv       the index: channel, variant, width, height, origin, added, updated
+data/aliases.csv     guide IDs -> our channel IDs: epg_id, source, channel
 data/countries.csv   countries followed (missing/ lists, weekly harvest and hunt)
 data/rejected.csv    logos refused in review, never proposed again
-logos/<cc>/          the logos (PNG), named after their iptv-org ID
-sources/<cc>/        the originals they were built from (same name, original extension)
-missing/<cc>.md      iptv-org channels of the country that still have no logo here
+logos/               the logos (PNG), named after our channel ID
+sources/             the originals they were built from (same name, original extension)
+missing/<cc>.md      channels of the country that still have no logo here
+roadmap/             the plan: our own channel registry
 site/                the website (Nuxt, from the Nuxt UI docs template; its data is built by `logos export`)
 worldwide_tv_logos/  the tools (`uv run logos --help`, see .github/docs/scripts.md)
 tests/               tests of the tools

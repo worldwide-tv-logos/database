@@ -35,7 +35,7 @@ def index(ctx) -> list[str]:
 
 
 def find(unit: dict, ctx) -> list[str]:
-    cc = unit.get('channel', unit['id']).rsplit('.', 1)[-1]
+    cc = unit.get('country') or unit.get('channel', unit['id']).rsplit('.', 1)[-1]
     wanted = {k for k in names.channel_keys(unit) if len(k) >= 3}
     for file in index(ctx):
         country, keys = keys_of(file.rsplit('_', 1)[0] if '_' in file else file[:-4])

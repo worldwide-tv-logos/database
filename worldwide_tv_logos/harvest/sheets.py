@@ -59,14 +59,16 @@ def contact_sheets(rows: list[tuple[dict, Candidate]], out: Path, per_page: int 
 
 
 def repo_sheets(db: Database, stems: list[str], out: Path, per_page: int = 30) -> list[Path]:
-    """Logos of the repository (`stems` such as France3.fr or France3.fr@Alsace): their files as served."""
+    """Logos of the repository (`stems`: channel IDs, slugs or iptv-org IDs): their files as served."""
+    from worldwide_tv_logos import registry
     tiles = []
     for stem in stems:
-        channel, _, feed = stem.partition('@')
-        main = db.logos.get((channel, feed, ''))
+        c = registry.resolve(db, stem)
+        main = db.logos.get((c.id, '')) if c else None
         if main is None:
             continue
-        white = db.logos.get((channel, feed, 'white'))
+        white = db.logos.get((c.id, 'white'))
+        stem = f'{c.slug}  {c.id}'
         light = Image.open(db.path(main.file)).convert('RGBA')
         dark = Image.open(db.path(white.file)).convert('RGBA') if white else light
         origin = re.sub(r'^https://([^/]+)/.*', r'\1', main.origin)

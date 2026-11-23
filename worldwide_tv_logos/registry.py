@@ -79,6 +79,65 @@ def resolve(db: Database, value: str) -> Channel | None:
     return None
 
 
+def iptv_id(db: Database, cid: str) -> str:
+    """The iptv-org ID of a channel (`France3.fr`) or edition (`France3.fr@Alsace`), '' when it has none."""
+    return next((x.external_id for x in _ids(db).get(cid, ()) if x.source in ('iptv-org', 'iptv-org-feed')), '')
+
+
+def _ids(db: Database) -> dict[str, list]:
+    """channel ID -> its external IDs, built once per state of the registry."""
+    sig = (id(db.external_ids), len(db.external_ids))
+    cache = db.__dict__.get('_ids_cache')
+    if cache is None or cache[0] != sig:
+        by: dict[str, list] = {}
+        for x in db.external_ids.values():
+            by.setdefault(x.channel_id, []).append(x)
+        cache = (sig, by)
+        db.__dict__['_ids_cache'] = cache
+    return cache[1]
+
+
+def family_name(db: Database, cid: str) -> str:
+    """A name in the iptv-org form (`France3.fr`) used to tell brands and numbered sister channels apart
+    (harvest.duplicates): the iptv-org channel ID, else one made from the slug; an edition takes its channel's."""
+    ident = iptv_id(db, cid)
+    if ident:
+        return ident.split('@')[0]
+    c = db.channels.get(cid)
+    if c is None:
+        return cid
+    if c.parent and c.parent in db.channels and c.status != 'merged':
+        return family_name(db, c.parent)
+    base, _, cc = c.slug.rpartition('.')
+    return f'{base.replace("-", "")}.{cc}'
+
+
+def unit(db: Database, c: Channel) -> dict:
+    """A channel or edition as the harvest and the sources see it: {id, name, alt_names, website, country, parent,
+    iptv (its iptv-org ID or ''), channel (family name), feed (its iptv-org feed or '')}."""
+    ident = iptv_id(db, c.id)
+    return {'id': c.id, 'name': c.name, 'alt_names': c.alias_list, 'website': c.website, 'country': c.country,
+            'parent': c.parent if c.status != 'merged' else '', 'iptv': ident, 'channel': family_name(db, c.id),
+            'feed': ident.partition('@')[2]}
+
+
+def units(db: Database, cc: str) -> list[dict]:
+    """The active channels of a country, each followed by its editions (editions of a channel of another country
+    broadcast here come last)."""
+    here = [c for c in db.channels.values() if c.country == cc and c.status == 'active']
+    mains = sorted((c for c in here if not c.parent), key=lambda c: c.name.lower())
+    editions: dict[str, list[Channel]] = {}
+    for c in here:
+        if c.parent:
+            editions.setdefault(c.parent, []).append(c)
+    out = []
+    for m in mains:
+        out.append(unit(db, m))
+        out += [unit(db, e) for e in sorted(editions.pop(m.id, []), key=lambda e: e.name.lower())]
+    out += [unit(db, e) for es in editions.values() for e in sorted(es, key=lambda e: e.name.lower())]
+    return out
+
+
 def add_channel(db: Database, name: str, country: str, *, aliases=(), status: str = 'active', parent: str = '',
                 website: str = '', fallback: str = '') -> Channel:
     country = country.lower()
@@ -90,6 +149,29 @@ def add_channel(db: Database, name: str, country: str, *, aliases=(), status: st
 
 def map_id(db: Database, channel: Channel, source: str, external_id: str, method: str) -> None:
     db.external_ids[(source, external_id)] = ExternalId(channel.id, source, external_id, method, today())
+    db.__dict__.pop('_ids_cache', None)
+
+
+QUALITY_FEED = re.compile(r'^(SD|HD|FHD|UHD|QHD|4K|8K|HDR|H265|HEVC|1080p?|720p?|Plus\d+)$', re.IGNORECASE)  # quality, +1
+
+
+def iptv_units(iptv, cc: str) -> list[dict]:
+    """The open iptv-org channels of a country and their editions (feeds other than the main one, quality and
+    timeshift versions excepted), each as {id, channel, feed, name, alt_names, website}; an edition is named after
+    its channel ("France 3 Alsace")."""
+    out = []
+    feeds: dict[str, list[dict]] = {}
+    for (channel, fid), f in iptv.feeds.items():
+        if not f.get('is_main') and not QUALITY_FEED.match(fid):     # TF1@HD uses the logo of TF1
+            feeds.setdefault(channel, []).append(dict(f, id=fid))
+    for c in sorted(iptv.country_channels(cc), key=lambda c: c['name'].lower()):
+        out.append(dict(c, channel=c['id'], feed=''))
+        for f in sorted(feeds.get(c['id'], []), key=lambda f: f['id']):
+            name = f.get('name') or f['id']
+            out.append({'id': f'{c["id"]}@{f["id"]}', 'channel': c['id'], 'feed': f['id'],
+                        'name': name if name.lower().startswith(c['name'].lower()) else f'{c["name"]} {name}',
+                        'alt_names': [], 'website': c.get('website') or ''})
+    return out
 
 
 def _iptv_country(record: dict, logo_id: str) -> str:
@@ -131,16 +213,12 @@ def refresh_editions(db: Database, iptv) -> int:
 
 def init(db: Database, iptv, countries) -> dict[str, int]:
     """Every iptv-org channel and edition we need gets a registry row and its iptv-org ID: the channels and editions
-    of the followed countries (harvest units), every channel or edition that has a logo, and the channels they were
-    replaced by. Rows already mapped are left as they are: running it again only adds what is missing."""
-    from worldwide_tv_logos.harvest.candidates import units
+    of the followed countries, the main channel of each edition, and the channels they were replaced by (the first
+    load, before step 2, also took every iptv-org channel that had a logo here). Rows already mapped are left as they are: running it again only adds what is missing."""
     wanted: dict[str, dict] = {}
     for cc in countries:
-        for u in units(iptv, cc):
+        for u in iptv_units(iptv, cc):
             wanted[u['id']] = u
-    for logo in db.logos.values():
-        if logo.logo_id not in wanted:
-            wanted[logo.logo_id] = {'id': logo.logo_id, 'channel': logo.channel, 'feed': logo.feed}
     for u in list(wanted.values()):                            # the main channel of every edition
         if u['feed'] and u['channel'] not in wanted:
             wanted[u['channel']] = {'id': u['channel'], 'channel': u['channel'], 'feed': ''}
@@ -185,8 +263,7 @@ def init(db: Database, iptv, countries) -> dict[str, int]:
 
 
 def check(db: Database, warnings: list[str] | None = None) -> list[str]:
-    """Errors of data/channels.csv and data/external_ids.csv; logos without a registry channel go to `warnings`
-    (the nightly update registers them)."""
+    """Errors of data/channels.csv and data/external_ids.csv, and logos or aliases of no registry channel."""
     errors = []
     warnings = [] if warnings is None else warnings
     slugs: dict[str, str] = {}
@@ -221,9 +298,10 @@ def check(db: Database, warnings: list[str] | None = None) -> list[str]:
             errors.append(f'{where}: malformed ID')
         if x.method not in METHODS:
             errors.append(f'{where}: unknown method `{x.method}` ({", ".join(METHODS)})')
-    if db.channels:
-        missing = sorted({lg.logo_id for lg in db.logos.values() if by_logo_id(db, lg.logo_id) is None})
-        if missing:
-            warnings.append(f'{len(missing)} logo(s) without a registry channel (`logos channels-init` registers '
-                            f'them): {", ".join(missing[:10])}{"…" if len(missing) > 10 else ""}')
+    for lg in db.logos.values():
+        if lg.channel not in db.channels:
+            errors.append(f'data/logos.csv {lg.stem}: not a channel of the registry (data/channels.csv)')
+    for a in db.aliases.values():
+        if a.channel not in db.channels:
+            errors.append(f'data/aliases.csv {a.source}:{a.epg_id}: not a channel of the registry')
     return errors

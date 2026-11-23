@@ -2,8 +2,8 @@
 
 ## Add or replace a logo
 
-1. Find the channel's iptv-org ID on [iptv-org.github.io](https://iptv-org.github.io/) (e.g. `France3.fr`, and
-   the feed ID for a regional version, e.g. `Alsace`). A channel that is not in iptv-org must be added there first.
+1. Find the channel on the [website](https://worldwide-tv-logos.github.io/database/countries): its ID, e.g.
+   `ch_dhk02zjhwa` for France 3 Alsace (its iptv-org ID, `France3.fr@Alsace`, works too).
 2. Open the [logo form](../../issues/new?template=01_logos_add.yml) with a direct `https://` link to the image.
 3. A bot checks the request within a minute (`check:passed` or a comment explaining what to fix).
 4. A maintainer approves it (`approved`); the next nightly run downloads the image, converts it, commits it and
@@ -20,31 +20,25 @@ longest side; **SVG is preferred**. Use the version currently on air.
 | [logos/edit](../../issues/new?template=02_logos_edit.yml) | replace a logo (new branding, better quality, wrong logo) | yes |
 | [logos/remove](../../issues/new?template=03_logos_remove.yml) | remove a wrong or outdated logo | yes |
 | [logos/request](../../issues/new?template=04_logos_request.yml) | ask for a logo when you do not have the image | no: someone answers with logos/add |
-| [aliases/add](../../issues/new?template=05_aliases_add.yml) | link the ID a TV guide uses to the iptv-org ID | yes |
+| [aliases/add](../../issues/new?template=05_aliases_add.yml) | link the ID a TV guide uses to a channel | yes |
 | [aliases/remove](../../issues/new?template=06_aliases_remove.yml) | remove a wrong alias | yes |
 
-### A channel that is not in iptv-org
+### A channel that is not on the website
 
-Every logo is attached to an iptv-org channel, so that its name is stable and shared with guides and playlists.
-Submit both requests the same day:
-
-1. [add the channel to iptv-org](https://github.com/iptv-org/database/issues/new?template=01_channels_add.yml),
-   and note the channel ID it will get (name without spaces + country code, e.g. `MyChannel.fr`);
-2. submit the logo here with that exact ID.
-
-The bot checks the image, labels the request `waiting:iptv-org` and, once approved, checks it again every night: the
-logo is added as soon as iptv-org has the channel, with nothing else to do.
+Channels of iptv-org (followed countries) are added every night. For a channel added to iptv-org meanwhile, submit
+the logo with its iptv-org ID: the bot checks the image, labels the request `waiting:channel` and, once approved,
+checks it again every night; the logo is added as soon as the channel is here. A form to add channels that are not
+in iptv-org is coming (see [roadmap](roadmap/README.md)).
 
 ### A channel without a TV guide ID
 
-Nothing to do: a guide ID is optional. Logos are found by iptv-org ID; an alias is only useful when a guide uses a
-different ID for the channel.
+Nothing to do: a guide ID is optional. An alias only helps to find a logo from the ID a guide uses.
 
 ## Many logos at once (pull request)
 
 ```sh
 uv sync
-uv run logos import my-logos.csv     # CSV: channel,feed,origin  (origin: https URL or local file)
+uv run logos import my-logos.csv     # CSV: channel,origin  (channel: our ID, slug or iptv-org ID; origin: https URL or file)
 uv run logos validate
 ```
 
@@ -57,8 +51,7 @@ Commit `data/`, `logos/` and `sources/` together, with a commit message in Engli
 
 | Field | Description | Example |
 |---|---|---|
-| channel | iptv-org channel ID | `France3.fr` |
-| feed | iptv-org feed ID, empty for the channel itself | `Alsace` |
+| channel | our channel ID (data/channels.csv) | `ch_dhk02zjhwa` |
 | variant | empty, or `white` (made automatically for mostly dark logos) | `white` |
 | width, height | size of the PNG in pixels | `1200`, `412` |
 | origin | where the original comes from: URL, or `issue #N` | `issue #12` |
@@ -70,6 +63,6 @@ Commit `data/`, `logos/` and `sources/` together, with a commit message in Engli
 |---|---|---|
 | epg_id | ID of the channel in the guide | `France3-Alsace.fr` |
 | source | short name of the guide | `iptv-epg-fr` |
-| channel, feed | iptv-org IDs | `France3.fr`, `Alsace` |
+| channel | our channel ID | `ch_dhk02zjhwa` |
 
 More: [scripts](.github/docs/scripts.md), [workflows](.github/docs/workflows.md).

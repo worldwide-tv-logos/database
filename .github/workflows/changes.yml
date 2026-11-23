@@ -39,10 +39,13 @@ jobs:
           prompt: |
             temp/changes.md lists the logos of ${{ github.repository }} whose channel changed in iptv-org (or says
             there is none: then stop). Follow CLAUDE.md ("Autonomous work") and handle each line:
-            - replaced by a new ID: `uv run logos move <old id> <new id>`, then check with `uv run logos find <new id>`
-              that the logo is still the current one of the new channel (a rebrand often comes with a new logo:
-              apply it with `uv run logos set <new id> <url>`);
-              If the new ID already has its own logo, remove the old one instead (`uv run logos remove <old id>`);
+            - replaced by a new iptv-org ID (a rename): the channel keeps our ID and its logo. Map the new ID
+              (`uv run logos channel-map <our id> iptv-org <new iptv-org id>`), rename it if its name changed
+              (`uv run logos channel-edit <our id> --name "<new name>"`), then check with `uv run logos find <our id>`
+              that the logo is still the current one (a rebrand often comes with a new logo: apply it with
+              `uv run logos set <our id> <url>`). If the new iptv-org ID is already another channel of our registry
+              with its own logo, remove the old one (`uv run logos remove <our id>`), else move it there
+              (`uv run logos move <our id> <other id>`);
             - no longer in iptv-org and not replaced: `uv run logos remove <id>`;
             - closed: keep the logo, nothing to do.
             You decide yourself; a logo you cannot confirm for the new channel is removed, not kept by guess.
@@ -51,7 +54,7 @@ jobs:
           claude_args: |
             --permission-mode default
             --max-turns 60
-            --allowedTools "Read,WebFetch,WebSearch,Bash(uv run logos seen-on:*),Bash(uv run logos move:*),Bash(uv run logos remove:*),Bash(uv run logos find:*),Bash(uv run logos set:*),Bash(uv run logos verdict:*)"
+            --allowedTools "Read,WebFetch,WebSearch,Bash(uv run logos seen-on:*),Bash(uv run logos move:*),Bash(uv run logos channel-map:*),Bash(uv run logos channel-edit:*),Bash(uv run logos channel:*),Bash(uv run logos remove:*),Bash(uv run logos find:*),Bash(uv run logos set:*),Bash(uv run logos verdict:*)"
       - name: pull request (merged when Claude says ready unless AUTO_MERGE is false)
         if: env.HAS_CLAUDE == 'true' && steps.issue.outputs.todo == 'yes'
         run: |

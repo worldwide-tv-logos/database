@@ -5,7 +5,7 @@ Python 3.12 and [uv](https://docs.astral.sh/uv/). `uv sync` once, then `uv run l
 | Command | What it does |
 |---|---|
 | `logos validate [--offline]` | checks `data/`, every file in `logos/` and `sources/`, and (unless `--offline`) the IDs against iptv-org |
-| `logos import <file.csv> [--pause 5]` | adds or replaces logos from a CSV `channel,feed,origin[,label]`; `origin` is an `https://` URL or a local file; remote downloads are spaced by `--pause` seconds |
+| `logos import <file.csv> [--pause 5]` | adds or replaces logos from a CSV `channel,origin[,label]` (channel: our ID, slug or iptv-org ID); `origin` is an `https://` URL or a local file; remote downloads are spaced by `--pause` seconds |
 | `logos issue-validate --number N --labels L` | checks one request (body in `RAW_BODY`); writes the problems to `temp/errors.md` |
 | `logos update` | applies the approved issues (`GITHUB_REPOSITORY`, `GITHUB_TOKEN`); writes `temp/processed.txt` and `temp/changes.json` |
 | `logos notify --commit SHA` | comments each processed issue with what changed |
@@ -16,10 +16,10 @@ Python 3.12 and [uv](https://docs.astral.sh/uv/). `uv sync` once, then `uv run l
 | `logos sheet --changed [--base ref] \| --channels A,B \| --country cc` | contact sheets of logos of the repository (temp/sheets/) |
 | `logos country-add <cc>...` | follow countries (`data/countries.csv`, iptv-org codes: `uk` for the United Kingdom): harvested and hunted every week |
 | `logos site-check --country <cc>... [--size 150] [--review 20] [--offset n]` | current logos looked for on their channel's website (a weekly slice); those absent from it while the website shows another logo are listed for review in `temp/site-check/<cc>/` (summary.md, sites-NN.png) |
-| `logos find <logo id>` | every candidate for a channel or feed from every source (`worldwide_tv_logos/sources/`, the channel website included), checked, ranked, on a contact sheet (temp/find/<id>/) |
-| `logos set <logo id> <url or file>` | add or replace a logo (same preparation and checks as a request) |
-| `logos move <old id> <new id>` | move the logos, originals and aliases of a channel to its new iptv-org ID |
-| `logos remove <logo id>` | remove a logo with its variant, original and aliases |
+| `logos find <id>` | every candidate for a channel or feed from every source (`worldwide_tv_logos/sources/`, the channel website included), checked, ranked, on a contact sheet (temp/find/<id>/) |
+| `logos set <id> <url or file>` | add or replace a logo (same preparation and checks as a request) |
+| `logos move <id> <other id>` | move the logos, originals and aliases of a channel to another channel of the registry (a channel registered twice; a rename keeps its ID) |
+| `logos remove <id>` | remove a logo with its variant, original and aliases |
 | (harvest and hunt) | work on channels **and editions** (feeds other than the main one, named after their channel: "France 3 Alsace"); quality versions (HD, 4K...) are skipped, an edition whose logo is the drawing of its channel is skipped, and the same drawing found for several channels or editions, or already used anywhere in the repository by a
 channel of another family, is a doubt (perceptual fingerprint; a family is one brand across countries or numbered
 sister channels: `Eurosport6.fr`, `Eurosport8.fr`). Current logos of the country with the drawing of a channel of
@@ -34,7 +34,8 @@ another family are listed in the summary ("Current logos to check") for the revi
 | `logos hunt --country <cc> [--limit 40] [--sharpen 30]` | like harvest, for a weekly slice of the channels without a logo and of the small logos (under 1000 px, raster original: a sharper version is proposed, marked same or different drawing), every source including the website |
 | `logos verdict ready\|hold "<report>"` | a reviewer's decision for the workflows (temp/verdict.json) |
 | `logos merge-data <base> <ours> [<upstream>] [--files]` | puts a change on top of main (workflows, `.github/scripts/sync.sh`): `data/logos.csv`, `data/aliases.csv`, `data/channels.csv` and `data/external_ids.csv` rebuilt from `upstream` (default `origin/main`) and the change (`ours`), merged row by row against their common ancestor (`base`): a row the change did not touch keeps main's version. With `--files` the working tree holds main (`git reset --hard origin/main`) and the change's logo files are applied on top (one source per logo, `data/rejected.csv` rows added): no rebase, so two versions of an image never conflict |
-| `logos channels-init` | our channel registry (`data/channels.csv`, `data/external_ids.csv`, see `roadmap/01-channel-registry.md`): every iptv-org channel and edition of the followed countries and every one with a logo gets a `ch_` ID and its iptv-org ID; adds only, run every night by `update` |
+| `logos channels-init` | our channel registry (`data/channels.csv`, `data/external_ids.csv`, see `roadmap/01-channel-registry.md`): every iptv-org channel and edition of the followed countries gets a `ch_` ID and its iptv-org ID; adds only, run every night by `update` |
+| `logos migrate-ids` | one-off, done on 2026-11-23 (roadmap step 2): logos, originals, aliases and refused URLs moved from iptv-org IDs to our IDs |
 | `logos channel <ref>` | show a registry channel from our ID, its slug, or its iptv-org or Wikidata ID |
 | `logos channel-add <name> --country <cc> [--alias a] [--website u] [--parent ref]` | a new channel (new `ch_` ID); refused when a channel of the country has the same name (`--force`) or the country is not followed (`--any-country`) |
 | `logos channel-edit <ref> [--name] [--slug] [--alias] [--website] [--status active\|closed\|merged] [--parent]` | change a channel; its ID never changes, its slug follows the name |

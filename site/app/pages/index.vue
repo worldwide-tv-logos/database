@@ -45,7 +45,7 @@ const fmt = (n: number) => n.toLocaleString('en')
         </template>
         <template #description>
           Transparent, trimmed and checked by eye, for {{ countries ? fmt(total.channels) : 'every' }} channels
-          from all over the world. Named after the iptv-org channel ID, free to use, no key.
+          from all over the world. One address per channel that never changes, free to use, no key.
         </template>
         <template #links>
           <div class="flex w-full max-w-xl flex-col gap-3 sm:flex-row">
@@ -113,7 +113,7 @@ const fmt = (n: number) => n.toLocaleString('en')
       orientation="horizontal"
       headline="API"
       title="One URL per logo. No key, no sign-up."
-      description="Every logo has a stable address derived from its iptv-org channel ID. Use it as is, or read logos.json to know which logos and variants exist."
+      description="Every logo has a stable address derived from its channel ID, which never changes. Use it as is, or read logos.json to know which logos and variants exist."
       :features="[
         { title: 'Drop-in for iptv-org', description: 'logos.json has the same fields as iptv-org\'s, plus country, variant and date.', icon: 'i-lucide-replace' },
         { title: 'Dark-screen ready', description: 'A white version is published for every logo that needs one.', icon: 'i-lucide-moon' },
@@ -129,14 +129,14 @@ const fmt = (n: number) => n.toLocaleString('en')
         <div class="grid grid-cols-2 gap-3">
           <div class="flex aspect-[2/1] items-center justify-center rounded-xl bg-tile-light p-5 ring-1 ring-default">
             <img
-              :src="`${SITE}logos/fr/France3.fr.png`"
+              :src="`${SITE}logos/ch_1r840gxdj5.png`"
               alt="France 3 logo"
               class="max-h-full max-w-full object-contain"
             >
           </div>
           <div class="flex aspect-[2/1] items-center justify-center rounded-xl bg-tile-dark p-5 ring-1 ring-default">
             <img
-              :src="`${SITE}logos/fr/France3.fr.white.png`"
+              :src="`${SITE}logos/ch_1r840gxdj5.white.png`"
               alt="France 3 white version"
               class="max-h-full max-w-full object-contain"
             >

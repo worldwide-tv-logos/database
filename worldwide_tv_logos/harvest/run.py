@@ -2,7 +2,7 @@
 slice (`logos hunt`), the bulk import of iptv-org logos (`logos bulk`) and the weekly check against the guide
 (`logos epg-check`).
 
-For each open iptv-org channel of the country that has no logo here yet (and, with `updates`, those that have one):
+For each active channel and edition of the country in our registry that has no logo here yet (and, with `updates`, those that have one):
 
 1. candidates from every source (sources.collect: Wikidata, Wikipedia, Commons, iptv-org, iptv-epg, picons,
    xmltv-se and, for a hunt, the channel website);
@@ -21,15 +21,15 @@ from pathlib import Path
 
 from PIL import Image
 
-from worldwide_tv_logos import image, iptvorg, net, sources
+from worldwide_tv_logos import image, iptvorg, net, registry, sources
 from worldwide_tv_logos.db import Database
 from worldwide_tv_logos.harvest.candidates import (
     Candidate,
     evaluate,
+    iptv_key,
     load_epg,
     load_rejected,
     same_as_channel,
-    units,
     update_reason,
 )
 from worldwide_tv_logos.harvest.duplicates import (
@@ -60,7 +60,7 @@ def harvest(db: Database, iptv: IptvOrg, cc: str, iptv_logos: list[dict], out: P
         set_countries(iptvorg.load_countries(db.root))
     except Exception as exc:  # noqa: BLE001 - without country names, brands are only matched by family
         log(f'iptv-org countries unavailable ({exc})')
-    channels = [u for u in units(iptv, cc) if updates or u['id'] not in current]
+    channels = [u for u in registry.units(db, cc) if updates or u['id'] not in current]
     if only is not None:
         channels = [c for c in channels if c['id'] in set(only)]
     if limit:
@@ -92,14 +92,14 @@ def harvest(db: Database, iptv: IptvOrg, cc: str, iptv_logos: list[dict], out: P
                 log(f'{c["id"]}: {"no candidate" if not cands else "every candidate refused"}')
             continue
         best = max(good, key=lambda x: x.score)
-        if c['feed'] and same_as_channel(db, c, best, kept):
+        if c['parent'] and same_as_channel(db, c, best, kept):
             continue                                     # the edition uses the logo of its channel: nothing to add
         if c['id'] in current:
             logo = current[c['id']]
             files = db.source_files(logo)
-            urls = {x['url'] for x in by_channel.get((c['channel'], c['feed']), ())}
+            urls = {x['url'] for x in by_channel.get(iptv_key(c), ())}
             fps = [image.fingerprint(Image.open(db.path(x.file)).convert('RGBA'))
-                   for x in (logo, db.logos.get((logo.channel, logo.feed, 'white'))) if x and db.path(x.file).is_file()]
+                   for x in (logo, db.logos.get((logo.channel, 'white'))) if x and db.path(x.file).is_file()]
             reason = update_reason(logo, files[0], best, urls, fps) if len(files) == 1 else None
             if not reason:
                 continue
@@ -109,7 +109,7 @@ def harvest(db: Database, iptv: IptvOrg, cc: str, iptv_logos: list[dict], out: P
             log(f'{c["id"]}: {best.source} {best.size[0]}x{best.size[1]}{" SVG" if best.svg else ""}')
         kept.append((c, best))
     drawings = repo_drawings(db)
-    kept, doubts = split_duplicates(kept, {x.origin: k for k, x in current.items()}, drawings)
+    kept, doubts = split_duplicates(kept, owners(db), drawings)
     shared = shared_drawings(cc, drawings)
     differs = brand_differences(kept, drawings)
     for c, other in doubts:
@@ -120,9 +120,9 @@ def harvest(db: Database, iptv: IptvOrg, cc: str, iptv_logos: list[dict], out: P
     for c, best in kept:
         local = out / 'originals' / f'{c["id"]}.{image.extension(best.data)}'
         local.write_bytes(best.data)
-        rows.append({'channel': c['channel'], 'feed': c['feed'], 'origin': local.as_posix(), 'label': best.url})
+        rows.append({'channel': c['id'], 'origin': local.as_posix(), 'label': best.url})
     with open(out / 'manifest.csv', 'w', encoding='utf-8', newline='') as fh:
-        w = csv.DictWriter(fh, ['channel', 'feed', 'origin', 'label'])
+        w = csv.DictWriter(fh, ['channel', 'origin', 'label'])
         w.writeheader()
         w.writerows(rows)
     with open(out / 'report.csv', 'w', encoding='utf-8', newline='') as fh:
@@ -138,6 +138,11 @@ def harvest(db: Database, iptv: IptvOrg, cc: str, iptv_logos: list[dict], out: P
     sheets = contact_sheets(kept, out)
     return {'channels': len(channels), 'kept': len(kept), 'updates': len(changes), 'doubts': len(doubts),
             'candidates': len(report), 'sheets': len(sheets)}
+
+
+def owners(db: Database) -> dict[str, tuple[str, str]]:
+    """Origin URL of each current logo -> (its channel ID, its family name): a candidate already used elsewhere."""
+    return {x.origin: (x.channel, registry.family_name(db, x.channel)) for x in db.logos.values() if not x.variant}
 
 
 def summary(cc: str, kept: list[tuple[dict, Candidate]], changes: dict[str, str], doubts: list, checked: int,
@@ -208,10 +213,10 @@ def bulk(db: Database, iptv: IptvOrg, cc: str, iptv_logos: list[dict], pause: fl
             by_channel.setdefault((x['channel'], x.get('feed') or ''), []).append(x)
     report, kept = [], []
     last = 0.0
-    todo = [u for u in units(iptv, cc) if u['id'] not in current]
+    todo = [u for u in registry.units(db, cc) if u['id'] not in current]
     epg = load_epg(db, cc, downloader, log) if todo else None
     for u in todo:
-        logos = [x for x in by_channel.get((u['channel'], u['feed']), ()) if (u['id'], x['url']) not in rejected
+        logos = [x for x in by_channel.get(iptv_key(u), ()) if (u['id'], x['url']) not in rejected
                  and (x.get('format') == 'SVG' or not x.get('width')
                       or max(x.get('width') or 0, x.get('height') or 0) >= image.MIN_SIDE)]
         logos.sort(key=lambda x: (x.get('format') != 'SVG', -(x.get('width') or 0)))
@@ -237,18 +242,17 @@ def bulk(db: Database, iptv: IptvOrg, cc: str, iptv_logos: list[dict], pause: fl
                 report.append({'id': u['id'], 'url': '', 'result': 'no logo of 500 px or SVG (iptv-org, iptv-epg)'})
             continue
         best = max(good, key=lambda x: (x.score, x.source == 'iptv-epg'))    # equal: the guide's, more recent
-        if u['feed'] and same_as_channel(db, u, best, kept):
+        if u['parent'] and same_as_channel(db, u, best, kept):
             report.append({'id': u['id'], 'url': best.url, 'result': 'edition with the logo of its channel'})
             continue
         kept.append((u, best))
-    kept, doubts = split_duplicates(kept, {x.origin: x.logo_id for x in db.logos.values() if not x.variant},
-                                    repo_drawings(db))
+    kept, doubts = split_duplicates(kept, owners(db), repo_drawings(db))
     for u, other in doubts:
         report.append({'id': u['id'], 'url': '', 'result': f'same drawing as {other}: skipped'})
     added = 0
     for u, best in kept:
         try:
-            ops_set(db, u['channel'], u['feed'], best.data, best.url, iptv)
+            ops_set(db, u['id'], best.data, best.url)
             added += 1
         except ops.RequestError as exc:
             report.append({'id': u['id'], 'url': best.url, 'result': str(exc)})
@@ -281,7 +285,7 @@ def epg_check(db: Database, iptv: IptvOrg, cc: str, out: Path, review: int = 15,
     current = {x.logo_id: x for x in db.logos.values() if not x.variant}
     out.mkdir(parents=True, exist_ok=True)
     checked, replaced, cases, last = 0, [], [], 0.0
-    for u in units(iptv, cc):
+    for u in registry.units(db, cc):
         logo = current.get(u['id'])
         guide = epg.sure(u, channel_keys(u)) if logo else None
         if not guide or not guide['icon'] or guide['icon'] == logo.origin or (u['id'], guide['icon']) in rejected:
@@ -310,7 +314,7 @@ def epg_check(db: Database, iptv: IptvOrg, cc: str, out: Path, review: int = 15,
             except Exception as exc:  # noqa: BLE001 - a website that cannot be read leaves the case to review
                 log(f'{u["id"]}: website unreadable ({exc})')
         if verdict == 'replace':
-            ops.set_logo(db, u['channel'], u['feed'], cand.data, cand.url, iptv)
+            ops.set_logo(db, u['id'], cand.data, cand.url)
             replaced.append((u, cand, website))
             log(f'{u["id"]}: replaced by the guide logo, shown on {website}')
         elif len(cases) < review:

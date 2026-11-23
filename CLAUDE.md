@@ -22,7 +22,7 @@ MAINTAINING.md, CONTRIBUTING.md). Commit messages, comments and documentation ar
 The bot has already checked the IDs, the format, the size, the transparency and duplicates. You check what a
 machine cannot. Look at the preview image (the logo on a dark tile and on a light tile) and answer:
 
-1. **Right channel**: the logo is the one of this exact channel or edition (iptv-org ID, name, country), not a
+1. **Right channel**: the logo is the one of this exact channel or edition (our `ch_` ID, its name, country and iptv-org ID: `uv run logos channel <id>`), not a
    sister channel, a regional edition, a programme, an event or a festival.
 2. **Current**: the logo is the one on air now, not an older branding. Check the channel website (from iptv-org:
    `https://iptv-org.github.io/api/channels.json`, field `website`) or other reliable pages when unsure. A rebrand in
@@ -58,13 +58,15 @@ from a harvest. Check the same three points, then:
 
 ## Tools (`uv run logos <command>`, see .github/docs/scripts.md)
 
+`<id>`: our channel ID (`ch_...`), its slug or its iptv-org ID; logos are named after our ID.
+
 | Command | Use |
 |---|---|
 | `sheet --changed` / `--channels A,B` / `--country cc` | contact sheets of logos of the repository (temp/sheets/): look at them instead of opening PNG files one by one |
-| `find <logo id>` | every candidate for a channel or feed (iptv-org, iptv-epg, Wikidata with its dates, the channel website), checked, ranked, on a contact sheet (temp/find/<id>/) with the current logo first |
-| `set <logo id> <url>` | add or replace a logo (same preparation and checks as a request) |
+| `find <id>` | every candidate for a channel or feed (iptv-org, iptv-epg, Wikidata with its dates, the channel website), checked, ranked, on a contact sheet (temp/find/<id>/) with the current logo first |
+| `set <id> <url>` | add or replace a logo (same preparation and checks as a request) |
 | `reject <channel id> --base ../base --reason "..."` | refuse a logo of a harvest: back to the logo of main, URL never proposed again |
-| `move <old id> <new id>` / `remove <logo id>` | follow iptv-org (renamed channel) / remove a wrong logo |
+| `move <id> <other id>` / `remove <id>` | a channel registered twice / remove a wrong logo |
 | `channel <ref>` / `channel-add` / `channel-edit` / `channel-map` | our channel registry (`data/channels.csv`): `ch_` IDs that never change, iptv-org and Wikidata IDs mapped; see roadmap/ |
 | `verdict ready\|hold "<report>"` | your decision for the workflow: `ready` is merged automatically, `hold` (something broken) waits for a maintainer |
 
@@ -97,7 +99,7 @@ old branding and is never proposed. The website of the channel is the best proof
   often older brandings or small bitmaps: check that they are current. The Source column of a harvest says where each
   logo comes from (sources listed in `worldwide_tv_logos/sources/__init__.py`). A group or corporate logo (e.g. "Radio y Televisión") is not the logo of
   one of its channels.
-- Editions (iptv-org feeds such as `France3.fr@Alsace`) are harvested too. An edition gets its own logo only when
+- Editions (regional versions with their own `ch_` ID, iptv-org feeds such as `France3.fr@Alsace`) are harvested too. An edition gets its own logo only when
   it differs from its channel's (regional logos); quality and timeshift versions (HD, 4K, +1) never get one: they use the channel logo.
   Check that an edition logo names the right region or market.
 - Every logo of a change gets a decision: **kept** (right and current), **replaced** (`find` gives a clearly right

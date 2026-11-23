@@ -5,32 +5,33 @@ import tempfile
 from datetime import date
 from pathlib import Path
 
-from worldwide_tv_logos import image
-from worldwide_tv_logos.db import CHANNEL_RE, EPG_ID_RE, FEED_RE, Alias, Database, Logo
-from worldwide_tv_logos.iptvorg import IptvOrg
+from worldwide_tv_logos import image, registry
+from worldwide_tv_logos.db import EPG_ID_RE, Alias, Channel, Database, Logo
 
 
 class RequestError(ValueError):
     pass
 
 
-class NotInIptvOrg(RequestError):
-    """Well-formed id not (yet) in iptv-org: a request can wait for it instead of being refused."""
+class NotRegistered(RequestError):
+    """A channel not (yet) in our registry: a request can wait for it instead of being refused."""
 
 
-def check_ids(channel: str, feed: str, iptv: IptvOrg | None) -> None:
-    if not CHANNEL_RE.match(channel):
-        raise RequestError(f'`{channel}` is not an iptv-org channel id (e.g. `France3.fr`)')
-    if feed and not FEED_RE.match(feed):
-        raise RequestError(f'`{feed}` is not an iptv-org feed id (letters and digits, e.g. `Alsace`)')
-    if iptv is not None and (err := iptv.channel_error(channel, feed)):
-        raise NotInIptvOrg(err)
+def channel_of(db: Database, ref: str) -> Channel:
+    """The registry channel of `ref`: our ID, a slug, or an iptv-org or Wikidata ID."""
+    c = registry.resolve(db, ref)
+    if c is None and any(registry.SOURCES[s].match(ref) for s in ('iptv-org', 'iptv-org-feed')):
+        raise NotRegistered(f'`{ref}` is not a channel of our registry yet (iptv-org channels of the followed '
+                            'countries are registered every night)')
+    if c is None:
+        raise RequestError(f'`{ref}`: unknown channel (give our ID `ch_...`, its slug, or its iptv-org ID)')
+    return c
 
 
-def set_logo(db: Database, channel: str, feed: str, original: bytes, origin: str, iptv: IptvOrg | None,
-             today: str | None = None) -> list[str]:
-    """Add or replace the logo of a channel (or feed) from an original image. Returns a change summary."""
-    check_ids(channel, feed, iptv)
+def set_logo(db: Database, channel: str, original: bytes, origin: str, today: str | None = None) -> list[str]:
+    """Add or replace the logo of a registry channel (its ID) from an original image. Returns a change summary."""
+    if channel not in db.channels:
+        raise RequestError(f'`{channel}` is not a channel ID of our registry')
     try:
         img, notes = image.prepare(original)
     except image.ImageError as exc:
@@ -49,7 +50,7 @@ def set_logo(db: Database, channel: str, feed: str, original: bytes, origin: str
             if errors:
                 raise RequestError(f'prepared logo refused by the repository rules: {"; ".join(errors)}')
     for variant, picture in (('', img), ('white', white)):
-        key = (channel, feed, variant)
+        key = (channel, variant)
         old = db.logos.get(key)
         if picture is None:
             if old is not None:                      # the new logo needs no white variant any more
@@ -57,11 +58,11 @@ def set_logo(db: Database, channel: str, feed: str, original: bytes, origin: str
                 del db.logos[key]
                 changes.append(f'removed {old.file}')
             continue
-        logo = Logo(channel, feed, variant, picture.size[0], picture.size[1], origin,
+        logo = Logo(channel, variant, picture.size[0], picture.size[1], origin,
                     old.added if old else today, today if old and old.added != today else '')
         for path in db.source_files(logo):
             path.unlink()
-        src = db.root / 'sources' / logo.country / f'{logo.stem}.{image.extension(original)}'
+        src = db.root / 'sources' / f'{logo.channel}.{image.extension(original)}'
         src.parent.mkdir(parents=True, exist_ok=True)
         if variant == '':
             src.write_bytes(original)
@@ -80,29 +81,31 @@ def remove_files(db: Database, logo: Logo) -> None:
         path.unlink()
 
 
-def remove_logo(db: Database, channel: str, feed: str) -> list[str]:
-    keys = [k for k in db.logos if k[:2] == (channel, feed)]
+def remove_logo(db: Database, channel: str) -> list[str]:
+    keys = [k for k in db.logos if k[0] == channel]
     if not keys:
-        raise RequestError(f'no logo for `{channel}{"@" + feed if feed else ""}` in this repository')
+        raise RequestError(f'no logo for `{channel}` in this repository')
     out = []
     for k in keys:
-        remove_files(db, db.logos.pop(k))
-        out.append(f'removed {Logo(*k).file}')
+        logo = db.logos.pop(k)
+        remove_files(db, logo)
+        out.append(f'removed {logo.file}')
     for key, alias in list(db.aliases.items()):
-        if (alias.channel, alias.feed) == (channel, feed):
+        if alias.channel == channel:
             del db.aliases[key]
             out.append(f'removed alias {alias.source}:{alias.epg_id}')
     return out
 
 
-def set_alias(db: Database, epg_id: str, source: str, channel: str, feed: str, iptv: IptvOrg | None) -> list[str]:
-    check_ids(channel, feed, iptv)
+def set_alias(db: Database, epg_id: str, source: str, channel: str) -> list[str]:
+    if channel not in db.channels:
+        raise RequestError(f'`{channel}` is not a channel ID of our registry')
     if not EPG_ID_RE.match(epg_id) or not EPG_ID_RE.match(source):
         raise RequestError('EPG id and EPG source must not contain spaces, commas or quotes')
-    alias = Alias(epg_id, source, channel, feed)
+    alias = Alias(epg_id, source, channel)
     old = db.aliases.get(alias.key)
     db.aliases[alias.key] = alias
-    return [f'{"changed" if old else "added"} alias {source}:{epg_id} -> {channel}{"@" + feed if feed else ""}']
+    return [f'{"changed" if old else "added"} alias {source}:{epg_id} -> {channel}']
 
 
 def remove_alias(db: Database, epg_id: str, source: str) -> list[str]:
@@ -111,23 +114,23 @@ def remove_alias(db: Database, epg_id: str, source: str) -> list[str]:
     return [f'removed alias {source}:{epg_id}']
 
 
-def move_channel(db: Database, old: str, new: str, iptv: IptvOrg | None, today: str | None = None) -> list[str]:
-    """Move every logo (channel and feeds, with their variants and originals) and alias of `old` to `new`, when
-    iptv-org renamed or replaced the channel (Syfy.fr -> SciFi.fr). A feed must exist under the new ID too."""
+def move_logos(db: Database, old: str, new: str, today: str | None = None) -> list[str]:
+    """Move every logo (with its variant and original) and alias of channel `old` to channel `new`: a channel
+    registered twice. A rename never needs it: the channel keeps its ID."""
     keys = sorted(k for k in db.logos if k[0] == old)
     if not keys:
         raise RequestError(f'no logo for `{old}`')
-    for k in keys:
-        check_ids(new, k[1], iptv)
-        if (new, k[1], k[2]) in db.logos:
-            raise RequestError(f'`{Logo(new, k[1], k[2]).stem}` already has a logo: remove it first')
+    if new not in db.channels:
+        raise RequestError(f'`{new}` is not a channel ID of our registry')
+    if any(k[0] == new for k in db.logos):
+        raise RequestError(f'`{new}` already has a logo: remove it first')
     today = today or date.today().isoformat()
     out = []
     for k in keys:
         logo = db.logos.pop(k)
-        moved = Logo(new, logo.feed, logo.variant, logo.width, logo.height, logo.origin, logo.added, today)
+        moved = Logo(new, logo.variant, logo.width, logo.height, logo.origin, logo.added, today)
         files = [(db.path(logo.file), db.path(moved.file))]
-        files += [(p, db.root / 'sources' / moved.country / f'{moved.stem}{p.suffix}') for p in db.source_files(logo)]
+        files += [(p, db.root / 'sources' / f'{new}{p.suffix}') for p in db.source_files(logo)]
         for src, dst in files:
             dst.parent.mkdir(parents=True, exist_ok=True)
             src.replace(dst)
@@ -135,6 +138,6 @@ def move_channel(db: Database, old: str, new: str, iptv: IptvOrg | None, today: 
         out.append(f'moved {logo.file} to {moved.file}')
     for key, alias in list(db.aliases.items()):
         if alias.channel == old:
-            db.aliases[key] = Alias(alias.epg_id, alias.source, new, alias.feed)
+            db.aliases[key] = Alias(alias.epg_id, alias.source, new)
             out.append(f'alias {alias.source}:{alias.epg_id} now points to {new}')
     return out

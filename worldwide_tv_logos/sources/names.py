@@ -14,8 +14,9 @@ def key(text: str) -> str:
 def channel_keys(c: dict) -> set[str]:
     """Keys of a channel or edition: its name, its other names and (a channel) its ID; "+" also written "plus"."""
     names = [c.get('name') or '', *(c.get('alt_names') or [])]
-    if '@' not in c['id']:
-        names.append(c['id'].split('.')[0])
+    ident = c.get('iptv', c['id'])                   # an iptv-org channel ID gives a name too: France3.fr
+    if ident and '@' not in ident and '.' in ident:
+        names.append(ident.split('.')[0])
     keys = set()
     for n in names:
         keys |= {key(n), key(n.replace('+', 'plus'))}
