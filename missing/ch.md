@@ -1,13 +1,12 @@
 # Switzerland: channels without a logo
 
-68 of 157 iptv-org channels have a logo here. To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
+71 of 157 iptv-org channels have a logo here. To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
 
 | Channel ID | Name |
 |---|---|
 | `6terSwitzerland.ch` | 6ter Switzerland |
 | `7Plus.ch` | 7+ |
 | `AjoieTV.ch` | Ajoie TV |
-| `ALFTV.ch` | ALF-TV |
 | `AlpenWelleTV.ch` | Alpen-Welle TV |
 | `AuftankenTV.ch` | Auftanken TV |
 | `BlueAction.ch` | Blue Action |
@@ -19,7 +18,6 @@
 | `BlueSport2.ch` | Blue Sport 2 |
 | `BlueZoomD.ch` | Blue Zoom D |
 | `BodenseeTV.ch` | Bodensee TV |
-| `CanalAlphaJura.ch` | Canal Alpha Jura |
 | `CanalAlphaNE.ch` | Canal Alpha NE |
 | `CanalAlphaNeuchatel.ch` | Canal Alpha Neuchatel |
 | `Carac1.ch` | Carac 1 |
@@ -29,7 +27,6 @@
 | `DieNeueZeitTV.ch` | Die Neue Zeit TV |
 | `FirstChannel.ch` | First Channel |
 | `GameTV.ch` | Game TV |
-| `GVAXTV.ch` | GVAX TV |
 | `HelvetiaOneTV.ch` | Helvetia One TV |
 | `HitExpressTV.ch` | HitExpress TV |
 | `ImmaculataTV.ch` | Immaculata TV |

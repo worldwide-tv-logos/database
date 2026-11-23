@@ -1,6 +1,6 @@
 # Spain: channels without a logo
 
-186 of 644 iptv-org channels have a logo here. To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
+232 of 645 iptv-org channels have a logo here. To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
 
 | Channel ID | Name |
 |---|---|
@@ -34,24 +34,18 @@
 | `AlacantiTV.es` | Alacanti TV |
 | `AlcarriaTV.es` | Alcarria TV |
 | `Almeria24hTV.es` | Almeria 24h TV |
-| `Alquiler1.es` | Alquiler 1 |
 | `AlquilerHD.es` | Alquiler HD |
 | `AltoaragonTV.es` | Altoaragon TV |
-| `AMCLiving.es` | AMC Living |
-| `AMCWestern.es` | AMC Western |
 | `AnimeVision.es` | Anime Vision |
 | `AnimeVisionClassics.es` | Anime Vision Classics |
 | `Antena3Internacional.es` | Antena 3 Internacional |
 | `AquiNoHayQuienViva.es` | Aqui No Hay Quien Viva |
 | `ArabiTV.es` | Arabi TV |
-| `AragonTVInternacional.es` | Aragon TV Internacional |
 | `AstroShow.es` | AstroShow |
 | `AtreseriesInternacional.es` | Atreseries Internacional |
-| `AtresplayerClasicos.es` | Atresplayer Clasicos |
 | `AtresplayerComedia.es` | Atresplayer Comedia |
 | `AtresplayerInquietos.es` | Atresplayer Inquietos |
 | `AtresplayerMulticine.es` | Atresplayer Multicine |
-| `AuriaTV.es` | Auria TV |
 | `AxarquiaTV.es` | Axarquia TV |
 | `AXNCEE.es` | AXN CEE |
 | `BailenTV.es` | Bailen TV |
@@ -76,7 +70,6 @@
 | `Canal4Catalunya.es` | Canal 4 Catalunya |
 | `Canal4ManchaCentro.es` | Canal 4 Mancha Centro |
 | `Canal45.es` | Canal 45 |
-| `Canal54.es` | Canal 54 |
 | `Canal56.es` | Canal 56 |
 | `Canal6.es` | Canal 6 |
 | `CanalBlau.es` | Canal Blau |
@@ -85,13 +78,9 @@
 | `CanalLuzTelevision.es` | Canal Luz Television |
 | `CanalParlamento.es` | Canal Parlamento |
 | `CanalPortada.es` | Canal Portada |
-| `CanalRed.es` | Canal Red |
 | `CanalSanRoque.es` | Canal San Roque |
 | `CanalSierradeCadiz.es` | Canal Sierra de Cadiz |
-| `CanalSur.es` | Canal Sur |
 | `CanalSur2.es` | Canal Sur 2 |
-| `CanalSurAndalucia.es` | Canal Sur Andalucia |
-| `CanalSurNoticias.es` | Canal Sur Noticias |
 | `CanalTaronjaComarquesCentrals.es` | Canal Taronja Comarques Centrals |
 | `CanalTaronjaOsonaiMoianes.es` | Canal Taronja Osona i Moianes |
 | `CanalTerrassa.es` | Canal Terrassa |
@@ -102,16 +91,12 @@
 | `CapTerre.es` | Cap Terre |
 | `CetelmonTV.es` | Cetelmon TV |
 | `CeutaTV.es` | Ceuta TV |
-| `CineEspanolporMovistarPlusPlus.es` | Cine Espanol por Movistar Plus+ |
 | `CineFeelGood.es` | Cine Feel Good |
 | `CineFriki.es` | Cine Friki |
-| `CineporMovistarPlusPlus.es` | Cine por Movistar Plus+ |
 | `CinesVerdi.es` | Cines Verdi |
 | `CiudadesdelOcioTV.es` | Ciudades del Ocio TV |
 | `ClanInternacional.es` | Clan Internacional |
-| `ClasicosporMovistarPlusPlus.es` | Clasicos por Movistar Plus+ |
 | `Clipmobile.es` | Clipmobile |
-| `ComediaporMovistarPlusPlus.es` | Comedia por Movistar Plus+ |
 | `ComedyMovies.es` | Comedy Movies |
 | `CongresodelosDiputados1.es` | Congreso de los Diputados 1 |
 | `CongresodelosDiputados2.es` | Congreso de los Diputados 2 |
@@ -125,10 +110,6 @@
 | `CrimenHistoria.es` | Crimen & Historia |
 | `CristianaTV.es` | Cristiana TV |
 | `CugatTV.es` | Cugat TV |
-| `DeportesporMovistarPlusPlus.es` | Deportes por Movistar Plus+ |
-| `DiezTVUbeda.es` | Diez TV Ubeda |
-| `DocumentalesporMovistarPlusPlus.es` | Documentales por Movistar Plus+ |
-| `DramaporMovistarPlusPlus.es` | Drama por Movistar Plus+ |
 | `EITB.es` | EITB |
 | `EiTB2.es` | EiTB 2 |
 | `El33SX3.es` | El 33/SX3 |
@@ -139,7 +120,6 @@
 | `ElHormiguero.es` | El Hormiguero |
 | `ElPaisTV.es` | El Pais TV |
 | `Elche7TV.es` | Elche 7 TV |
-| `EllasVamosporMovistarPlusPlus.es` | Ellas Vamos por Movistar Plus+ |
 | `EmpordaTV.es` | Emporda TV |
 | `EngueraTV.es` | Enguera TV |
 | `EquipodeInvestigacion.es` | Equipo de Investigacion |
@@ -152,7 +132,6 @@
 | `EurolatinaTV.es` | Eurolatina TV |
 | `EuropaPressTV.es` | EuropaPress TV |
 | `EWTNEspana.es` | EWTN Espana |
-| `FactoriadeFiccion.es` | Factoria de Ficcion |
 | `FamilyMovies.es` | Family Movies |
 | `FamypancTV.es` | Famypanc TV |
 | `Fibwi.es` | Fibwi |
@@ -164,14 +143,12 @@
 | `FuerteventuraTV.es` | Fuerteventura TV |
 | `FutbolReplay.es` | Futbol Replay |
 | `GaliciaTVAmerica.es` | Galicia TV America |
-| `GaliciaTVEuropa.es` | Galicia TV Europa |
 | `GarageTV.es` | Garage TV |
 | `GCMTV.es` | GCM TV |
 | `GoienaEus.es` | Goiena Eus |
 | `GoierriIrratiTelebista.es` | Goierri Irrati Telebista |
 | `GolClassics.es` | Gol Classics |
 | `Golf2porMovistarPlusPlus.es` | Golf 2 por Movistar Plus+ |
-| `GolfporMovistarPlusPlus.es` | Golf por Movistar Plus+ |
 | `GranCanariaTV.es` | Gran Canaria TV |
 | `GuadaTV.es` | Guada TV |
 | `HamaikaTelebista.es` | Hamaika Telebista |
@@ -205,7 +182,6 @@
 | `IberoamericaTV.es` | Iberoamerica TV |
 | `IbizaGlobalTV.es` | Ibiza Global TV |
 | `ImasTV.es` | Imas TV |
-| `IndieporMovistarPlusPlus.es` | Indie por Movistar Plus+ |
 | `InformacionTV.es` | Informacion TV |
 | `InteralmeriaTV.es` | Interalmeria TV |
 | `IntercomarcalTV.es` | Intercomarcal TV |
@@ -216,27 +192,21 @@
 | `KrolusTV.es` | Krolus TV |
 | `La1Canarias.es` | La 1 Canarias |
 | `La1Catalunya.es` | La 1 Catalunya |
-| `La8Mediterraneo.es` | La 8 Mediterraneo |
 | `La8ZaragozaTV.es` | La 8 Zaragoza TV |
 | `LadeBurgosTV.es` | La de Burgos TV |
 | `LaMovidaLatina.es` | La Movida Latina |
 | `LaResistencia.es` | La Resistencia |
 | `LaResistenciaporMovistarPlusPlus.es` | La Resistencia por Movistar Plus+ |
-| `LaSeptima.es` | La Septima |
 | `LaVoz24h.es` | La Voz 24h |
 | `LaLiga1porMovistarPlusPlus.es` | LaLiga 1 por Movistar Plus+ |
 | `LaLiga10porMovistarPlusPlus.es` | LaLiga 10 por Movistar Plus+ |
 | `LaLiga8porMovistarPlusPlus.es` | LaLiga 8 por Movistar Plus+ |
 | `LaLiga9porMovistarPlusPlus.es` | LaLiga 9 por Movistar Plus+ |
-| `LaLigaHypermotion.es` | LaLiga Hypermotion |
 | `LaLigaHypermotion2.es` | LaLiga Hypermotion 2 |
 | `LaLigaHypermotion3.es` | LaLiga Hypermotion 3 |
 | `LaLigaInside.es` | LaLiga Inside |
 | `LaLigaTV.es` | LaLiga TV |
-| `LaLigaTVBar.es` | LaLiga TV Bar |
 | `LaLigaTVBar1.es` | LaLiga TV Bar 1 |
-| `LaLigaTVBar2.es` | LaLiga TV Bar 2 |
-| `LaLigaTVBar3.es` | LaLiga TV Bar 3 |
 | `LaLigaTVBar4.es` | LaLiga TV Bar 4 |
 | `LaLigaTV2porMovistarPlusPlus.es` | LaLigaTV 2 por Movistar Plus+ |
 | `LaLigaTV3porMovistarPlusPlus.es` | LaLigaTV 3 por Movistar Plus+ |
@@ -244,12 +214,10 @@
 | `LaLigaTV5porMovistarPlusPlus.es` | LaLigaTV 5 por Movistar Plus+ |
 | `LaLigaTV6porMovistarPlusPlus.es` | LaLigaTV 6 por Movistar Plus+ |
 | `LaLigaTV7porMovistarPlusPlus.es` | LaLigaTV 7 por Movistar Plus+ |
-| `LaLigaTVporMovistarPlusPlus.es` | LaLigaTV por Movistar Plus+ |
 | `LaLigaTVUHDporMovistarPlusPlus.es` | LaLigaTV UHD por Movistar Plus+ |
 | `LancelotTV.es` | Lancelot TV |
 | `LebrijaTV.es` | Lebrija TV |
 | `LevanteTV.es` | Levante TV |
-| `LibertadDigitalTV.es` | Libertad Digital TV |
 | `LigadeCampeones10porMovistarPlusPlus.es` | Liga de Campeones 10 por Movistar Plus+ |
 | `LigadeCampeones11porMovistarPlusPlus.es` | Liga de Campeones 11 por Movistar Plus+ |
 | `LigadeCampeones12porMovistarPlusPlus.es` | Liga de Campeones 12 por Movistar Plus+ |
@@ -271,7 +239,6 @@
 | `LigadeCampeonesUHDporMovistarPlusPlus.es` | Liga de Campeones UHD por Movistar Plus+ |
 | `LiraTV.es` | LiraTV |
 | `LleidaTelevisio.es` | Lleida Televisio |
-| `LogosTV.es` | Logos TV |
 | `LogosTVEstudio.es` | Logos TV Estudio |
 | `LogosTVKids.es` | Logos TV Kids |
 | `LokuraFmTV.es` | LokuraFm TV |
@@ -286,19 +253,16 @@
 | `MediTV.es` | Medi TV |
 | `Mijas340TV.es` | Mijas 3.40TV |
 | `MolahitsTV.es` | Molahits TV |
-| `MovistarPlusPlus.es` | Movistar Plus+ |
-| `MovistarPlusPlus2.es` | Movistar Plus+ 2 |
 | `Multideporte.es` | Multideporte |
 | `MundoNauticaTV.es` | Mundo Nautica TV |
-| `MusicaporMovistarPlusPlus.es` | Musica por Movistar Plus+ |
 | `MyTimeMovieNetwork.es` | MyTime Movie Network |
 | `NavarraTV.es` | Navarra TV |
 | `NavarraTV2.es` | Navarra TV 2 |
-| `NegociosTV.es` | Negocios TV |
 | `NestingTV.es` | Nesting TV |
 | `NIUS.es` | NIUS |
 | `NoroesteTV.es` | Noroeste TV |
 | `Nortevision.es` | Nortevision |
+| `OcioNewsTV.es` | OcioNews TV |
 | `OizmendiTelebista.es` | Oizmendi Telebista |
 | `OlotTV.es` | Olot TV |
 | `OlympicChannel.es` | Olympic Channel |
@@ -308,7 +272,6 @@
 | `OndaMadrid.es` | Onda Madrid |
 | `OndaValenciaTV.es` | Onda Valencia TV |
 | `OnSortirtv.es` | OnSortir.tv |
-| `OriginalesporMovistarPlusPlus.es` | Originales por Movistar Plus+ |
 | `OscarsporMovistarPlus.es` | Oscars por Movistar+ |
 | `ParlamentodeAndalucia.es` | Parlamento de Andalucia |
 | `ParlamentodeNavarra.es` | Parlamento de Navarra |
@@ -318,7 +281,6 @@
 | `PlanetadeCine.es` | Planeta de Cine |
 | `PlanetaKids.es` | Planeta Kids |
 | `PlatziTV.es` | Platzi TV |
-| `POPWorldTV.es` | POP World TV |
 | `PTVAlmeria.es` | PTV Almeria |
 | `PTVCordoba.es` | PTV Cordoba |
 | `PTVGranada.es` | PTV Granada |
@@ -329,7 +291,6 @@
 | `RadioBocairentTV.es` | Radio Bocairent TV |
 | `RadioCarnavalTV.es` | Radio Carnaval TV |
 | `RadioRutasdelPeru.es` | Radio Rutas del Peru |
-| `RadioTelevisionCeuta.es` | Radio Television Ceuta |
 | `RadioTelevisionMarbella.es` | Radio Television Marbella |
 | `RadioTelevisionMogan.es` | Radio Television Mogan |
 | `RakutenTVActionMovies.es` | Rakuten TV Action Movies |
@@ -351,7 +312,6 @@
 | `RTVVida.es` | RTV Vida |
 | `RTVELaRevuelta.es` | RTVE La Revuelta |
 | `RTVEPlayevent1.es` | RTVE Play event 1 |
-| `RTVEPlayevent2.es` | RTVE Play event 2 |
 | `RTVEPlayevent3.es` | RTVE Play event 3 |
 | `RTVEPlayevent4.es` | RTVE Play event 4 |
 | `RuntimeAccion.es` | Runtime Accion |
@@ -369,13 +329,10 @@
 | `SophiaTV.es` | Sophia TV |
 | `StorieCriminali.es` | Storie Criminali |
 | `STZTelebista.es` | STZ Telebista |
-| `SuspenseporMovistarPlusPlus.es` | Suspense por Movistar Plus+ |
-| `Tac12.es` | Tac12 |
 | `Taroteame.es` | Taroteame |
 | `TarotVision.es` | TarotVision |
 | `TEF.es` | TEF |
 | `Tele7.es` | Tele 7 |
-| `TeleElx.es` | Tele Elx |
 | `TeleSafor.es` | Tele Safor |
 | `TeleBilbao.es` | TeleBilbao |
 | `Telecija.es` | Telecija |
@@ -388,7 +345,6 @@
 | `TelevisioCastello.es` | Televisio Castello |
 | `TelevisionAranda.es` | Television Aranda |
 | `TelevisionConsciente.es` | Television Consciente |
-| `TelevisiondeGalicia.es` | Television de Galicia |
 | `TelevisiondeSanVicente.es` | Television de San Vicente |
 | `TenerifePlusTV.es` | Tenerife Plus TV |
 | `TerrorporMovistarPlusPlus.es` | Terror por Movistar Plus+ |
@@ -446,7 +402,6 @@
 | `UvitelTV.es` | Uvitel TV |
 | `VallesVisio.es` | Valles Visio |
 | `VamosBarporMovistarPlusPlus.es` | Vamos Bar por Movistar Plus+ |
-| `VamosporMovistarPlusPlus.es` | Vamos por Movistar Plus+ |
 | `VentdelnordTV.es` | Ventdelnord TV |
 | `VerbenaTV.es` | Verbena TV |
 | `VinxTV.es` | Vinx TV |

@@ -1,6 +1,6 @@
 # Senegal: channels without a logo
 
-0 of 101 iptv-org channels have a logo here. To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
+3 of 101 iptv-org channels have a logo here. To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
 
 | Channel ID | Name |
 |---|---|
@@ -11,7 +11,6 @@
 | `A2iMusic.sn` | A2i Music |
 | `A2iNaija.sn` | A2i Naija |
 | `A2iReligion.sn` | A2i Religion |
-| `Africa7.sn` | Africa 7 |
 | `AfrikaPoulaarTV.sn` | Afrika Poulaar TV |
 | `AhlouMourideTV.sn` | Ahlou Mouride TV |
 | `AlFaydaTV.sn` | Al Fayda TV |
@@ -57,7 +56,6 @@
 | `MbourTV.sn` | MbourTV |
 | `MediaInfosTV.sn` | Media Infos TV |
 | `MedinaBayeTV.sn` | Medina Baye TV |
-| `MourchidTV.sn` | Mourchid TV |
 | `MourideTV.sn` | Mouride TV |
 | `NgorPlusTV.sn` | Ngor Plus TV |
 | `OneNationTV.sn` | One Nation TV |
@@ -100,7 +98,6 @@
 | `TVSSaloum.sn` | TVS Saloum |
 | `UrbanAfricaTV.sn` | Urban Africa TV |
 | `WalfTV.sn` | Walf TV |
-| `WannelTV.sn` | Wannel TV |
 | `WassaTV.sn` | Wassa TV |
 | `WF1TV.sn` | WF1 TV |
 | `YakaarTV.sn` | Yakaar TV |
