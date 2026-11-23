@@ -14,9 +14,9 @@ depends on them yet.
   another country keeps its path, which never changes.
 - **One migration command** (`logos migrate-ids`, run once): rewrote the three CSV files and moved the files through
   the mapping of step 1. One refused URL was left out (`Nickelodeon.fr@Plus1`, a timeshift version not registered).
-- **Commands take any ID**: `set`, `remove`, `reject`, `dismiss`, `find`, `seen-on`, `sheet`, `import` and the issue
-  forms resolve our ID, a slug or an iptv-org ID (`France3.fr@Alsace`) to the `ch_` ID (`ops.channel_of`). An
-  iptv-org ID not registered yet makes a request wait (`waiting:channel`); anything else is refused.
+- **Commands take any ID**: `set`, `remove`, `reject`, `dismiss`, `find`, `seen-on`, `sheet` and `import` resolve
+  our ID, a slug or an iptv-org ID (`France3.fr@Alsace`) to the `ch_` ID (`ops.channel_of`). The issue forms take our
+  ID only (see step 4).
 - **Harvest and checks** work on registry channels (`registry.units`): harvest, hunt, bulk, epg-check, site-check,
   guide aliases and `missing/`. A channel absent from iptv-org can now get a logo. The iptv-org ID of a unit is still
   used to read iptv-org's own logos and the guide's same-ID channel.
@@ -37,6 +37,6 @@ depends on them yet.
 | `worldwide_tv_logos/ops.py`, `issues.py`, `cli.py` | every command and form on our IDs |
 | `worldwide_tv_logos/harvest/*.py`, `sources/*.py` | units from the registry |
 | `worldwide_tv_logos/site.py`, `site/app/**` | website data and pages from the registry |
-| `.github/ISSUE_TEMPLATE/01-06`, `validate_issue.yml`, `changes.yml` | one channel ID field, `waiting:channel`, renames |
+| `.github/ISSUE_TEMPLATE/01-06`, `validate_issue.yml`, `changes.yml` | one channel ID field, renames |
 | `tests/test_logos.py` | a test registry; every test on our IDs |
 | `README.md`, `CONTRIBUTING.md`, `CLAUDE.md`, `.github/docs/scripts.md`, `site/content/**` | IDs and paths |

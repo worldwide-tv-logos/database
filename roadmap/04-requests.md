@@ -20,8 +20,14 @@ applied here, with no wait on iptv-org.
   of its main channel; an edit is backed by its reason.
 - **Applied** by the nightly `update` like the other requests: a new `ch_` ID, or the channel edited (`updated` set:
   the iptv-org watch no longer overwrites it). A rename is always an edit: the channel keeps its ID and logo.
-- **Logo requests**: a channel unknown here is refused with a pointer to `channels/add`; an iptv-org ID not
-  registered yet still waits (`waiting:channel`), registered by the nightly `channels-init`.
+- **Our channel ID only in every form** (`issues.channel_of`): logo and alias forms, and the channel and main
+  channel of `channels/edit`, take `ch_` + 10 characters (case and spaces ignored), filled in by the buttons of the
+  website. A slug (it changes on a rename), an iptv-org ID or a name is refused with how to find the ID; an unknown
+  ID points to `channels/add`; a channel merged into another one names the current one. No request waits any more.
+- **IDs are never chosen by people**: `channels/add` makes the `ch_` ID itself (`registry.new_id`) and says so; a
+  channel name that looks like an ID is refused.
+- **Aliases**: removing one checks that it belongs to the channel given; adding a guide ID already used by another
+  channel is refused (remove it there first).
 
 ## Files changed
 

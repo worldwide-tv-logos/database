@@ -14,7 +14,7 @@ body:
     id: channel_id
     attributes:
       label: Channel ID
-      description: our channel ID (`ch_...`, shown on the [website](https://worldwide-tv-logos.github.io/database/)), its slug or its iptv-org ID
+      description: our channel ID (`ch_` and 10 characters), shown on the channel's page of the [website](https://worldwide-tv-logos.github.io/database/countries); its buttons open this form with it filled in
       placeholder: 'ch_1r840gxdj5'
     validations:
       required: true
@@ -41,7 +41,7 @@ body:
     id: parent
     attributes:
       label: Main channel (optional)
-      description: For an edition, the channel it is a version of (our ID, slug or iptv-org ID)
+      description: For an edition, the channel it is a version of: its ID here (`ch_...`, shown on its page of the website)
 
   - type: dropdown
     id: status

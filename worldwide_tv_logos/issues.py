@@ -22,7 +22,6 @@ class Request:
     number: int
     kind: str
     values: dict[str, str] = field(default_factory=dict)
-    waiting: str = ''           # set by validate(): the channel is not in our registry yet
 
     def get(self, name: str) -> str:
         return self.values.get(name, '')
@@ -47,10 +46,22 @@ def parse(number: int, labels: list[str], body: str) -> Request:
     return Request(number, kinds[0], parse_body(body))
 
 
-def ref(req: Request) -> str:
-    """The channel asked: our ID, a slug or an iptv-org ID; an older form gave the iptv-org feed apart."""
-    channel, feed = req.get('channel'), req.get('feed')
-    return channel + (f'@{feed}' if feed and '@' not in channel else '')
+def channel_of(req: Request, db: Database):
+    """The channel of a request: our channel ID only (`ch_` and 10 characters, filled in by the buttons of the
+    website), never a slug (it changes on a rename) nor another project's ID. A channel merged into another one is
+    refused with a pointer to the current one."""
+    value = req.get('channel').strip().lower()
+    if not registry.ID_RE.match(value):
+        raise ops.RequestError(f'`{req.get("channel")}` is not a channel ID: give our ID (`ch_` and 10 characters), '
+                               'shown on the channel\'s page of the website (its buttons fill it in)')
+    c = db.channels.get(value)
+    if c is None:
+        raise ops.RequestError(f'no channel `{value}` here: check the ID on the website; a channel not listed yet is '
+                               'added with the channels/add form')
+    if c.status == 'merged' and c.parent in db.channels:
+        current = db.channels[c.parent]
+        raise ops.RequestError(f'`{value}` ({c.name}) is now `{current.id}` ({current.name}): use that channel')
+    return c
 
 
 def _has_logo(db: Database, cid: str) -> bool:
@@ -66,6 +77,8 @@ def _channel_problems(req: Request, db: Database, current=None) -> list[str]:
         out.append('Country must be a two-letter code (e.g. `fr`, `uk` for the United Kingdom)')
     if name or current is None:
         key = registry.slug_base(name)
+        if registry.ID_RE.match(name.strip().lower()):
+            out.append('Channel name is the name of the channel: its ID is made here, automatically')
         if not key:
             out.append('Channel name is required, with at least one Latin letter or digit')
         same = [c for c in db.channels.values() if c.country == cc and (current is None or c.id != current.id)
@@ -76,11 +89,14 @@ def _channel_problems(req: Request, db: Database, current=None) -> list[str]:
     if website and not re.match(r'^https?://[^\s/]+\.[^\s]+$', website):
         out.append('Website must be a web address (`https://...`)')
     if req.get('parent'):
-        parent = registry.resolve(db, req.get('parent'))
+        parent = db.channels.get(req.get('parent').strip().lower())
         if parent is None:
-            out.append(f'Main channel `{req.get("parent")}` is not a channel here')
+            out.append(f'Main channel `{req.get("parent")}` is not a channel ID here (`ch_` and 10 characters, shown '
+                       "on the channel's page of the website)")
         elif current is not None and parent.id == current.id:
             out.append('A channel cannot be its own main channel')
+        elif parent.status == 'merged':
+            out.append(f'Main channel `{parent.id}` ({parent.name}) was merged into `{parent.parent}`: use that one')
     if req.get('status') and req.get('status') not in ('active', 'closed'):
         out.append('Status must be `active` or `closed`')
     for kind, sources in (('iptv', ('iptv-org', 'iptv-org-feed')), ('wikidata', ('wikidata',))):
@@ -101,11 +117,11 @@ def _channel_problems(req: Request, db: Database, current=None) -> list[str]:
 
 
 def _apply_channel(req: Request, db: Database) -> list[str]:
-    current = ops.channel_of(db, req.get('channel')) if req.kind == 'channels:edit' else None
+    current = channel_of(req, db) if req.kind == 'channels:edit' else None
     problems = _channel_problems(req, db, current)
     if problems:
         raise ops.RequestError(problems[0])
-    parent = registry.resolve(db, req.get('parent')).id if req.get('parent') else None
+    parent = req.get('parent').strip().lower() if req.get('parent') else None
     aliases = [a.strip() for a in req.get('aliases').split(';') if a.strip()]
     if current is None:
         c = registry.add_channel(db, req.get('name'), req.get('country'), aliases=aliases,
@@ -145,25 +161,19 @@ def validate(req: Request, db: Database, downloader=None) -> list[str]:
         return _channel_problems(req, db)
     if req.kind == 'channels:edit':
         try:
-            return _channel_problems(req, db, ops.channel_of(db, req.get('channel')))
+            return _channel_problems(req, db, channel_of(req, db))
         except ops.RequestError as exc:
             return [str(exc)]
     if not req.get('channel'):
         return ['Channel ID is required']
-    label = ref(req)
     try:
-        try:
-            cid = ops.channel_of(db, label).id
-        except ops.NotRegistered as exc:
-            if req.kind not in ('logos:add', 'logos:request'):
-                raise
-            req.waiting = str(exc)                    # checked again every night until the registry has it
-            cid = ''
+        c = channel_of(req, db)
+        cid, label = c.id, f'`{c.id}` ({c.name})'
         if req.kind in ('logos:add', 'logos:edit'):
-            if req.kind == 'logos:add' and cid and _has_logo(db, cid):
-                return [f'`{label}` already has a logo: use the logos/edit form to replace it']
+            if req.kind == 'logos:add' and _has_logo(db, cid):
+                return [f'{label} already has a logo: use the logos/edit form to replace it']
             if req.kind == 'logos:edit' and not _has_logo(db, cid):
-                return [f'no logo for `{label}` yet: use the logos/add form']
+                return [f'no logo for {label} yet: use the logos/add form']
             url = req.get('url')
             if not url:
                 return ['Logo URL is required']
@@ -175,19 +185,21 @@ def validate(req: Request, db: Database, downloader=None) -> list[str]:
                 return [f'the logo does not meet the rules: {exc}']
         elif req.kind == 'logos:remove':
             if not _has_logo(db, cid):
-                return [f'no logo for `{label}` in this repository']
+                return [f'no logo for {label} in this repository']
         elif req.kind == 'logos:request':
-            if cid and _has_logo(db, cid):
-                return [f'`{label}` already has a logo']
+            if _has_logo(db, cid):
+                return [f'{label} already has a logo']
         elif req.kind in ('aliases:add', 'aliases:remove'):
             epg_id, source = req.get('epg_id'), req.get('source')
             if not (epg_id and source):
                 return ['EPG ID and EPG source are required']
             known = db.aliases.get((source, epg_id))
-            if req.kind == 'aliases:remove' and known is None:
-                return [f'no alias `{source}:{epg_id}` in this repository']
+            if req.kind == 'aliases:remove' and (known is None or known.channel != cid):
+                return [f'no alias `{source}:{epg_id}` for {label} in this repository']
+            if req.kind == 'aliases:add' and known is not None and known.channel != cid:
+                return [f'`{source}:{epg_id}` is already the alias of `{known.channel}`: remove it there first']
             if req.kind == 'aliases:add' and not _has_logo(db, cid):
-                return [f'no logo for `{label}` yet: an alias needs a logo to point to']
+                return [f'no logo for {label} yet: an alias needs a logo to point to']
     except ops.RequestError as exc:
         return [str(exc)]
     return []
@@ -196,23 +208,26 @@ def validate(req: Request, db: Database, downloader=None) -> list[str]:
 def apply(req: Request, db: Database, downloader=None) -> list[str]:
     if req.kind in ('channels:add', 'channels:edit'):
         return _apply_channel(req, db)
-    label = ref(req)
+    c = channel_of(req, db)
+    cid, label = c.id, f'`{c.id}` ({c.name})'
     if req.kind in ('logos:add', 'logos:edit'):
-        cid = ops.channel_of(db, label).id               # before downloading: a missing channel waits
         if req.kind == 'logos:add' and _has_logo(db, cid):
-            raise ops.RequestError(f'`{label}` already has a logo (added meanwhile): '
+            raise ops.RequestError(f'{label} already has a logo (added meanwhile): '
                                    'use the logos/edit form to replace it')
         if req.kind == 'logos:edit' and not _has_logo(db, cid):
-            raise ops.RequestError(f'no logo for `{label}` any more: use the logos/add form')
+            raise ops.RequestError(f'no logo for {label} any more: use the logos/add form')
         try:
             data = (downloader or net.download)(req.get('url'))
         except net.DownloadError as exc:
             raise ops.RequestError(f'the logo could not be downloaded: {exc}') from None
         return ops.set_logo(db, cid, data, f'issue #{req.number}')
     if req.kind == 'logos:remove':
-        return ops.remove_logo(db, ops.channel_of(db, label).id)
+        return ops.remove_logo(db, cid)
     if req.kind == 'aliases:add':
-        return ops.set_alias(db, req.get('epg_id'), req.get('source'), ops.channel_of(db, label).id)
+        return ops.set_alias(db, req.get('epg_id'), req.get('source'), cid)
     if req.kind == 'aliases:remove':
+        known = db.aliases.get((req.get('source'), req.get('epg_id')))
+        if known is None or known.channel != cid:
+            raise ops.RequestError(f'no alias `{req.get("source")}:{req.get("epg_id")}` for {label} any more')
         return ops.remove_alias(db, req.get('epg_id'), req.get('source'))
     raise ops.RequestError('a logo request is fulfilled by a logos/add request with an image, not by approval')

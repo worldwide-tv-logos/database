@@ -8,7 +8,7 @@ body:
     id: channel_id
     attributes:
       label: Channel ID
-      description: our channel ID (`ch_...`, shown on the [website](https://worldwide-tv-logos.github.io/database/)), its slug (`france-3-alsace.fr`) or its iptv-org ID (`France3.fr@Alsace`)
+      description: our channel ID (`ch_` and 10 characters), shown on the channel's page of the [website](https://worldwide-tv-logos.github.io/database/countries); its buttons open this form with it filled in
       placeholder: 'ch_1r840gxdj5'
     validations:
       required: true

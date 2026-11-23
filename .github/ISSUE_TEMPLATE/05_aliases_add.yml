@@ -1,5 +1,5 @@
 name: '🔗 aliases/add'
-description: Link the ID a TV guide (EPG) uses for a channel to its iptv-org ID
+description: Link the ID a TV guide (EPG) uses for a channel to the channel here
 title: 'Alias: '
 labels: ['aliases:add']
 
@@ -7,7 +7,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Guides do not all use iptv-org IDs (e.g. iptv-epg names France 3 Alsace `France3-Alsace.fr`).
+        Each TV guide has its own channel IDs (e.g. iptv-epg names France 3 Alsace `France3-Alsace.fr`).
         An alias lets an application that only knows the guide ID find the logo.
 
   - type: input
@@ -32,7 +32,7 @@ body:
     id: channel_id
     attributes:
       label: Channel ID
-      description: our channel ID (`ch_...`, shown on the [website](https://worldwide-tv-logos.github.io/database/)), its slug (`france-3-alsace.fr`) or its iptv-org ID (`France3.fr@Alsace`)
+      description: our channel ID (`ch_` and 10 characters), shown on the channel's page of the [website](https://worldwide-tv-logos.github.io/database/countries); its buttons open this form with it filled in
       placeholder: 'ch_1r840gxdj5'
     validations:
       required: true

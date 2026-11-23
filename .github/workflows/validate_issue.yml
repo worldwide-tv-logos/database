@@ -46,10 +46,6 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           gh issue edit ${{ github.event.issue.number }} -R ${{ github.repository }} --add-label check:passed --remove-label check:failed
-          if [ -s temp/waiting.md ]; then
-            gh issue edit ${{ github.event.issue.number }} -R ${{ github.repository }} --add-label waiting:channel
-            gh issue comment ${{ github.event.issue.number }} -R ${{ github.repository }} --body-file temp/waiting.md
-          fi
       - name: invalid request
         if: failure() && steps.validator.outcome == 'failure'
         env:
