@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const { app } = useRuntimeConfig()
+const files = ['channels.json', 'logos.json', 'guides.json']
 </script>
 
 <template>
@@ -13,16 +14,13 @@ const { app } = useRuntimeConfig()
           class="text-primary"
         >iptv-org</ULink>.
         JSON:
-        <ULink
-          :to="`${app.baseURL}logos.json`"
-          external
-          class="text-primary"
-        >logos.json</ULink>,
-        <ULink
-          :to="`${app.baseURL}aliases.json`"
-          external
-          class="text-primary"
-        >aliases.json</ULink>.
+        <template v-for="(file, i) in files" :key="file">
+          <ULink
+            :to="`${app.baseURL}${file}`"
+            external
+            class="text-primary"
+          >{{ file }}</ULink>{{ i < files.length - 1 ? ', ' : '.' }}
+        </template>
       </p>
     </template>
 
