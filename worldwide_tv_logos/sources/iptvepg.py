@@ -12,7 +12,7 @@ from worldwide_tv_logos import net
 
 EPG_URL = 'https://iptv-epg.org/files/epg-{cc}.xml.gz'
 EPG_MAX_AGE = 86400
-EPG_MAX_SIZE = 40_000_000
+EPG_MAX_SIZE = 150_000_000                   # the US guide is about 60 MB (gzip); only its channel list is read
 EPG_PREFIX_RE = re.compile(r'^[A-Z]{2,3}\s*-\s*')
 
 
