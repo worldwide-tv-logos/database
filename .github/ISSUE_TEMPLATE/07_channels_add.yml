@@ -7,8 +7,8 @@ body:
   - type: markdown
     attributes:
       value: |
-        The channel gets its own ID here (`ch_...`), then its logo can be added with the **logos/add** form, or is
-        looked for automatically. Check first that it is not already on the
+        The channel's ID (`ch_` and 10 characters) is made here automatically once the request is approved: you
+        do not choose it. Then its logo can be added with the **logos/add** form, or is looked for automatically. Check first that it is not already on the
         [website](https://worldwide-tv-logos.github.io/database/countries) under another name.
         A regional or local version of a channel already listed is an **edition**: give that channel in
         *Main channel*.
@@ -51,7 +51,7 @@ body:
     id: parent
     attributes:
       label: Main channel (optional)
-      description: For an edition only, the channel it is a version of (our ID, slug or iptv-org ID)
+      description: For an edition only, the channel it is a version of: its ID here (`ch_...`, shown on its page of the website)
       placeholder: 'ch_1r840gxdj5'
 
   - type: input

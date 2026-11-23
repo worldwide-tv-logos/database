@@ -149,11 +149,7 @@ def test_validate_finds_stray_and_misnamed_files(db):
 
 BODY = """### Channel ID
 
-France3.fr
-
-### Feed ID (optional)
-
-Alsace
+ch_f3a5ace000
 
 ### Logo URL
 
@@ -166,20 +162,15 @@ _No response_
 
 
 def test_issue_form_is_parsed_validated_and_applied(db):
-    req = issues.parse(12, ['logos:add', 'approved'], BODY)                 # an older form: iptv-org channel + feed
-    assert (req.kind, req.get('channel'), req.get('feed'), req.get('notes')) == ('logos:add', 'France3.fr', 'Alsace', '')
+    req = issues.parse(12, ['logos:add', 'approved'], BODY)
+    assert (req.kind, req.get('channel'), req.get('notes')) == ('logos:add', ALS, '')
     fake = {'https://example.org/f3-alsace.png': png(1000, 400)}
     assert issues.validate(req, db, downloader=fake.__getitem__) == []
     changes = issues.apply(req, db, downloader=fake.__getitem__)
     assert changes[0].startswith(f'added logos/{ALS}.png')
     assert db.logos[(ALS, '')].origin == 'issue #12'
-    bad = issues.parse(13, ['logos:add'], BODY.replace('Alsace', 'Mars'))
-    assert issues.validate(bad, db, downloader=fake.__getitem__) == []     # not registered yet: waits
-    assert 'France3.fr@Mars' in bad.waiting
-    ours = issues.parse(16, ['logos:edit'], f'### Channel ID\n\n{ALS}\n\n### Logo URL\n\nhttps://example.org/f3-alsace.png\n')
-    assert issues.validate(ours, db, downloader=fake.__getitem__) == []    # our ID
     alias = issues.parse(14, ['aliases:add'], '### EPG ID\n\nFrance3-Alsace.fr\n\n### EPG source\n\niptv-epg-fr\n\n'
-                                               '### Channel ID\n\nfrance-3-alsace.fr\n')
+                                               f'### Channel ID\n\n{ALS.upper()}\n')
     assert issues.apply(alias, db) == [f'added alias iptv-epg-fr:France3-Alsace.fr -> {ALS}']
 
 
@@ -202,7 +193,7 @@ class FakeGitHub:
 
 def test_update_applies_each_issue_alone_and_skips_faulty_ones(db, monkeypatch):
     good = {'number': 1, 'labels': [{'name': 'logos:add'}, {'name': 'approved'}], 'body': BODY}
-    bad = {'number': 2, 'labels': [{'name': 'logos:add'}, {'name': 'approved'}], 'body': BODY.replace('France3.fr', 'France 3')}
+    bad = {'number': 2, 'labels': [{'name': 'logos:add'}, {'name': 'approved'}], 'body': BODY.replace(ALS, 'France 3')}
     gh = FakeGitHub([good, bad])
     monkeypatch.setattr(cli.net, 'GitHub', lambda: gh)
     monkeypatch.setattr(cli.iptvorg, 'load', lambda root: IPTV)
@@ -225,14 +216,18 @@ def test_every_form_action(db):
     edit = issues.parse(2, ['logos:edit'], BODY)
     assert issues.validate(edit, db, downloader=get) == []
     assert issues.apply(edit, db, downloader=get)[0].startswith(f'replaced logos/{ALS}.png')
-    new_edit = issues.parse(3, ['logos:edit'], BODY.replace('France3.fr', 'TF1.fr').replace('Alsace', ''))
+    new_edit = issues.parse(3, ['logos:edit'], BODY.replace(ALS, TF1))
     assert 'use the logos/add form' in issues.validate(new_edit, db, downloader=get)[0]
-    request = issues.parse(4, ['logos:request'], '### Channel ID\n\nTF1.fr\n')
+    request = issues.parse(4, ['logos:request'], f'### Channel ID\n\n{TF1}\n')
     assert issues.validate(request, db) == []
     with pytest.raises(ops.RequestError, match='fulfilled by a logos/add'):
         issues.apply(request, db)
-    alias = '### EPG ID\n\nF3A.fr\n\n### EPG source\n\nx\n\n### Channel ID\n\nFrance3.fr\n\n### Feed ID\n\nAlsace\n'
+    alias = f'### EPG ID\n\nF3A.fr\n\n### EPG source\n\nx\n\n### Channel ID\n\n{ALS}\n'
     issues.apply(issues.parse(5, ['aliases:add'], alias), db)
+    ops.set_logo(db, TF1, png(800, 300), 'x')
+    other = issues.parse(8, ['aliases:add'], alias.replace(ALS, TF1))
+    assert 'already the alias of' in issues.validate(other, db)[0]          # a guide ID points to one channel
+    assert 'no alias' in issues.validate(issues.parse(9, ['aliases:remove'], alias.replace(ALS, TF1)), db)[0]
     remove = issues.parse(6, ['aliases:remove'], alias)
     assert issues.validate(remove, db) == []
     assert issues.apply(remove, db) == ['removed alias x:F3A.fr']
@@ -241,28 +236,16 @@ def test_every_form_action(db):
     assert issues.apply(gone, db)[0] == f'removed logos/{ALS}.png'
 
 
-def test_a_logo_can_wait_for_its_channel_in_the_registry(db, monkeypatch):
-    body = BODY.replace('France3.fr', 'NewChannel.fr').replace('Alsace', '')
+def test_forms_take_our_channel_id_only(db):
     fake = {'https://example.org/f3-alsace.png': png(1000, 400)}
-    req = issues.parse(9, ['logos:add'], body)
-    assert issues.validate(req, db, downloader=fake.__getitem__) == []
-    assert 'NewChannel.fr' in req.waiting                                  # image checked, channel awaited
-    edit = issues.parse(10, ['logos:edit'], body)
-    assert 'not a channel of our registry' in issues.validate(edit, db, downloader=fake.__getitem__)[0]
-    item = {'number': 9, 'labels': [{'name': 'logos:add'}, {'name': 'approved'}], 'body': body}
-    gh = FakeGitHub([item])
-    monkeypatch.setattr(cli.net, 'GitHub', lambda: gh)
-    monkeypatch.setattr(issues.net, 'download', lambda url: png(1000, 400))
-    cli.main(['--root', str(db.root), 'update'])
-    assert (db.root / 'temp/processed.txt').read_text() == ''
-    assert gh.labels == [(9, ['waiting:channel'])] and gh.comments == []   # kept approved, no failure
-    later = Database(db.root).load()                                       # registered by the nightly channels-init
-    registry.map_id(later, registry.add_channel(later, 'New Channel', 'fr'), 'iptv-org', 'NewChannel.fr', 'import')
-    later.save()
-    item['labels'].append({'name': 'waiting:channel'})
-    cli.main(['--root', str(db.root), 'update'])
-    assert (db.root / 'temp/processed.txt').read_text() == 'Closes #9'
-    assert (9, '-waiting:channel') in gh.labels
+    for other in ('France3.fr@Alsace', 'france-3-alsace.fr', 'France 3 Alsace'):  # iptv-org ID, slug, name
+        req = issues.parse(9, ['logos:add'], BODY.replace(ALS, other))
+        assert 'not a channel ID' in issues.validate(req, db, downloader=fake.__getitem__)[0]
+    req = issues.parse(10, ['logos:add'], BODY.replace(ALS, 'ch_0000000000'))
+    assert 'channels/add form' in issues.validate(req, db, downloader=fake.__getitem__)[0]
+    db.channels[TF1].status, db.channels[TF1].parent = 'merged', BIS          # merged: the current one is named
+    req = issues.parse(11, ['logos:add'], BODY.replace(ALS, TF1))
+    assert f'is now `{BIS}`' in issues.validate(req, db, downloader=fake.__getitem__)[0]
 
 
 def test_iptv_org_changes_are_warnings_and_aliases_follow_their_logo(db):
@@ -1128,7 +1111,7 @@ def test_a_channel_can_be_added_and_edited_by_a_request(db):
     assert 'already this channel here' in issues.validate(again, db)[0]
     # an edition of France 3, with its iptv-org ID already taken
     edition = ADD_CHANNEL.replace('Alsace 20 Plus', 'France 3 Lorraine').replace('Q42', '_No response_')
-    edition = edition.replace('### Main channel (optional)\n\n_No response_', '### Main channel (optional)\n\nfrance-3.fr')
+    edition = edition.replace('### Main channel (optional)\n\n_No response_', f'### Main channel (optional)\n\n{F3}')
     taken = edition.replace('### iptv-org ID (optional)\n\n_No response_', '### iptv-org ID (optional)\n\nFrance3.fr@Alsace')
     assert 'already the channel' in issues.validate(issues.parse(22, ['channels:add'], taken), db)[0]
     issues.apply(issues.parse(23, ['channels:add'], edition), db)
@@ -1136,6 +1119,10 @@ def test_a_channel_can_be_added_and_edited_by_a_request(db):
     bad = ADD_CHANNEL.replace('FR', 'France').replace('https://www.alsace20.tv/', 'alsace20')
     problems = issues.validate(issues.parse(24, ['channels:add'], bad), db)
     assert any('two-letter code' in x for x in problems) and any('web address' in x for x in problems)
+    named_id = ADD_CHANNEL.replace('Alsace 20 Plus', 'ch_abcdefghjk')            # the ID is made here, never given
+    assert any('automatically' in x for x in issues.validate(issues.parse(28, ['channels:add'], named_id), db))
+    slug_parent = ADD_CHANNEL.replace('### Main channel (optional)\n\n_No response_', '### Main channel (optional)\n\nfrance-3.fr')
+    assert any('not a channel ID' in x for x in issues.validate(issues.parse(29, ['channels:add'], slug_parent), db))
     # an edit: renamed, closed; the ID and the logo stay, iptv-org no longer overwrites it
     ops.set_logo(db, c.id, png(800, 300), 'x')
     edit = (f'### Channel ID\n\n{c.id}\n\n### Channel name (optional)\n\nAlsace 20 Max\n\n### Status (optional)\n\n'
@@ -1153,5 +1140,5 @@ def test_a_channel_can_be_added_and_edited_by_a_request(db):
 
 
 def test_a_logo_for_an_unknown_channel_points_to_the_channel_form(db):
-    req = issues.parse(30, ['logos:add'], BODY.replace('France3.fr', 'Some Channel').replace('Alsace', ''))
-    assert 'channels/add form' in issues.validate(req, db, downloader=lambda u: png(1000, 400))[0]
+    req = issues.parse(30, ['logos:add'], BODY.replace(ALS, 'Some Channel'))
+    assert 'not a channel ID' in issues.validate(req, db, downloader=lambda u: png(1000, 400))[0]

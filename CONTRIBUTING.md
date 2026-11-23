@@ -3,7 +3,7 @@
 ## Add or replace a logo
 
 1. Find the channel on the [website](https://worldwide-tv-logos.github.io/database/countries): its ID, e.g.
-   `ch_dhk02zjhwa` for France 3 Alsace (its iptv-org ID, `France3.fr@Alsace`, works too).
+   `ch_dhk02zjhwa` for France 3 Alsace. The forms take this ID only; the buttons of the channel's page fill it in.
 2. Open the [logo form](../../issues/new?template=01_logos_add.yml) with a direct `https://` link to the image.
 3. A bot checks the request within a minute (`check:passed` or a comment explaining what to fix).
 4. A maintainer approves it (`approved`); the next nightly run downloads the image, converts it, commits it and
@@ -30,10 +30,9 @@ longest side; **SVG is preferred**. Use the version currently on air.
 Add it with the [channels/add](../../issues/new?template=07_channels_add.yml) form (name, country, website; for a
 regional version, its main channel): it gets its own ID the night after approval, without waiting for iptv-org. Then
 add its logo, or let the weekly search find it. A renamed channel is corrected with channels/edit, never added again:
-it keeps its ID and its logo.
+it keeps its ID and its logo. You never choose a channel's ID: it is made here.
 
-Channels added to iptv-org are also registered every night (followed countries): a logo submitted with such an
-iptv-org ID waits (`waiting:channel`) until then.
+Channels added to iptv-org are also registered every night (followed countries).
 
 ### A channel without a TV guide ID
 
