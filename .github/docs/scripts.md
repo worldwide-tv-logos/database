@@ -9,7 +9,7 @@ Python 3.12 and [uv](https://docs.astral.sh/uv/). `uv sync` once, then `uv run l
 | `logos issue-validate --number N --labels L` | checks one request (body in `RAW_BODY`); writes the problems to `temp/errors.md` |
 | `logos update` | applies the approved issues (`GITHUB_REPOSITORY`, `GITHUB_TOKEN`); writes `temp/processed.txt` and `temp/changes.json` |
 | `logos notify --commit SHA` | comments each processed issue with what changed |
-| `logos export [--offline]` | writes `.api/logos.json`, `.api/aliases.json` and (unless `--offline`) the data of the website (`countries.json`, `countries/<cc>.json`, `search.json`) and `missing/<cc>.md` |
+| `logos export [--offline]` | writes `.api/logos.json`, `.api/aliases.json` and (unless `--offline`) the data of the website (`countries.json`, `countries/<cc>.json`, `search.json`), `channels.json`, `guides.json` (reads the public TV guides, `guides.py`) and `missing/<cc>.md` |
 | `logos harvest --country <cc> [--updates] [--max n] [--offset n] [--pause s] [--limit n]` | best logo of each channel of a country from every source (`worldwide_tv_logos/sources/`: Wikidata, Wikipedia and Commons for channels without a logo, iptv-org, iptv-epg, picons, xmltv-se; answers cached in `.cache/`), a weekly slice of `--max` (700) channels when the country has more, same checks as requests, into `temp/harvest/<cc>/` (manifest.csv for `logos import`, report.csv, doubts.csv, summary.md, contact sheets); `--updates` also proposes newer or better versions of current logos |
 | `logos reject <channel> --base <main checkout> [--reason r] [--unconfirmed]` | refuse a logo of a harvest pull request: back to the logo of main, URL added to `data/rejected.csv`; `--unconfirmed` (no proof found, not wrong): only removed from the pull request, proposed again next time |
 | `logos unreject [--channel id] [--date d] [--reason-contains text]` | remove rows of `data/rejected.csv`: those logos are proposed again |
@@ -37,6 +37,7 @@ another family are listed in the summary ("Current logos to check") for the revi
 | `logos channels-init` | our channel registry (`data/channels.csv`, `data/external_ids.csv`, see `roadmap/01-channel-registry.md`): every iptv-org channel and edition of the followed countries gets a `ch_` ID and its iptv-org ID; adds only, run every night by `update` |
 | `logos migrate-ids` | one-off, done on 2026-11-23 (roadmap step 2): logos, originals, aliases and refused URLs moved from iptv-org IDs to our IDs |
 | `logos channel <ref>` | show a registry channel from our ID, its slug, or its iptv-org or Wikidata ID |
+| `logos lookup <text> [--country cc]` | channels and logos for an ID (ours, iptv-org, Wikidata, a TV guide channel: `.api/guides.json` of the last export) or a name, with their score |
 | `logos channel-add <name> --country <cc> [--alias a] [--website u] [--parent ref]` | a new channel (new `ch_` ID); refused when a channel of the country has the same name (`--force`) or the country is not followed (`--any-country`) |
 | `logos channel-edit <ref> [--name] [--slug] [--alias] [--website] [--status active\|closed\|merged] [--parent]` | change a channel; its ID never changes, its slug follows the name |
 | `logos channel-map <ref> iptv-org\|iptv-org-feed\|iptv-org-former\|iptv-org-feed-former\|wikidata <id> [--remove]` | map another project's ID to a channel; guide IDs are never stored |

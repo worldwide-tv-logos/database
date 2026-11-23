@@ -28,7 +28,7 @@ channel before giving it a logo.
 | 3 | [iptv-org watch](03-iptvorg-watch.md) | New, renamed and closed iptv-org channels applied to the registry every day | Done |
 | 4 | [Requests on our registry](04-requests.md) | Anyone can add or edit a channel without iptv-org | Done |
 | 5 | [Status watch](05-status-watch.md) | Closed channels confirmed from several signals | To do |
-| 6 | [Publication](06-publication.md) | `channels.json`, `guides.json`, and logo lookup from a guide ID or a name | To do |
+| 6 | [Publication](06-publication.md) | `channels.json`, `guides.json`, and logo lookup from a guide ID or a name | Done |
 | 7 | [canonical-catalog integration](07-catalog-integration.md) | The catalogue sends its unknown channels and stores our IDs | To do |
 | 8 | [Lookup API](08-api.md) | Read-only FastAPI on Vercel: guide ID, free name or whole XMLTV list → channels and logos | To do |
 
