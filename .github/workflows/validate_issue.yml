@@ -55,6 +55,29 @@ jobs:
           { echo "This request cannot be applied yet:"; echo; cat temp/errors.md; echo; echo "Edit the issue to fix it: it is checked again automatically."; } > temp/comment.md
           gh issue comment ${{ github.event.issue.number }} -R ${{ github.repository }} --body-file temp/comment.md
           gh issue edit ${{ github.event.issue.number }} -R ${{ github.repository }} --add-label check:failed --remove-label check:passed
+      - name: image refused -> Claude suggests a better file
+        if: >-
+          failure() && steps.validator.outcome == 'failure' && env.HAS_CLAUDE == 'true' &&
+          (contains(github.event.issue.labels.*.name, 'logos:add') || contains(github.event.issue.labels.*.name, 'logos:edit'))
+        continue-on-error: true
+        uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          prompt: |
+            Repository ${{ github.repository }}, issue #${{ github.event.issue.number }}: a logo request whose image
+            was refused by the automatic checks (temp/errors.md). Read the request with
+            `gh issue view ${{ github.event.issue.number }}`. Only when the refusal is about the image itself (too
+            small, an HTML page, unreadable, could not be downloaded): look for a better file of the same logo
+            (`uv run logos find <logo id>`, which writes temp/find/<logo id>/; WebSearch; the page given in the
+            request). Following CLAUDE.md ("Reviewing a logo"), when one candidate is clearly the logo the author
+            wanted (same channel, same branding, large enough or SVG), comment the issue with its direct URL so that
+            the author only has to edit the issue and paste it (it is checked again automatically). Otherwise do
+            nothing. Write in the language of the request, sign "Suggestion by Claude (automated)". Never change
+            labels and never close the issue.
+          claude_args: |
+            --permission-mode default
+            --max-turns 25
+            --allowedTools "Read,WebFetch,WebSearch,Bash(uv run logos find:*),Bash(uv run logos seen-on:*),Bash(gh issue view:*),Bash(gh issue comment:*)"
       - name: review by Claude (approves or refuses)
         if: success() && env.HAS_CLAUDE == 'true' && !contains(github.event.issue.labels.*.name, 'logos:request')
         uses: anthropics/claude-code-action@v1

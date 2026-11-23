@@ -12,7 +12,10 @@ On every push and pull request: every workflow file parses as YAML (GitHub silen
 
 When an issue with a `logos:*` or `aliases:*` label is opened or edited (an edit withdraws `approved`: the new
 content must be reviewed again): `logos issue-validate` downloads and
-checks the logo, then labels the issue `check:passed`, or comments the problems and labels it `check:failed`.
+checks the logo, then labels the issue `check:passed`, or comments the problems and labels it `check:failed`. A
+Wikipedia or Wikimedia Commons file page (`.../wiki/File:X.svg`, `...#/media/Fichier:X.png`) is read as the image
+itself. When the image is refused (too small, a web page, unreadable), Claude looks for a better file of the same
+logo (`logos find`) and comments its URL, so that the author only has to edit the issue.
 
 ## Changes on the iptv-org side
 
@@ -43,7 +46,8 @@ The logos found are imported, then Claude looks at every one of them on the cont
 (`.github/scripts/sync.sh`: rows merged row by row, the change's logo files applied on top, validated, no older logo
 back), opens the pull request with Claude's report, and when Claude said `ready` labels it `review:ready` and merges
 it (`.github/scripts/merge.sh`), unless the repository variable `AUTO_MERGE` is `false`. Claude decides every logo
-itself (a doubt is rejected, never published) and says `hold` only when the change is broken: the pull request then
+itself (a doubt is rejected, never published; one image found for several numbered channels of a family, such as
+Sport 1 and Sport 2, is the brand logo without the number and is kept out of all of them) and says `hold` only when the change is broken: the pull request then
 waits for a maintainer (`needs:maintainer`), and the next harvest of the country redoes it.
 
 ## retry

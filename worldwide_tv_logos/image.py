@@ -65,7 +65,8 @@ def open_image(data: bytes) -> tuple[Image.Image, bool]:
             raise ImageError(f'unreadable SVG ({exc})') from None
         return Image.open(io.BytesIO(png)).convert('RGBA'), True
     if data[:512].lstrip().startswith(b'<'):
-        raise ImageError('an HTML page, not an image')
+        raise ImageError('an HTML page, not an image: give the address of the image itself (right-click on the logo, '
+                         '"Copy image address"), or of its Wikimedia Commons file page')
     Image.MAX_IMAGE_PIXELS = MAX_PIXELS
     try:
         img = Image.open(io.BytesIO(data))
@@ -147,7 +148,8 @@ def prepare(data: bytes) -> tuple[Image.Image, list[str]]:
     if not vector:
         scale = min(scale, 1.0)                            # a raster original is never upscaled
         if max(w, h) < MIN_SIDE:
-            raise ImageError(f'too small ({w}x{h} once trimmed): longest side must be at least {MIN_SIDE} px')
+            raise ImageError(f'too small ({w}x{h} once trimmed): longest side must be at least {MIN_SIDE} px. '
+                             "Look for an SVG or a larger version (Wikimedia Commons, the channel's press page)")
     size = (max(1, round(w * scale)), max(1, round(h * scale)))
     if size != img.size:
         img = img.resize(size, Image.Resampling.LANCZOS)
