@@ -893,7 +893,10 @@ REG_IPTV = IptvOrg({'France3.fr': {'id': 'France3.fr', 'name': 'France 3', 'coun
                                  'replaced_by': 'NewTV.fr'},
                     'NewTV.fr': {'id': 'NewTV.fr', 'name': 'New TV', 'country': 'FR'},
                     'ZDF.de': {'id': 'ZDF.de', 'name': 'ZDF', 'country': 'DE'}},
-                   {('France3.fr', 'Alsace'): {'name': 'Alsace'}, ('TF1.fr', 'HD'): {'name': 'HD'}})
+                   {('France3.fr', 'Alsace'): {'name': 'Alsace', 'broadcast_area': ['c/FR']},
+                    ('TF1.fr', 'HD'): {'name': 'HD'},
+                    ('TF1.fr', 'Belgique'): {'name': 'Belgique', 'broadcast_area': ['c/BE']},
+                    ('ZDF.de', 'Europe'): {'name': 'Europe', 'broadcast_area': ['r/EUR']}})
 
 
 def test_registry_ids_and_slugs():
@@ -911,8 +914,13 @@ def test_registry_ids_and_slugs():
 def test_registry_init_is_complete_and_can_run_again(db):
     db.logos[('ZDF.de', '', '')] = Logo('ZDF.de')                # a logo of a country not followed
     db.logos[('OldTV.fr', '', '')] = Logo('OldTV.fr')            # closed: registered because it has a logo
+    db.logos[('ZDF.de', 'Europe', '')] = Logo('ZDF.de', 'Europe')
     stats = registry.init(db, REG_IPTV, ['fr'])
-    assert stats == {'channels': 5, 'editions': 1, 'already': 0}  # TF1@HD is a quality feed: not an edition
+    # TF1@HD is a quality feed: not an edition
+    assert stats == {'channels': 5, 'editions': 3, 'already': 0, 'country changed': 0}
+    # an edition broadcast in one other country takes it; a region keeps its channel's
+    assert registry.resolve(db, 'TF1.fr@Belgique').slug == 'tf1-belgique.be'
+    assert registry.resolve(db, 'ZDF.de@Europe').country == 'de'
     f3 = registry.resolve(db, 'France3.fr')
     alsace = registry.resolve(db, 'France3.fr@Alsace')
     assert (f3.slug, f3.alias_list, alsace.slug, alsace.parent) == ('france-3.fr', ['FR3'], 'france-3-alsace.fr', f3.id)
@@ -922,7 +930,13 @@ def test_registry_init_is_complete_and_can_run_again(db):
     assert registry.resolve(db, f3.id) is f3 and registry.resolve(db, 'nothing') is None
     assert registry.check(db) == []
     before = dict(db.channels)
-    assert registry.init(db, REG_IPTV, ['fr'])['already'] == 6 and db.channels == before
+    assert registry.init(db, REG_IPTV, ['fr'])['already'] == 8 and db.channels == before
+    # an edition loaded before with its channel's country follows its broadcast country
+    be = registry.resolve(db, 'TF1.fr@Belgique')
+    be.country, be.slug = 'fr', 'tf1-belgique.fr'
+    assert registry.refresh_editions(db, REG_IPTV) == 1 and be.slug == 'tf1-belgique.be'
+    be.country, be.updated = 'fr', '2026-11-23'                    # edited here: left alone
+    assert registry.refresh_editions(db, REG_IPTV) == 0
 
 
 def test_registry_check_and_merge(db, tmp_path):

@@ -10,6 +10,8 @@ of their programme guide**, or just the channel name and country. They no longer
 ## How
 
 - **`channels.json`**: every channel with its status, parent, website, aliases, logos, iptv-org and Wikidata IDs.
+  An edition without a logo of its own gets its main channel's logo, written out (`logo_from: <parent ch_>`), so that
+  users never have to follow `parent` themselves.
 - **`guides.json`**, rebuilt every night (never edited by hand, never stored in `data/`):
   - for each known public guide (iptv-epg, epgshare01, xmltv-se…) and each of its channel IDs: the likely `ch_`
     IDs with their logo and a score;

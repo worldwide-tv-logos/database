@@ -836,7 +836,8 @@ def cmd_channels_init(args, db: Database) -> int:
     stats = registry.init(db, iptvorg.load(db.root), sorted(db.countries))
     db.save()
     print(f'{stats["channels"]} channel(s) and {stats["editions"]} edition(s) registered, {stats["already"]} already '
-          f'there; {len(db.channels)} in the registry')
+          f'there, {stats["country changed"]} edition(s) moved to their broadcast country; {len(db.channels)} in the '
+          'registry')
     return 0
 
 

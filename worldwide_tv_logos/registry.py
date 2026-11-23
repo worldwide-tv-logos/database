@@ -96,6 +96,39 @@ def _iptv_country(record: dict, logo_id: str) -> str:
     return (record.get('country') or logo_id.split('@')[0].rsplit('.', 1)[-1]).lower()
 
 
+def edition_country(feed: dict, default: str) -> str:
+    """The country an edition is broadcast in: the only country of its iptv-org broadcast area (`c/BG`), else its
+    channel's (a region `s/AU-QLD`, several countries or none)."""
+    areas = {a[2:].lower() for a in feed.get('broadcast_area') or () if a.startswith('c/')}
+    others = [a for a in feed.get('broadcast_area') or () if not a.startswith(('c/', 's/'))]
+    if len(areas) == 1 and not others:
+        cc = areas.pop()
+        if re.match(r'^[a-z]{2}$', cc):
+            return cc
+    return default
+
+
+def refresh_editions(db: Database, iptv) -> int:
+    """Editions loaded from iptv-org and never edited here (`updated` empty) follow their iptv-org broadcast country;
+    their slug follows. Returns the number changed."""
+    changed = 0
+    slugs = {c.slug for c in db.channels.values()}
+    for x in [x for x in db.external_ids.values() if x.source == 'iptv-org-feed' and x.method == 'import']:
+        c = db.channels.get(x.channel_id)
+        channel, _, fid = x.external_id.partition('@')
+        feed = iptv.feeds.get((channel, fid))
+        if c is None or c.updated or feed is None:
+            continue
+        parent = db.channels.get(c.parent)
+        cc = edition_country(feed, parent.country if parent else c.country)
+        if cc != c.country:
+            slugs.discard(c.slug)
+            c.country, c.slug = cc, make_slug(c.name, cc, slugs, fallback=x.external_id.replace('@', ' '))
+            slugs.add(c.slug)
+            changed += 1
+    return changed
+
+
 def init(db: Database, iptv, countries) -> dict[str, int]:
     """Every iptv-org channel and edition we need gets a registry row and its iptv-org ID: the channels and editions
     of the followed countries (harvest units), every channel or edition that has a logo, and the channels they were
@@ -131,7 +164,8 @@ def init(db: Database, iptv, countries) -> dict[str, int]:
             base = rec.get('name') or u['channel'].split('.')[0]
             if not name.lower().startswith(base.lower()):
                 name = f'{base} {name}'
-            c = add_channel(db, name, country, status=parent.status if parent.status == 'closed' else 'active',
+            c = add_channel(db, name, edition_country(feed, parent.country),
+                            status=parent.status if parent.status == 'closed' else 'active',
                             parent=parent.id, website=rec.get('website') or '', fallback=logo_id.replace('@', ' '))
             map_id(db, c, 'iptv-org-feed', logo_id, 'import')
             stats['editions'] += 1
@@ -146,6 +180,7 @@ def init(db: Database, iptv, countries) -> dict[str, int]:
         c, new = by_logo_id(db, logo_id), by_logo_id(db, target) if target else None
         if not u['feed'] and c is not None and new is not None and c.status != 'merged' and new.id != c.id:
             c.status, c.parent = 'merged', new.id
+    stats['country changed'] = refresh_editions(db, iptv)
     return stats
 
 
