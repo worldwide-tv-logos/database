@@ -12,7 +12,7 @@ from pathlib import Path
 
 from PIL import Image
 
-from worldwide_tv_logos import image, iptvorg, issues, net, ops
+from worldwide_tv_logos import image, iptvorg, issues, net, ops, sources
 from worldwide_tv_logos.db import CHANNEL_RE, FEED_RE, VARIANTS, Database, parse_logo_id
 
 DATE_RE = re.compile(r'^\d{4}-\d{2}-\d{2}$')
@@ -284,9 +284,9 @@ def cmd_find(args, db: Database) -> int:
     cc = (c.get('country') or channel.rsplit('.', 1)[-1]).lower()
     logos = [x for x in iptvorg.load_logos(db.root) if x['channel'] == channel and (x.get('feed') or '') == feed]
     unit = next((u for u in harvest.units(iptv, cc) if u['id'] == args.id), dict(c, channel=channel, feed=feed))
-    extra = harvest.more_candidates(db.root, unit, cc, not args.no_wikidata, True, net.download, print,
-                                    harvest.load_epg(db, cc, net.download, print))
-    cands = harvest.candidates(unit, {(channel, feed): logos}, extra)
+    ctx = sources.Context.for_country(db.root, cc, iptv_logos={(channel, feed): logos}, deep=True,
+                                      wikidata=not args.no_wikidata, epg=harvest.load_epg(db, cc, net.download, print))
+    cands = [harvest.Candidate(src, url) for src, url in sources.collect(unit, ctx)]
     rejected = harvest.load_rejected(db.root)
     for i, cand in enumerate(cands):
         if i:
@@ -472,13 +472,52 @@ def cmd_dismiss(args, db: Database) -> int:
     return 0
 
 
+def cmd_country_add(args, db: Database) -> int:
+    """Follow a country (data/countries.csv): harvested and hunted every week, with its missing/<cc>.md list. The code
+    is iptv-org's (`uk` for the United Kingdom)."""
+    iptv = iptvorg.load(db.root)
+    for code in args.code:
+        cc = code.lower()
+        if cc in db.countries:
+            print(f'`{cc}` is already followed')
+            continue
+        names = {c['code'].lower(): c['name'] for c in iptvorg.load_countries(db.root)}
+        if cc not in names or not iptv.country_channels(cc):
+            print(f'`{cc}`: no channel of this country in iptv-org')
+            return 1
+        db.countries[cc] = names[cc]
+        print(f'`{cc}` ({names[cc]}) followed: {len(iptv.country_channels(cc))} channels')
+    path = db.data_dir / 'countries.csv'
+    with path.open('w', encoding='utf-8', newline='') as fh:
+        w = csv.writer(fh, lineterminator='\n')
+        w.writerow(['code', 'name'])
+        w.writerows(sorted(db.countries.items()))
+    return 0
+
+
 def cmd_harvest(args, db: Database) -> int:
+    """A country with more channels than --max (the United States: about 15,000 channels and editions) is harvested
+    by weekly slices: three quarters of the slice for channels without a logo, a quarter for the others (--updates),
+    a different slice every week."""
+    import datetime
+    import shutil
+
     from worldwide_tv_logos import harvest
     cc = args.country.lower()
     out = db.root / 'temp' / 'harvest' / cc
-    import shutil
     shutil.rmtree(out, ignore_errors=True)
-    stats = harvest.harvest(db, iptvorg.load(db.root), cc, iptvorg.load_logos(db.root), out,
+    iptv = iptvorg.load(db.root)
+    have = {x.logo_id for x in db.logos.values()}
+    ids = [u['id'] for u in harvest.units(iptv, cc)]
+    missing = [i for i in ids if i not in have]
+    present = [i for i in ids if i in have] if args.updates else []
+    only = None
+    if args.max and len(missing) + len(present) > args.max:
+        week = datetime.date.today().isocalendar()[1] if args.offset is None else args.offset
+        share = args.max - args.max // 4 if present else args.max
+        only = _slice(missing, week, share) + _slice(present, week, args.max - share)
+        print(f'{len(missing)} channels without a logo and {len(present)} with one: slice {week} of {len(only)}')
+    stats = harvest.harvest(db, iptv, cc, iptvorg.load_logos(db.root), out, only=only,
                             pause=args.pause, limit=args.limit, updates=args.updates)
     print(f"{stats['kept']} logo(s) to review ({stats['updates']} update(s), {stats['doubts']} doubt(s)) among "
           f"{stats['channels']} channels, {stats['candidates']} candidates; {out.as_posix()}/sheet-*.png, "
@@ -776,11 +815,16 @@ def main(argv: list[str] | None = None) -> int:
     p.set_defaults(func=cmd_notify)
     p = sub.add_parser('reprocess', help='rebuild the logos from their originals after a change of the image rules')
     p.set_defaults(func=cmd_reprocess)
+    p = sub.add_parser('country-add', help='follow countries (data/countries.csv): weekly harvests and hunts')
+    p.add_argument('code', nargs='+', help="iptv-org country codes, e.g. de uk us ('uk' for the United Kingdom)")
+    p.set_defaults(func=cmd_country_add)
     p = sub.add_parser('harvest', help='collect the best logo of each channel of a country for review (temp/)')
     p.add_argument('--country', required=True, help='two-letter code, e.g. es')
     p.add_argument('--pause', type=float, default=2.0, help='seconds between two downloads')
     p.add_argument('--limit', type=int, default=0, help='only the first N channels (test)')
     p.add_argument('--updates', action='store_true', help='also propose newer or better versions of current logos')
+    p.add_argument('--max', type=int, default=700, help='channels per run at most: a weekly slice beyond (0: all)')
+    p.add_argument('--offset', type=int, help='slice number (default: the week of the year)')
     p.set_defaults(func=cmd_harvest)
     p = sub.add_parser('epg-check', help='current logos whose iptv-epg guide shows another drawing (newer branding?)')
     p.add_argument('--country', nargs='+', required=True)

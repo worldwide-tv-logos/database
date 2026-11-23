@@ -32,8 +32,8 @@ Every Monday at 06:00 UTC (or by hand): `logos changes` opens, updates or closes
 One pull request per country of `data/countries.csv` (skipped while the previous one of the same kind is open):
 
 - **Sunday 04:00 UTC, harvest**: `logos harvest --country <cc> --updates`: missing logos and newer or better
-  versions of current ones, for every channel and edition, from iptv-org, iptv-epg and Wikidata (branch
-  `harvest/<cc>`). A new iptv-org channel of a followed country is therefore looked for the first Sunday after it
+  versions of current ones, for every channel and edition (a weekly slice of 700 for the largest countries), from
+  every source of `worldwide_tv_logos/sources/` (branch `harvest/<cc>`; their answers are kept in the Actions cache). A new iptv-org channel of a followed country is therefore looked for the first Sunday after it
   appears;
 - **Wednesday 04:00 UTC, hunt**: `logos hunt --country <cc>`: a different slice of 40 channels still without a logo
   and of 30 small logos (under 1000 px, raster original) every week, every source including the channel website:

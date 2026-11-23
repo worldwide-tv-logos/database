@@ -10,10 +10,11 @@ Python 3.12 and [uv](https://docs.astral.sh/uv/). `uv sync` once, then `uv run l
 | `logos update` | applies the approved issues (`GITHUB_REPOSITORY`, `GITHUB_TOKEN`); writes `temp/processed.txt` and `temp/changes.json` |
 | `logos notify --commit SHA` | comments each processed issue with what changed |
 | `logos export [--offline]` | writes `.api/logos.json`, `.api/aliases.json` and (unless `--offline`) the data of the website (`countries.json`, `countries/<cc>.json`, `search.json`) and `missing/<cc>.md` |
-| `logos harvest --country <cc> [--updates] [--pause s] [--limit n]` | best logo of each channel of a country from iptv-org, iptv-epg (logos of its TV guide for the country, matched by guide alias, ID or name, cached one day in `.cache/iptv-epg/`) and Wikidata, same checks as requests, into `temp/harvest/<cc>/` (manifest.csv for `logos import`, report.csv, doubts.csv, summary.md, contact sheets); `--updates` also proposes newer or better versions of current logos |
+| `logos harvest --country <cc> [--updates] [--max n] [--offset n] [--pause s] [--limit n]` | best logo of each channel of a country from every source (`worldwide_tv_logos/sources/`: Wikidata, Wikipedia and Commons for channels without a logo, iptv-org, iptv-epg, picons, xmltv-se; answers cached in `.cache/`), a weekly slice of `--max` (700) channels when the country has more, same checks as requests, into `temp/harvest/<cc>/` (manifest.csv for `logos import`, report.csv, doubts.csv, summary.md, contact sheets); `--updates` also proposes newer or better versions of current logos |
 | `logos reject <channel> --base <main checkout> [--reason r]` | refuse a logo of a harvest pull request: back to the logo of main, URL added to `data/rejected.csv` |
 | `logos sheet --changed [--base ref] \| --channels A,B \| --country cc` | contact sheets of logos of the repository (temp/sheets/) |
-| `logos find <logo id>` | every candidate for a channel or feed from iptv-org, iptv-epg, Wikidata (current logos only, with their dates) and the channel website, checked, ranked, on a contact sheet (temp/find/<id>/) |
+| `logos country-add <cc>...` | follow countries (`data/countries.csv`, iptv-org codes: `uk` for the United Kingdom): harvested and hunted every week |
+| `logos find <logo id>` | every candidate for a channel or feed from every source (`worldwide_tv_logos/sources/`, the channel website included), checked, ranked, on a contact sheet (temp/find/<id>/) |
 | `logos set <logo id> <url or file>` | add or replace a logo (same preparation and checks as a request) |
 | `logos move <old id> <new id>` | move the logos, originals and aliases of a channel to its new iptv-org ID |
 | `logos remove <logo id>` | remove a logo with its variant, original and aliases |

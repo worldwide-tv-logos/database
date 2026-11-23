@@ -1,5 +1,6 @@
 name: harvest
-# Sunday: harvest (new logos and better versions of current ones, from iptv-org, iptv-epg and Wikidata).
+# Sunday: harvest (new logos and better versions of current ones, from every source of worldwide_tv_logos/sources:
+# Wikidata, Wikipedia, Commons, iptv-org, iptv-epg, picons, xmltv-se; a weekly slice of 700 channels at most).
 # Wednesday: hunt (a slice of the channels still without a logo and of the small logos, every source including their
 # website).
 # One pull request per followed country (data/countries.csv), reviewed by Claude, merged automatically when Claude
@@ -71,6 +72,12 @@ jobs:
           fetch-depth: 0
       - uses: astral-sh/setup-uv@v10.3.3
       - run: uv sync
+      - name: answers of the sources kept between runs (Wikidata, Wikipedia and Commons, thirty days)
+        uses: actions/cache@v6
+        with:
+          path: .cache
+          key: sources-${{ matrix.cc }}-${{ github.run_id }}
+          restore-keys: sources-${{ matrix.cc }}-
       - name: collect and import
         id: collect
         run: |
@@ -99,8 +106,9 @@ jobs:
             temp/harvest/${{ matrix.cc }}/summary.md; look at EVERY logo on the contact sheets
             temp/harvest/${{ matrix.cc }}/sheet-*.png (numbered; each logo on a dark and a light tile).
             You decide every logo yourself, nobody reviews after you. The Source column of the summary says where
-            each logo comes from: a logo from iptv-epg, iptv-org or a website other than the channel's own must be
-            confirmed on the web (the channel's website, or a web search for its current logo) before you keep it;
+            each logo comes from: a logo from iptv-epg, iptv-org, picons, xmltv-se, commons (a file found by name)
+            or a website other than the channel's own must be confirmed on the web (wikidata and wikipedia, the
+            channel's own article, need no other proof unless they look old) (the channel's website, or a web search for its current logo) before you keep it;
             say which page confirmed it in the report (`uv run logos seen-on <page> <logo>` checks a page
             like a browser, see CLAUDE.md). An update marked "same drawing" only replaces a logo by a
             sharper file of it: check that it is clean (no background, nothing cut). An update marked "DIFFERENT
