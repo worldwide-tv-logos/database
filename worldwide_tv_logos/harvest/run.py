@@ -40,17 +40,20 @@ from worldwide_tv_logos.harvest.duplicates import (
     shared_drawings,
     split_duplicates,
 )
+from worldwide_tv_logos.harvest.proofs import TRUSTED, check_all
 from worldwide_tv_logos.harvest.sheets import contact_sheets, render_sheets
 from worldwide_tv_logos.iptvorg import IptvOrg
 from worldwide_tv_logos.sources.names import channel_keys
 
 
 def harvest(db: Database, iptv: IptvOrg, cc: str, iptv_logos: list[dict], out: Path, pause: float = 2.0, limit: int = 0, updates: bool = False, downloader=None,
-            log=print, wikidata: bool = True, deep: bool = False, only: list[str] | None = None) -> dict[str, int]:
+            log=print, wikidata: bool = True, deep: bool = False, only: list[str] | None = None,
+            prove: bool = True) -> dict[str, int]:
     """Missing logos of the country (and, with `updates`, better or newer versions of its current logos) into
     out/: originals, manifest.csv for `logos import`, report.csv, doubts.csv, summary.md, contact sheets.
     `wikidata`: also Wikidata and Wikipedia; `deep`: every source for every channel, the website included;
-    `only`: these channel IDs only (logos hunt)."""
+    `only`: these channel IDs only (logos hunt); `prove`: look for each logo kept on its channel's website
+    (proofs.check_all), for the review."""
     downloader = downloader or net.download
     current = {x.logo_id: x for x in db.logos.values() if not x.variant}
     try:
@@ -68,7 +71,7 @@ def harvest(db: Database, iptv: IptvOrg, cc: str, iptv_logos: list[dict], out: P
         by_channel.setdefault((x['channel'], x.get('feed') or ''), []).append(x)
     ctx = sources.Context.for_country(db.root, cc, downloader=downloader, log=log, iptv_logos=by_channel,
                                       epg=load_epg(db, cc, downloader, log), wikidata=wikidata, deep=deep,
-                                      have=set(current))
+                                      have=set(current), ambiguous=sources.names.ambiguous_keys(iptv))
     (out / 'originals').mkdir(parents=True, exist_ok=True)
     report, kept, changes = [], [], {}
     last = 0.0
@@ -112,6 +115,7 @@ def harvest(db: Database, iptv: IptvOrg, cc: str, iptv_logos: list[dict], out: P
     for c, other in doubts:
         log(f'{c["id"]}: DOUBT, same image as {other} (kept out)')
         changes.pop(c['id'], None)
+    proofs = check_all(kept, ctx, out, log) if prove else {}
     rows = []
     for c, best in kept:
         local = out / 'originals' / f'{c["id"]}.{image.extension(best.data)}'
@@ -129,7 +133,7 @@ def harvest(db: Database, iptv: IptvOrg, cc: str, iptv_logos: list[dict], out: P
         w = csv.writer(fh)
         w.writerow(['channel', 'reason'])
         w.writerows([(c['id'], f'same image as {other}') for c, other in doubts])
-    (out / 'summary.md').write_text(summary(cc, kept, changes, doubts, len(channels), shared, differs), encoding='utf-8',
+    (out / 'summary.md').write_text(summary(cc, kept, changes, doubts, len(channels), shared, differs, proofs), encoding='utf-8',
                                     newline='\n')
     sheets = contact_sheets(kept, out)
     return {'channels': len(channels), 'kept': len(kept), 'updates': len(changes), 'doubts': len(doubts),
@@ -137,23 +141,31 @@ def harvest(db: Database, iptv: IptvOrg, cc: str, iptv_logos: list[dict], out: P
 
 
 def summary(cc: str, kept: list[tuple[dict, Candidate]], changes: dict[str, str], doubts: list, checked: int,
-            shared: list[tuple[str, str]] = (), differs: list[tuple[str, list[str]]] = ()) -> str:
+            shared: list[tuple[str, str]] = (), differs: list[tuple[str, list[str]]] = (),
+            proofs: dict | None = None) -> str:
     """Body of the harvest pull request."""
+    proofs = proofs or {}
+
+    def proof(c, b):
+        return 'own record' if b.source in TRUSTED else (proofs[c['id']].text() if c['id'] in proofs else '')
     new = [(c, b) for c, b in kept if c['id'] not in changes]
     upd = [(c, b) for c, b in kept if c['id'] in changes]
     lines = [(f'Logos found for `{cc}` by `logos harvest` ({checked} channels checked): **{len(new)} new**, '
              f'**{len(upd)} updated**. Every file went through the same checks as a request.'), '',
              ('**Review** in the *Files changed* tab (each image is shown, before and after for an update): the logo '
-             'must be the one currently on air for this exact channel. To refuse one, comment '
+             'must be the one currently on air for this exact channel. The Website column says whether the harvest '
+             "found the same drawing on the channel's website; `sites-NN.png` shows each logo next to the top of its "
+             'website. To refuse one, comment '
              '`/reject <channel id> <reason>`: it is removed from this pull request and never proposed again.'), '']
     if new:
-        lines += ['### New', '', '| Channel | ID | Source | Size |', '|---|---|---|---|']
+        lines += ['### New', '', '| Channel | ID | Source | Size | Website |', '|---|---|---|---|---|']
         lines += [f'| {c["name"]} | `{c["id"]}` | [{b.source}]({b.url}) | {b.size[0]}x{b.size[1]}'
-                  f'{" SVG" if b.svg else ""} |' for c, b in new]
+                  f'{" SVG" if b.svg else ""} | {proof(c, b)} |' for c, b in new]
         lines.append('')
     if upd:
-        lines += ['### Updated', '', '| Channel | ID | Why | Source |', '|---|---|---|---|']
-        lines += [f'| {c["name"]} | `{c["id"]}` | {changes[c["id"]]} | [{b.source}]({b.url}) |' for c, b in upd]
+        lines += ['### Updated', '', '| Channel | ID | Why | Source | Website |', '|---|---|---|---|---|']
+        lines += [f'| {c["name"]} | `{c["id"]}` | {changes[c["id"]]} | [{b.source}]({b.url}) | {proof(c, b)} |'
+                  for c, b in upd]
         lines.append('')
     if doubts:
         lines += ['### Kept out (doubts)', '']
@@ -291,8 +303,9 @@ def epg_check(db: Database, iptv: IptvOrg, cc: str, out: Path, review: int = 15,
         if website.startswith('http'):
             website = website.replace('http://', 'https://', 1)
             try:
-                theirs_seen = seen_on(website, cand.data, downloader)
-                ours_seen = seen_on(website, db.source_files(logo)[0].read_bytes(), downloader) if theirs_seen else None
+                page_reader = None if downloader is net.download else downloader      # the browser when needed
+                theirs_seen = seen_on(website, cand.data, page_reader)
+                ours_seen = seen_on(website, db.source_files(logo)[0].read_bytes(), page_reader) if theirs_seen else None
                 verdict = 'replace' if theirs_seen and not ours_seen else None
             except Exception as exc:  # noqa: BLE001 - a website that cannot be read leaves the case to review
                 log(f'{u["id"]}: website unreadable ({exc})')

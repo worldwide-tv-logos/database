@@ -71,7 +71,9 @@ jobs:
         with:
           fetch-depth: 0
       - uses: astral-sh/setup-uv@v10.3.3
-      - run: uv sync
+      - run: uv sync --extra browser
+      - name: headless browser for the channel websites (web.py)
+        run: uv run playwright install --with-deps chromium
       - name: answers of the sources kept between runs (Wikidata, Wikipedia and Commons, thirty days)
         uses: actions/cache@v6
         with:
@@ -106,19 +108,27 @@ jobs:
             temp/harvest/${{ matrix.cc }}/summary.md; look at EVERY logo on the contact sheets
             temp/harvest/${{ matrix.cc }}/sheet-*.png (numbered; each logo on a dark and a light tile).
             You decide every logo yourself, nobody reviews after you. The Source column of the summary says where
-            each logo comes from: a logo from iptv-epg, iptv-org, picons, xmltv-se, commons (a file found by name)
-            or a website other than the channel's own must be confirmed on the web (wikidata and wikipedia, the
-            channel's own article, need no other proof unless they look old) (the channel's website, or a web search for its current logo) before you keep it;
-            say which page confirmed it in the report (`uv run logos seen-on <page> <logo>` checks a page
-            like a browser, see CLAUDE.md). An update marked "same drawing" only replaces a logo by a
+            each logo comes from: wikidata and wikipedia (the channel's own record) need no other proof unless they
+            look old; every other logo (iptv-org, iptv-epg, picons, xmltv-se, commons, website) needs one. The
+            harvest already looked for each of them on the channel's website (Website column):
+            - "FOUND on <site>" (site confirmed): the proof; keep the logo if it is this channel's and clean;
+            - "not found", "unreadable" or "no website": look at temp/harvest/${{ matrix.cc }}/sites-*.png, each
+              logo next to the top of its channel's website as people see it: the same logo there is the proof
+              (say so in the report); a different logo there is a reason to reject; else check on the web
+              (WebSearch, WebFetch, `uv run logos seen-on <page> <logo>`); what stays unconfirmed is set aside with
+              `uv run logos reject <channel id> --base ../base --unconfirmed --reason "no proof"` (proposed again
+              next time), never rejected for good.
+            Say in the report which proof each kept logo has. An update marked "same drawing" only replaces a logo by a
             sharper file of it: check that it is clean (no background, nothing cut). An update marked "DIFFERENT
             drawing" is kept only if you confirmed on the web that it is the current branding of the channel.
             - unsure that a logo is right and current: check it (channel website, web search, and
               `uv run logos find <channel id>`, which lists every candidate with a contact sheet
               temp/find/<id>/sheet-01.png); apply a clearly better one with `uv run logos set <channel id> <url>`;
-            - wrong, or still unverifiable after checking: `uv run logos reject <channel id> --base ../base
-              --reason "<short reason>"` (a new logo: the channel stays missing and is tried again next week; an
-              update: the current logo is kept).
+            - wrong (another channel, a group logo, an old branding, not clean): `uv run logos reject <channel id>
+              --base ../base --reason "<short reason>"` (never proposed again);
+            - right perhaps but still unverifiable after checking: the same with `--unconfirmed` (removed from this
+              pull request, proposed again at the next harvest). A new logo leaves the channel missing; an update
+              keeps the current logo.
             The summary may list "Current logos to check": logos already published with the drawing of a channel
             of another family. Compare them (`uv run logos sheet --channels <a>,<b>`, the channels' websites) and
             remove the wrong one with `uv run logos remove <logo id>`; keep both only if both are right.

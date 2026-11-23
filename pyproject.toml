@@ -10,6 +10,10 @@ dependencies = [
     "resvg-py>=0.5.0",
 ]
 
+[project.optional-dependencies]
+# reading channel websites in a headless browser (web.py), then `uv run playwright install chromium`
+browser = ["playwright>=1.60"]
+
 [project.scripts]
 logos = "worldwide_tv_logos.cli:main"
 

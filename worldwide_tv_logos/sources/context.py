@@ -29,6 +29,7 @@ class Context:
     wikidata: bool = True                               # Wikidata and Wikipedia asked
     deep: bool = False                                  # every source for every channel (hunts, `logos find`)
     have: set[str] = field(default_factory=set)         # logo IDs that already have a logo here
+    ambiguous: set[str] = field(default_factory=set)    # name keys shared by channels of several countries
     languages: list[str] = field(default_factory=lambda: ['en'])   # Wikipedia editions, the country's first
     pause: float = 1.0                                  # between two requests to the same site
     _items: dict = field(default_factory=dict)

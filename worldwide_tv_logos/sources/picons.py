@@ -1,7 +1,8 @@
 """picons (github.com/picons/picons): logos of satellite, cable and IPTV channels, mostly European, as SVG or PNG,
 for set-top boxes. Its index (build-source/utf8snp.index, about 33,000 channel names) gives the logo of a channel by
 its simplified name; the list of its logo files is read once (one request to the GitHub API). Both are cached seven
-days; a logo is downloaded only when it matches a channel. Some logos are older brandings: checked like iptv-epg's."""
+days; a logo is downloaded only when it matches a channel. Not asked for a name that channels of several
+countries share (TV4: Spain and Sweden). Some logos are older brandings: checked like iptv-epg's."""
 from __future__ import annotations
 
 from worldwide_tv_logos.sources import names
@@ -38,7 +39,10 @@ def index(ctx) -> dict[str, list[str]]:
 
 def find(unit: dict, ctx) -> list[str]:
     idx = index(ctx)
-    for k in sorted(names.channel_keys(unit), key=len, reverse=True):
+    keys = names.channel_keys(unit)
+    if keys & ctx.ambiguous:
+        return []                                # a name of channels of several countries: whose logo is it?
+    for k in sorted(keys, key=len, reverse=True):
         if len(k) >= 3 and k in idx:
             return [RAW + 'logos/' + idx[k][0]]
     return []
