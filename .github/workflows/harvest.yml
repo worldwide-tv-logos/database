@@ -114,6 +114,11 @@ jobs:
             The summary may list "Current logos to check": logos already published with the drawing of a channel
             of another family. Compare them (`uv run logos sheet --channels <a>,<b>`, the channels' websites) and
             remove the wrong one with `uv run logos remove <logo id>`; keep both only if both are right.
+            It may list "Different from the brand's logo in other countries": a logo found that differs from the
+            logo of the same brand already published for other countries (Nick Jr, Disney Channel...). It is often
+            an older branding: compare them; when the brand's logo is the current one for this channel too, apply
+            it with `uv run logos set <channel id> <its URL>`; keep the logo found only if it is current (a regional
+            version, checked on the web).
             It may also list "New guide aliases" (guide IDs matched by name): remove a wrong one with
             `uv run logos alias-remove <source> <guide id>`.
             Finish with exactly one `uv run logos verdict ready "<report>"` (what remains is merged; the report

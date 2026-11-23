@@ -708,3 +708,20 @@ def test_a_wikipedia_file_page_gives_the_image_itself():
         'https://commons.wikimedia.org/wiki/Special:FilePath/TF1_logo_2013.svg'
     assert net.image_url('https://fr.wikipedia.org/wiki/TF1') == 'https://fr.wikipedia.org/wiki/TF1'
     assert net.image_url('https://example.org/wiki/File:x.png') == 'https://example.org/wiki/File:x.png'
+
+
+def test_one_brand_shares_its_logo_across_countries_and_differences_are_listed():
+    harvest.set_countries([{'name': 'South Africa'}, {'name': 'Poland'}])
+    assert harvest.brand('HGTVSouthAfrica.za') == harvest.brand('HGTV.be') == 'hgtv'
+    assert harvest.brand('BlueAction.ch') != harvest.brand('Action.fr')
+    assert harvest.brand('TF1SeriesFilms.fr') != harvest.brand('TF1.fr')
+    fp = (1 << 200) - 1
+    nick = 12345
+    drawings = [('HGTV.be', 'HGTV.be', fp), ('NickJr.pl', 'NickJr.pl', nick)]
+    assert harvest.drawing_of_other('HGTVSouthAfrica.za', fp, drawings) is None        # the same brand: not a doubt
+    kept = [({'id': 'NickJr.fr', 'channel': 'NickJr.fr', 'name': 'Nick Jr'},
+             harvest.Candidate('iptv-epg', 'https://e/old.png', fp=nick ^ ((1 << 60) - 1)))]    # another drawing
+    assert harvest.brand_differences(kept, drawings) == [('NickJr.fr', ['NickJr.pl'])]
+    kept[0][1].fp = nick
+    assert harvest.brand_differences(kept, drawings) == []
+    assert harvest.logo_url('France3.fr@Alsace').endswith('/logos/fr/France3.fr@Alsace.png')
