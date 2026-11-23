@@ -103,4 +103,4 @@ jobs:
           rm -f temp/verdict.json
       - name: pull request (merged when ready unless AUTO_MERGE is false)
         if: steps.check.outputs.found == 'yes'
-        run: bash .github/scripts/publish.sh "epg/$CC" "iptv-epg check: $CC" "temp/epg-check/$CC/summary.md"
+        run: bash .github/scripts/publish.sh "epg/$CC" "iptv-epg check of $CC" "temp/epg-check/$CC/summary.md"
