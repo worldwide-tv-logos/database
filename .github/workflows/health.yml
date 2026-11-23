@@ -1,0 +1,23 @@
+name: health
+# Every day: what needs a maintainer (a workflow whose last run failed, a pull request on hold or open for more than
+# a week, an issue labelled needs:maintainer), in one issue labelled `health`, closed when all is clear.
+# GitHub sends a notification for that issue: nothing else has to be watched. See .github/scripts/health.py.
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '30 8 * * *'
+permissions:
+  actions: read
+  contents: read
+  issues: write
+  pull-requests: read
+concurrency: health
+jobs:
+  health:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+    steps:
+      - uses: actions/checkout@v7
+      - run: python3 .github/scripts/health.py

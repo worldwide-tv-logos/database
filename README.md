@@ -69,9 +69,11 @@ prepares the changes following [CLAUDE.md](CLAUDE.md), and maintainers keep the 
 | Every night | approved requests applied, data validated, website and API published |
 | Sunday | harvest: new and better logos for every followed country, one pull request per country |
 | Wednesday | hunt: a weekly slice of the channels still without a logo, and of the small logos for a sharper version, every source including their website |
+| Thursday | website check: a weekly slice of current logos looked for on their channel's website; a newer logo there is reviewed and applied |
 | Friday | iptv-epg check: logos whose TV guide shows a newer drawing, for a slice of 30 countries |
 | Monday | changes on the iptv-org side (channel renamed, replaced or removed) applied |
 | 1st of the month | activity report as an issue |
+| Every day | health check: a failed workflow, or a pull request or issue waiting for a maintainer, opens (or updates) one issue labelled `health`, closed when all is clear |
 
 Pull requests prepared by Claude contain data only (never code or workflows). Claude decides every logo itself:
 it keeps the right ones, replaces or rejects the others (a doubt is rejected, never published: the channel is

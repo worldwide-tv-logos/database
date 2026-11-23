@@ -1,0 +1,102 @@
+name: site-check
+# Thursday: current logos looked for on their channel's website, a weekly slice of 150 per followed country
+# (data/countries.csv). A channel can change its logo on air and on its website while iptv-org, iptv-epg and Wikidata
+# still show the old one. Cases (our logo absent from the website, which shows another one) are reviewed by Claude:
+# the newer logo applied, or dismissed. One pull request per country, merged when Claude says it is ready.
+on:
+  workflow_dispatch:
+    inputs:
+      country:
+        description: 'only these countries (two-letter codes, e.g. "fr es"); empty: every followed country'
+        required: false
+  schedule:
+    - cron: '0 4 * * 4'
+permissions:
+  contents: write
+  pull-requests: write
+  id-token: write
+concurrency: site-check
+jobs:
+  countries:
+    runs-on: ubuntu-latest
+    outputs:
+      list: ${{ steps.list.outputs.list }}
+    steps:
+      - uses: actions/checkout@v7
+      - id: list
+        env:
+          ONLY: ${{ inputs.country }}
+        run: |
+          codes=$(tail -n +2 data/countries.csv | cut -d, -f1)
+          [ -n "$ONLY" ] && codes=$(echo "$ONLY" | tr 'A-Z,' 'a-z ')
+          echo "list=$(printf '%s\n' $codes | jq -R . | jq -sc .)" >> "$GITHUB_OUTPUT"
+  country:
+    needs: countries
+    runs-on: ubuntu-latest
+    timeout-minutes: 150
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        cc: ${{ fromJSON(needs.countries.outputs.list) }}
+    env:
+      CC: ${{ matrix.cc }}
+      GH_TOKEN: ${{ github.token }}
+      AUTO_MERGE: ${{ vars.AUTO_MERGE }}
+      HAS_CLAUDE: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN != '' }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - uses: astral-sh/setup-uv@v10.3.3
+      - run: uv sync --extra browser
+      - name: headless browser for the channel websites (web.py)
+        run: uv run playwright install --with-deps chromium
+      - name: websites found before kept between runs (thirty days)
+        uses: actions/cache@v6
+        with:
+          path: .cache
+          key: sources-${{ matrix.cc }}-${{ github.run_id }}
+          restore-keys: sources-${{ matrix.cc }}-
+      - name: look for the current logos on their websites
+        id: check
+        run: |
+          uv run logos site-check --country "$CC"
+          s="temp/site-check/$CC/summary.md"
+          if [ ! -f "$s" ] || ! grep -q '^### To review' "$s"; then echo "nothing to do"; exit 0; fi
+          echo "review=yes" >> "$GITHUB_OUTPUT"
+      - name: review by Claude
+        id: review
+        if: steps.check.outputs.review == 'yes' && env.HAS_CLAUDE == 'true'
+        continue-on-error: true
+        uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          prompt: |
+            You review the website check of the country `${{ matrix.cc }}` of ${{ github.repository }}, following
+            CLAUDE.md ("Reviewing a logo" and "Autonomous work"). The list is
+            temp/site-check/${{ matrix.cc }}/summary.md ("To review"): current logos that are not on their channel's
+            website, which shows other logos. The sheets temp/site-check/${{ matrix.cc }}/sites-*.png show, for each
+            case, OUR logo then each logo of the website, each next to the top of the website as people see it.
+            Look at every case and decide:
+            - a website logo is the channel's current logo, ours an older branding (the website header shows it):
+              `uv run logos set <id> <website logo URL>`;
+            - the website logo is not the channel's logo (a banner with a background, a picture, a group or
+              partner logo, a programme) or ours is still the current one: `uv run logos dismiss <id> <website logo
+              URL> --reason "<short reason>"` (never proposed again);
+            - unsure: leave it (it comes back in a later run).
+            Finish with exactly one `uv run logos verdict ready "<report>"`: one line per case with your decision.
+            Use `hold` only if something is broken.
+          claude_args: |
+            --permission-mode default
+            --max-turns 120
+            --allowedTools "Read,WebFetch,WebSearch,Bash(uv run logos seen-on:*),Bash(uv run logos set:*),Bash(uv run logos dismiss:*),Bash(uv run logos verdict:*),Bash(uv run logos sheet:*),Bash(uv run logos find:*)"
+      - name: why Claude stopped
+        if: steps.review.outcome == 'failure'
+        run: |
+          jq -r '.[] | select(.type == "result") | .result // .subtype' "$RUNNER_TEMP/claude-execution-output.json" || true
+          echo "Claude did not finish: the pull request stays on hold and is redone at the next run." >> temp/site-check/$CC/summary.md
+          rm -f temp/verdict.json
+      - name: pull request (merged when ready unless AUTO_MERGE is false)
+        if: steps.check.outputs.review == 'yes'
+        run: bash .github/scripts/publish.sh "site/$CC" "Website check of $CC" "temp/site-check/$CC/summary.md"

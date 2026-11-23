@@ -15,6 +15,7 @@ Python 3.12 and [uv](https://docs.astral.sh/uv/). `uv sync` once, then `uv run l
 | `logos unreject [--channel id] [--date d] [--reason-contains text]` | remove rows of `data/rejected.csv`: those logos are proposed again |
 | `logos sheet --changed [--base ref] \| --channels A,B \| --country cc` | contact sheets of logos of the repository (temp/sheets/) |
 | `logos country-add <cc>...` | follow countries (`data/countries.csv`, iptv-org codes: `uk` for the United Kingdom): harvested and hunted every week |
+| `logos site-check --country <cc>... [--size 150] [--review 20] [--offset n]` | current logos looked for on their channel's website (a weekly slice); those absent from it while the website shows another logo are listed for review in `temp/site-check/<cc>/` (summary.md, sites-NN.png) |
 | `logos find <logo id>` | every candidate for a channel or feed from every source (`worldwide_tv_logos/sources/`, the channel website included), checked, ranked, on a contact sheet (temp/find/<id>/) |
 | `logos set <logo id> <url or file>` | add or replace a logo (same preparation and checks as a request) |
 | `logos move <old id> <new id>` | move the logos, originals and aliases of a channel to its new iptv-org ID |
