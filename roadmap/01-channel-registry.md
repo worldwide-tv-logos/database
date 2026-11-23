@@ -13,8 +13,9 @@ from iptv-org, so that nothing is lost when step 2 moves the logos.
 - **`data/channels.csv`**: `id, slug, name, aliases, country, status, parent, website, added, updated`.
   - `aliases`: other names, separated by `;` (iptv-org's `alt_names` at first).
   - `status`: `active` | `closed` | `merged` (with `parent` pointing to the channel it became).
-  - `parent`: for an edition (regional, timeshift; iptv-org feeds other than the main one and the quality ones),
-    its main channel.
+  - `parent`: for an edition (regional or market version: iptv-org feeds other than the main one, the quality and
+    timeshift ones, HD, 4K, +1, excepted), its main channel. An edition takes the country it is broadcast in when
+    iptv-org gives exactly one (`24kitchen-bulgary.bg`), else its channel's; it follows iptv-org until edited here.
 - **`data/external_ids.csv`**: `channel_id, source, external_id, method, added`.
   - `source`: `iptv-org`, `iptv-org-feed`, `wikidata` only. Guide IDs are **not stored**: they change on the guides'
     side; the matching with guides is rebuilt every night instead (step 6).
