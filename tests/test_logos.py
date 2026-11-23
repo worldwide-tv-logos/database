@@ -4,7 +4,7 @@ import json
 import pytest
 from PIL import Image
 
-from worldwide_tv_logos import cli, harvest, image, issues, ops, registry
+from worldwide_tv_logos import cli, guides, harvest, image, issues, ops, registry, site
 from worldwide_tv_logos.db import Channel, Database, ExternalId, Logo
 from worldwide_tv_logos.iptvorg import IptvOrg
 
@@ -1142,3 +1142,38 @@ def test_a_channel_can_be_added_and_edited_by_a_request(db):
 def test_a_logo_for_an_unknown_channel_points_to_the_channel_form(db):
     req = issues.parse(30, ['logos:add'], BODY.replace(ALS, 'Some Channel'))
     assert 'not a channel ID' in issues.validate(req, db, downloader=lambda u: png(1000, 400))[0]
+
+
+def test_guide_channels_are_matched_by_alias_id_and_name(db):
+    ops.set_alias(db, 'F3-Alsace.fr', 'iptv-epg-fr', ALS)
+    found = guides.match(db, 'iptv-epg-fr', 'fr', [
+        {'id': 'F3-Alsace.fr', 'names': ['France 3 Alsace']},                 # confirmed alias
+        {'id': 'tf1.fr', 'names': ['Something else']},                         # same iptv-org ID, case aside
+        {'id': 'TF1Bis.fr', 'names': ['TF1 BIS HD']},                          # by name, quality mark aside
+        {'id': 'France3+1.fr', 'names': ['France 3 + 1']},                     # timeshift: the channel itself
+        {'id': 'Unknown.fr', 'names': ['Nothing Like It']},
+        {'id': 'TF1Bis2.fr'},                                                  # no name: the ID gives it
+    ])
+    assert {g: [(m['channel'], m['score']) for m in ms] for g, ms in found.items()} == {
+        'F3-Alsace.fr': [(ALS, 1.0)], 'tf1.fr': [(TF1, 0.95)], 'TF1Bis.fr': [(BIS, 0.9)],
+        'France3+1.fr': [(F3, 0.9)]}
+    db.channels[BIS].aliases = 'Télé Une'                                      # another name only: lower score
+    assert guides.match(db, 'g', 'fr', [{'id': 'x', 'names': ['Tele Une']}])['x'][0]['score'] == 0.7
+    db.channels[F3].aliases = 'Télé Une'                                       # two channels: ambiguous
+    assert [m['score'] for m in guides.match(db, 'g', 'fr', [{'id': 'x', 'names': ['Tele Une']}])['x']] == [0.5, 0.5]
+
+
+def test_guides_json_lookup_and_publication(db, tmp_path):
+    ops.set_logo(db, F3, png(800, 300), 'x')
+    ops.set_alias(db, 'Old.fr', 'other-guide', TF1)                            # a guide not read: still published
+    data = guides.build(db, [('iptv-epg-fr', 'fr', [{'id': 'France3.fr', 'names': ['France 3']},
+                                                    {'id': 'TF1BIS.fr', 'names': ['TF1 Bis']}])])
+    assert data['guides']['other-guide'] == {'Old.fr': [{'channel': TF1, 'score': 1.0, 'how': 'confirmed'}]}
+    assert guides.lookup(db, 'france3.fr@alsace')[0]['channel'] == ALS                 # an iptv-org ID
+    assert guides.lookup(db, 'TF1BIS.fr', guides_data=data)[0]['channel'] == BIS        # a guide ID
+    assert guides.lookup(db, 'TF1 Bis', 'fr')[0]['channel'] == BIS                      # a name
+    db.channels[BIS].aliases = 'La Deux'
+    assert guides.lookup(db, 'la deux') == [{'channel': BIS, 'score': 0.7, 'how': 'other name'}]
+    channels = {c['id']: c for c in site.channels_json(db)['channels']}
+    assert channels[ALS]['logo'] == channels[F3]['logo'] and channels[ALS]['logo_from'] == F3   # the channel's logo
+    assert channels[F3]['iptv'] == 'France3.fr' and channels[BIS]['logo'] is None

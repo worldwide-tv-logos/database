@@ -41,9 +41,12 @@ heavy use.
 | File | Content |
 |---|---|
 | [`logos.json`](https://worldwide-tv-logos.github.io/database/logos.json) | every logo: `channel` (our ID), `slug`, `iptv` (its iptv-org ID), `country`, `parent` (an edition's channel), `variant`, `width`, `height`, `format`, `url`, `updated` |
-| [`aliases.json`](https://worldwide-tv-logos.github.io/database/aliases.json) | TV guide IDs of channels: `epg_id`, `source`, `channel` |
+| [`channels.json`](https://worldwide-tv-logos.github.io/database/channels.json) | every channel: `id`, `slug`, `name`, `aliases`, `country`, `status`, `parent`, `website`, `iptv`, `wikidata`, `logo`, `logo_white` (an edition without a logo of its own gives its channel's, `logo_from`) |
+| [`guides.json`](https://worldwide-tv-logos.github.io/database/guides.json) | the channels of public TV guides (iptv-epg, xmltv.se) matched with ours every night: guide → guide channel ID → `channel`, `score` (1 confirmed, 0.95 same ID, 0.9 same name, 0.7 another name, 0.5 ambiguous), `how` |
+| [`aliases.json`](https://worldwide-tv-logos.github.io/database/aliases.json) | TV guide IDs confirmed by review: `epg_id`, `source`, `channel` |
 
-Static files, no key, updated every night. Details and examples: [API page](https://worldwide-tv-logos.github.io/database/docs/getting-started/api).
+Have the channel ID of your TV guide (`TF1+1.fr`)? Look it up in `guides.json`, or type it in the search of the
+website. Static files, no key, updated every night. Details and examples: [API page](https://worldwide-tv-logos.github.io/database/docs/getting-started/api).
 
 ## Where the logos come from
 

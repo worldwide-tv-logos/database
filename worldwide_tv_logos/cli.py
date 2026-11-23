@@ -814,8 +814,11 @@ def cmd_export(args, db: Database) -> int:
     if args.offline:
         return 0
     iptv = iptvorg.load(db.root)
-    from worldwide_tv_logos import site
-    stats = site.build(db, iptv, iptvorg.load_countries(db.root), api)
+    from worldwide_tv_logos import guides, site
+    guides_data = guides.build(db, guides.iptv_epg_guides(db) + guides.xmltv_se_guides(db))
+    stats = site.build(db, iptv, iptvorg.load_countries(db.root), api, guides_data)
+    print(f".api/guides.json: {sum(len(m) for m in guides_data['guides'].values())} guide channels matched in "
+          f"{len(guides_data['guides'])} guides")
     print(f".api/ website data: {stats['countries']} countries, {stats['channels']} channels, "
           f"{stats['with_logo']} with a logo")
     have = {k[0] for k in db.logos}
@@ -896,6 +899,22 @@ def cmd_channel(args, db: Database) -> int:
     for e in (e for e in db.channels.values() if e.parent == c.id):
         print(f'{"edition" if e.status != "merged" else "merged into it"}: {e.id} {e.slug} ({e.name})')
     return 0
+
+
+def cmd_lookup(args, db: Database) -> int:
+    """Channels for an ID or a name a user holds, the way the API answers it (guides.json of the last export)."""
+    from worldwide_tv_logos import guides
+    path = db.root / '.api' / 'guides.json'
+    data = json.loads(path.read_text(encoding='utf-8')) if path.exists() else None
+    found = guides.lookup(db, args.text, (args.country or '').lower(), data)
+    for m in found:
+        c = db.channels[m['channel']]
+        logo = db.logos.get((c.id, '')) or (db.logos.get((c.parent, '')) if c.parent else None)
+        print(f"{m['score']:.2f}  {c.id}  {c.name} ({c.country})  {m['how']}  {logo.url if logo else 'no logo'}")
+    if data is None:
+        print('(no .api/guides.json: guide IDs are not looked up; `logos export` makes it)')
+    print(f'{len(found)} channel(s) for `{args.text}`' if found else f'`{args.text}`: nothing found')
+    return 0 if found else 1
 
 
 def cmd_channel_add(args, db: Database) -> int:
@@ -1114,6 +1133,10 @@ def main(argv: list[str] | None = None) -> int:
     p = sub.add_parser('channel', help='show a channel of the registry (our ID, slug, iptv-org or Wikidata ID), or find channels by name')
     p.add_argument('ref')
     p.set_defaults(func=cmd_channel)
+    p = sub.add_parser('lookup', help='channels and logos for an ID (ours, iptv-org, Wikidata, a TV guide) or a name')
+    p.add_argument('text')
+    p.add_argument('--country', help='two-letter code: names are looked up in this country first')
+    p.set_defaults(func=cmd_lookup)
     p = sub.add_parser('channel-add', help='add a channel to the registry (a new ch_ ID)')
     p.add_argument('name')
     p.add_argument('--country', required=True, help='two-letter code')

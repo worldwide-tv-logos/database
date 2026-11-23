@@ -59,8 +59,8 @@ export interface CountryData {
   channels: Channel[]
 }
 
-/** [id, name, country code, number of logos] */
-export type SearchRow = [string, string, string, number]
+/** [id, name, country code, number of logos, other IDs: iptv-org, Wikidata, TV guides, editions] */
+export type SearchRow = [string, string, string, number, string?]
 
 /** One record of logos.json (the public API). */
 export interface ApiLogo {
@@ -87,7 +87,7 @@ export function searchChannels(index: SearchRow[] | null | undefined, term: stri
   if (t.length < 2 || !index) return []
   const out: SearchRow[] = []
   for (const row of index) {
-    if (fold(row[1]).includes(t) || row[0].toLowerCase().includes(t)) out.push(row)
+    if (fold(row[1]).includes(t) || row[0].toLowerCase().includes(t) || (row[4] ?? '').toLowerCase().includes(t)) out.push(row)
     if (out.length >= limit * 3) break
   }
   return out.sort((a, b) => Number(b[3] > 0) - Number(a[3] > 0)).slice(0, limit)

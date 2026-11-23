@@ -18,6 +18,12 @@ jobs:
           ref: main
       - uses: astral-sh/setup-uv@v10.3.3
       - run: uv sync
+      # the TV guides and iptv-org data read by the export (each file says how long it stays valid)
+      - uses: actions/cache@v4
+        with:
+          path: .cache
+          key: export-cache-${{ github.run_id }}
+          restore-keys: export-cache-
       - run: uv run logos export
       # the website (site/, Nuxt): static pages, then the data and logos of .api/ next to them
       - uses: actions/setup-node@v7

@@ -23,6 +23,9 @@ const { data: index, status, execute } = useApiFile<SearchRow[]>('search.json', 
 watch(open, (value) => {
   if (value && status.value === 'idle') execute()
 })
+// an ID (ours, iptv-org, a TV guide's: no space, a `.`, `_` or `@`) found in the channels: the docs are left out, the
+// search component listing them before the channels
+const idHits = computed(() => /^\S+[._@]\S+$/.test(searchTerm.value.trim()) && searchChannels(index.value, searchTerm.value).length > 0)
 const groups = computed(() => {
   const hits = searchChannels(index.value, searchTerm.value)
   return hits.length
@@ -65,13 +68,13 @@ const searchLinks = [
     <ClientOnly>
       <LazyUContentSearch
         v-model:search-term="searchTerm"
-        :files="files"
-        :navigation="navigation"
+        :files="idHits ? [] : files"
+        :navigation="idHits ? [] : navigation"
         :links="searchLinks"
         :groups="groups"
         :loading="status === 'pending'"
         :fuse="{ resultLimit: 40 }"
-        placeholder="Search a channel (name or ID) or the docs"
+        placeholder="Search a channel (name, ID, TV guide ID) or the docs"
       />
     </ClientOnly>
   </UApp>
