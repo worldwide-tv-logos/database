@@ -10,19 +10,18 @@ gets a logo, without this repository ever seeing the provider.
 ## How
 
 - **In canonical-catalog**, not here:
-  - reads `ids.json` / `channels.json` and stores our ID in `channel_external_ids` (`source = wtl`), matched through
-    the iptv-org, guide and Wikidata IDs it already holds;
+  - reads `channels.json` / `guides.json` and stores our ID in `channel_external_ids` (`source = wtl`), matched
+    through the iptv-org IDs and guide IDs it already holds;
   - for a served channel with no match, opens a `channels: add` request with **public information only** (name,
     country, website, guide ID): no stream, line or provider name;
   - reads the logo from our published paths.
-- **Here**: the request is checked and applied like any other (step 4); `catalog` is a mapping source like the
-  others, filled from the request.
+- **Here**: the request is checked and applied like any other (step 4). No catalogue ID is stored here: the
+  catalogue keeps the link on its side.
 
 ## Files to change
 
 | Project | File | Change |
 |---|---|---|
-| worldwide-tv-logos | `worldwide_tv_logos/issues.py` | accept the `catalog` ID in `channels: add` |
-| canonical-catalog | `live/logos/` | read `ids.json`, store `wtl` IDs, take the logo |
+| canonical-catalog | `live/logos/` | read `channels.json` / `guides.json`, store `wtl` IDs, take the logo |
 | canonical-catalog | new command | open the requests (public information only), daily in the worker |
 | canonical-catalog | `docs/roadmap/` | its own step |
