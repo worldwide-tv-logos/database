@@ -10,13 +10,8 @@
 set -euo pipefail
 branch=$1 title=$2 body=$3
 
-git config user.name "github-actions[bot]"
-git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-if [ -n "${GITHUB_ACTIONS:-}" ]; then
-  # the Claude action leaves git configured with its own token, revoked when it ends: push with the workflow token
-  git config --local --unset-all http.https://github.com/.extraheader || true
-  git remote set-url origin "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
-fi
+source "$(dirname "$0")/sync.sh"
+git_setup
 uv run logos validate
 git add data logos sources missing
 if git diff --cached --quiet; then echo "nothing to publish"; exit 0; fi
@@ -29,23 +24,12 @@ else
   { cat "$body"; echo; echo "---"; echo; echo "No review recorded: a maintainer must review this pull request."; } > temp/pr-body.md
 fi
 
-# On top of the current main: a branch based on an older main would seem to revert the workflows changed since,
-# and the pull requests of the other countries, merged meanwhile, touch the same data files. Those are merged line by
-# line (.gitattributes: merge=union) for the rebase, then row by row (`logos merge-data`: a row this pull request did
-# not change keeps main's version), rewritten (sorted, one row per logo or alias) and validated again.
-sync() {
-  git fetch -q origin main
-  local base ours
-  base=$(git merge-base HEAD origin/main); ours=$(git rev-parse HEAD)
-  if ! git rebase -q origin/main; then git rebase --abort; echo "rebase on main failed"; return 1; fi
-  uv run logos merge-data "$base" "$ours"
-  if ! git diff --quiet -- data; then git add data && git commit -q --amend --no-edit; fi
-  uv run logos validate > /dev/null || { echo "data no longer valid once on top of main"; return 1; }
-}
-
+# On top of the current main (sync.sh: no rebase, rows merged row by row, our logo files applied on top).
 git switch -q -C "$branch"
 git commit -q -m "$title"
-sync || state=hold
+rc=0; sync || rc=$?
+if [ $rc = 2 ]; then echo "nothing to publish once on top of main"; exit 0; fi
+[ $rc = 0 ] || state=hold
 git push -q -f origin "$branch"
 number=$(gh pr list --head "$branch" --state open --json number --jq '.[0].number')
 if [ -z "$number" ]; then
@@ -57,15 +41,11 @@ fi
 echo "pull request #$number, review: $state"
 [ -n "${GITHUB_OUTPUT:-}" ] && echo "pr=$number" >> "$GITHUB_OUTPUT"
 
-if [ "$state" = ready ] && [ "${AUTO_MERGE:-true}" != false ]; then
-  gh pr edit "$number" --remove-label needs:maintainer > /dev/null 2>&1 || true
-  for attempt in 1 2 3; do              # another country merged meanwhile: on top of main again, then retry
-    if gh pr merge "$number" --squash --delete-branch; then echo "merged"; exit 0; fi
-    sleep $((attempt * 15))
-    sync && git push -q -f origin "$branch" || break
-  done
-  gh pr edit "$number" --add-label needs:maintainer > /dev/null
-  echo "could not be merged: on hold, redone at the next run"
-elif [ "$state" = hold ]; then
-  gh pr edit "$number" --add-label needs:maintainer > /dev/null
+if [ "$state" = ready ]; then
+  # review:ready: merged now, or by the retry workflow when main moved meanwhile
+  gh label create review:ready --color 0e8a16 --description "reviewed and ready: merged automatically" > /dev/null 2>&1 || true
+  gh pr edit "$number" --remove-label needs:maintainer --add-label review:ready > /dev/null 2>&1 || true
+  if [ "${AUTO_MERGE:-true}" != false ]; then bash "$(dirname "$0")/merge.sh" "$number" "$branch" || true; fi
+else
+  gh pr edit "$number" --remove-label review:ready --add-label needs:maintainer > /dev/null 2>&1 || true
 fi

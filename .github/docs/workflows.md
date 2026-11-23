@@ -6,7 +6,7 @@ the others.
 
 ## check
 
-On every push and pull request: `ruff`, tests, `logos validate`. Blocks the merge on any error.
+On every push and pull request: every workflow file parses as YAML (GitHub silently skips an invalid one), `ruff`, tests, `logos validate`, and on a pull request `logos regress-check` (no older version of a logo comes back). Blocks the merge on any error.
 
 ## validate_issue
 
@@ -39,17 +39,25 @@ One pull request per country of `data/countries.csv` (skipped while the previous
 
 The logos found are imported, then Claude looks at every one of them on the contact sheets, rejects the wrong ones
 (`logos reject`), looks for better ones (`logos find`, `logos set`) and records its decision (`logos verdict`).
-`.github/scripts/publish.sh` commits the data only, opens the pull request with Claude's report, and merges it when
-Claude said `ready` and `logos validate` passes, unless the repository variable `AUTO_MERGE` is `false`. Claude
-decides every logo itself (a doubt is rejected, never published) and says `hold` only when the change is broken: the
-pull request then waits for a maintainer (`needs:maintainer`), and the next harvest of the country redoes it.
+`.github/scripts/publish.sh` commits the data only, puts it on top of the current main without a rebase
+(`.github/scripts/sync.sh`: rows merged row by row, the change's logo files applied on top, validated, no older logo
+back), opens the pull request with Claude's report, and when Claude said `ready` labels it `review:ready` and merges
+it (`.github/scripts/merge.sh`), unless the repository variable `AUTO_MERGE` is `false`. Claude decides every logo
+itself (a doubt is rejected, never published) and says `hold` only when the change is broken: the pull request then
+waits for a maintainer (`needs:maintainer`), and the next harvest of the country redoes it.
+
+## retry
+
+Every 3 hours: the open pull requests labelled `review:ready` that could not be merged when they were published
+(main moved meanwhile) are put on top of main again and merged. One that is no longer valid once on top of main gets
+`needs:maintainer`; one whose change main already holds is closed.
 
 ## Review by Claude (validate_issue)
 
 When the secret `CLAUDE_CODE_OAUTH_TOKEN` is set, a request that passes the checks is reviewed by Claude following
 CLAUDE.md: the preview of the logo (`temp/preview/sheet-01.png`, on dark and light tiles) is compared with the
-channel; a right logo gets `approved` (applied the next night), a wrong or unverifiable one is closed with the
-reason (`needs:maintainer` only when something is broken).
+channel; a logo gets `approved` (applied the next night) unless there is a concrete reason against it, then it is closed
+with the reason (`needs:maintainer` only when something is broken).
 Issue texts are treated as data: Claude can only read, comment and label. For a `logos:request`, Claude looks for the
 logo itself (`logos find`, `logos set`) and opens a pull request `request/<n>` that closes the issue.
 
@@ -105,6 +113,6 @@ served by the development server).
 ## Labels to create in the repository
 
 `logos:add`, `logos:edit`, `logos:remove`, `logos:request`, `aliases:add`, `aliases:remove`, `approved`,
-`check:passed`, `check:failed`, `needs:maintainer`, `report`, `iptv-org:changes`, `waiting:iptv-org` (a logo for a channel or feed not in iptv-org yet: kept
+`check:passed`, `check:failed`, `needs:maintainer`, `review:ready` (created by `publish.sh`), `report`, `iptv-org:changes`, `waiting:iptv-org` (a logo for a channel or feed not in iptv-org yet: kept
 `approved`, tried again every night, applied as soon as iptv-org has it). A `logos:request` issue is only checked (the channel exists and has no logo yet):
 it is closed by hand once a `logos:add` request brings the image.

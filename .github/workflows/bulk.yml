@@ -62,17 +62,17 @@ jobs:
           if git diff --cached --quiet; then echo "nothing added"; exit 0; fi
           git commit -q -m "Bulk import of the iptv-org logos: $CC"
           for attempt in 1 2 3 4 5 6 7 8 9 10; do
+            # on top of main without a rebase (as .github/scripts/sync.sh): validated once above; here only the rows
+            # are merged row by row and our files applied (fast), so that the push comes before the next country's
             git fetch -q origin main
             base=$(git merge-base HEAD origin/main); ours=$(git rev-parse HEAD)
-            if git rebase -q origin/main; then
-              # validated once above; here only the data files are merged row by row (fast), so that the push
-              # comes before the next country's
-              uv run logos merge-data "$base" "$ours"
-              if ! git diff --quiet -- data; then git add data && git commit -q --amend --no-edit; fi
-              if git push -q origin HEAD:main; then echo "pushed"; exit 0; fi
-            else
-              git rebase --abort || true
-            fi
+            git reset -q --hard origin/main
+            uv run logos merge-data "$base" "$ours" --files
+            git add -A data logos sources
+            if git diff --cached --quiet; then echo "nothing left once on top of main"; exit 0; fi
+            git commit -q -m "Bulk import of the iptv-org logos: $CC"
+            uv run logos regress-check origin/main || { echo "an older version of a logo would come back"; exit 1; }
+            if git push -q origin HEAD:main; then echo "pushed"; exit 0; fi
             sleep $((RANDOM % 20 + 5))
           done
           echo "could not push"; exit 1
