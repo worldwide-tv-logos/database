@@ -571,7 +571,7 @@ def test_epg_sure_match_and_newer_guide_logo_replaced_when_the_website_shows_it(
     old, new = _png(old), _png(new)
     ops.set_logo(db, 'TF1.fr', '', old, 'https://x.org/old.png', IPTV)
     iptv = IptvOrg({'TF1.fr': {'id': 'TF1.fr', 'name': 'TF1', 'country': 'FR', 'website': 'https://tf1.fr/'}}, {})
-    monkeypatch.setattr(harvest, 'load_epg', lambda db, cc, dl, log: epg)
+    monkeypatch.setattr(harvest.run, 'load_epg', lambda db, cc, dl, log: epg)
     get = {'https://g.org/tf1.png': new}.__getitem__
     run = lambda out, seen: harvest.epg_check(db, iptv, 'fr', tmp_path / out, downloader=lambda u, **k: get(u),
                                               pause=0, log=lambda s: None, seen_on=seen)
@@ -725,3 +725,83 @@ def test_one_brand_shares_its_logo_across_countries_and_differences_are_listed()
     kept[0][1].fp = nick
     assert harvest.brand_differences(kept, drawings) == []
     assert harvest.logo_url('France3.fr@Alsace').endswith('/logos/fr/France3.fr@Alsace.png')
+
+
+def _ctx(tmp_path, responses, **kw):
+    from worldwide_tv_logos import sources
+
+    def get(url, **_):
+        for part, value in responses.items():
+            if part in url:
+                return value if isinstance(value, bytes) else json.dumps(value).encode()
+        raise sources.net.DownloadError('HTTP 404')
+    return sources.Context(root=tmp_path, cc=kw.pop('cc', 'us'), downloader=get, log=lambda s: None, pause=0, **kw)
+
+
+def test_wikipedia_gives_the_logo_of_the_article_of_the_item_or_of_the_name(tmp_path):
+    from worldwide_tv_logos.sources import wikipedia
+    ctx = _ctx(tmp_path, {'titles=WABC-TV': {'query': {'pages': {'1': {
+        'title': 'WABC-TV', 'original': {'source': 'https://upload.wikimedia.org/wikipedia/en/a/ab/WABC_7_logo.svg'},
+        'pageprops': {'wikibase_item': 'Q1'}}}}},
+        'titles=Telecinco': {'query': {'pages': {'2': {
+            'title': 'Telecinco', 'original': {'source': 'https://upload.wikimedia.org/x/Telecinco_building.jpg'}}}}}})
+    ctx._items['WABC.us'] = [{'qid': 'Q1', 'sitelinks': {'en': 'WABC-TV', 'fr': 'WABC'}, 'logos': [], 'website': ''}]
+    assert wikipedia.find({'id': 'WABC.us', 'name': 'WABC'}, ctx) == \
+        ['https://upload.wikimedia.org/wikipedia/en/a/ab/WABC_7_logo.svg']
+    ctx._items['Telecinco.es'] = []
+    assert wikipedia.find({'id': 'Telecinco.es', 'name': 'Telecinco'}, ctx) == []    # a photo, not a logo
+    assert not wikipedia.plausible('https://u/x/Canal_Sur_2011-2017_logo.svg')        # an old branding
+
+
+def test_commons_keeps_files_named_after_the_channel_with_logo(tmp_path):
+    from worldwide_tv_logos.sources import commons
+    ctx = _ctx(tmp_path, {'commons.wikimedia.org': {'query': {'search': [
+        {'title': 'File:Antena 3 logo 2023.svg'}, {'title': 'File:Antena 3 Noticias logo.png'},
+        {'title': 'File:Antena 3 building.jpg'}, {'title': 'File:Antena 3 logo 2004-2010.svg'},
+        {'title': 'File:Logo of Neox.svg'}]}}})
+    urls = commons.find({'id': 'Antena3.es', 'name': 'Antena 3'}, ctx)
+    assert urls[0].endswith('Antena_3_logo_2023.svg') and len(urls) == 2
+    assert not any('2004-2010' in u or 'building' in u or 'Neox' in u for u in urls)
+    assert not commons.named_after('Huaju Film Co production logo from Lustrous Pearls, 1927', 'Film&Co')
+    assert commons.named_after('LaLiga TV Hypermotion 2023 Logo', 'LaLiga TV')
+    assert commons.named_after('Series por Movistar Plus+ 2022 logo', 'Series por Movistar Plus+')
+    assert commons.named_after('Logo of America Teve', 'America TeVe')
+    assert not commons.named_after('Thoma Bravo logo 2024', 'Bravo')
+    assert not commons.named_after('AMC Networks logo', 'AMC')
+    assert not commons.named_after('Boomerang HD Logo 2015', 'Boomerang')
+
+
+def test_picons_and_xmltvse_match_by_name(tmp_path):
+    from worldwide_tv_logos.sources import picons, xmltvse
+    ctx = _ctx(tmp_path, {'api.github.com': {'tree': [
+        {'path': 'bbcone.default.svg', 'type': 'blob'}, {'path': 'bbcone.white.svg', 'type': 'blob'},
+        {'path': 'antena3.default.png', 'type': 'blob'}]},
+        'utf8snp.index': b'bbc one=bbcone\nbbc one hd=bbcone\n',
+        'gitlab.com': [{'name': '1.bluemovie.de_color.svg', 'type': 'blob'},
+                       {'name': '1.bluemovie.de_blackwhite.svg', 'type': 'blob'}]})
+    assert picons.find({'id': 'BBCOne.uk', 'name': 'BBC One'}, ctx) == [picons.RAW + 'logos/bbcone.default.svg']
+    assert picons.find({'id': 'Antena3.es', 'name': 'Antena 3'}, ctx) == [picons.RAW + 'logos/antena3.default.png']
+    assert picons.find({'id': 'Nothing.es', 'name': 'Nothing'}, ctx) == []
+    assert xmltvse.keys_of('1.bluemovie.de') == ('de', {'1bluemovie', 'bluemovie1'})
+    assert xmltvse.find({'id': 'BlueMovie1.de', 'name': 'Blue Movie 1'}, ctx) == \
+        [xmltvse.RAW + '1.bluemovie.de_color.svg']
+    assert xmltvse.find({'id': 'BlueMovie1.at', 'name': 'Blue Movie 1'}, ctx) == []    # another country
+
+
+def test_collect_asks_the_costly_sources_for_missing_channels_only(tmp_path, monkeypatch):
+    from worldwide_tv_logos import sources
+    asked = []
+    fake = tuple(sources.Source(s.name, s.rank, s.asked, lambda u, c, n=s.name: asked.append(n) or [f'https://{n}/x.svg'])
+                 for s in sources.SOURCES)
+    monkeypatch.setattr(sources, 'SOURCES', fake)
+    ctx = _ctx(tmp_path, {}, have={'TF1.fr'})
+    sources.collect({'id': 'TF1.fr', 'name': 'TF1'}, ctx)
+    assert set(asked) == {'wikidata', 'iptv-org', 'iptv-epg', 'picons', 'xmltv-se'}      # has a logo: cheap ones
+    asked.clear()
+    found = sources.collect({'id': 'M6.fr', 'name': 'M6'}, ctx)
+    assert {'wikipedia', 'commons'} <= set(asked) and 'website' not in asked
+    assert found[0] == ('wikidata', 'https://wikidata/x.svg')
+    asked.clear()
+    ctx.deep = True
+    sources.collect({'id': 'TF1.fr', 'name': 'TF1'}, ctx)
+    assert set(asked) == {s.name for s in fake}

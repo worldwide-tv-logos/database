@@ -48,7 +48,9 @@ Static files, no key, updated every night. Details and examples: [API page](http
 | Contributors | logo requests through the [issue forms](../../issues/new/choose) |
 | [iptv-org](https://github.com/iptv-org/database) | the logos listed with each channel |
 | [iptv-epg](https://iptv-epg.org) | the logos of its TV guides, by country (with their permission) |
-| [Wikidata](https://www.wikidata.org) / Wikimedia Commons | official logos with their dates (old ones are refused) |
+| [Wikidata](https://www.wikidata.org) / Wikimedia Commons | official logos with their dates (old ones are refused), and Commons files named after the channel |
+| Wikipedia | the logo of the channel's article, in the country's languages then English (many are hosted by one Wikipedia only) |
+| [picons](https://github.com/picons/picons), [xmltv.se](https://gitlab.com/xmltv-se/open-source/channel-logos) | collections of channel logos, matched by name |
 | The channel's own website | its current logo |
 
 Every candidate goes through the same preparation and checks; the best one is kept (SVG first, then the largest),

@@ -73,8 +73,9 @@ old branding and is never proposed. The website of the channel is the best proof
 ## Autonomous work
 
 - Look at **every** logo you are responsible for (contact sheets), never a sample. Say how many you looked at.
-- **Confirm on the web** every logo that does not come from Wikidata or from the channel's own website (iptv-epg,
-  image hosts such as imgur or ibb, app stores, other sites): open the channel's website (iptv-org field
+- **Confirm on the web** every logo that does not come from Wikidata, from the channel's Wikipedia article or from
+  the channel's own website (iptv-org, iptv-epg, picons, xmltv-se, a Commons file found by name, image hosts such as
+  imgur or ibb, app stores, other sites): open the channel's website (iptv-org field
   `website`, or found with a web search) or search for its current logo, and compare. A logo you could not confirm
   as the current one is rejected. A clear sheet is not a proof: a logo can be clean and outdated.
 - **The best proof** is `uv run logos seen-on <page> <logo>` (`<logo>`: the request's URL or `data:image/...`, a
@@ -84,8 +85,10 @@ old branding and is never proposed. The website of the channel is the best proof
 - In your report, give for every kept logo from such a source the page that confirmed it (one short line each),
   so that anyone can check your decisions.
 - Prefer, in this order: the logo on the channel's own website or press kit, a current Wikidata/Wikimedia Commons
-  logo (SVG), then iptv-org and iptv-epg. iptv-epg logos are often older brandings or small bitmaps: check that
-  they are current. A group or corporate logo (e.g. "Radio y Televisión") is not the logo of
+  logo (SVG), the logo of the channel's Wikipedia article, then iptv-org, iptv-epg, picons and xmltv-se (collections
+  matched by name: check that it is this channel, not a namesake of another country). iptv-epg and picons logos are
+  often older brandings or small bitmaps: check that they are current. The Source column of a harvest says where each
+  logo comes from (sources listed in `worldwide_tv_logos/sources/__init__.py`). A group or corporate logo (e.g. "Radio y Televisión") is not the logo of
   one of its channels.
 - Editions (iptv-org feeds such as `France3.fr@Alsace`) are harvested too. An edition gets its own logo only when
   it differs from its channel's (regional logos); quality and timeshift versions (HD, 4K, +1) never get one: they use the channel logo.
