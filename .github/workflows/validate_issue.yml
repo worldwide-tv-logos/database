@@ -14,7 +14,8 @@ jobs:
   validate:
     if: |
       contains(join(github.event.issue.labels.*.name, ','), 'logos:') ||
-      contains(join(github.event.issue.labels.*.name, ','), 'aliases:')
+      contains(join(github.event.issue.labels.*.name, ','), 'aliases:') ||
+      contains(join(github.event.issue.labels.*.name, ','), 'channels:')
     runs-on: ubuntu-latest
     env:
       HAS_CLAUDE: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN != '' }}
@@ -87,8 +88,8 @@ jobs:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           prompt: |
             Repository ${{ github.repository }}, issue #${{ github.event.issue.number }}: a request that passed the
-            automatic checks. Review it following CLAUDE.md ("Reviewing a logo", "Requests made by people" or
-            "Reviewing other requests"): a request made by a person is approved unless you find a concrete reason
+            automatic checks. Review it following CLAUDE.md ("Reviewing a logo", "Requests made by people",
+            "Reviewing a channel request" or "Reviewing other requests"): a request made by a person is approved unless you find a concrete reason
             against it; a logo you could not confirm on the web is approved, saying what you could not check.
             Read the request with `gh issue view ${{ github.event.issue.number }} --json title,body,author,authorAssociation`. For a logo, the preview is
             temp/preview/sheet-01.png (proposed logo, and the current one for an edit), on dark and light tiles.
@@ -109,7 +110,7 @@ jobs:
           claude_args: |
             --permission-mode default
             --max-turns 30
-            --allowedTools "Read,WebFetch,WebSearch,Bash(uv run logos seen-on:*),Bash(gh issue view:*),Bash(gh issue comment:*),Bash(gh issue edit:*),Bash(gh issue close:*),Bash(uv run logos find:*)"
+            --allowedTools "Read,WebFetch,WebSearch,Bash(uv run logos seen-on:*),Bash(gh issue view:*),Bash(gh issue comment:*),Bash(gh issue edit:*),Bash(gh issue close:*),Bash(uv run logos find:*),Bash(uv run logos channel:*)"
       - name: a logo wanted -> Claude looks for it
         if: success() && env.HAS_CLAUDE == 'true' && contains(github.event.issue.labels.*.name, 'logos:request')
         uses: anthropics/claude-code-action@v1

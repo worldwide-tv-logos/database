@@ -115,6 +115,20 @@ old branding and is never proposed. The website of the channel is the best proof
 - You only change data (`data/`, `logos/`, `sources/`), through the commands above. Code, workflows and these
   instructions are changed by maintainers only, in pull requests they review.
 
+## Reviewing a channel request (`channels:add`, `channels:edit`)
+
+The bot has already checked the format, the country code, the IDs and duplicates by name in the country. Check:
+
+- **It exists and is a TV channel**: its website (or another reliable page) shows a channel of this name broadcast
+  in this country; not a programme, a streaming catalogue section, a radio, or a channel listed here under another
+  name (`uv run logos channel <slug or name>`; compare with the channels of the country on the website).
+- **An edition** (*Main channel* given) is a regional or market version of that channel, with the same programmes
+  most of the day; a different channel of the same group is not an edition.
+- **An edit** is backed by its reason (a renamed or closed channel shown on its website or in the news). A rename is
+  an edit of the same channel, never a new one.
+- Approve when these hold, even when you could not open every page (say what you could not check); refuse only for a
+  concrete reason, saying it.
+
 ## Reviewing other requests
 
 - `logos:remove`: approve when the reason is checkable and true (wrong channel, outdated branding, poor quality).

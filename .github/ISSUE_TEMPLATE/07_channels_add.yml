@@ -1,0 +1,72 @@
+name: '📺 channels/add'
+description: Add a channel that is not on the website yet (no need for it to be in iptv-org)
+title: 'Add channel: '
+labels: ['channels:add']
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        The channel gets its own ID here (`ch_...`), then its logo can be added with the **logos/add** form, or is
+        looked for automatically. Check first that it is not already on the
+        [website](https://worldwide-tv-logos.github.io/database/countries) under another name.
+        A regional or local version of a channel already listed is an **edition**: give that channel in
+        *Main channel*.
+
+  - type: input
+    id: name
+    attributes:
+      label: Channel name
+      description: The name shown on air or on the channel's website
+      placeholder: 'France 3 Alsace'
+    validations:
+      required: true
+
+  - type: input
+    id: country
+    attributes:
+      label: Country
+      description: Two-letter code of the country it is broadcast in (`uk` for the United Kingdom)
+      placeholder: 'fr'
+    validations:
+      required: true
+
+  - type: input
+    id: website
+    attributes:
+      label: Website
+      description: The channel's own page, which shows its name (it is used to check the channel and find its logo)
+      placeholder: 'https://www.example.tv/'
+    validations:
+      required: true
+
+  - type: input
+    id: aliases
+    attributes:
+      label: Other names (optional)
+      description: Other names of the channel, separated by `;`
+      placeholder: 'F3 Alsace; France 3 Alsace HD'
+
+  - type: input
+    id: parent
+    attributes:
+      label: Main channel (optional)
+      description: For an edition only, the channel it is a version of (our ID, slug or iptv-org ID)
+      placeholder: 'ch_1r840gxdj5'
+
+  - type: input
+    id: iptv
+    attributes:
+      label: iptv-org ID (optional)
+      description: When the channel is in iptv-org, its ID there (`France3.fr`, or `France3.fr@Alsace` for an edition)
+
+  - type: input
+    id: wikidata
+    attributes:
+      label: Wikidata ID (optional)
+      placeholder: 'Q1234567'
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes (optional)

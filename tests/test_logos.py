@@ -1076,3 +1076,82 @@ def test_coming_requests_of_the_followed_countries():
                 'body': '### Channel ID (required)\n\nTF1.fr\n\n### Country\n\n_No response_\n'},
                {'title': 'Logo', 'labels': [{'name': 'logos:add'}], 'body': '### Country\n\nFR\n'}]
     assert watch.coming(issues_, {'fr'}) == ['- add (fr): [Add: Canal 13](u1)', '- edit (fr): [Edit: TF1](u3)']
+
+
+# --- requests on our registry (roadmap/04-requests.md) ---
+
+ADD_CHANNEL = """### Channel name
+
+Alsace 20 Plus
+
+### Country
+
+FR
+
+### Website
+
+https://www.alsace20.tv/
+
+### Other names (optional)
+
+A20 Plus; Alsace20+
+
+### Main channel (optional)
+
+_No response_
+
+### iptv-org ID (optional)
+
+_No response_
+
+### Wikidata ID (optional)
+
+Q42
+
+### Notes (optional)
+
+_No response_
+"""
+
+
+def test_a_channel_can_be_added_and_edited_by_a_request(db):
+    req = issues.parse(20, ['channels:add', 'approved'], ADD_CHANNEL)
+    assert (req.get('name'), req.get('country'), req.get('wikidata')) == ('Alsace 20 Plus', 'FR', 'Q42')
+    assert issues.validate(req, db) == []
+    out = issues.apply(req, db)
+    c = registry.resolve(db, 'alsace-20-plus.fr')
+    assert out == [f'{c.id}: added channel {c.id} (alsace-20-plus.fr), wikidata ID Q42']
+    assert (c.alias_list, c.website, registry.resolve(db, 'Q42').id) == (['A20 Plus', 'Alsace20+'], 'https://www.alsace20.tv/', c.id)
+    assert registry.check(db) == []
+    # the same channel again, by another of its names
+    again = issues.parse(21, ['channels:add'], ADD_CHANNEL.replace('Alsace 20 Plus', 'A20 Plus').replace('Q42', 'Q43'))
+    assert 'already this channel here' in issues.validate(again, db)[0]
+    # an edition of France 3, with its iptv-org ID already taken
+    edition = ADD_CHANNEL.replace('Alsace 20 Plus', 'France 3 Lorraine').replace('Q42', '_No response_')
+    edition = edition.replace('### Main channel (optional)\n\n_No response_', '### Main channel (optional)\n\nfrance-3.fr')
+    taken = edition.replace('### iptv-org ID (optional)\n\n_No response_', '### iptv-org ID (optional)\n\nFrance3.fr@Alsace')
+    assert 'already the channel' in issues.validate(issues.parse(22, ['channels:add'], taken), db)[0]
+    issues.apply(issues.parse(23, ['channels:add'], edition), db)
+    assert registry.resolve(db, 'france-3-lorraine.fr').parent == F3
+    bad = ADD_CHANNEL.replace('FR', 'France').replace('https://www.alsace20.tv/', 'alsace20')
+    problems = issues.validate(issues.parse(24, ['channels:add'], bad), db)
+    assert any('two-letter code' in x for x in problems) and any('web address' in x for x in problems)
+    # an edit: renamed, closed; the ID and the logo stay, iptv-org no longer overwrites it
+    ops.set_logo(db, c.id, png(800, 300), 'x')
+    edit = (f'### Channel ID\n\n{c.id}\n\n### Channel name (optional)\n\nAlsace 20 Max\n\n### Status (optional)\n\n'
+            'closed\n\n### Reason\n\nrenamed in 2026: https://www.alsace20.tv/\n')
+    req = issues.parse(25, ['channels:edit'], edit)
+    assert issues.validate(req, db) == []
+    issues.apply(req, db)
+    c = db.channels[c.id]
+    assert (c.name, c.slug, c.status, bool(c.updated)) == ('Alsace 20 Max', 'alsace-20-max.fr', 'closed', True)
+    assert (c.id, '') in db.logos
+    empty = issues.parse(26, ['channels:edit'], f'### Channel ID\n\n{c.id}\n\n### Reason\n\nx\n')
+    assert 'Nothing to change' in issues.validate(empty, db)[0]
+    loop = issues.parse(27, ['channels:edit'], f'### Channel ID\n\n{F3}\n\n### Main channel (optional)\n\n{F3}\n\n### Reason\n\nx\n')
+    assert 'its own main channel' in issues.validate(loop, db)[0]
+
+
+def test_a_logo_for_an_unknown_channel_points_to_the_channel_form(db):
+    req = issues.parse(30, ['logos:add'], BODY.replace('France3.fr', 'Some Channel').replace('Alsace', ''))
+    assert 'channels/add form' in issues.validate(req, db, downloader=lambda u: png(1000, 400))[0]

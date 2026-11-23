@@ -76,7 +76,11 @@ const panelOpen = computed({
             class="flex max-w-md flex-col gap-2"
           >
             <span>{{ withLogo }} of {{ onAir.length }} channels on air have a logo. Missing one? Open a channel and use
-              Add logo.</span>
+              Add logo. A channel not listed? <ULink
+                :to="forms.channelAdd(cc)"
+                target="_blank"
+                class="text-primary"
+              >Add it</ULink>.</span>
             <UProgress
               :model-value="share"
               size="sm"
