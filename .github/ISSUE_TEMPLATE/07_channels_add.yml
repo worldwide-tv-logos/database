@@ -51,7 +51,7 @@ body:
     id: parent
     attributes:
       label: Main channel (optional)
-      description: For an edition only, the channel it is a version of: its ID here (`ch_...`, shown on its page of the website)
+      description: 'For an edition only, the channel it is a version of: its ID here (`ch_...`, shown on its page of the website)'
       placeholder: 'ch_1r840gxdj5'
 
   - type: input
