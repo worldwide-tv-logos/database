@@ -21,6 +21,8 @@ jobs:
         run: |
           uv run logos update
           echo "processed=$(cat temp/processed.txt)" >> "$GITHUB_OUTPUT"
+      - name: register new channels and logos in our registry (data/channels.csv; adds only)
+        run: uv run logos channels-init
       - run: uv run logos validate
       - run: uv run logos export
       - name: commit

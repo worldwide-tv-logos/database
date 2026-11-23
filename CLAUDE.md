@@ -65,6 +65,7 @@ from a harvest. Check the same three points, then:
 | `set <logo id> <url>` | add or replace a logo (same preparation and checks as a request) |
 | `reject <channel id> --base ../base --reason "..."` | refuse a logo of a harvest: back to the logo of main, URL never proposed again |
 | `move <old id> <new id>` / `remove <logo id>` | follow iptv-org (renamed channel) / remove a wrong logo |
+| `channel <ref>` / `channel-add` / `channel-edit` / `channel-map` | our channel registry (`data/channels.csv`): `ch_` IDs that never change, iptv-org and Wikidata IDs mapped; see roadmap/ |
 | `verdict ready\|hold "<report>"` | your decision for the workflow: `ready` is merged automatically, `hold` (something broken) waits for a maintainer |
 
 Wikidata gives dates: a logo with an end date, or whose file name gives a period already over ("2011-2017"), is an
