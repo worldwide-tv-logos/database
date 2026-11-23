@@ -94,6 +94,20 @@ iptv-org (every country in about 8 weeks). Replacements proved by the channel we
 the other cases (`logos set` the guide's logo when it is the current one, `logos dismiss` it otherwise, with the page
 that proved it). One pull request per country (branch `epg/<cc>`), merged when Claude says it is ready.
 
+## site-check
+
+Thursday 04:00 UTC: `logos site-check --country <cc>` for every followed country, a weekly slice of 150 current
+logos. Each channel's website is found and confirmed (`sites.py`); when our logo is not on it (read plainly, then
+rendered by a headless browser) and the website shows other logos, the case is listed (`summary.md`, `sites-NN.png`:
+ours, then each website logo, next to the top of the website). Claude applies a newer logo (`logos set`) or
+dismisses it (`logos dismiss`); one pull request per country (branch `site/<cc>`).
+
+## health
+
+Every day 08:30 UTC, without Claude: a workflow whose last run on main failed, a pull request labelled
+`needs:maintainer` or opened by the bot more than seven days ago, an issue labelled `needs:maintainer`: listed in
+one issue labelled `health` (opened, or updated), closed when all is clear (`.github/scripts/health.py`).
+
 ## bulk
 
 By hand only: `logos bulk` for every country of iptv-org (or the countries given), four at a time, one commit per

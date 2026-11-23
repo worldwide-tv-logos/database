@@ -872,3 +872,14 @@ def test_silhouette_tells_the_same_logo_shifted_from_another_one():
     assert image.silhouette(logo('ceuta tv'), logo('ceuta tv', 3)) > 0.9
     assert image.silhouette(logo('ceuta tv'), logo('mar tv', 0)) < image.silhouette(logo('ceuta tv'), logo('ceuta tv', 3))
     assert image.silhouette(logo('ceuta tv'), Image.new('RGBA', (100, 300), (0, 0, 0, 255))) == 0.0   # proportions
+
+
+def test_site_check_slices_and_compares_logos():
+    from worldwide_tv_logos.harvest import sitecheck
+    assert sitecheck.weekly_slice(list(range(10)), 1, 4) == [4, 5, 6, 7]
+    assert sitecheck.weekly_slice(list(range(10)), 2, 4) == [8, 9, 0, 1]
+    a = png(800, 300, (200, 0, 0, 255))
+    b = Image.new('RGBA', (800, 300), (0, 0, 0, 0))
+    ImageDraw = __import__('PIL.ImageDraw', fromlist=['ImageDraw'])
+    ImageDraw.Draw(b).ellipse((0, 0, 300, 300), fill=(0, 0, 200, 255))
+    assert sitecheck.same_logo(a, a) and not sitecheck.same_logo(a, _png(b))

@@ -459,6 +459,22 @@ def cmd_epg_check(args, db: Database) -> int:
     return 0
 
 
+def cmd_site_check(args, db: Database) -> int:
+    """Current logos looked for on their channel's website, a weekly slice; those absent from it, while the website
+    shows another logo, are listed for review (see harvest.sitecheck)."""
+    import datetime
+    import shutil
+
+    from worldwide_tv_logos.harvest import sitecheck
+    iptv = iptvorg.load(db.root)
+    week = datetime.date.today().isocalendar()[1] if args.offset is None else args.offset
+    for cc in args.country:
+        out = db.root / 'temp' / 'site-check' / cc.lower()
+        shutil.rmtree(out, ignore_errors=True)
+        sitecheck.site_check(db, iptv, cc.lower(), out, size=args.size, week=week, review=args.review)
+    return 0
+
+
 def cmd_dismiss(args, db: Database) -> int:
     """Never propose this logo URL again for this channel (data/rejected.csv): a guide logo kept out after review."""
     from datetime import date
@@ -854,6 +870,12 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument('--country', nargs='+', required=True)
     p.add_argument('--review', type=int, default=15, help='cases listed for review at most, per country')
     p.set_defaults(func=cmd_epg_check)
+    p = sub.add_parser('site-check', help="current logos looked for on their channel's website (newer branding?)")
+    p.add_argument('--country', nargs='+', required=True)
+    p.add_argument('--size', type=int, default=150, help='logos checked per country (a different slice every week)')
+    p.add_argument('--review', type=int, default=20, help='cases listed for review at most, per country')
+    p.add_argument('--offset', type=int, help='slice number (default: the week of the year)')
+    p.set_defaults(func=cmd_site_check)
     p = sub.add_parser('dismiss', help='never propose this logo URL again for this channel (data/rejected.csv)')
     p.add_argument('id')
     p.add_argument('url')
