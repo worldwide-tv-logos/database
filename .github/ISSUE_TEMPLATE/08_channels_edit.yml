@@ -41,7 +41,7 @@ body:
     id: parent
     attributes:
       label: Main channel (optional)
-      description: For an edition, the channel it is a version of: its ID here (`ch_...`, shown on its page of the website)
+      description: 'For an edition, the channel it is a version of: its ID here (`ch_...`, shown on its page of the website)'
 
   - type: dropdown
     id: status
