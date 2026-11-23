@@ -96,11 +96,13 @@ export function searchChannels(index: SearchRow[] | null | undefined, term: stri
 export const REPO = 'https://github.com/worldwide-tv-logos/database'
 export const SITE = 'https://worldwide-tv-logos.github.io/database/'
 
-/** JSON file of the website data, fetched in the browser (the pages are static). */
+/** JSON file of the website data, fetched in the browser (the pages are static). The build ID of the deployment is
+ * added to the address: a browser never mixes data cached from an older deployment with the current pages. */
 export function useApiFile<T>(path: MaybeRefOrGetter<string>, options: { immediate?: boolean } = {}) {
   const { app } = useRuntimeConfig()
   return useFetch<T>(() => toValue(path), {
     baseURL: app.baseURL,
+    query: { v: app.buildId },
     server: false,
     key: `api:${toValue(path)}`,
     ...options
