@@ -19,13 +19,16 @@ logo (`logos find`) and comments its URL, so that the author only has to edit th
 
 ## Changes on the iptv-org side
 
-A channel removed, closed or replaced in iptv-org after its logo was added is a **warning** of `logos validate`
-(with the new ID when iptv-org gives one), never an error: it never blocks the nightly update.
+Every night, `update` runs `logos watch-iptvorg` before `logos channels-init`: a channel renamed at iptv-org keeps
+our ID and its logo (the new iptv-org ID mapped to it, the old one kept as `iptv-org-former`), a closed one is marked
+closed, names and websites follow unless the channel was edited here. A channel removed from iptv-org is a
+**warning** of `logos validate`, never an error: it never blocks the nightly update.
 
 ## changes
 
 Every Monday at 06:00 UTC (or by hand): `logos changes` opens, updates or closes the single issue labelled
-`iptv-org:changes`, which lists these warnings with how to fix each one.
+`iptv-org:changes`: logos of channels renamed in the week, channels no longer in iptv-org, and (information only) the
+requests open at iptv-org for the followed countries.
 
 ## harvest
 
@@ -70,8 +73,9 @@ logo itself (`logos find`, `logos set`) and opens a pull request `request/<n>` t
 
 ## changes (Claude)
 
-After the Monday update of the `iptv-org:changes` issue, Claude applies what can be applied (`logos move` to the new
-ID, `logos remove` for a channel gone for good) in the pull request `iptv-org-changes`.
+After the Monday update of the `iptv-org:changes` issue, Claude checks the logo of each renamed channel (`logos find`,
+the website; `logos set` for a new branding) and removes the logo of a channel gone for good (`logos remove`), in the
+pull request `iptv-org-changes`.
 
 ## report
 

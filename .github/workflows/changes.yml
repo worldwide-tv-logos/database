@@ -1,7 +1,8 @@
 name: changes
-# Every Monday: the "iptv-org changes" issue lists the logos whose channel was removed, closed or replaced in iptv-org.
-# Claude then applies what can be applied (logo moved to the new ID, logo of a removed channel removed) in a pull
-# request, merged when it says ready and the repository variable AUTO_MERGE is not false.
+# Every Monday: the "iptv-org changes" issue lists what needs a look after changes at iptv-org (renames and closures
+# are applied every night by `update`): logos of channels renamed in the week (a new branding?), channels no longer
+# in iptv-org, and the requests open at iptv-org for the followed countries (information). Claude checks them in a
+# pull request, merged when it says ready and the repository variable AUTO_MERGE is not false.
 on:
   workflow_dispatch:
   schedule:
@@ -37,18 +38,15 @@ jobs:
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           prompt: |
-            temp/changes.md lists the logos of ${{ github.repository }} whose channel changed in iptv-org (or says
-            there is none: then stop). Follow CLAUDE.md ("Autonomous work") and handle each line:
-            - replaced by a new iptv-org ID (a rename): the channel keeps our ID and its logo. Map the new ID
-              (`uv run logos channel-map <our id> iptv-org <new iptv-org id>`), rename it if its name changed
-              (`uv run logos channel-edit <our id> --name "<new name>"`), then check with `uv run logos find <our id>`
-              that the logo is still the current one (a rebrand often comes with a new logo: apply it with
-              `uv run logos set <our id> <url>`). If the new iptv-org ID is already another channel of our registry
-              with its own logo, remove the old one (`uv run logos remove <our id>`), else move it there
-              (`uv run logos move <our id> <other id>`);
-            - no longer in iptv-org and not replaced: `uv run logos remove <id>`;
+            temp/changes.md lists the logos of ${{ github.repository }} to check after changes at iptv-org (or says
+            there is none: then stop). Renames and closures are already applied to our registry every night (a
+            renamed channel keeps its ID and its logo). Follow CLAUDE.md ("Autonomous work") and handle each line:
+            - renamed at iptv-org, check the logo: `uv run logos find <id>` and the channel website; a new branding
+              is applied with `uv run logos set <id> <url>`; the logo still current: nothing to do;
+            - no longer in iptv-org and not replaced: the channel may still exist (check its website); a channel
+              gone for good gets its logo removed (`uv run logos remove <id>`), otherwise nothing to do;
             - closed: keep the logo, nothing to do.
-            You decide yourself; a logo you cannot confirm for the new channel is removed, not kept by guess.
+            You decide yourself; a logo you cannot confirm is left as it is, and said so in the report.
             Finish with exactly one `uv run logos verdict ready "<report>"` listing what you did and why (`hold`
             only if a tool is broken).
           claude_args: |

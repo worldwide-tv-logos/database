@@ -621,7 +621,7 @@ CHANGES_LABEL = 'iptv-org:changes'
 CHANGES_TITLE = 'Changes on the iptv-org side'
 
 
-def changes_body(warnings: list[str]) -> str:
+def changes_body(warnings: list[str], coming: list[str] = ()) -> str:
     return '\n'.join([
         ('Logos whose channel changed in iptv-org since they were added (found by `logos validate`, '
         'refreshed every week by the `changes` workflow).'), '',
@@ -629,6 +629,9 @@ def changes_body(warnings: list[str]) -> str:
         '(`logos channel-map <ch_ id> iptv-org <new id>`, and `channel-edit --name` for a new name). A channel '
         'removed for good gets its logo removed; a closed channel keeps its logo.'), '',
         *[f'- [ ] {w}' for w in warnings], '',
+        *(['### Coming at iptv-org', '',
+           ('Open requests at iptv-org about channels of the followed countries: applied here once iptv-org accepts '
+           'them, nothing to do.'), '', *coming, ''] if coming else []),
         'This issue closes by itself when the list is empty.'])
 
 
@@ -678,11 +681,24 @@ def cmd_alias_remove(args, db: Database) -> int:
 
 def cmd_changes(args, db: Database) -> int:
     """Open, update or close the single "iptv-org changes" issue from the warnings of `validate`."""
+    from worldwide_tv_logos import watch
+    iptv = iptvorg.load(db.root)
     warnings: list[str] = []
-    validate(db, iptvorg.load(db.root), warnings)
-    # a closed channel keeps its logo: nothing to do, so it is not listed (the issue can close)
-    warnings = sorted(w for w in warnings if ' closed on ' not in w)
-    body = changes_body(warnings)
+    validate(db, iptv, warnings)
+    # a closed channel keeps its logo, a rename is applied every night by the watch: nothing to do, so they are not
+    # listed (the issue can close); what the watch cannot decide is
+    warnings = sorted(w for w in warnings if ' closed on ' not in w and ' is replaced by ' not in w)
+    warnings += watch.watch(db, iptv)['decisions']            # not saved: the nightly update applies the rest
+    warnings += watch.renamed_logos(db)                         # a rename often comes with a new logo
+    coming: list[str] = []
+    try:
+        issues_ = []
+        for label in watch.ISSUE_LABELS:
+            issues_ += net.GitHub('iptv-org/database').call('GET', f'/issues?state=open&labels={label}&per_page=100')
+        coming = watch.coming(issues_, set(db.countries))
+    except Exception as exc:  # noqa: BLE001 - the coming list is information only
+        print(f'iptv-org issues unavailable ({exc})')
+    body = changes_body(warnings, coming)
     if args.dry_run:
         print(body if warnings else 'no change on the iptv-org side')
         return 0
@@ -831,6 +847,23 @@ def cmd_export(args, db: Database) -> int:
         lines += [f'| `{u["id"]}` | {u["name"]} | {u["iptv"]} |' for u in todo]
         (missing_dir / f'{cc}.md').write_text('\n'.join(lines) + '\n', encoding='utf-8', newline='\n')
         print(f'missing/{cc}.md: {len(todo)} of {len(channels)}')
+    return 0
+
+
+def cmd_watch_iptvorg(args, db: Database) -> int:
+    """What changed at iptv-org applied to the registry (renames keep their channel, closures, names), before
+    `channels-init` (see watch.py). The summary goes to temp/watch.md (the nightly commit message)."""
+    from worldwide_tv_logos import watch
+    out = watch.watch(db, iptvorg.load(db.root))
+    db.save()
+    head = (f'iptv-org watch: {out["renamed"]} renamed (same channel here), {out["closed"]} closed, '
+            f'{out["reopened"]} reopened, {out["refreshed"]} name or website updated, {out["removed"]} no longer in '
+            f'iptv-org, {len(out["decisions"])} to decide')
+    lines = [head, *out['lines'], *[f'- to decide: {d}' for d in out['decisions']]]
+    path = db.root / 'temp' / 'watch.md'
+    path.parent.mkdir(exist_ok=True)
+    path.write_text('\n'.join(lines) + '\n', encoding='utf-8')
+    print('\n'.join(lines))
     return 0
 
 
@@ -1080,6 +1113,8 @@ def main(argv: list[str] | None = None) -> int:
     p = sub.add_parser('export', help='write .api/ and missing/')
     p.add_argument('--offline', action='store_true', help='skip missing/ (needs iptv-org)')
     p.set_defaults(func=cmd_export)
+    p = sub.add_parser('watch-iptvorg', help='apply iptv-org changes to the registry (renames, closures, names)')
+    p.set_defaults(func=cmd_watch_iptvorg)
     p = sub.add_parser('migrate-ids', help='one-off (roadmap step 2): logos and their files moved to our channel IDs')
     p.set_defaults(func=cmd_migrate_ids)
     p = sub.add_parser('channels-init', help='register the iptv-org channels we need in our registry (adds only)')

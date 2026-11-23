@@ -21,7 +21,9 @@ jobs:
         run: |
           uv run logos update
           echo "processed=$(cat temp/processed.txt)" >> "$GITHUB_OUTPUT"
-      - name: register new channels and logos in our registry (data/channels.csv; adds only)
+      - name: iptv-org changes applied to our registry (renames keep their channel, closures, names)
+        run: uv run logos watch-iptvorg
+      - name: register the new channels of the followed countries in our registry (data/channels.csv; adds only)
         run: uv run logos channels-init
       - run: uv run logos validate
       - run: uv run logos export
@@ -31,7 +33,7 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data logos sources missing
           if git diff --cached --quiet; then echo "nothing to commit"; exit 0; fi
-          git commit -m "[bot] update data" -m "${{ steps.update.outputs.processed }}"
+          git commit -m "[bot] update data" -m "${{ steps.update.outputs.processed }}" -m "$(cat temp/watch.md 2>/dev/null)"
           git push
       - name: keep the scheduled workflows active (GitHub disables them after 60 days without activity)
         run: |

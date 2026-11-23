@@ -45,10 +45,12 @@ iptv-org adds it.
 
 ## Changes on the iptv-org side
 
+Every night `logos watch-iptvorg` (workflow `update`) applies what changed at iptv-org to our registry: a renamed
+channel keeps its ID and its logo, a closed one is marked closed, names and websites follow (unless edited here).
 Every Monday the `changes` workflow updates the issue labelled
-[`iptv-org:changes`](../../issues?q=is%3Aopen+label%3Aiptv-org%3Achanges): logos whose channel was removed, closed
-or replaced in iptv-org. Fix them with ordinary requests (logos/add for the new ID, logos/remove for the old one);
-the issue closes by itself when the list is empty.
+[`iptv-org:changes`](../../issues?q=is%3Aopen+label%3Aiptv-org%3Achanges): logos of channels renamed in the week (a new
+branding?), channels no longer in iptv-org, and the requests open at iptv-org for the followed countries. Claude
+checks them; the issue closes by itself when the list is empty.
 
 ## Weekly harvest pull requests
 
