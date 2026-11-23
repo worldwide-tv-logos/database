@@ -25,7 +25,7 @@ channel before giving it a logo.
 |---|---|---|---|
 | 1 | [Channel registry](01-channel-registry.md) | `data/channels.csv` and `data/external_ids.csv`, filled from iptv-org | Done |
 | 2 | [Logos on our IDs](02-logos-on-our-ids.md) | Logos stored and published under `ch_` IDs (old paths dropped) | Done |
-| 3 | [iptv-org watch](03-iptvorg-watch.md) | New, renamed and closed iptv-org channels applied to the registry every day | To do |
+| 3 | [iptv-org watch](03-iptvorg-watch.md) | New, renamed and closed iptv-org channels applied to the registry every day | Done |
 | 4 | [Requests on our registry](04-requests.md) | Anyone can add or edit a channel without iptv-org | To do |
 | 5 | [Status watch](05-status-watch.md) | Closed channels confirmed from several signals | To do |
 | 6 | [Publication](06-publication.md) | `channels.json`, `guides.json`, and logo lookup from a guide ID or a name | To do |

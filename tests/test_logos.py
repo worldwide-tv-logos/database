@@ -1012,3 +1012,67 @@ def test_registry_commands(bare):
     assert cli.main([*root, 'channel-map', 'TF1.fr', 'wikidata', 'TF1']) == 1         # malformed
     d = Database(db.root).load()
     assert registry.resolve(d, 'Q42').id == new.id and registry.resolve(d, new.id).slug == 'brand-newer.fr'
+
+
+# --- iptv-org watch (roadmap/03-iptvorg-watch.md) ---
+
+def test_watch_keeps_the_channel_through_a_rename_with_its_editions(db):
+    from worldwide_tv_logos import watch
+    ops.set_logo(db, F3, png(800, 300), 'x')
+    new = registry.add_channel(db, 'France 3 New', 'fr')                    # registered by an earlier night, empty
+    registry.map_id(db, new, 'iptv-org', 'France3New.fr', 'import')
+    iptv = IptvOrg({'France3.fr': {'id': 'France3.fr', 'name': 'France 3', 'country': 'FR',
+                                   'replaced_by': 'France3New.fr', 'closed': '2026-11-01'},
+                    'France3New.fr': {'id': 'France3New.fr', 'name': 'France 3 New', 'country': 'FR'},
+                    'TF1.fr': {'id': 'TF1.fr', 'name': 'TF1', 'country': 'FR'}},
+                   {('France3New.fr', 'Alsace'): {'name': 'Alsace'}})
+    out = watch.watch(db, iptv)
+    assert out['renamed'] == 1 and out['decisions'] == []
+    assert new.id not in db.channels                                         # absorbed: nothing of its own
+    f3 = registry.resolve(db, 'France3New.fr')
+    assert f3.id == F3 and (f3.name, f3.slug, f3.status) == ('France 3 New', 'france-3-new.fr', 'active')
+    assert registry.resolve(db, 'France3.fr').id == F3                       # the former ID still finds it
+    assert registry.iptv_id(db, F3) == 'France3New.fr'
+    assert registry.iptv_id(db, ALS) == 'France3New.fr@Alsace'                # its edition followed
+    assert (F3, '') in db.logos and registry.check(db) == []
+    assert 'France 3 New' in watch.renamed_logos(db)[0]                       # its logo to check this week
+    assert watch.watch(db, iptv)['renamed'] == 0                             # applied once
+    assert registry.init(db, iptv, ['fr'])['channels'] == 0                  # never registered again
+
+
+def test_watch_merges_into_a_successor_with_its_own_logo_and_follows_closures(db):
+    from worldwide_tv_logos import watch
+    ops.set_logo(db, TF1, png(800, 300), 'old')
+    other = registry.add_channel(db, 'TF1 Plus', 'fr')
+    registry.map_id(db, other, 'iptv-org', 'TF1Plus.fr', 'import')
+    ops.set_logo(db, other.id, png(900, 300), 'new')
+    iptv = IptvOrg({'TF1.fr': {'id': 'TF1.fr', 'name': 'TF1', 'country': 'FR', 'replaced_by': 'TF1Plus.fr'},
+                    'TF1Plus.fr': {'id': 'TF1Plus.fr', 'name': 'TF1 Plus', 'country': 'FR'},
+                    'France3.fr': {'id': 'France3.fr', 'name': 'France Trois', 'country': 'FR',
+                                   'closed': '2026-11-20', 'website': 'https://f3.fr'}}, {})
+    out = watch.watch(db, iptv)
+    assert (db.channels[TF1].status, db.channels[TF1].parent) == ('merged', other.id)
+    assert (TF1, '') in db.logos and (other.id, '') in db.logos                # each keeps its logo
+    f3 = db.channels[F3]
+    assert (f3.status, f3.name, f3.website, out['closed']) == ('closed', 'France Trois', 'https://f3.fr', 1)
+    iptv.channels['France3.fr'].pop('closed')
+    assert watch.watch(db, iptv)['reopened'] == 1 and db.channels[F3].status == 'active'
+    db.channels[F3].updated, db.channels[F3].name = '2026-11-23', 'France 3'  # edited here: left alone
+    iptv.channels['France3.fr']['closed'] = '2026-11-25'
+    watch.watch(db, iptv)
+    assert (db.channels[F3].status, db.channels[F3].name) == ('active', 'France 3')
+    gone = watch.watch(db, IptvOrg({}, {}))
+    assert gone['removed'] >= 1 and any('no longer in iptv-org' in x for x in gone['lines'])
+    assert registry.check(db) == []
+
+
+def test_coming_requests_of_the_followed_countries():
+    from worldwide_tv_logos import watch
+    issues_ = [{'title': 'Add: Canal 13', 'labels': [{'name': 'channels:add'}], 'html_url': 'u1',
+                'body': '### Channel Name\n\nCanal 13\n\n### Country\n\nFR\n\n### NSFW\n\nFALSE\n'},
+               {'title': 'Remove: Zeta 93', 'labels': [{'name': 'channels:remove'}], 'html_url': 'u2',
+                'body': '### Channel ID\n\nZeta93.pr\n\n### Reason\n\nradio\n'},
+               {'title': 'Edit: TF1', 'labels': [{'name': 'channels:edit'}], 'html_url': 'u3',
+                'body': '### Channel ID (required)\n\nTF1.fr\n\n### Country\n\n_No response_\n'},
+               {'title': 'Logo', 'labels': [{'name': 'logos:add'}], 'body': '### Country\n\nFR\n'}]
+    assert watch.coming(issues_, {'fr'}) == ['- add (fr): [Add: Canal 13](u1)', '- edit (fr): [Edit: TF1](u3)']

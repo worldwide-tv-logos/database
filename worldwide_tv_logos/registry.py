@@ -21,8 +21,11 @@ ALPHABET = '0123456789abcdefghjkmnpqrstvwxyz'                  # Crockford base3
 ID_RE = re.compile(r'^ch_[0-9abcdefghjkmnpqrstvwxyz]{10}$')
 SLUG_RE = re.compile(r'^[a-z0-9]+(-[a-z0-9]+)*\.[a-z]{2}$')
 STATUSES = ('active', 'closed', 'merged')
+FEED_ID_RE = re.compile(r'^[A-Za-z0-9]+\.[a-z]{2}@[A-Za-z0-9]+$')
 SOURCES = {'iptv-org': CHANNEL_RE,
-           'iptv-org-feed': re.compile(r'^[A-Za-z0-9]+\.[a-z]{2}@[A-Za-z0-9]+$'),
+           'iptv-org-feed': FEED_ID_RE,
+           'iptv-org-former': CHANNEL_RE,           # an ID iptv-org replaced by the current one (a rename)
+           'iptv-org-feed-former': FEED_ID_RE,
            'wikidata': re.compile(r'^Q[1-9]\d*$')}
 METHODS = ('import', 'match', 'review')
 DATE_RE = re.compile(r'^\d{4}-\d{2}-\d{2}$')
@@ -62,7 +65,8 @@ def by_external(db: Database, source: str, external_id: str) -> Channel | None:
 
 def by_logo_id(db: Database, logo_id: str) -> Channel | None:
     """The registry channel of an iptv-org channel (`France3.fr`) or edition (`France3.fr@Alsace`)."""
-    return by_external(db, 'iptv-org-feed' if '@' in logo_id else 'iptv-org', logo_id)
+    source = 'iptv-org-feed' if '@' in logo_id else 'iptv-org'
+    return by_external(db, source, logo_id) or by_external(db, f'{source}-former', logo_id)
 
 
 def resolve(db: Database, value: str) -> Channel | None:
@@ -73,7 +77,7 @@ def resolve(db: Database, value: str) -> Channel | None:
     for c in db.channels.values():
         if c.slug == value:
             return c
-    for source in ('iptv-org', 'iptv-org-feed', 'wikidata'):
+    for source in ('iptv-org', 'iptv-org-feed', 'wikidata', 'iptv-org-former', 'iptv-org-feed-former'):
         if (c := by_external(db, source, value)) is not None:
             return c
     return None

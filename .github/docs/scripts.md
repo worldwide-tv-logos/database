@@ -39,10 +39,11 @@ another family are listed in the summary ("Current logos to check") for the revi
 | `logos channel <ref>` | show a registry channel from our ID, its slug, or its iptv-org or Wikidata ID |
 | `logos channel-add <name> --country <cc> [--alias a] [--website u] [--parent ref]` | a new channel (new `ch_` ID); refused when a channel of the country has the same name (`--force`) or the country is not followed (`--any-country`) |
 | `logos channel-edit <ref> [--name] [--slug] [--alias] [--website] [--status active\|closed\|merged] [--parent]` | change a channel; its ID never changes, its slug follows the name |
-| `logos channel-map <ref> iptv-org\|iptv-org-feed\|wikidata <id> [--remove]` | map another project's ID to a channel; guide IDs are never stored |
+| `logos channel-map <ref> iptv-org\|iptv-org-feed\|iptv-org-former\|iptv-org-feed-former\|wikidata <id> [--remove]` | map another project's ID to a channel; guide IDs are never stored |
 | `logos regress-check <ref>` | fails when a logo is older (its `updated`, else `added`, date) than in `ref`: an older version would come back. Run by `check` on pull requests and by `sync.sh` |
 | `logos reprocess` | rebuild every logo from its original after a change of the image rules |
-| `logos changes [--dry-run]` | opens, updates or closes the `iptv-org:changes` issue from the warnings of `validate` |
+| `logos watch-iptvorg` | iptv-org's changes applied to the registry (`watch.py`): a rename keeps its channel (new iptv-org ID mapped, old one kept as `iptv-org-former`; an empty duplicate absorbed, one with its own logo becomes the channel ours is merged into), closures and reopenings, names and websites (unless edited here); summary in `temp/watch.md`; run every night by `update` before `channels-init` |
+| `logos changes [--dry-run]` | opens, updates or closes the `iptv-org:changes` issue: channels no longer in iptv-org (warnings of `validate`), logos of channels renamed in the week, requests open at iptv-org for the followed countries |
 
 Tests: `uv run pytest`. Style: `uv run ruff check worldwide_tv_logos tests`.
 
