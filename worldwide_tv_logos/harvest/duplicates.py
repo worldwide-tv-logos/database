@@ -8,7 +8,7 @@ import re
 
 from PIL import Image
 
-from worldwide_tv_logos import image
+from worldwide_tv_logos import image, registry
 from worldwide_tv_logos.db import SITE_BASE, Database
 from worldwide_tv_logos.harvest.candidates import Candidate
 
@@ -50,13 +50,14 @@ def brand(channel_id: str) -> str:
 
 
 def repo_drawings(db: Database) -> list[tuple[str, str, int]]:
-    """(channel, logo id, fingerprint) of every logo of the repository (main version, every country)."""
+    """(family name, channel ID, fingerprint) of every logo of the repository (main version, every country)."""
     out = []
     for x in db.logos.values():
         path = db.path(x.file)
         if not x.variant and path.is_file():
             try:
-                out.append((x.channel, x.logo_id, image.fingerprint(Image.open(path).convert('RGBA'))))
+                out.append((registry.family_name(db, x.channel), x.channel,
+                            image.fingerprint(Image.open(path).convert('RGBA'))))
             except OSError:
                 pass
     return out
@@ -80,18 +81,17 @@ def shared_drawings(cc: str, drawings: list[tuple[str, str, int]]) -> list[tuple
     return out
 
 
-def split_duplicates(kept: list[tuple[dict, Candidate]], existing: dict[str, str] | None = None,
+def split_duplicates(kept: list[tuple[dict, Candidate]], existing: dict[str, tuple[str, str]] | None = None,
                      drawings: list[tuple[str, str, int]] | None = None) -> tuple[list, list]:
     """The same image chosen for several channels (a regional channel given the national logo), already used by
-    another channel here (`existing`: origin URL -> channel), or the drawing of a channel of another family anywhere
+    another channel here (`existing`: origin URL -> (channel ID, family name)), or the drawing of a channel of another family anywhere
     in the repository (`drawings`), is a doubt: within a group only the channel with the shortest name keeps it
     (24 Horas, not 24 Horas Canarias)."""
     existing = existing or {}
     groups: list[list[tuple[dict, Candidate]]] = []
     doubts = []
     for c, cand in kept:
-        owner = existing.get(cand.url, c['id'])
-        owner_channel = owner.split('@')[0]
+        owner, owner_channel = existing.get(cand.url, (c['id'], c['channel']))
         if owner != c['id'] and (owner_channel == c['channel'] or brand(owner_channel) != brand(c['channel'])):
             doubts.append((c, owner))                    # an edition given its channel's file, or another brand's
             continue
@@ -140,7 +140,7 @@ def same_image(c: dict, cand: Candidate, other: dict, other_cand: Candidate) -> 
 
 
 def logo_url(logo_id: str) -> str:
-    return f'{SITE_BASE}logos/{logo_id.split("@")[0].rsplit(".", 1)[-1]}/{logo_id}.png'
+    return f'{SITE_BASE}logos/{logo_id}.png'
 
 
 def brand_differences(kept: list[tuple[dict, Candidate]], drawings: list[tuple[str, str, int]]) -> list[tuple[str, list[str]]]:

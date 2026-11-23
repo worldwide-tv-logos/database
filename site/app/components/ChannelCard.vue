@@ -8,7 +8,7 @@ const editions = computed(() => props.channel.feeds.length)
 
 <template>
   <UPageCard
-    :to="channelLink(channel.id)"
+    :to="channelLink(channel.id, channel.country)"
     variant="outline"
     spotlight
     :ui="{ container: 'p-2 sm:p-2 gap-y-0', header: 'mb-3 w-full', wrapper: 'px-1 pb-1 min-w-0 w-full', title: 'truncate w-full text-sm', description: 'truncate w-full font-mono text-xs' }"

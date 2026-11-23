@@ -13,7 +13,7 @@ function hash(s: string): number {
 const rows = computed(() => {
   const byChannel = new Map<string, ApiLogo>()
   for (const l of logos.value ?? []) {
-    if (l.feed) continue
+    if (l.parent) continue
     const seen = byChannel.get(l.channel)
     if (!seen || l.variant === 'white') byChannel.set(l.channel, l)
   }
@@ -44,7 +44,7 @@ const rows = computed(() => {
         <NuxtLink
           v-for="l in row"
           :key="l.channel"
-          :to="channelLink(l.channel)"
+          :to="channelLink(l.channel, l.country)"
           :aria-label="l.channel"
           class="flex h-16 w-36 shrink-0 items-center justify-center rounded-lg bg-white/[0.07] px-4 ring-1 ring-white/10 transition hover:bg-white/[0.12] hover:ring-primary/50"
         >

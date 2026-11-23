@@ -15,9 +15,9 @@ from pathlib import Path
 
 from PIL import Image
 
-from worldwide_tv_logos import image, net, seen, sites, sources, web
+from worldwide_tv_logos import image, net, registry, seen, sites, sources, web
 from worldwide_tv_logos.db import Database
-from worldwide_tv_logos.harvest.candidates import Candidate, evaluate, load_rejected, units
+from worldwide_tv_logos.harvest.candidates import Candidate, evaluate, load_rejected
 from worldwide_tv_logos.harvest.sheets import website_sheets
 from worldwide_tv_logos.iptvorg import IptvOrg
 
@@ -41,7 +41,7 @@ def site_check(db: Database, iptv: IptvOrg, cc: str, out: Path, size: int = 150,
     ctx = ctx or sources.Context.for_country(db.root, cc, log=log, ambiguous=sources.names.ambiguous_keys(iptv))
     rejected = load_rejected(db.root)
     current = {x.logo_id: x for x in db.logos.values() if not x.variant}
-    todo = weekly_slice([u for u in units(iptv, cc) if u['id'] in current], week, size)
+    todo = weekly_slice([u for u in registry.units(db, cc) if u['id'] in current], week, size)
     stats = {'checked': 0, 'on site': 0, 'no site': 0, 'unreadable': 0, 'review': 0}
     cases = []
     started = time.time()

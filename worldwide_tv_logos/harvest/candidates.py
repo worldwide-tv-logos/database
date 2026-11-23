@@ -1,9 +1,8 @@
 """A candidate logo: downloaded, prepared like a request (image.prepare), measured, ranked; the channels and
-editions of a country (units); what decides an update of a current logo."""
+editions of a country (registry.units); what decides an update of a current logo."""
 from __future__ import annotations
 
 import csv
-import re
 from dataclasses import dataclass, field
 from pathlib import Path
 
@@ -11,10 +10,7 @@ from PIL import Image
 
 from worldwide_tv_logos import image, net, sources
 from worldwide_tv_logos.db import Database
-from worldwide_tv_logos.iptvorg import IptvOrg
 from worldwide_tv_logos.sources.names import key
-
-QUALITY_FEED = re.compile(r'^(SD|HD|FHD|UHD|QHD|4K|8K|HDR|H265|HEVC|1080p?|720p?|Plus\d+)$', re.IGNORECASE)  # quality and timeshift (+1)
 
 
 @dataclass
@@ -82,28 +78,16 @@ def update_reason(logo, source: Path, best: Candidate, iptv_urls: set[str], curr
     return None
 
 
-def units(iptv: IptvOrg, cc: str) -> list[dict]:
-    """The open channels of a country and their editions (iptv-org feeds other than the main one), each as
-    {id, channel, feed, name, alt_names, website}; an edition is named after its channel ("France 3 Alsace")."""
-    out = []
-    feeds: dict[str, list[dict]] = {}
-    for (channel, fid), f in iptv.feeds.items():
-        if not f.get('is_main') and not QUALITY_FEED.match(fid):     # TF1@HD uses the logo of TF1
-            feeds.setdefault(channel, []).append(dict(f, id=fid))
-    for c in sorted(iptv.country_channels(cc), key=lambda c: c['name'].lower()):
-        out.append(dict(c, channel=c['id'], feed=''))
-        for f in sorted(feeds.get(c['id'], []), key=lambda f: f['id']):
-            name = f.get('name') or f['id']
-            out.append({'id': f'{c["id"]}@{f["id"]}', 'channel': c['id'], 'feed': f['id'],
-                        'name': name if name.lower().startswith(c['name'].lower()) else f'{c["name"]} {name}',
-                        'alt_names': [], 'website': c.get('website') or ''})
-    return out
+def iptv_key(u: dict) -> tuple[str, str]:
+    """(iptv-org channel, feed) of a unit, ('', '') when it has no iptv-org ID: the key of iptv-org's logos."""
+    channel, _, feed = (u.get('iptv') or '').partition('@')
+    return channel, feed
 
 
 def same_as_channel(db: Database, u: dict, best: Candidate, kept: list[tuple[dict, Candidate]]) -> bool:
     """The logo found for an edition is the drawing of its channel (current, or found in this run)."""
-    fps = [cand.fp for c, cand in kept if c['id'] == u['channel']]
-    logo = db.logos.get((u['channel'], '', ''))
+    fps = [cand.fp for c, cand in kept if c['id'] == u['parent']]
+    logo = db.logos.get((u['parent'], ''))
     if logo is not None and db.path(logo.file).is_file():
         fps.append(image.fingerprint(Image.open(db.path(logo.file)).convert('RGBA')))
     return any(image.same_drawing(fp, best.fp) for fp in fps)

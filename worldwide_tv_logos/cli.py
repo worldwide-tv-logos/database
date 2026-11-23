@@ -13,7 +13,7 @@ from pathlib import Path
 from PIL import Image
 
 from worldwide_tv_logos import image, iptvorg, issues, net, ops, registry, sources
-from worldwide_tv_logos.db import CHANNEL_RE, FEED_RE, VARIANTS, Database, parse_logo_id
+from worldwide_tv_logos.db import VARIANTS, Database
 
 DATE_RE = re.compile(r'^\d{4}-\d{2}-\d{2}$')
 
@@ -24,24 +24,25 @@ def _iptv(db: Database, offline: bool):
 
 def validate(db: Database, iptv, warnings: list[str] | None = None) -> list[str]:
     """Errors (blocking). Changes on the iptv-org side (channel removed, closed, replaced) go to `warnings`: they
-    must never block the nightly update."""
+    must never block the nightly update. Logos are named after our channel IDs (data/channels.csv)."""
     errors = []
     warnings = [] if warnings is None else warnings
     for logo in db.logos.values():
         where = f'data/logos.csv {logo.stem}'
-        if not CHANNEL_RE.match(logo.channel) or (logo.feed and not FEED_RE.match(logo.feed)):
-            errors.append(f'{where}: malformed iptv-org id')
+        if not registry.ID_RE.match(logo.channel):
+            errors.append(f'{where}: malformed channel ID (ch_ + 10 characters)')
             continue
         if logo.variant not in VARIANTS:
             errors.append(f'{where}: unknown variant `{logo.variant}` ({", ".join(v for v in VARIANTS if v)})')
-        if logo.variant and (logo.channel, logo.feed, '') not in db.logos:
+        if logo.variant and (logo.channel, '') not in db.logos:
             errors.append(f'{where}: variant without the logo itself')
         if not logo.origin:
             errors.append(f'{where}: origin missing')
         if not DATE_RE.match(logo.added) or (logo.updated and not DATE_RE.match(logo.updated)):
             errors.append(f'{where}: dates must be YYYY-MM-DD')
-        if iptv is not None and not logo.variant and (warn := iptv.status_warning(logo.channel, logo.feed)):
-            warnings.append(f'{where}: {warn}')
+        ident = registry.iptv_id(db, logo.channel) if iptv is not None and not logo.variant else ''
+        if ident and (warn := iptv.status_warning(*ident.partition('@')[::2])):
+            warnings.append(f'{where} ({ident}): {warn}')
         path = db.path(logo.file)
         if not path.is_file():
             errors.append(f'{where}: {logo.file} missing')
@@ -52,8 +53,7 @@ def validate(db: Database, iptv, warnings: list[str] | None = None) -> list[str]
             if img.size != (logo.width, logo.height):
                 errors.append(f'{where}: size {logo.width}x{logo.height} in the index, {img.size[0]}x{img.size[1]} on disk')
         if not logo.variant and len(db.source_files(logo)) != 1:
-            errors.append(f'{where}: exactly one original expected in sources/{logo.country}/ '
-                          f'({len(db.source_files(logo))} found)')
+            errors.append(f'{where}: exactly one original expected in sources/ ({len(db.source_files(logo))} found)')
     known = {logo.file for logo in db.logos.values()}
     for path in sorted((db.root / 'logos').rglob('*')) if (db.root / 'logos').is_dir() else []:
         rel = path.relative_to(db.root).as_posix()
@@ -64,9 +64,8 @@ def validate(db: Database, iptv, warnings: list[str] | None = None) -> list[str]
         if path.is_file() and path not in originals:
             errors.append(f'{path.relative_to(db.root).as_posix()}: original of no logo')
     for alias in db.aliases.values():
-        if (alias.channel, alias.feed, '') not in db.logos:
-            errors.append(f'data/aliases.csv {alias.source}:{alias.epg_id}: no logo for '
-                          f'{alias.channel}{"@" + alias.feed if alias.feed else ""}')
+        if (alias.channel, '') not in db.logos:
+            errors.append(f'data/aliases.csv {alias.source}:{alias.epg_id}: no logo for {alias.channel}')
     for code in db.countries:
         if not re.match(r'^[a-z]{2}$', code):
             errors.append(f'data/countries.csv: `{code}` must be a lowercase two-letter code')
@@ -86,16 +85,16 @@ def cmd_validate(args, db: Database) -> int:
 
 
 def cmd_import(args, db: Database) -> int:
-    """Bulk import from a CSV (channel,feed,origin) where origin is an https URL or a local file."""
-    iptv = _iptv(db, args.offline)
+    """Bulk import from a CSV (channel,origin[,label]) where channel is our ID (or a slug, an iptv-org ID) and origin
+    an https URL or a local file."""
     with open(args.manifest, encoding='utf-8', newline='') as fh:
         rows = list(csv.DictReader(fh))
     failed = 0
     last_remote = 0.0
     for row in rows:
-        channel, feed, origin = row['channel'].strip(), (row.get('feed') or '').strip(), row['origin'].strip()
-        label = channel + (f'@{feed}' if feed else '')
+        label, origin = row['channel'].strip(), row['origin'].strip()
         try:
+            channel = ops.channel_of(db, label).id
             if origin.startswith('https://'):
                 wait = last_remote + args.pause - time.time()
                 if wait > 0:
@@ -104,7 +103,7 @@ def cmd_import(args, db: Database) -> int:
                 last_remote = time.time()
             else:
                 data = Path(origin).read_bytes()
-            for change in ops.set_logo(db, channel, feed, data, row.get('label') or origin, iptv):
+            for change in ops.set_logo(db, channel, data, row.get('label') or origin):
                 print(f'{label}: {change}')
             db.save()
         except (ops.RequestError, net.DownloadError, OSError) as exc:
@@ -118,15 +117,15 @@ def _preview(db: Database, req) -> None:
     """temp/preview/sheet-01.png: the proposed logo (and the current one, for an edit) on dark and light tiles, for
     the review of the request (by a maintainer or by Claude)."""
     from worldwide_tv_logos import harvest
-    channel, feed, url = req.get('channel'), req.get('feed'), req.get('url')
-    label = channel + (f'@{feed}' if feed else '')
+    label, url = issues.ref(req), req.get('url')
+    c = registry.resolve(db, label)
     rows = []
     try:
         data = net.download(url)
         img = image.prepare(data)[0]
         rows.append(({'id': label, 'name': f'proposed: {label}'},
                      harvest.Candidate('request', url, data, image.is_svg(data), img.size)))
-        old = db.logos.get((channel, feed, ''))
+        old = db.logos.get((c.id, '')) if c else None
         if old is not None and len(db.source_files(old)) == 1:
             data = db.source_files(old)[0].read_bytes()
             rows.append(({'id': label, 'name': f'current: {label}'},
@@ -144,7 +143,7 @@ def cmd_issue_validate(args, db: Database) -> int:
     waiting = ''
     try:
         req = issues.parse(args.number or 0, labels, body)
-        errors = issues.validate(req, db, _iptv(db, args.offline))
+        errors = issues.validate(req, db)
         waiting = req.waiting
     except ops.RequestError as exc:
         errors = [str(exc)]
@@ -152,10 +151,10 @@ def cmd_issue_validate(args, db: Database) -> int:
     out.parent.mkdir(exist_ok=True)
     out.write_text('\n'.join(f'- {e}' for e in errors), encoding='utf-8')
     (db.root / 'temp' / 'waiting.md').write_text(
-        (f'{waiting}.\n\nThe image is fine. This request waits for the channel to be added to iptv-org '
-         '([form](https://github.com/iptv-org/database/issues/new?template=01_channels_add.yml); use exactly the '
-         'same ID). Once approved here, it is checked again every night and applied as soon as iptv-org has the '
-         'channel: nothing else to do.') if waiting and not errors else '', encoding='utf-8')
+        (f'{waiting}.\n\nThe image is fine. This request waits for the channel to be in our registry '
+         '(data/channels.csv): iptv-org channels of the followed countries are added every night. Once approved '
+         'here, it is checked again every night and applied as soon as the channel is registered: nothing else to '
+         'do.') if waiting and not errors else '', encoding='utf-8')
     if waiting and not errors:
         print(f'waiting: {waiting}')
     if not errors and req.kind in ('logos:add', 'logos:edit'):
@@ -169,19 +168,18 @@ def cmd_update(args, db: Database) -> int:
     """Apply approved issues, one by one: a faulty request is reported on its issue and skipped, never blocking
     the others."""
     gh = net.GitHub()
-    iptv = _iptv(db, args.offline)
     done, notes = [], {}
     for raw in gh.approved_issues():
         labels = [label['name'] for label in raw['labels']]
         snapshot = (dict(db.logos), dict(db.aliases))
         try:
             req = issues.parse(raw['number'], labels, raw.get('body') or '')
-            changes = issues.apply(req, db, iptv)
-        except ops.NotInIptvOrg as exc:
+            changes = issues.apply(req, db)
+        except ops.NotRegistered as exc:
             db.logos, db.aliases = snapshot
             print(f'#{raw["number"]}: waiting — {exc}')
-            if 'waiting:iptv-org' not in labels:
-                gh.add_labels(raw['number'], ['waiting:iptv-org'])
+            if 'waiting:channel' not in labels:
+                gh.add_labels(raw['number'], ['waiting:channel'])
             continue
         except ops.RequestError as exc:
             db.logos, db.aliases = snapshot
@@ -192,8 +190,8 @@ def cmd_update(args, db: Database) -> int:
             gh.add_labels(raw['number'], ['check:failed'])
             continue
         print(f'#{raw["number"]}: ' + '; '.join(changes))
-        if 'waiting:iptv-org' in labels:
-            gh.remove_label(raw['number'], 'waiting:iptv-org')
+        if 'waiting:channel' in labels:
+            gh.remove_label(raw['number'], 'waiting:channel')
         done.append(raw['number'])
         notes[raw['number']] = changes
     db.save()
@@ -232,12 +230,12 @@ def cmd_reprocess(args, db: Database) -> int:
         def pixels(im):         # compared by their pixels: PNG files of the same image differ between zlib builds
             return None if im is None else (im.size, im.convert('RGBA').tobytes())
         expected = {'': pixels(img), 'white': pixels(white)}
-        current = {v: (pixels(Image.open(db.path(db.logos[(logo.channel, logo.feed, v)].file)))
-                       if (logo.channel, logo.feed, v) in db.logos else None) for v in ('', 'white')}
+        current = {v: (pixels(Image.open(db.path(db.logos[(logo.channel, v)].file)))
+                       if (logo.channel, v) in db.logos else None) for v in ('', 'white')}
         if expected == current:
             continue
         changed += 1
-        for change in ops.set_logo(db, logo.channel, logo.feed, original, logo.origin, None):
+        for change in ops.set_logo(db, logo.channel, original, logo.origin):
             print(f'{logo.stem}: {change}')
     db.save()
     print(f'{changed} logo(s) rebuilt')
@@ -261,7 +259,9 @@ def cmd_sheet(args, db: Database) -> int:
     elif args.channels:
         stems = [x.strip() for x in args.channels.split(',') if x.strip()]
     elif args.country:
-        stems = sorted(x.logo_id for x in db.logos.values() if not x.variant and x.country == args.country.lower())
+        cc = args.country.lower()
+        stems = sorted(x.channel for x in db.logos.values()
+                       if not x.variant and x.channel in db.channels and db.channels[x.channel].country == cc)
     else:
         print('give --changed, --channels or --country')
         return 1
@@ -276,16 +276,15 @@ def cmd_sheet(args, db: Database) -> int:
 def cmd_find(args, db: Database) -> int:
     """Every candidate logo of one channel or feed, from every source, checked and ranked, on a contact sheet."""
     from worldwide_tv_logos import harvest
-    channel, feed = parse_logo_id(args.id)
-    iptv = iptvorg.load(db.root)
-    c = iptv.channels.get(channel)
+    c = _channel(db, args.id)
     if c is None:
-        print(f'`{channel}` is not in iptv-org')
         return 1
-    cc = (c.get('country') or channel.rsplit('.', 1)[-1]).lower()
-    logos = [x for x in iptvorg.load_logos(db.root) if x['channel'] == channel and (x.get('feed') or '') == feed]
-    unit = next((u for u in harvest.units(iptv, cc) if u['id'] == args.id), dict(c, channel=channel, feed=feed))
-    ctx = sources.Context.for_country(db.root, cc, iptv_logos={(channel, feed): logos}, deep=True,
+    channel, cc = c.id, c.country
+    iptv = iptvorg.load(db.root)
+    unit = registry.unit(db, c)
+    key = harvest.iptv_key(unit)
+    logos = [x for x in iptvorg.load_logos(db.root) if (x['channel'], x.get('feed') or '') == key]
+    ctx = sources.Context.for_country(db.root, cc, iptv_logos={key: logos}, deep=True,
                                       ambiguous=sources.names.ambiguous_keys(iptv),
                                       wikidata=not args.no_wikidata, epg=harvest.load_epg(db, cc, net.download, print))
     cands = [harvest.Candidate(src, url) for src, url in sources.collect(unit, ctx)]
@@ -297,13 +296,13 @@ def cmd_find(args, db: Database) -> int:
         if (channel, cand.url) in rejected:
             cand.error = 'rejected before (data/rejected.csv)'
     cands.sort(key=lambda x: x.score, reverse=True)
-    out = Path(args.out) if args.out else db.root / 'temp' / 'find' / args.id
+    out = Path(args.out) if args.out else db.root / 'temp' / 'find' / channel
     out.mkdir(parents=True, exist_ok=True)
     good = [x for x in cands if not x.error]
     tiles = []
-    current = db.logos.get((channel, feed, ''))
+    current = db.logos.get((channel, ''))
     if current is not None:
-        white = db.logos.get((channel, feed, 'white'))
+        white = db.logos.get((channel, 'white'))
         from PIL import Image
         light = Image.open(db.path(current.file)).convert('RGBA')
         tiles.append(('current logo', f'{current.width}x{current.height}  {current.origin[:60]}',
@@ -322,7 +321,7 @@ def cmd_find(args, db: Database) -> int:
         if x.error:
             print(f'   refused  {x.source:9} {x.url}  ({x.error})')
     print(f'{len(good)} usable candidate(s); sheet: ' + (', '.join(p.as_posix() for p in pages) or 'none')
-          + f'; apply one with `logos set {args.id} <url>`')
+          + f'; apply one with `logos set {channel} <url>`')
     return 0
 
 
@@ -331,9 +330,9 @@ def cmd_seen_on(args, db: Database) -> int:
     from worldwide_tv_logos import seen
     try:
         logo = args.logo
-        if logo in {x.logo_id for x in db.logos.values()}:
-            channel, feed = parse_logo_id(logo)
-            data = db.source_files(db.logos[(channel, feed, '')])[0].read_bytes()
+        c = registry.resolve(db, logo) if not logo.startswith(('https://', 'data:image/')) else None
+        if c is not None and (c.id, '') in db.logos:
+            data = db.source_files(db.logos[(c.id, '')])[0].read_bytes()
         elif logo.startswith(('https://', 'data:image/')):
             data = net.download(logo)
         else:
@@ -348,10 +347,10 @@ def cmd_seen_on(args, db: Database) -> int:
 
 def cmd_set(args, db: Database) -> int:
     """Add or replace a logo from a URL or a local file (same preparation and checks as a request)."""
-    channel, feed = parse_logo_id(args.id)
     try:
+        channel = ops.channel_of(db, args.id).id
         data = net.download(args.source) if args.source.startswith('https://') else Path(args.source).read_bytes()
-        for change in ops.set_logo(db, channel, feed, data, args.origin or args.source, iptvorg.load(db.root)):
+        for change in ops.set_logo(db, channel, data, args.origin or args.source):
             print(change)
     except (ops.RequestError, net.DownloadError, OSError) as exc:
         print(f'refused: {exc}')
@@ -361,9 +360,9 @@ def cmd_set(args, db: Database) -> int:
 
 
 def cmd_move(args, db: Database) -> int:
-    """Move the logos and aliases of a channel to its new iptv-org ID."""
+    """Move the logos and aliases of a channel to another channel of the registry (a channel registered twice)."""
     try:
-        changes = ops.move_channel(db, args.old, args.new, iptvorg.load(db.root))
+        changes = ops.move_logos(db, ops.channel_of(db, args.old).id, ops.channel_of(db, args.new).id)
     except ops.RequestError as exc:
         print(f'refused: {exc}')
         return 1
@@ -373,10 +372,9 @@ def cmd_move(args, db: Database) -> int:
 
 
 def cmd_remove(args, db: Database) -> int:
-    """Remove a logo (channel or feed, with its variant, original and aliases)."""
-    channel, feed = parse_logo_id(args.id)
+    """Remove a logo (with its variant, original and aliases)."""
     try:
-        changes = ops.remove_logo(db, channel, feed)
+        changes = ops.remove_logo(db, ops.channel_of(db, args.id).id)
     except ops.RequestError as exc:
         print(f'refused: {exc}')
         return 1
@@ -416,7 +414,7 @@ def cmd_hunt(args, db: Database) -> int:
     cc = args.country.lower()
     iptv = iptvorg.load(db.root)
     have = {x.logo_id for x in db.logos.values()}
-    ids = [u['id'] for u in harvest.units(iptv, cc)]
+    ids = [u['id'] for u in registry.units(db, cc)]
     missing = [i for i in ids if i not in have]
     followed = set(ids)
     small = [x.logo_id for x in sorted(db.logos.values(), key=lambda x: x.key)
@@ -479,14 +477,17 @@ def cmd_site_check(args, db: Database) -> int:
 def cmd_dismiss(args, db: Database) -> int:
     """Never propose this logo URL again for this channel (data/rejected.csv): a guide logo kept out after review."""
     from datetime import date
+    c = _channel(db, args.id)
+    if c is None:
+        return 1
     path = db.root / 'data' / 'rejected.csv'
     new = not path.is_file()
     with open(path, 'a', encoding='utf-8', newline='') as fh:
         w = csv.writer(fh, lineterminator='\n')
         if new:
             w.writerow(['channel', 'url', 'reason', 'date'])
-        w.writerow([args.id, args.url, args.reason or '', date.today().isoformat()])
-    print(f'{args.url} will not be proposed again for `{args.id}`')
+        w.writerow([c.id, args.url, args.reason or '', date.today().isoformat()])
+    print(f'{args.url} will not be proposed again for `{c.id}` ({c.name})')
     return 0
 
 
@@ -526,7 +527,7 @@ def cmd_harvest(args, db: Database) -> int:
     shutil.rmtree(out, ignore_errors=True)
     iptv = iptvorg.load(db.root)
     have = {x.logo_id for x in db.logos.values()}
-    ids = [u['id'] for u in harvest.units(iptv, cc)]
+    ids = [u['id'] for u in registry.units(db, cc)]
     missing = [i for i in ids if i not in have]
     present = [i for i in ids if i in have] if args.updates else []
     only = None
@@ -548,29 +549,29 @@ def cmd_reject(args, db: Database) -> int:
     branch), and its URL goes to data/rejected.csv so that it is never proposed again; with `--unconfirmed` (right
     perhaps, but no proof found), it is only removed from this pull request and proposed again at the next harvest."""
     from datetime import date
-    channel, feed = parse_logo_id(args.channel)
-    if not CHANNEL_RE.match(channel) or (feed and not FEED_RE.match(feed)):
-        print(f'`{args.channel}` is not an iptv-org channel or feed ID')
+    c = _channel(db, args.channel)
+    if c is None:
         return 1
-    logo = db.logos.get((channel, feed, ''))
+    channel = c.id
+    logo = db.logos.get((channel, ''))
     if logo is None:
         print(f'no logo for `{channel}` in this branch')
         return 1
     base = Database(Path(args.base)).load()
-    if base.logos.get((channel, feed, '')) and base.logos[(channel, feed, '')].origin == logo.origin:
+    if base.logos.get((channel, '')) and base.logos[(channel, '')].origin == logo.origin:
         print(f'`{args.channel}` is not changed by this pull request')
         return 1
-    for key in [k for k in db.logos if k[:2] == (channel, feed)]:
+    for key in [k for k in db.logos if k[0] == channel]:
         ops.remove_files(db, db.logos.pop(key))
     for key, old in base.logos.items():
-        if key[:2] == (channel, feed):
+        if key[0] == channel:
             db.logos[key] = old
             for rel in [old.file] + [p.relative_to(base.root).as_posix() for p in base.source_files(old)]:
                 target = db.path(rel)
                 target.parent.mkdir(parents=True, exist_ok=True)
                 target.write_bytes(base.path(rel).read_bytes())
     for key, alias in list(db.aliases.items()):         # a new logo refused: its guide aliases go with it
-        if (alias.channel, alias.feed, '') not in db.logos:
+        if (alias.channel, '') not in db.logos:
             del db.aliases[key]
     db.save()
     if args.unconfirmed:
@@ -582,7 +583,7 @@ def cmd_reject(args, db: Database) -> int:
         w = csv.writer(fh, lineterminator='\n')
         if new:
             w.writerow(['channel', 'url', 'reason', 'date'])
-        w.writerow([args.channel, logo.origin, args.reason or '', date.today().isoformat()])
+        w.writerow([channel, logo.origin, args.reason or '', date.today().isoformat()])
     print(f'rejected {logo.origin} for `{args.channel}`')
     return 0
 
@@ -595,7 +596,9 @@ def cmd_unreject(args, db: Database) -> int:
     path = db.root / 'data' / 'rejected.csv'
     with open(path, encoding='utf-8', newline='') as fh:
         rows = list(csv.DictReader(fh))
-    keep = [r for r in rows if not ((not args.channel or r['channel'] == args.channel)
+    wanted = (registry.resolve(db, args.channel).id if registry.resolve(db, args.channel) else args.channel) \
+        if args.channel else ''
+    keep = [r for r in rows if not ((not wanted or r['channel'] == wanted)
                                     and (not args.date or r['date'] == args.date)
                                     and args.reason_contains.lower() in r['reason'].lower())]
     with open(path, 'w', encoding='utf-8', newline='') as fh:
@@ -606,11 +609,12 @@ def cmd_unreject(args, db: Database) -> int:
     return 0
 
 
-def logo_record(x) -> dict:
-    """One entry of logos.json: the fields of iptv-org's logos.json (drop-in), then ours."""
-    return {'channel': x.channel, 'feed': x.feed or None, 'in_use': True, 'tags': [x.variant] if x.variant else [],
-            'width': x.width, 'height': x.height, 'format': 'PNG', 'url': x.url,
-            'country': x.country, 'variant': x.variant or None, 'updated': x.updated or x.added}
+def logo_record(db: Database, x) -> dict:
+    """One entry of logos.json: our channel ID, its slug and iptv-org ID, then the image."""
+    c = db.channels.get(x.channel)
+    return {'channel': x.channel, 'slug': c.slug if c else None, 'iptv': registry.iptv_id(db, x.channel) or None,
+            'country': c.country if c else None, 'parent': (c.parent or None) if c and c.status != 'merged' else None, 'variant': x.variant or None, 'width': x.width,
+            'height': x.height, 'format': 'PNG', 'url': x.url, 'updated': x.updated or x.added}
 
 
 CHANGES_LABEL = 'iptv-org:changes'
@@ -621,9 +625,9 @@ def changes_body(warnings: list[str]) -> str:
     return '\n'.join([
         ('Logos whose channel changed in iptv-org since they were added (found by `logos validate`, '
         'refreshed every week by the `changes` workflow).'), '',
-        ('To fix one: a replaced channel gets its logo moved to the new ID (open a logos/add request for the new '
-        'ID with the same image, then a logos/remove request for the old one); a channel removed for good gets '
-        'its logo removed; a closed channel can keep its logo.'), '',
+        ('To fix one: a replaced or renamed channel keeps its ID and its logo; map its new iptv-org ID '
+        '(`logos channel-map <ch_ id> iptv-org <new id>`, and `channel-edit --name` for a new name). A channel '
+        'removed for good gets its logo removed; a closed channel keeps its logo.'), '',
         *[f'- [ ] {w}' for w in warnings], '',
         'This issue closes by itself when the list is empty.'])
 
@@ -634,16 +638,15 @@ def cmd_guide_aliases(args, db: Database) -> int:
     (temp/harvest/<cc>/summary.md) when there is one, for the review."""
     from worldwide_tv_logos import harvest
     cc = args.country.lower()
-    iptv = iptvorg.load(db.root)
     epg = harvest.load_epg(db, cc, net.download, print)
     if epg is None:
         return 0
     source = f'iptv-epg-{cc}'
-    known = {(a.channel, a.feed) for a in db.aliases.values() if a.source == source}
+    known = {a.channel for a in db.aliases.values() if a.source == source}
     taken = {a.epg_id for a in db.aliases.values() if a.source == source}
     found: dict[str, list[dict]] = {}
-    for u in harvest.units(iptv, cc):
-        if (u['channel'], u['feed']) in known:
+    for u in registry.units(db, cc):
+        if u['id'] in known:
             continue
         epg_id = epg.match(u, harvest.channel_keys(u))
         if epg_id and epg_id not in taken:
@@ -651,8 +654,8 @@ def cmd_guide_aliases(args, db: Database) -> int:
     added = []
     for epg_id, us in sorted(found.items()):
         u = us[0]
-        if len(us) == 1 and (u['channel'], u['feed'], '') in db.logos:   # unambiguous, and an alias needs a logo
-            ops.set_alias(db, epg_id, source, u['channel'], u['feed'], iptv)
+        if len(us) == 1 and (u['id'], '') in db.logos:   # unambiguous, and an alias needs a logo
+            ops.set_alias(db, epg_id, source, u['id'])
             added.append((epg_id, u))
     db.save()
     print(f'{len(added)} alias(es) added from the iptv-epg guide of `{cc}`')
@@ -797,9 +800,9 @@ def cmd_export(args, db: Database) -> int:
     and `missing/<cc>.md` for the countries of data/countries.csv."""
     api = db.root / '.api'
     api.mkdir(exist_ok=True)
-    logos = [logo_record(x) for x in sorted(db.logos.values(), key=lambda r: r.key)]
+    logos = [logo_record(db, x) for x in sorted(db.logos.values(), key=lambda r: r.key)]
     (api / 'logos.json').write_text(json.dumps(logos, ensure_ascii=False), encoding='utf-8')
-    aliases = [{'epg_id': a.epg_id, 'source': a.source, 'channel': a.channel, 'feed': a.feed or None}
+    aliases = [{'epg_id': a.epg_id, 'source': a.source, 'channel': a.channel}
                for a in sorted(db.aliases.values(), key=lambda r: r.key)]
     (api / 'aliases.json').write_text(json.dumps(aliases, ensure_ascii=False), encoding='utf-8')
     if (db.root / 'logos').is_dir():                       # the images themselves, served by GitHub Pages
@@ -818,16 +821,24 @@ def cmd_export(args, db: Database) -> int:
     missing_dir = db.root / 'missing'
     missing_dir.mkdir(exist_ok=True)
     for cc, name in sorted(db.countries.items()):
-        channels = sorted(iptv.country_channels(cc), key=lambda c: c['name'].lower())
-        todo = [c for c in channels if c['id'] not in have]
+        channels = [u for u in registry.units(db, cc) if not u['parent']]
+        todo = [u for u in channels if u['id'] not in have]
         lines = [f'# {name}: channels without a logo', '',
-                 (f'{len(channels) - len(todo)} of {len(channels)} iptv-org channels have a logo here. '
-                  'To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).'), '',
-                 '| Channel ID | Name |', '|---|---|']
-        lines += [f'| `{c["id"]}` | {c["name"]} |' for c in todo]
+                 (f'{len(channels) - len(todo)} of {len(channels)} channels have a logo here (editions not counted: '
+                  'they use their channel\'s logo). To add one, use the '
+                  '[logo form](../../../issues/new?template=01_logos_add.yml).'), '',
+                 '| Channel ID | Name | iptv-org ID |', '|---|---|---|']
+        lines += [f'| `{u["id"]}` | {u["name"]} | {u["iptv"]} |' for u in todo]
         (missing_dir / f'{cc}.md').write_text('\n'.join(lines) + '\n', encoding='utf-8', newline='\n')
         print(f'missing/{cc}.md: {len(todo)} of {len(channels)}')
     return 0
+
+
+def cmd_migrate_ids(args, db: Database) -> int:
+    from worldwide_tv_logos import migrate
+    stats = migrate.migrate(db)
+    print(', '.join(f'{k} {v}' for k, v in stats.items()))
+    return 1 if stats['unknown'] else 0
 
 
 def cmd_channels_init(args, db: Database) -> int:
@@ -1015,7 +1026,7 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument('source', help='https:// URL or local file')
     p.add_argument('--origin', help='origin to record (default: the source)')
     p.set_defaults(func=cmd_set)
-    p = sub.add_parser('move', help='move the logos and aliases of a channel to its new iptv-org ID')
+    p = sub.add_parser('move', help='move the logos and aliases of a channel to another one (a channel registered twice)')
     p.add_argument('old')
     p.add_argument('new')
     p.set_defaults(func=cmd_move)
@@ -1069,6 +1080,8 @@ def main(argv: list[str] | None = None) -> int:
     p = sub.add_parser('export', help='write .api/ and missing/')
     p.add_argument('--offline', action='store_true', help='skip missing/ (needs iptv-org)')
     p.set_defaults(func=cmd_export)
+    p = sub.add_parser('migrate-ids', help='one-off (roadmap step 2): logos and their files moved to our channel IDs')
+    p.set_defaults(func=cmd_migrate_ids)
     p = sub.add_parser('channels-init', help='register the iptv-org channels we need in our registry (adds only)')
     p.set_defaults(func=cmd_channels_init)
     p = sub.add_parser('channel', help='show a channel of the registry (our ID, slug, iptv-org or Wikidata ID)')

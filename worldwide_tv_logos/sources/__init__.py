@@ -1,5 +1,5 @@
 """Where candidate logos come from. One module per source, each with `find(unit, ctx) -> list[str]` (logo URLs, best
-first; `unit`: a channel or an edition, see harvest.units; `ctx`: context.Context). `collect` asks them in the order
+first; `unit`: a channel or an edition, see registry.unit; `ctx`: context.Context). `collect` asks them in the order
 of SOURCES: `logos find`, harvests and hunts all go through it, so a source added here is used everywhere.
 
 | Source | Rank | Asked | What |

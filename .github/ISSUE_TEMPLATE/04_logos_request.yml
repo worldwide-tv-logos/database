@@ -14,16 +14,10 @@ body:
     id: channel_id
     attributes:
       label: Channel ID
-      description: iptv-org ID of the channel ([search](https://iptv-org.github.io/))
-      placeholder: 'France3.fr'
+      description: our channel ID (`ch_...`, shown on the [website](https://worldwide-tv-logos.github.io/database/)), its slug (`france-3-alsace.fr`) or its iptv-org ID (`France3.fr@Alsace`)
+      placeholder: 'ch_1r840gxdj5'
     validations:
       required: true
-
-  - type: input
-    id: feed_id
-    attributes:
-      label: Feed ID (optional)
-      placeholder: 'Alsace'
 
   - type: textarea
     id: notes

@@ -67,13 +67,14 @@ class EpgIndex:
         for c in channels:
             for k in {key(c['id'].rsplit('.', 1)[0]), *(key(n) for n in c['names'])} - {''}:
                 self.by_key.setdefault(k, []).append(c)
-        self.aliases = {(a.channel, a.feed): a.epg_id for a in aliases if a.source.startswith('iptv-epg')}
+        self.aliases = {a.channel: a.epg_id for a in aliases if a.source.startswith('iptv-epg')}
 
     def logos(self, unit: dict, keys: set[str]) -> list[str]:
         found = []
-        epg_id = self.aliases.get((unit.get('channel', unit['id']), unit.get('feed', '')))
+        epg_id = self.aliases.get(unit['id'])
+        same = unit.get('iptv', unit['id'])
         for c in ([self.by_id[epg_id]] if epg_id in self.by_id else []) + \
-                ([self.by_id[unit['id']]] if unit['id'] in self.by_id else []) + \
+                ([self.by_id[same]] if same in self.by_id else []) + \
                 [c for k in sorted(keys) for c in self.by_key.get(k, [])]:
             if c['icon'] and c['icon'] not in found:
                 found.append(c['icon'])
@@ -82,8 +83,8 @@ class EpgIndex:
     def sure(self, unit: dict, keys: set[str]) -> dict | None:
         """The guide channel of a channel or edition when there is no doubt: its guide alias, the same ID, or the
         only guide channel with one of its names; None otherwise (no match, or several)."""
-        epg_id = self.aliases.get((unit.get('channel', unit['id']), unit.get('feed', '')))
-        for i in (epg_id, unit['id']):
+        epg_id = self.aliases.get(unit['id'])
+        for i in (epg_id, unit.get('iptv', unit['id'])):
             if i in self.by_id:
                 return self.by_id[i]
         found = {c['id'] for k in keys for c in self.by_key.get(k, [])}
@@ -96,7 +97,7 @@ class EpgIndex:
         if len(found) != 1:
             return None
         epg_id = found.pop()
-        return None if epg_id == unit['id'] else epg_id
+        return None if epg_id == unit.get('iptv', unit['id']) else epg_id
 
 
 def find(unit: dict, ctx) -> list[str]:

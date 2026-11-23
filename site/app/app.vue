@@ -10,7 +10,7 @@ const { data: files } = useLazyAsyncData('search', () => queryCollectionSearchSe
 
 useSeoMeta({
   titleTemplate: (t?: string) => t ? `${t} | ${seo?.siteName}` : seo?.siteName,
-  description: 'Clean TV channel logos from all over the world, keyed by iptv-org channel ID: transparent, trimmed, high resolution.',
+  description: 'Clean TV channel logos from all over the world, under a channel ID that never changes: transparent, trimmed, high resolution.',
   ogSiteName: seo?.siteName
 })
 
@@ -33,7 +33,7 @@ const groups = computed(() => {
         items: hits.map(([id, name, cc, n]) => ({
           label: name,
           suffix: id,
-          to: channelLink(id),
+          to: channelLink(id, cc),
           avatar: { src: flagUrl(cc), alt: cc.toUpperCase(), size: 'xs' as const },
           chip: n ? { color: 'success' as const, size: 'sm' as const } : undefined
         }))
