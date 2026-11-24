@@ -107,8 +107,9 @@ jobs:
         uses: anthropics/claude-code-action@v1
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          allowed_bots: github-actions    # mode new is started by update.yml, not by a person
           prompt: |
-            You review the weekly ${{ needs.countries.outputs.mode }} of the country `${{ matrix.cc }}` of
+            You review the ${{ needs.countries.outputs.mode }} run of the country `${{ matrix.cc }}` of
             ${{ github.repository }}, following CLAUDE.md ("Reviewing a logo" and "Autonomous work").
             The logos found are already imported in the working tree. The list is
             temp/harvest/${{ matrix.cc }}/summary.md; look at EVERY logo on the contact sheets
