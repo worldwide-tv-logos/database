@@ -7,6 +7,7 @@ on:
   schedule:
     - cron: '45 */3 * * *'
 permissions:
+  actions: write                   # publishes the website right after a merge (merge.sh)
   contents: write
   pull-requests: write
 concurrency: retry

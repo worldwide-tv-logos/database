@@ -55,7 +55,8 @@ The logos found are imported, then Claude looks at every one of them on the cont
 `.github/scripts/publish.sh` commits the data only, puts it on top of the current main without a rebase
 (`.github/scripts/sync.sh`: rows merged row by row, the change's logo files applied on top, validated, no older logo
 back), opens the pull request with Claude's report, and when Claude said `ready` labels it `review:ready` and merges
-it (`.github/scripts/merge.sh`), unless the repository variable `AUTO_MERGE` is `false`. Claude decides every logo
+it (`.github/scripts/merge.sh`, which then starts `deploy` so the website has the logos at once), unless the
+repository variable `AUTO_MERGE` is `false`. Claude decides every logo
 itself (a doubt is rejected, never published; one image found for several numbered channels of a family, such as
 Sport 1 and Sport 2, is the brand logo without the number and is kept out of all of them). One brand shares its logo across countries
 (HGTV.be and HGTVSouthAfrica.za: the name without a country or region at the end): that is never a doubt, and a logo

@@ -17,7 +17,12 @@ for attempt in 1 2 3 4 5; do
     [ "$state" != UNKNOWN ] && break
     sleep 5
   done
-  if [ "$state" = MERGEABLE ] && gh pr merge "$number" --squash --delete-branch; then echo "merged"; exit 0; fi
+  if [ "$state" = MERGEABLE ] && gh pr merge "$number" --squash --delete-branch; then
+    echo "merged"
+    # a merge by the workflow token starts no workflow: the website is published now, not at the end of the run
+    gh workflow run deploy.yml > /dev/null 2>&1 || echo "deploy not started (permission actions: write missing)"
+    exit 0
+  fi
   echo "attempt $attempt: not merged ($state), on top of main again"
   sleep $((attempt * 10))
   sync; rc=$?

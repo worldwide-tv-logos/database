@@ -21,6 +21,7 @@ on:
     - cron: '0 4 * * 0'
     - cron: '0 4 * * 3'
 permissions:
+  actions: write                   # publishes the website right after a merge (merge.sh)
   contents: write
   pull-requests: write
   id-token: write
