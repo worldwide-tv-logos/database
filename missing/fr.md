@@ -1,6 +1,6 @@
 # France: channels without a logo
 
-328 of 549 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
+327 of 601 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
 
 | Channel ID | Name | iptv-org ID |
 |---|---|---|
@@ -33,6 +33,7 @@
 | `ch_hy2x375g79` | Berbere Jeunesse | BerbereJeunesse.fr |
 | `ch_78y4qccw2b` | Berbere Music | BerbereMusic.fr |
 | `ch_mzy2ja2p4r` | Beur TV | BeurTV.fr |
+| `ch_r3qt39ex4g` | BFM Grands Reportages |  |
 | `ch_bsxnpxd1z1` | BFM TV Vertical | BFMTVVertical.fr |
 | `ch_y0fc1ckdj6` | BIP TV | BIPTV.fr |
 | `ch_nw6498xvb2` | Caillou | Caillou.fr |
@@ -60,11 +61,33 @@
 | `ch_75vkfw0y63` | Canal+ Sport 1 | CanalPlusSport1.fr |
 | `ch_q439fx69cd` | Canal+ Sport Reunion | CanalPlusSportReunion.fr |
 | `ch_3e4m1g7px3` | Canal+ Sports Myanmar | CanalPlusSportsMyanmar.fr |
+| `ch_dj2paa1c03` | CANAL+LIVE 1 |  |
+| `ch_qjs7nm0ajd` | CANAL+LIVE 10 |  |
+| `ch_ezwnbxvkd6` | CANAL+LIVE 11 |  |
+| `ch_ak4vmnejkg` | CANAL+LIVE 12 |  |
+| `ch_ax2ghx0pw7` | CANAL+LIVE 13 |  |
+| `ch_1v8fejd883` | CANAL+LIVE 14 |  |
+| `ch_msv1deevat` | CANAL+LIVE 15 |  |
+| `ch_f7f5kmcdn6` | CANAL+LIVE 16 |  |
+| `ch_tbj70w1swh` | CANAL+LIVE 17 |  |
+| `ch_wet8jbtbj2` | CANAL+LIVE 18 |  |
+| `ch_6kwksjy93t` | CANAL+LIVE 19 |  |
+| `ch_zh5pac435n` | CANAL+LIVE 2 |  |
+| `ch_w0p9x330cz` | CANAL+LIVE 3 |  |
+| `ch_rgnyrgbv0j` | CANAL+LIVE 4 |  |
+| `ch_9vetd0fdgv` | CANAL+LIVE 5 |  |
+| `ch_d9yxsrevs0` | CANAL+LIVE 6 |  |
+| `ch_e7te6kt1ey` | CANAL+LIVE 7 |  |
+| `ch_jtffqbf6ym` | CANAL+LIVE 8 |  |
+| `ch_78dcs07361` | CANAL+LIVE 9 |  |
 | `ch_xr3j6xs0wg` | Cannes Lerins TV | CannesLerinsTV.fr |
+| `ch_kjnxybr3m0` | Cartoon Network |  |
+| `ch_szmnhv7ez6` | Cartoonito |  |
 | `ch_q48wdhbsn2` | CDirect | CDirect.fr |
 | `ch_16ps4rd5dx` | Central TV | CentralTV.fr |
 | `ch_sebbc5n432` | Chasse & Peche | ChassePeche.fr |
 | `ch_yqdxybzfpz` | Cine Nanar | CineNanar.fr |
+| `ch_h1zym0mynk` | Ciné+ Club |  |
 | `ch_enzmb4x1z2` | Clique TV | CliqueTV.fr |
 | `ch_3bds95ytc0` | Cuisines | Cuisines.fr |
 | `ch_08aj4v09h1` | D5Music | D5Music.fr |
@@ -76,11 +99,40 @@
 | `ch_z5027f3t0e` | EMCI TV Europe | EMCITVEurope.fr |
 | `ch_ggt6ea4jhr` | Equidia Pro 1 | EquidiaPro1.fr |
 | `ch_ksmsxxfwbw` | Equidia Pro 2 | EquidiaPro2.fr |
+| `ch_p9zx9r0601` | Equidia Racing 1 |  |
+| `ch_4zpx9zeq6k` | Equidia Racing 2 |  |
+| `ch_yvc1ttzfvy` | Equidia Racing 3 |  |
+| `ch_ewnrbd5ph0` | Equidia Racing 4 |  |
+| `ch_4hn6xsbpw2` | Equidia Racing 5 |  |
+| `ch_5fe2h5795s` | Equidia Racing 6 |  |
+| `ch_56jpgfbpny` | Equidia Racing 7 |  |
+| `ch_3t16nyr320` | Equidia Racing 8 |  |
+| `ch_whhr358dmc` | Equidia Racing Trot |  |
 | `ch_3fy6st473a` | ESJ TV | ESJTV.fr |
 | `ch_qmp22cgg56` | Euromed TV | EuromedTV.fr |
 | `ch_r68bwym6qd` | Euronews Hungarian | EuronewsHungarian.fr |
 | `ch_93b7bwmc5a` | Euronews Russian | EuronewsRussian.fr |
 | `ch_ga1tt7fjv7` | Euronews Spanish | EuronewsSpanish.fr |
+| `ch_8sap8fvm7f` | Eurosport 360 1 |  |
+| `ch_t3gkd4nkvq` | Eurosport 360 10 |  |
+| `ch_jpff07j7ys` | Eurosport 360 11 |  |
+| `ch_87brnkbmne` | Eurosport 360 12 |  |
+| `ch_5y06mad204` | Eurosport 360 13 |  |
+| `ch_2ca0drpzjc` | Eurosport 360 14 |  |
+| `ch_8pqacf0y8f` | Eurosport 360 15 |  |
+| `ch_tqj10dzfw7` | Eurosport 360 16 |  |
+| `ch_xevrskamr0` | Eurosport 360 17 |  |
+| `ch_nnf0wwzzyr` | Eurosport 360 18 |  |
+| `ch_mbnfk3fqq6` | Eurosport 360 19 |  |
+| `ch_00m7vea5xx` | Eurosport 360 20 |  |
+| `ch_pqgrjptp96` | Eurosport 360 21 |  |
+| `ch_drzmwd05bn` | Eurosport 360 22 |  |
+| `ch_sc0na9m6ac` | Eurosport 360 23 |  |
+| `ch_zvdn5ffsnb` | Eurosport 360 24 |  |
+| `ch_heyjcc8mfj` | Eurosport 360 25 |  |
+| `ch_hqa0skth7t` | Eurosport 360 26 |  |
+| `ch_87x6nsqvvs` | Eurosport 360 27 |  |
+| `ch_6e7x5ve0ma` | Eurosport 360 28 |  |
 | `ch_3yp16efs0r` | Eurosport 360 HD 4 | Eurosport360HD4.fr |
 | `ch_wtqm0ckf1j` | Eurosport 360 HD 5 | Eurosport360HD5.fr |
 | `ch_kxb44jk17p` | Eurosport 360 HD 7 | Eurosport360HD7.fr |
@@ -192,6 +244,7 @@
 | `ch_ejdvks1zqg` | TeleAntilles | TeleAntilles.fr |
 | `ch_wy1ntsezqx` | Telesud | Telesud.fr |
 | `ch_r8fz6qak2k` | TeleToon Africa | TeleToonAfrica.fr |
+| `ch_ynsvcg4s7b` | Television Locale du Choletais | TelevisionLocaleduCholetais.fr |
 | `ch_dkvzze1rqp` | TiVi5 Monde | TiVi5Monde.fr |
 | `ch_v4v5ms3sb8` | TL7 | TL7.fr |
 | `ch_bkdbkwa0f9` | TLVA | TLVA.fr |

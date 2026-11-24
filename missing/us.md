@@ -1,6 +1,6 @@
 # United States: channels without a logo
 
-1477 of 4964 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
+1477 of 4965 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
 
 | Channel ID | Name | iptv-org ID |
 |---|---|---|
@@ -2499,6 +2499,7 @@
 | `ch_h99j5j8hcj` | RCTV3 | RCTV3.us |
 | `ch_t6881cnhra` | Real | Real.us |
 | `ch_t2xjpjwsvh` | Real Extreme | RealExtreme.us |
+| `ch_c657ktz6w6` | Real Life Network | RealLifeNetwork.us |
 | `ch_935fn3bfgm` | Real Life on Verizon | RealLifeonVerizon.us |
 | `ch_f6h1wr4pys` | Real Time Africa | RealTimeAfrica.us |
 | `ch_b12hsaphsd` | Recipe.TV | RecipeTV.us |

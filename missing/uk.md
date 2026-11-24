@@ -259,7 +259,7 @@
 | `ch_dtvyrdc1y0` | Sky Sports Premier League | SkySportsPremierLeague.uk |
 | `ch_jrxf078yf8` | Sky Sports Premier League ROI | SkySportsPremierLeagueROI.uk |
 | `ch_yry5t229fb` | Sky Sports Tennis | SkySportsTennis.uk |
-| `ch_9t0fywz830` | Sky Sports+ | SkySportsPlus.uk |
+| `ch_setzrvdkjm` | Sky Sports+ | SkySportsPlus.uk |
 | `ch_ce0195tztt` | Sky Witness | SkyWitness.uk |
 | `ch_hkwbffnn1x` | Smithsonian Channel | SmithsonianChannel.uk |
 | `ch_63zqbm9sts` | Sony Max | SonyMax.uk |
