@@ -1,14 +1,12 @@
 # Switzerland: channels without a logo
 
-71 of 179 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
+82 of 179 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
 
 | Channel ID | Name | iptv-org ID |
 |---|---|---|
 | `ch_wmq04g7t9a` | 6ter Switzerland | 6terSwitzerland.ch |
 | `ch_bbhte1m76f` | 7+ | 7Plus.ch |
-| `ch_yq703hmaq8` | Ajoie TV | AjoieTV.ch |
 | `ch_qbtt8485d8` | Alpen-Welle TV | AlpenWelleTV.ch |
-| `ch_6m0h835nkz` | Animal Planet |  |
 | `ch_2785wq8qzg` | Auftanken TV | AuftankenTV.ch |
 | `ch_4akbj558tg` | Blue Action | BlueAction.ch |
 | `ch_d8ppdv356n` | Blue City | BlueCity.ch |
@@ -58,7 +56,6 @@
 | `ch_ym67zwdx14` | Loly TV | LolyTV.ch |
 | `ch_hp3xmk9hgv` | M Le Media | MLeMedia.ch |
 | `ch_nkkcnbyk8z` | Meteonews | Meteonews.ch |
-| `ch_mcq2s4gsvp` | Musig24 TV | Musig24TV.ch |
 | `ch_remsgvhr7j` | My Cinema Europe | MyCinemaEurope.ch |
 | `ch_5ev71n2yj3` | My German TV | MyGermanTV.ch |
 | `ch_fcc348z4pf` | My German TV + | MyGermanTVPlus.ch |
@@ -72,28 +69,21 @@
 | `ch_y8x725wxj1` | MySports 8 French | MySports8French.ch |
 | `ch_51kn6h15c0` | MySports 9 French | MySports9French.ch |
 | `ch_rvvrr7nf3d` | MySports Edge |  |
-| `ch_6am3560cyw` | MySports One French | MySportsOneFrench.ch |
 | `ch_h99bb855nc` | MySports Preview |  |
 | `ch_4zbynfjsj4` | Newcomer TV | NewcomerTV.ch |
-| `ch_2z5rp73q75` | NRTV | NRTV.ch |
-| `ch_q73w5w9pr3` | QS24.tv | QS24tv.ch |
 | `ch_77h0fhgw2q` | Radio 3i | Radio3i.ch |
-| `ch_00e0s9xq19` | RADIO DISCOunt TV | RADIODISCOuntTV.ch |
 | `ch_0f1jpgqmh5` | Radio OneFive | RadioOneFive.ch |
 | `ch_tmvfrsrvcs` | Radio Pilatus TV | RadioPilatusTV.ch |
 | `ch_x737dmj7gc` | REGA-TV | REGATV.ch |
 | `ch_htx2zqqzbv` | RegioTVplus | RegioTVplus.ch |
 | `ch_5s4akjrvj7` | Rheinwelten TV | RheinweltenTV.ch |
-| `ch_54aee3v4en` | Rhone TV | RhoneTV.ch |
 | `ch_ee7bfnmy12` | Rock-Label.TV | RockLabelTV.ch |
 | `ch_qytarh0h4d` | Royal TV | RoyalTV.ch |
 | `ch_g3cerrzdpg` | rrotv | rrotv.ch |
 | `ch_wxnzef27f2` | Schaffhauser Fernsehen | SchaffhauserFernsehen.ch |
-| `ch_vaqdc5tkfz` | Shiva Live TV | ShivaLiveTV.ch |
 | `ch_2gy92w3trd` | Sivan TV | SivanTV.ch |
 | `ch_z83tk42tyd` | SKI TV | SKITV.ch |
 | `ch_ay9xs3dp4z` | Sofy TV | SofyTV.ch |
-| `ch_evfcd1c9fb` | Sudostschweiz | Sudostschweiz.ch |
 | `ch_x760ry7k11` | Swiss Sport TV | SwissSportTV.ch |
 | `ch_nr7gf0ptjw` | SwissRock.TV | SwissRockTV.ch |
 | `ch_m85ytatg23` | Syri TV | SyriTV.ch |
@@ -111,4 +101,3 @@
 | `ch_9n5z5xjh2a` | Wedo Big Stories | WedoBigStories.ch |
 | `ch_5sy5mvhxgc` | Wedo Movies Nordics | WedoMoviesNordics.ch |
 | `ch_m6v0rwe4m0` | Wedo TV Amor | WedoTVAmor.ch |
-| `ch_dfr16g92ff` | wetter.tv |  |

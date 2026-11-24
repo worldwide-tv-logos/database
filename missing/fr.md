@@ -1,6 +1,6 @@
 # France: channels without a logo
 
-327 of 631 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
+327 of 630 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
 
 | Channel ID | Name | iptv-org ID |
 |---|---|---|
@@ -113,7 +113,6 @@
 | `ch_r68bwym6qd` | Euronews Hungarian | EuronewsHungarian.fr |
 | `ch_93b7bwmc5a` | Euronews Russian | EuronewsRussian.fr |
 | `ch_ga1tt7fjv7` | Euronews Spanish | EuronewsSpanish.fr |
-| `ch_8sap8fvm7f` | Eurosport 360 1 |  |
 | `ch_t3gkd4nkvq` | Eurosport 360 10 |  |
 | `ch_jpff07j7ys` | Eurosport 360 11 |  |
 | `ch_87brnkbmne` | Eurosport 360 12 |  |
