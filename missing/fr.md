@@ -1,6 +1,6 @@
 # France: channels without a logo
 
-327 of 601 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
+327 of 631 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
 
 | Channel ID | Name | iptv-org ID |
 |---|---|---|
@@ -133,6 +133,10 @@
 | `ch_hqa0skth7t` | Eurosport 360 26 |  |
 | `ch_87x6nsqvvs` | Eurosport 360 27 |  |
 | `ch_6e7x5ve0ma` | Eurosport 360 28 |  |
+| `ch_r0njytp2y4` | Eurosport 360 29 |  |
+| `ch_rn70g8d6kv` | Eurosport 360 30 |  |
+| `ch_0z623qqj1q` | Eurosport 360 31 |  |
+| `ch_ffrjf3qmjq` | Eurosport 360 32 |  |
 | `ch_3yp16efs0r` | Eurosport 360 HD 4 | Eurosport360HD4.fr |
 | `ch_wtqm0ckf1j` | Eurosport 360 HD 5 | Eurosport360HD5.fr |
 | `ch_kxb44jk17p` | Eurosport 360 HD 7 | Eurosport360HD7.fr |
@@ -163,6 +167,7 @@
 | `ch_0p8pef2pew` | Histoire de la Television | HistoiredelaTelevision.fr |
 | `ch_axdftxen2e` | HLIVE | HLIVE.fr |
 | `ch_zf0arpkhsz` | HolyGod TV | HolyGodTV.fr |
+| `ch_age9027nsh` | Homicide TV |  |
 | `ch_2y2d3v71v3` | Horyaal 24 TV | Horyaal24TV.fr |
 | `ch_0m78gn3t0e` | Hotbird 4K1 | Hotbird4K1.fr |
 | `ch_04s1hgtvsj` | Humanity | Humanity.fr |
@@ -175,15 +180,27 @@
 | `ch_qfk6qg0msy` | Kozoom TV | KozoomTV.fr |
 | `ch_nn17hmxfns` | L'Esprit Sorcier TV | LEspritSorcierTV.fr |
 | `ch_6gjrwy5nya` | L'intelligent TV | LintelligentTV.fr |
+| `ch_zm9y5sp6v2` | L'Équipe Live Foot |  |
 | `ch_wz30hhmqp0` | La Chaine 32 | LaChaine32.fr |
 | `ch_3ka0kwpjny` | La Chaine FreeTV | LaChaineFreeTV.fr |
 | `ch_qfd2sfyhh1` | Le Figaro Live | LeFigaroLive.fr |
+| `ch_56egv4am3d` | Ligue 1+ |  |
+| `ch_z1ezw8jvhx` | Ligue 1+ 10 |  |
+| `ch_v0gep2wze1` | Ligue 1+ 2 |  |
+| `ch_1f643fbxxx` | Ligue 1+ 3 |  |
+| `ch_464pmr5fwd` | Ligue 1+ 4 |  |
+| `ch_893jcfcm74` | Ligue 1+ 5 |  |
+| `ch_jgmn7xfhg6` | Ligue 1+ 6 |  |
+| `ch_7espps7jp9` | Ligue 1+ 7 |  |
+| `ch_78rp397eab` | Ligue 1+ 8 |  |
+| `ch_gx4wvfv1sg` | Ligue 1+ 9 |  |
 | `ch_ggz3myd4pm` | Littoral FM TV | LittoralFMTV.fr |
 | `ch_d4y5f2y94d` | Loupe | Loupe.fr |
 | `ch_q8dyandbm3` | Ludikids | Ludikids.fr |
 | `ch_9qabywb8bw` | Lyon Capitale TV | LyonCapitaleTV.fr |
 | `ch_96cf30t9xk` | Melody d'Afrique | MelodydAfrique.fr |
 | `ch_5hhqhaeqs2` | Movies Central | MoviesCentral.fr |
+| `ch_4zjxanm4n9` | Museum TV |  |
 | `ch_kn4ec5ps6v` | Museum TV English | MuseumTVEnglish.fr |
 | `ch_vv1ka2wxkd` | MyZen Nature | MyZenNature.fr |
 | `ch_t2mdpm47dd` | MyZen TV 4K | MyZenTV4K.fr |
@@ -228,8 +245,20 @@
 | `ch_cavaf09hqx` | Radio Soleil des Tropiques | RadioSoleildesTropiques.fr |
 | `ch_8pxb36v0n4` | Radio Tele Silo | RadioTeleSilo.fr |
 | `ch_nzzhk6261h` | Reveil TV SAT | ReveilTVSAT.fr |
+| `ch_9nxxh6hks4` | RMC After Foot TV |  |
+| `ch_chcvh6m3b3` | RMC Alerte Secours |  |
+| `ch_27x5q90d5y` | RMC Mecanic |  |
+| `ch_ebw4phef4n` | RMC Mystère |  |
 | `ch_whtzkf9w83` | RMC Sport Access 1 | RMCSportAccess1.fr |
 | `ch_56zkvd83gf` | RMC Sport Access 2 | RMCSportAccess2.fr |
+| `ch_dxhmqxqkqa` | RMC Sport Live 1 |  |
+| `ch_kvvw8qdvvt` | RMC Sport Live 17 |  |
+| `ch_jwdbfanxfd` | RMC Sport Live 2 |  |
+| `ch_3ty8e93bes` | RMC Sport Live 3 |  |
+| `ch_6r9x2bx2z0` | RMC Sport Live 4 |  |
+| `ch_n2677wvywn` | RMC Talk Info |  |
+| `ch_njw8tyt21s` | RMC Talk Sport |  |
+| `ch_ge7051gpc6` | RMC WOW |  |
 | `ch_6v9gh02y82` | RTVHF | RTVHF.fr |
 | `ch_by4p9h7swq` | RugbyZone.TV | RugbyZoneTV.fr |
 | `ch_4ymctnbqty` | Short Films TV | ShortFilmsTV.fr |
@@ -278,3 +307,4 @@
 | `ch_k0mk0vwkyd` | Wataaa TV | WataaaTV.fr |
 | `ch_w2meq8jph7` | WatsUp TV | WatsUpTV.fr |
 | `ch_vkc5qsf23y` | XilamTV | XilamTV.fr |
+| `ch_4wnka1vmqj` | ZOUK TV |  |
