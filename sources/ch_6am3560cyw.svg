@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="512px" height="512px" viewBox="0 0 512 512" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>icon@2x</title>
+    <defs>
+        <linearGradient x1="50.0026236%" y1="100.010518%" x2="50.0026236%" y2="25.0026294%" id="linearGradient-1">
+            <stop stop-color="#EE7B3C" offset="0%"></stop>
+            <stop stop-color="#ED773A" offset="16.19%"></stop>
+            <stop stop-color="#EA6A36" offset="32.97%"></stop>
+            <stop stop-color="#E5562D" offset="50.02%"></stop>
+            <stop stop-color="#DE3922" offset="67.15%"></stop>
+            <stop stop-color="#DA291C" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="icon" fill-rule="nonzero">
+            <circle id="Oval" fill="url(#linearGradient-1)" cx="256" cy="256" r="256"></circle>
+            <path d="M256,101.16129 C341.188079,101.16129 410.83871,167.930764 410.83871,249.594964 C410.83871,271.680252 405.480969,292.738317 396.372809,311.741935 L115.627191,311.741935 C106.519031,292.738317 101.16129,271.680252 101.16129,249.594964 C101.16129,167.930764 170.811921,101.16129 256,101.16129 Z M256,64 C149.978022,64 64,149.978022 64,256 C64,362.021978 149.978022,448 256,448 C362.021978,448 448,362.021978 448,256 C448,149.978022 362.021978,64 256,64 Z" id="Shape" fill="#FFFFFF"></path>
+        </g>
+    </g>
+</svg>
