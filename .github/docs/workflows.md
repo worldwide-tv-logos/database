@@ -36,6 +36,8 @@ A `channels:add` or `channels:edit` request approved by the review starts `updat
 channel is added within minutes, not at night. `update` then starts `harvest` in mode `new` for the countries that got
 channels without a logo: `logos hunt --recent 2` looks for their logos in every source, website included, and the pull
 request `new/<cc>` is reviewed and merged like a hunt. Mode `new` has its own queue: it never waits for the weekly runs.
+Mode `missing` (started by hand) fills a country quickly: a slice of 150 channels still without a logo, another
+slice at each run, three countries at a time, each country reviewed and merged like a hunt (`missing/<cc>`).
 
 ## harvest
 
