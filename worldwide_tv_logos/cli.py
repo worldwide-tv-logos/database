@@ -391,7 +391,8 @@ def _slice(items: list[str], week: int, size: int) -> list[str]:
 
 def cmd_hunt(args, db: Database) -> int:
     """Logos of channels still without one, and sharper versions of small logos: a different slice of each every
-    week, every source including the channel website, for review like a harvest."""
+    week, every source including the channel website, for review like a harvest. With --recent N: only the channels
+    added in the last N days and still without a logo (run right after they are added)."""
     import datetime
     import shutil
 
@@ -407,6 +408,10 @@ def cmd_hunt(args, db: Database) -> int:
              and not any(p.suffix == '.svg' for p in db.source_files(x))]
     week = datetime.date.today().isocalendar()[1] if args.offset is None else args.offset
     only = _slice(missing, week, args.limit) + _slice(small, week, args.sharpen)
+    if args.recent is not None:
+        since = (datetime.date.today() - datetime.timedelta(days=args.recent)).isoformat()
+        only = [i for i in missing if i in db.channels and db.channels[i].added >= since]
+        small = []
     if not only:
         print('no channel without a logo, no small logo')
         return 0
@@ -414,7 +419,7 @@ def cmd_hunt(args, db: Database) -> int:
     shutil.rmtree(out, ignore_errors=True)
     stats = harvest.harvest(db, iptv, cc, iptvorg.load_logos(db.root), out, pause=args.pause, deep=True, only=only,
                             updates=True)
-    print(f"hunt: {stats['kept'] - stats['updates']} logo(s) found for {min(len(missing), args.limit)} of the "
+    print(f"hunt: {stats['kept'] - stats['updates']} logo(s) found for {len(only) - len(small[:args.sharpen])} of the "
           f"{len(missing)} channels without one, {stats['updates']} sharper or newer version(s) among "
           f"{min(len(small), args.sharpen)} of the {len(small)} small logos; {out.as_posix()}/summary.md")
     return 0
@@ -1087,6 +1092,8 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument('--sharpen', type=int, default=30,
                    help=f'small logos (under {SHARP_SIDE} px) checked for a sharper version')
     p.add_argument('--offset', type=int, help='slice number (default: the week of the year)')
+    p.add_argument('--recent', type=int, default=None,
+                   help='only the channels added in the last N days, without a logo')
     p.add_argument('--pause', type=float, default=2.0)
     p.set_defaults(func=cmd_hunt)
     p = sub.add_parser('reject', help='refuse a logo proposed in a harvest pull request')

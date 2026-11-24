@@ -30,6 +30,13 @@ Every Monday at 06:00 UTC (or by hand): `logos changes` opens, updates or closes
 `iptv-org:changes`: logos of channels renamed in the week, channels no longer in iptv-org, and (information only) the
 requests open at iptv-org for the followed countries.
 
+## New channels, right away
+
+A `channels:add` or `channels:edit` request approved by the review starts `update` at once (`validate_issue`): the
+channel is added within minutes, not at night. `update` then starts `harvest` in mode `new` for the countries that got
+channels without a logo: `logos hunt --recent 2` looks for their logos in every source, website included, and the pull
+request `new/<cc>` is reviewed and merged like a hunt. Mode `new` has its own queue: it never waits for the weekly runs.
+
 ## harvest
 
 One pull request per country of `data/countries.csv` (skipped while the previous one of the same kind is open):

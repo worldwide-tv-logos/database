@@ -3,6 +3,8 @@ name: harvest
 # Wikidata, Wikipedia, Commons, iptv-org, iptv-epg, picons, xmltv-se; a weekly slice of 700 channels at most).
 # Wednesday: hunt (a slice of the channels still without a logo and of the small logos, every source including their
 # website).
+# On demand, mode `new`: the channels added in the last two days and still without a logo, every source including
+# their website (started by `update` as soon as channels are added).
 # One pull request per followed country (data/countries.csv), reviewed by Claude, merged automatically when Claude
 # says it is ready and the repository variable AUTO_MERGE is not false.
 on:
@@ -12,7 +14,7 @@ on:
         description: 'only these countries (two-letter codes, e.g. es or "it pt"); empty: every country of data/countries.csv'
         required: false
       mode:
-        description: 'harvest or hunt'
+        description: 'harvest, hunt, or new (channels added in the last two days, without a logo)'
         required: false
         default: harvest
   schedule:
@@ -22,7 +24,7 @@ permissions:
   contents: write
   pull-requests: write
   id-token: write
-concurrency: harvest
+concurrency: harvest-${{ inputs.mode == 'new' && 'new' || 'weekly' }}    # new channels never wait for the weekly run
 jobs:
   countries:
     runs-on: ubuntu-latest
@@ -83,7 +85,11 @@ jobs:
       - name: collect and import
         id: collect
         run: |
-          if [ "$MODE" = hunt ]; then uv run logos hunt --country "$CC"; else uv run logos harvest --country "$CC" --updates; fi
+          case "$MODE" in
+            hunt) uv run logos hunt --country "$CC" ;;
+            new) uv run logos hunt --country "$CC" --recent 2 ;;
+            *) uv run logos harvest --country "$CC" --updates ;;
+          esac
           if [ "$(wc -l < "temp/harvest/$CC/manifest.csv")" -gt 1 ]; then
             uv run logos import "temp/harvest/$CC/manifest.csv"
           fi
@@ -155,5 +161,6 @@ jobs:
         if: steps.collect.outputs.found == 'yes'
         run: |
           name=$(grep "^$CC," data/countries.csv | cut -d, -f2)
-          title="$([ "$MODE" = hunt ] && echo "Weekly hunt" || echo "Weekly harvest"): $name"
+          case "$MODE" in hunt) kind="Weekly hunt" ;; new) kind="New channels" ;; *) kind="Weekly harvest" ;; esac
+          title="$kind: $name"
           bash .github/scripts/publish.sh "$MODE/$CC" "$title" "temp/harvest/$CC/summary.md"

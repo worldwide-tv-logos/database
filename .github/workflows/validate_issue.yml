@@ -3,6 +3,7 @@ on:
   issues:
     types: [opened, edited]
 permissions:
+  actions: write
   contents: write
   issues: write
   pull-requests: write
@@ -107,6 +108,14 @@ jobs:
             --permission-mode default
             --max-turns 30
             --allowedTools "Read,WebFetch,WebSearch,Bash(uv run logos seen-on:*),Bash(gh issue view:*),Bash(gh issue comment:*),Bash(gh issue edit:*),Bash(gh issue close:*),Bash(uv run logos find:*),Bash(uv run logos channel:*)"
+      - name: a channel approved -> added right away (update), its logo looked for next (harvest, mode new)
+        if: success() && contains(github.event.issue.labels.*.name, 'channels:')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if gh issue view "$N" -R "$GITHUB_REPOSITORY" --json labels --jq '.labels[].name' | grep -qx approved; then
+            gh workflow run update.yml -R "$GITHUB_REPOSITORY"
+          fi
       - name: a logo wanted -> Claude looks for it
         if: success() && env.HAS_CLAUDE == 'true' && contains(github.event.issue.labels.*.name, 'logos:request')
         uses: anthropics/claude-code-action@v1
