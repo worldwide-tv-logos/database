@@ -14,7 +14,7 @@ from pathlib import Path
 from PIL import Image
 
 from worldwide_tv_logos import image, iptvorg, issues, net, ops, registry, sources
-from worldwide_tv_logos.db import VARIANTS, Database
+from worldwide_tv_logos.db import EPG_ID_RE, VARIANTS, Database
 
 DATE_RE = re.compile(r'^\d{4}-\d{2}-\d{2}$')
 
@@ -642,7 +642,7 @@ def cmd_guide_aliases(args, db: Database) -> int:
         if u['id'] in known:
             continue
         epg_id = epg.match(u, harvest.channel_keys(u))
-        if epg_id and epg_id not in taken:
+        if epg_id and epg_id not in taken and EPG_ID_RE.match(epg_id):   # an alias cannot hold a space or a comma
             found.setdefault(epg_id, []).append(u)
     added = []
     for epg_id, us in sorted(found.items()):
