@@ -2789,25 +2789,26 @@ ch_nbew7abmp2,blue-mountain-television.us,Blue Mountain Television,BMT,us,active
 ch_svx2f3gak7,blue-prime.ch,Blue Prime,,ch,active,,https://tv.blue.ch/,2026-11-23,
 ch_fn7kh3y5d3,blue-retro.ch,Blue Retro,,ch,active,,https://tv.blue.ch/,2026-11-23,
 ch_d0a2hg877v,blue-s-clues.us,Blue's Clues,,us,active,,https://pluto.tv/en/live-tv/blues-clues-de,2026-11-23,
-ch_6fzqnwnqb5,blue-sport-1-live-d.ch,blue Sport 1 Live D,,ch,active,,,2026-11-24,
-ch_dryacbc94w,blue-sport-1.ch,Blue Sport 1,,ch,active,,https://tv.blue.ch/,2026-11-23,
-ch_j2rfxt2yf5,blue-sport-10-live.ch,blue Sport 10 Live,,ch,active,,,2026-11-24,
-ch_01v4qpjnta,blue-sport-11-live.ch,blue Sport 11 Live,,ch,active,,,2026-11-24,
-ch_c1b4pqnsah,blue-sport-12-live.ch,blue Sport 12 Live,,ch,active,,,2026-11-24,
-ch_a5xnarnc21,blue-sport-13-live.ch,blue Sport 13 Live,,ch,active,,,2026-11-24,
-ch_1cfgwgt0b5,blue-sport-14-live.ch,blue Sport 14 Live,,ch,active,,,2026-11-24,
-ch_t66yy5wve7,blue-sport-15-live.ch,blue Sport 15 Live,,ch,active,,,2026-11-24,
-ch_v9m6yah2qd,blue-sport-16-live.ch,blue Sport 16 Live,,ch,active,,,2026-11-24,
-ch_tne3qf147r,blue-sport-17-live.ch,blue Sport 17 Live,,ch,active,,,2026-11-24,
-ch_0t4bmp6zd1,blue-sport-2-live-d.ch,blue Sport 2 Live D,,ch,active,,,2026-11-24,
-ch_3xjbyemhdg,blue-sport-2.ch,Blue Sport 2,,ch,active,,https://tv.blue.ch/,2026-11-23,
-ch_7zcbag6khj,blue-sport-3-live.ch,blue Sport 3 Live,,ch,active,,,2026-11-24,
-ch_f32n4kq65x,blue-sport-4-live.ch,blue Sport 4 Live,,ch,active,,,2026-11-24,
-ch_q352k032tm,blue-sport-5-live.ch,blue Sport 5 Live,,ch,active,,,2026-11-24,
-ch_w2449b63jn,blue-sport-6-live.ch,blue Sport 6 Live,,ch,active,,,2026-11-24,
-ch_vv3fssy3ff,blue-sport-7-live.ch,blue Sport 7 Live,,ch,active,,,2026-11-24,
-ch_kx5kxx2wb8,blue-sport-8-live.ch,blue Sport 8 Live,,ch,active,,,2026-11-24,
-ch_21fe20p06d,blue-sport-9-live.ch,blue Sport 9 Live,,ch,active,,,2026-11-24,
+ch_6fzqnwnqb5,blue-sport-1-live-d.ch,blue Sport 1 Live D,,ch,active,ch_jp5tb2whvn,,2026-11-24,2026-11-24
+ch_dryacbc94w,blue-sport-1.ch,Blue Sport 1,,ch,active,ch_jp5tb2whvn,https://tv.blue.ch/,2026-11-23,2026-11-24
+ch_j2rfxt2yf5,blue-sport-10-live.ch,blue Sport 10 Live,,ch,active,ch_jp5tb2whvn,,2026-11-24,2026-11-24
+ch_01v4qpjnta,blue-sport-11-live.ch,blue Sport 11 Live,,ch,active,ch_jp5tb2whvn,,2026-11-24,2026-11-24
+ch_c1b4pqnsah,blue-sport-12-live.ch,blue Sport 12 Live,,ch,active,ch_jp5tb2whvn,,2026-11-24,2026-11-24
+ch_a5xnarnc21,blue-sport-13-live.ch,blue Sport 13 Live,,ch,active,ch_jp5tb2whvn,,2026-11-24,2026-11-24
+ch_1cfgwgt0b5,blue-sport-14-live.ch,blue Sport 14 Live,,ch,active,ch_jp5tb2whvn,,2026-11-24,2026-11-24
+ch_t66yy5wve7,blue-sport-15-live.ch,blue Sport 15 Live,,ch,active,ch_jp5tb2whvn,,2026-11-24,2026-11-24
+ch_v9m6yah2qd,blue-sport-16-live.ch,blue Sport 16 Live,,ch,active,ch_jp5tb2whvn,,2026-11-24,2026-11-24
+ch_tne3qf147r,blue-sport-17-live.ch,blue Sport 17 Live,,ch,active,ch_jp5tb2whvn,,2026-11-24,2026-11-24
+ch_0t4bmp6zd1,blue-sport-2-live-d.ch,blue Sport 2 Live D,,ch,active,ch_jp5tb2whvn,,2026-11-24,2026-11-24
+ch_3xjbyemhdg,blue-sport-2.ch,Blue Sport 2,,ch,active,ch_jp5tb2whvn,https://tv.blue.ch/,2026-11-23,2026-11-24
+ch_7zcbag6khj,blue-sport-3-live.ch,blue Sport 3 Live,,ch,active,ch_jp5tb2whvn,,2026-11-24,2026-11-24
+ch_f32n4kq65x,blue-sport-4-live.ch,blue Sport 4 Live,,ch,active,ch_jp5tb2whvn,,2026-11-24,2026-11-24
+ch_q352k032tm,blue-sport-5-live.ch,blue Sport 5 Live,,ch,active,ch_jp5tb2whvn,,2026-11-24,2026-11-24
+ch_w2449b63jn,blue-sport-6-live.ch,blue Sport 6 Live,,ch,active,ch_jp5tb2whvn,,2026-11-24,2026-11-24
+ch_vv3fssy3ff,blue-sport-7-live.ch,blue Sport 7 Live,,ch,active,ch_jp5tb2whvn,,2026-11-24,2026-11-24
+ch_kx5kxx2wb8,blue-sport-8-live.ch,blue Sport 8 Live,,ch,active,ch_jp5tb2whvn,,2026-11-24,2026-11-24
+ch_21fe20p06d,blue-sport-9-live.ch,blue Sport 9 Live,,ch,active,ch_jp5tb2whvn,,2026-11-24,2026-11-24
+ch_jp5tb2whvn,blue-sport-live.ch,blue Sport Live,,ch,active,,,2026-11-24,
 ch_fp2656y864,blue-stars.ch,Blue Stars,,ch,active,,https://tv.blue.ch/,2026-11-23,
 ch_qxrz5hhtsn,blue-zoom-d.ch,Blue Zoom D,,ch,active,,https://tv.blue.ch/,2026-11-23,
 ch_xkzytra6ch,blue-zoom-f.ch,Blue Zoom F,,ch,active,,https://www.bluewin.ch/fr/index/livestream.html,2026-11-23,
@@ -7848,15 +7849,15 @@ ch_aac3hn7ffn,eqtv.ua,eQtv,,ua,active,,,2026-11-23,
 ch_pmra8hwrcr,equalympic.ua,Equalympic,,ua,active,,https://equalympic.tv/,2026-11-23,
 ch_ggt6ea4jhr,equidia-pro-1.fr,Equidia Pro 1,,fr,active,,https://www.equidia.fr/,2026-11-23,
 ch_ksmsxxfwbw,equidia-pro-2.fr,Equidia Pro 2,,fr,active,,https://www.equidia.fr/,2026-11-23,
-ch_p9zx9r0601,equidia-racing-1.fr,Equidia Racing 1,,fr,active,,,2026-11-24,
-ch_4zpx9zeq6k,equidia-racing-2.fr,Equidia Racing 2,,fr,active,,,2026-11-24,
-ch_yvc1ttzfvy,equidia-racing-3.fr,Equidia Racing 3,,fr,active,,,2026-11-24,
-ch_ewnrbd5ph0,equidia-racing-4.fr,Equidia Racing 4,,fr,active,,,2026-11-24,
-ch_4hn6xsbpw2,equidia-racing-5.fr,Equidia Racing 5,,fr,active,,,2026-11-24,
-ch_5fe2h5795s,equidia-racing-6.fr,Equidia Racing 6,,fr,active,,,2026-11-24,
-ch_56jpgfbpny,equidia-racing-7.fr,Equidia Racing 7,,fr,active,,,2026-11-24,
-ch_3t16nyr320,equidia-racing-8.fr,Equidia Racing 8,,fr,active,,,2026-11-24,
-ch_whhr358dmc,equidia-racing-trot.fr,Equidia Racing Trot,,fr,active,,,2026-11-24,
+ch_p9zx9r0601,equidia-racing-1.fr,Equidia Racing 1,,fr,active,ch_5mh5zxaf1w,,2026-11-24,2026-11-24
+ch_4zpx9zeq6k,equidia-racing-2.fr,Equidia Racing 2,,fr,active,ch_5mh5zxaf1w,,2026-11-24,2026-11-24
+ch_yvc1ttzfvy,equidia-racing-3.fr,Equidia Racing 3,,fr,active,ch_5mh5zxaf1w,,2026-11-24,2026-11-24
+ch_ewnrbd5ph0,equidia-racing-4.fr,Equidia Racing 4,,fr,active,ch_5mh5zxaf1w,,2026-11-24,2026-11-24
+ch_4hn6xsbpw2,equidia-racing-5.fr,Equidia Racing 5,,fr,active,ch_5mh5zxaf1w,,2026-11-24,2026-11-24
+ch_5fe2h5795s,equidia-racing-6.fr,Equidia Racing 6,,fr,active,ch_5mh5zxaf1w,,2026-11-24,2026-11-24
+ch_56jpgfbpny,equidia-racing-7.fr,Equidia Racing 7,,fr,active,ch_5mh5zxaf1w,,2026-11-24,2026-11-24
+ch_3t16nyr320,equidia-racing-8.fr,Equidia Racing 8,,fr,active,ch_5mh5zxaf1w,,2026-11-24,2026-11-24
+ch_whhr358dmc,equidia-racing-trot.fr,Equidia Racing Trot,,fr,active,ch_5mh5zxaf1w,,2026-11-24,2026-11-24
 ch_5mh5zxaf1w,equidia.fr,Equidia,,fr,active,,https://www.equidia.fr/,2026-11-23,
 ch_6gzypq7nea,equipo-de-investigacion.es,Equipo de Investigacion,,es,active,,https://www.lasexta.com/programas/equipo-investigacion/,2026-11-23,
 ch_d9scfn4ykd,equtv.it,EQUtv,,it,active,,,2026-11-23,
@@ -8174,38 +8175,39 @@ ch_p4q2tmdb43,eurosport-2.fr,Eurosport 2,,fr,active,,https://www.eurosport.fr/,2
 ch_4ww9pftxxb,eurosport-3-polska.pl,Eurosport 3 Polska,,pl,active,,,2026-11-23,
 ch_tnjjdtnznq,eurosport-3.fr,Eurosport 3,,fr,active,,https://eurosport.com/,2026-11-23,
 ch_8sap8fvm7f,eurosport-360-1.fr,Eurosport 360 1,,fr,merged,ch_p6f8pfy44n,,2026-11-24,2026-11-24
-ch_t3gkd4nkvq,eurosport-360-10.fr,Eurosport 360 10,,fr,active,,,2026-11-24,
-ch_jpff07j7ys,eurosport-360-11.fr,Eurosport 360 11,,fr,active,,,2026-11-24,
-ch_87brnkbmne,eurosport-360-12.fr,Eurosport 360 12,,fr,active,,,2026-11-24,
-ch_5y06mad204,eurosport-360-13.fr,Eurosport 360 13,,fr,active,,,2026-11-24,
-ch_2ca0drpzjc,eurosport-360-14.fr,Eurosport 360 14,,fr,active,,,2026-11-24,
-ch_8pqacf0y8f,eurosport-360-15.fr,Eurosport 360 15,,fr,active,,,2026-11-24,
-ch_tqj10dzfw7,eurosport-360-16.fr,Eurosport 360 16,,fr,active,,,2026-11-24,
-ch_xevrskamr0,eurosport-360-17.fr,Eurosport 360 17,,fr,active,,,2026-11-24,
-ch_nnf0wwzzyr,eurosport-360-18.fr,Eurosport 360 18,,fr,active,,,2026-11-24,
-ch_mbnfk3fqq6,eurosport-360-19.fr,Eurosport 360 19,,fr,active,,,2026-11-24,
-ch_00m7vea5xx,eurosport-360-20.fr,Eurosport 360 20,,fr,active,,,2026-11-24,
-ch_pqgrjptp96,eurosport-360-21.fr,Eurosport 360 21,,fr,active,,,2026-11-24,
-ch_drzmwd05bn,eurosport-360-22.fr,Eurosport 360 22,,fr,active,,,2026-11-24,
-ch_sc0na9m6ac,eurosport-360-23.fr,Eurosport 360 23,,fr,active,,,2026-11-24,
-ch_zvdn5ffsnb,eurosport-360-24.fr,Eurosport 360 24,,fr,active,,,2026-11-24,
-ch_heyjcc8mfj,eurosport-360-25.fr,Eurosport 360 25,,fr,active,,,2026-11-24,
-ch_hqa0skth7t,eurosport-360-26.fr,Eurosport 360 26,,fr,active,,,2026-11-24,
-ch_87x6nsqvvs,eurosport-360-27.fr,Eurosport 360 27,,fr,active,,,2026-11-24,
-ch_6e7x5ve0ma,eurosport-360-28.fr,Eurosport 360 28,,fr,active,,,2026-11-24,
-ch_r0njytp2y4,eurosport-360-29.fr,Eurosport 360 29,,fr,active,,,2026-11-24,
-ch_rn70g8d6kv,eurosport-360-30.fr,Eurosport 360 30,,fr,active,,,2026-11-24,
-ch_0z623qqj1q,eurosport-360-31.fr,Eurosport 360 31,,fr,active,,,2026-11-24,
-ch_ffrjf3qmjq,eurosport-360-32.fr,Eurosport 360 32,,fr,active,,,2026-11-24,
+ch_t3gkd4nkvq,eurosport-360-10.fr,Eurosport 360 10,,fr,active,ch_3wbtwbzmn2,,2026-11-24,2026-11-24
+ch_jpff07j7ys,eurosport-360-11.fr,Eurosport 360 11,,fr,active,ch_3wbtwbzmn2,,2026-11-24,2026-11-24
+ch_87brnkbmne,eurosport-360-12.fr,Eurosport 360 12,,fr,active,ch_3wbtwbzmn2,,2026-11-24,2026-11-24
+ch_5y06mad204,eurosport-360-13.fr,Eurosport 360 13,,fr,active,ch_3wbtwbzmn2,,2026-11-24,2026-11-24
+ch_2ca0drpzjc,eurosport-360-14.fr,Eurosport 360 14,,fr,active,ch_3wbtwbzmn2,,2026-11-24,2026-11-24
+ch_8pqacf0y8f,eurosport-360-15.fr,Eurosport 360 15,,fr,active,ch_3wbtwbzmn2,,2026-11-24,2026-11-24
+ch_tqj10dzfw7,eurosport-360-16.fr,Eurosport 360 16,,fr,active,ch_3wbtwbzmn2,,2026-11-24,2026-11-24
+ch_xevrskamr0,eurosport-360-17.fr,Eurosport 360 17,,fr,active,ch_3wbtwbzmn2,,2026-11-24,2026-11-24
+ch_nnf0wwzzyr,eurosport-360-18.fr,Eurosport 360 18,,fr,active,ch_3wbtwbzmn2,,2026-11-24,2026-11-24
+ch_mbnfk3fqq6,eurosport-360-19.fr,Eurosport 360 19,,fr,active,ch_3wbtwbzmn2,,2026-11-24,2026-11-24
+ch_00m7vea5xx,eurosport-360-20.fr,Eurosport 360 20,,fr,active,ch_3wbtwbzmn2,,2026-11-24,2026-11-24
+ch_pqgrjptp96,eurosport-360-21.fr,Eurosport 360 21,,fr,active,ch_3wbtwbzmn2,,2026-11-24,2026-11-24
+ch_drzmwd05bn,eurosport-360-22.fr,Eurosport 360 22,,fr,active,ch_3wbtwbzmn2,,2026-11-24,2026-11-24
+ch_sc0na9m6ac,eurosport-360-23.fr,Eurosport 360 23,,fr,active,ch_3wbtwbzmn2,,2026-11-24,2026-11-24
+ch_zvdn5ffsnb,eurosport-360-24.fr,Eurosport 360 24,,fr,active,ch_3wbtwbzmn2,,2026-11-24,2026-11-24
+ch_heyjcc8mfj,eurosport-360-25.fr,Eurosport 360 25,,fr,active,ch_3wbtwbzmn2,,2026-11-24,2026-11-24
+ch_hqa0skth7t,eurosport-360-26.fr,Eurosport 360 26,,fr,active,ch_3wbtwbzmn2,,2026-11-24,2026-11-24
+ch_87x6nsqvvs,eurosport-360-27.fr,Eurosport 360 27,,fr,active,ch_3wbtwbzmn2,,2026-11-24,2026-11-24
+ch_6e7x5ve0ma,eurosport-360-28.fr,Eurosport 360 28,,fr,active,ch_3wbtwbzmn2,,2026-11-24,2026-11-24
+ch_r0njytp2y4,eurosport-360-29.fr,Eurosport 360 29,,fr,active,ch_3wbtwbzmn2,,2026-11-24,2026-11-24
+ch_rn70g8d6kv,eurosport-360-30.fr,Eurosport 360 30,,fr,active,ch_3wbtwbzmn2,,2026-11-24,2026-11-24
+ch_0z623qqj1q,eurosport-360-31.fr,Eurosport 360 31,,fr,active,ch_3wbtwbzmn2,,2026-11-24,2026-11-24
+ch_ffrjf3qmjq,eurosport-360-32.fr,Eurosport 360 32,,fr,active,ch_3wbtwbzmn2,,2026-11-24,2026-11-24
 ch_p6f8pfy44n,eurosport-360-hd-1.fr,Eurosport 360 HD 1,Eurosport 360 1,fr,active,,https://eurosport.com/,2026-11-23,2026-11-24
 ch_tfgr8wk115,eurosport-360-hd-2.fr,Eurosport 360 HD 2,,fr,active,,https://eurosport.com/,2026-11-23,
 ch_91qwf9ztk7,eurosport-360-hd-3.fr,Eurosport 360 HD 3,,fr,active,,https://eurosport.com/,2026-11-23,
-ch_3yp16efs0r,eurosport-360-hd-4.fr,Eurosport 360 HD 4,,fr,active,,https://eurosport.com/,2026-11-23,
-ch_wtqm0ckf1j,eurosport-360-hd-5.fr,Eurosport 360 HD 5,,fr,active,,https://eurosport.com/,2026-11-23,
+ch_3yp16efs0r,eurosport-360-hd-4.fr,Eurosport 360 HD 4,,fr,active,ch_3wbtwbzmn2,https://eurosport.com/,2026-11-23,2026-11-24
+ch_wtqm0ckf1j,eurosport-360-hd-5.fr,Eurosport 360 HD 5,,fr,active,ch_3wbtwbzmn2,https://eurosport.com/,2026-11-23,2026-11-24
 ch_m36zazxhvm,eurosport-360-hd-6.fr,Eurosport 360 HD 6,,fr,active,,https://eurosport.com/,2026-11-23,
-ch_kxb44jk17p,eurosport-360-hd-7.fr,Eurosport 360 HD 7,,fr,active,,https://eurosport.com/,2026-11-23,
-ch_49eya2amxj,eurosport-360-hd-8.fr,Eurosport 360 HD 8,,fr,active,,https://eurosport.com/,2026-11-23,
-ch_hr3cb9xx6x,eurosport-360-hd-9.fr,Eurosport 360 HD 9,,fr,active,,https://eurosport.com/,2026-11-23,
+ch_kxb44jk17p,eurosport-360-hd-7.fr,Eurosport 360 HD 7,,fr,active,ch_3wbtwbzmn2,https://eurosport.com/,2026-11-23,2026-11-24
+ch_49eya2amxj,eurosport-360-hd-8.fr,Eurosport 360 HD 8,,fr,active,ch_3wbtwbzmn2,https://eurosport.com/,2026-11-23,2026-11-24
+ch_hr3cb9xx6x,eurosport-360-hd-9.fr,Eurosport 360 HD 9,,fr,active,ch_3wbtwbzmn2,https://eurosport.com/,2026-11-23,2026-11-24
+ch_3wbtwbzmn2,eurosport-360.fr,Eurosport 360,,fr,active,,,2026-11-24,
 ch_5hp9jq0d1v,eurosport-4-polska.pl,Eurosport 4 Polska,,pl,active,,,2026-11-23,
 ch_2t7jk226dt,eurosport-4.fr,Eurosport 4,,fr,active,,https://eurosport.com/,2026-11-23,
 ch_12prm9s9d8,eurosport-4k-czechia.cz,Eurosport 4K Czechia,,cz,active,,,2026-11-23,
@@ -12786,7 +12788,7 @@ ch_gwjqfn2nb7,kzll-ld-39-5.us,KZLL-LD 39.5,KZLL-LD,us,active,,,2026-11-23,
 ch_tt40962epq,kzmm-cd-22-1.us,KZMM-CD 22.1,KZMM-CD,us,active,,https://transition.fcc.gov/fcc-bin/tvq?facid=18740,2026-11-23,
 ch_dggdtmhezv,kzo.ar,KZO,Canal KZO,ar,active,,https://www.canalkzo.com/,2026-11-23,
 ch_2604fvb8d7,l-altro-corriere-tv.it,L'altro Corriere TV,Canale 75,it,active,,https://www.laltrocorriere.it/,2026-11-23,
-ch_zm9y5sp6v2,l-equipe-live-foot.fr,L'Équipe Live Foot,,fr,active,,,2026-11-24,
+ch_zm9y5sp6v2,l-equipe-live-foot.fr,L'Équipe Live Foot,,fr,active,ch_8wmbgzc1xb,,2026-11-24,2026-11-24
 ch_zb685emvst,l-equipe-live1.fr,L'Equipe Live1,,fr,active,ch_8wmbgzc1xb,https://www.lequipe.fr/lachainelequipe/,2026-11-23,
 ch_kfx4ahenxj,l-equipe-live2.fr,L'Equipe Live2,,fr,active,ch_8wmbgzc1xb,https://www.lequipe.fr/lachainelequipe/,2026-11-23,
 ch_8wmbgzc1xb,l-equipe.fr,L'Equipe,L'Équipe,fr,active,,https://www.lequipe.fr/lachainelequipe/,2026-11-23,
@@ -13321,15 +13323,15 @@ ch_xq7ngp2pmw,light-channel.de,Light Channel,,de,active,,,2026-11-23,
 ch_ggx9j6h4gx,light-channel.hu,Light Channel,,hu,active,,,2026-11-23,
 ch_t34wcxte7c,light-tv-ghana.gh,Light TV Ghana,,gh,active,,,2026-11-23,
 ch_xq8gr9d1c5,lighthouse-tv.gd,Lighthouse TV,,gd,active,,https://lighthouseradiogd.com/home/,2026-11-23,
-ch_z1ezw8jvhx,ligue-1-plus-10.fr,Ligue 1+ 10,,fr,active,,,2026-11-24,
-ch_v0gep2wze1,ligue-1-plus-2.fr,Ligue 1+ 2,,fr,active,,,2026-11-24,
-ch_1f643fbxxx,ligue-1-plus-3.fr,Ligue 1+ 3,,fr,active,,,2026-11-24,
-ch_464pmr5fwd,ligue-1-plus-4.fr,Ligue 1+ 4,,fr,active,,,2026-11-24,
-ch_893jcfcm74,ligue-1-plus-5.fr,Ligue 1+ 5,,fr,active,,,2026-11-24,
-ch_jgmn7xfhg6,ligue-1-plus-6.fr,Ligue 1+ 6,,fr,active,,,2026-11-24,
+ch_z1ezw8jvhx,ligue-1-plus-10.fr,Ligue 1+ 10,,fr,active,ch_56egv4am3d,,2026-11-24,2026-11-24
+ch_v0gep2wze1,ligue-1-plus-2.fr,Ligue 1+ 2,,fr,active,ch_56egv4am3d,,2026-11-24,2026-11-24
+ch_1f643fbxxx,ligue-1-plus-3.fr,Ligue 1+ 3,,fr,active,ch_56egv4am3d,,2026-11-24,2026-11-24
+ch_464pmr5fwd,ligue-1-plus-4.fr,Ligue 1+ 4,,fr,active,ch_56egv4am3d,,2026-11-24,2026-11-24
+ch_893jcfcm74,ligue-1-plus-5.fr,Ligue 1+ 5,,fr,active,ch_56egv4am3d,,2026-11-24,2026-11-24
+ch_jgmn7xfhg6,ligue-1-plus-6.fr,Ligue 1+ 6,,fr,active,ch_56egv4am3d,,2026-11-24,2026-11-24
 ch_7espps7jp9,ligue-1-plus-7.fr,Ligue 1+ 7,,fr,active,,,2026-11-24,
 ch_78rp397eab,ligue-1-plus-8.fr,Ligue 1+ 8,,fr,active,,,2026-11-24,
-ch_gx4wvfv1sg,ligue-1-plus-9.fr,Ligue 1+ 9,,fr,active,,,2026-11-24,
+ch_gx4wvfv1sg,ligue-1-plus-9.fr,Ligue 1+ 9,,fr,active,ch_56egv4am3d,,2026-11-24,2026-11-24
 ch_56egv4am3d,ligue-1-plus.fr,Ligue 1+,,fr,active,,,2026-11-24,
 ch_mc29tsehka,lilo-tv.de,Lilo TV,,de,active,,https://lilotv.de/,2026-11-23,
 ch_kf3144m71p,lim-tv.py,LIM TV,,py,active,,https://tv.limpy.online/,2026-11-23,
