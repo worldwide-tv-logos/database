@@ -94,11 +94,14 @@ jobs:
             missing) uv run logos hunt --country "$CC" --limit 150 --sharpen 0 --offset "$GITHUB_RUN_NUMBER" ;;
             *) uv run logos harvest --country "$CC" --updates ;;
           esac
-          if [ "$(wc -l < "temp/harvest/$CC/manifest.csv")" -gt 1 ]; then
-            uv run logos import "temp/harvest/$CC/manifest.csv"
+          manifest="temp/harvest/$CC/manifest.csv"           # absent when the country has no channel left to look at
+          rows=0; [ -f "$manifest" ] && rows=$(wc -l < "$manifest")
+          if [ "$rows" -gt 1 ]; then
+            uv run logos import "$manifest"
           fi
           uv run logos guide-aliases --country "$CC"         # after the import: an alias needs a logo
-          if [ "$(wc -l < "temp/harvest/$CC/manifest.csv")" -le 1 ]              && ! grep -qE '^### (Current logos to check|New guide aliases)' "temp/harvest/$CC/summary.md"; then
+          if [ "$rows" -le 1 ] \
+             && ! grep -qsE '^### (Current logos to check|New guide aliases)' "temp/harvest/$CC/summary.md"; then
             echo "nothing found"; exit 0
           fi
           git worktree add -q ../base origin/main
