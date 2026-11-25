@@ -631,6 +631,13 @@ def test_download_quotes_spaces_and_reports_malformed_urls():
     with pytest.raises(net.DownloadError):
         net.download('https://a.example/x.png', opener=bad)
 
+    def cut(req, timeout):              # a site that cuts its response (bad chunked encoding): one logo lost, not the run
+        import http.client
+        raise http.client.IncompleteRead(b'')
+
+    with pytest.raises(net.DownloadError):
+        net.download('https://a.example/x.png', opener=cut)
+
 
 def _git_repo(root):
     import subprocess
