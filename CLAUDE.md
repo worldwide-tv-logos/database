@@ -63,6 +63,7 @@ from a harvest. Check the same three points, then:
 | Command | Use |
 |---|---|
 | `sheet --changed` / `--channels A,B` / `--country cc` | contact sheets of logos of the repository (temp/sheets/): look at them instead of opening PNG files one by one |
+| `legibility [--country cc]` | logos whose drawing vanishes on their screen (white letters on light, navy on dark): report and contact sheets in temp/legibility/ |
 | `find <id>` | every candidate for a channel or feed (iptv-org, iptv-epg, Wikidata with its dates, the channel website), checked, ranked, on a contact sheet (temp/find/<id>/) with the current logo first |
 | `set <id> <url>` | add or replace a logo (same preparation and checks as a request) |
 | `reject <channel id> --base ../base --reason "..."` | refuse a logo of a harvest: back to the logo of main, URL never proposed again |

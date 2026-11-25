@@ -386,3 +386,53 @@ def silhouette(a: Image.Image, b: Image.Image, width: int = 160) -> float:
     x, y = shapes
     norm = float(np.sqrt((x * x).sum() * (y * y).sum()))
     return float((x * y).sum() / norm) if norm else 0.0
+
+
+# Legibility: how much of a drawing vanishes on the screen it is made for (the logo on a light screen, its white
+# variant on a dark one). Calibrated on 200 logos annotated by eye (2026-11-26): 10 of the 13 unreadable ones found,
+# 3 readable ones flagged.
+LIGHT_SCREEN = (236, 238, 241)  # the light and dark tiles of the contact sheets (harvest/sheets.py)
+DARK_SCREEN = (20, 24, 31)
+VISIBLE_ON_LIGHT = 16           # colour difference (CIEDE2000) to the screen under which a pixel is hard to see…
+VISIBLE_ON_DARK = 20            # …larger on a dark screen, where dark colours blend more (navy, dark grey)
+FRAME_CONTENT = 0.03            # a vanishing part enclosing visible drawing (this share of its area) is a frame
+OUTLINE_SHARE = 0.5             # a vanishing part mostly bordered by a visible outline keeps its shape
+VANISH_ALERT = 0.02             # share of the drawing above which a logo is reported as unreadable
+LEGIBILITY_SIDE = 300           # measured on a copy this size
+
+
+def vanishing(img: Image.Image, dark: bool = False) -> float:
+    """Share of the drawing that cannot be seen on the screen it is made for: parts whose colour is too close to
+    the screen (white letters on a light screen, navy on a dark one) and that meet the transparent outside. Not
+    counted: a frame around visible drawing (the white box of a logo), a part drawn with a visible outline (a white
+    shape edged in black), colours that differ by their hue (yellow on a light screen)."""
+    from scipy import ndimage
+    from skimage.color import deltaE_ciede2000, rgb2lab
+    small = img.convert('RGBA')
+    small.thumbnail((LEGIBILITY_SIDE, LEGIBILITY_SIDE))
+    a = np.asarray(small).astype(np.float32) / 255
+    opaque = a[:, :, 3] > 0.5
+    if not opaque.any():
+        return 0.0
+    screen = np.array(DARK_SCREEN if dark else LIGHT_SCREEN, dtype=np.float32).reshape(1, 1, 3) / 255
+    lab = rgb2lab(a[:, :, :3])
+    diff = deltaE_ciede2000(lab, np.broadcast_to(rgb2lab(screen), lab.shape))
+    low = opaque & (diff < (VISIBLE_ON_DARK if dark else VISIBLE_ON_LIGHT))
+    clear, _ = ndimage.label(np.pad(a[:, :, 3] < 0.12, 1, constant_values=True))
+    outside = (clear == clear[0, 0])[1:-1, 1:-1]                      # transparent outside, not the holes
+    ring = ndimage.binary_dilation(outside) & ~outside                 # first ring of the drawing
+    parts, _ = ndimage.label(low)
+    gone = np.zeros_like(low)
+    for i in np.unique(parts[low & ring]):
+        if i == 0:
+            continue
+        part = parts == i
+        enclosed = ndimage.binary_fill_holes(part) & ~part & opaque & ~low
+        if enclosed.sum() > FRAME_CONTENT * part.sum():
+            continue
+        edge = (part & ring).sum()
+        outline = (ndimage.binary_dilation(part) & ~part & ~outside & opaque & ~low).sum()
+        if edge < OUTLINE_SHARE * (edge + outline):
+            continue
+        gone |= part
+    return float(gone.sum() / opaque.sum())
