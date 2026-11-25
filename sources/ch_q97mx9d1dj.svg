@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-0.02 -0.02 610.03 142">
+  <defs>
+    <path id="a" d="M.2.596h653.11v178.72H.2Z"/>
+    <path id="c" d="M138.6 40.295V74.94h-24.798l24.8-34.645zM.027 25.525l22.427 16.23c6.93-9.482 16.775-15.317 24.797-15.317 7.66 0 12.035 4.01 12.035 10.758 0 11.486-6.93 14.404-25.71 26.255C2.216 83.327.21 100.101.21 117.059v2.552l91.166-.18V98.64h47.407v20.06h30.996V98.64h19.874v-23.7h-20.057V2.004h-34.28L80.252 75.667v19.327h-42.12c.55-5.47 12.4-12.763 27.716-22.427 22.79-14.22 24.614-25.89 24.614-37.743C90.464 13.31 75.15 0 48.164 0 25.554 0 11.149 10.393.027 25.526Z"/>
+    <path id="f" d="M.2.596h653.11v178.72H.2Z"/>
+    <linearGradient id="d" x1="75.318" x2="75.318" y1="15.547" y2="141.464" gradientTransform="scale(1.25911 .7942)" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FFF" style="--darkreader-inline-stopcolor:var(--darkreader-background-ffffff, #181a1b)"/>
+      <stop offset="100%" stop-color="#FFF" style="--darkreader-inline-stopcolor:var(--darkreader-background-ffffff, #181a1b)"/>
+    </linearGradient>
+  </defs>
+  <g fill="none" fill-rule="evenodd">
+    <path d="M34.219-205.172h610v141.967h-610z" style="fill:#d0013a;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;paint-order:stroke markers;--darkreader-inline-fill:var(--darkreader-text-d0013a, #fe3b70)" transform="translate(-34.219 205.172)"/>
+    <g fill="#fff" transform="translate(-22.496 -24.495)scale(.99985)">
+      <mask id="b" style="--darkreader-inline-fill:var(--darkreader-text-ffffff, #e8e6e3)">
+        <use xlink:href="#a"/>
+      </mask>
+      <path fill-rule="nonzero" d="M246.613 98.734c0-11.487-.365-17.14-2.735-25.162l-19.874-15.134c2.005-2.917 5.287-7.11 7.658-9.846-9.846-9.3-22.792-15.68-39.02-15.68-16.744 0-38.39 7.45-50.257 27.06-.084-.025-.163-.05-.25-.075C131.014 40.022 109.863 32.73 90.17 32.73 61.544 32.73 30 48.044 30 94.357c0 45.948 31.726 61.446 60.17 61.446 19.328 0 40.114-7.11 51.42-26.257.098 0 .19-.005.288-.005-.037.062-.07.126-.107.188 10.76 18.962 30.998 26.256 51.784 26.256 11.304 0 22.062-1.46 31.18-5.106 0-3.828-.183-10.393 1.093-17.686 1.46-8.57 6.2-16.046 6.2-16.046-8.023 7.294-21.88 13.857-35.738 13.857-14.953.183-25.71-7.294-27.534-26.985h77.857v-5.286zm-156.26 32.09c-18.05 0-24.798-16.41-24.798-36.102 0-21.333 7.658-35.737 24.798-35.737 17.504 0 24.432 16.045 24.432 35.737 0 21.516-7.658 36.103-24.432 36.103zm78.768-47.771c2.554-17.322 12.217-24.615 23.157-24.615 13.31 0 20.786 8.023 22.61 24.615H169.12Z" mask="url(#b)" style="--darkreader-inline-fill:var(--darkreader-background-ffffff, #181a1b)" transform="translate(1.5 1.5)"/>
+    </g>
+    <g transform="translate(209.47 7.5)scale(.99985)">
+      <mask id="e" fill="#fff" style="--darkreader-inline-fill:var(--darkreader-text-ffffff, #e8e6e3)">
+        <use xlink:href="#c"/>
+      </mask>
+      <path fill="url(#d)" fill-rule="nonzero" d="M.027 0h189.627v119.61H.027Z" mask="url(#e)" style="fill:url(#d)" transform="translate(1.5 1.5)"/>
+    </g>
+    <g fill="#fff" transform="translate(-20.996 -22.995)scale(.99985)">
+      <mask id="g" style="--darkreader-inline-fill:var(--darkreader-text-ffffff, #e8e6e3)">
+        <use xlink:href="#f"/>
+      </mask>
+      <path fill-rule="nonzero" d="M443.824 126.654c6.955 0 12.594 5.638 12.594 12.594s-5.64 12.593-12.594 12.593-12.595-5.637-12.595-12.592 5.64-12.594 12.594-12.594zm-2.371-94.49V57.38h26.75v93.24h27.512V57.552h28.027l-6.704-25.388zm85.597-.006h29.042l18.632 78.72 18.326-78.715h29.038L588.955 150.44h-29.042z" mask="url(#g)" style="--darkreader-inline-fill:var(--darkreader-background-ffffff, #181a1b)"/>
+    </g>
+  </g>
+</svg>
