@@ -23,6 +23,16 @@ if [ -s temp/verdict.json ]; then
 else
   { cat "$body"; echo; echo "---"; echo; echo "No review recorded: a maintainer must review this pull request."; } > temp/pr-body.md
 fi
+# GitHub refuses a body over 65,536 characters (a country with hundreds of logos found): cut it, keep the review
+python3 - <<'EOF'
+from pathlib import Path
+p = Path('temp/pr-body.md'); text = p.read_text(encoding='utf-8'); limit = 60000
+if len(text) > limit:
+    head, sep, review = text.rpartition('\n---\n')
+    cut = '\n\n*(list cut: too long for a pull request body, see the files changed)*\n'
+    keep = max(0, limit - len(cut) - len(sep) - len(review))
+    p.write_text((head[:keep] + cut + sep + review)[:limit], encoding='utf-8')
+EOF
 
 # On top of the current main (sync.sh: no rebase, rows merged row by row, our logo files applied on top).
 git switch -q -C "$branch"
