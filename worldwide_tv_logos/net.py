@@ -1,6 +1,7 @@
 """HTTP: polite downloads (identification with a contact URL, Retry-After honoured) and the GitHub REST API."""
 from __future__ import annotations
 
+import http.client
 import json
 import os
 import re
@@ -68,7 +69,8 @@ def download(url: str, *, opener: Callable = urllib.request.urlopen, sleep: Call
             if exc.code not in (429, 503):
                 raise DownloadError(f'HTTP {exc.code}') from None
             sleep(min(int(exc.headers.get('Retry-After') or 120), 600) + 1)
-        except (urllib.error.URLError, OSError, ValueError) as exc:         # ValueError: malformed URL
+        except (urllib.error.URLError, OSError, ValueError, http.client.HTTPException) as exc:
+            # ValueError: malformed URL; HTTPException: response cut by the site (IncompleteRead, bad chunk)
             raise DownloadError(f'network error ({getattr(exc, "reason", exc)})') from None
     raise DownloadError(f'still refused after {attempts} attempts (site busy)')
 
