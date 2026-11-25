@@ -258,6 +258,37 @@ def cmd_sheet(args, db: Database) -> int:
     return 0
 
 
+def cmd_legibility(args, db: Database) -> int:
+    """Logos whose drawing vanishes on the screen they are made for (the logo on a light screen, its white variant
+    on a dark one): a report (temp/legibility.csv, worst first) and contact sheets of the channels concerned."""
+    from worldwide_tv_logos import harvest
+    logos = [x for x in db.logos.values() if x.variant in ('', 'white')]
+    if args.country:
+        cc = args.country.lower()
+        logos = [x for x in logos if x.channel in db.channels and db.channels[x.channel].country == cc]
+    rows = []
+    for x in logos:
+        path = db.path(x.file)
+        if path.is_file():
+            with Image.open(path) as img:
+                share = image.vanishing(img, dark=x.variant == 'white')
+            if share >= args.min:
+                rows.append((share, x.stem))
+    rows.sort(reverse=True)
+    out = Path(args.out) if args.out else db.root / 'temp' / 'legibility'
+    out.mkdir(parents=True, exist_ok=True)
+    with open(out / 'legibility.csv', 'w', encoding='utf-8', newline='') as fh:
+        fh.write('logo,screen,vanishing\n')
+        fh.writelines(f'{stem},{"dark" if stem.endswith(".white") else "light"},{share:.3f}\n' for share, stem in rows)
+    for old in out.glob('sheet-*.png'):
+        old.unlink()
+    stems = list(dict.fromkeys(stem.removesuffix('.white') for _, stem in rows))
+    pages = harvest.repo_sheets(db, stems[:args.sheets], out, 30) if stems and args.sheets else []
+    print(f'{len(rows)} of {len(logos)} logo file(s) partly vanish on their screen (from {args.min:.0%} of the '
+          f'drawing): {(out / "legibility.csv").as_posix()}' + (f', {len(pages)} sheet(s)' if pages else ''))
+    return 0
+
+
 def cmd_find(args, db: Database) -> int:
     """Every candidate logo of one channel or feed, from every source, checked and ranked, on a contact sheet."""
     from worldwide_tv_logos import harvest
@@ -1060,6 +1091,12 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument('--out')
     p.add_argument('--per-page', type=int, default=30)
     p.set_defaults(func=cmd_sheet)
+    p = sub.add_parser('legibility', help='logos whose drawing vanishes on their screen (temp/legibility/)')
+    p.add_argument('--country')
+    p.add_argument('--min', type=float, default=image.VANISH_ALERT, help='share of the drawing (default 0.02)')
+    p.add_argument('--sheets', type=int, default=300, help='channels shown on contact sheets, worst first')
+    p.add_argument('--out')
+    p.set_defaults(func=cmd_legibility)
     p = sub.add_parser('find', help='every candidate logo of a channel, from every source (temp/find/<id>/)')
     p.add_argument('id', help='logo ID, e.g. CanalSur.es or France3.fr@Alsace')
     p.add_argument('--no-wikidata', action='store_true')

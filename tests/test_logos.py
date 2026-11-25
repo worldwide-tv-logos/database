@@ -1184,3 +1184,26 @@ def test_guides_json_lookup_and_publication(db, tmp_path):
     channels = {c['id']: c for c in site.channels_json(db)['channels']}
     assert channels[ALS]['logo'] == channels[F3]['logo'] and channels[ALS]['logo_from'] == F3   # the channel's logo
     assert channels[F3]['iptv'] == 'France3.fr' and channels[BIS]['logo'] is None
+
+
+def _drawing(fill, box=None, outline=None, size=(400, 160)):
+    """A test logo on a transparent background: thick bars standing for letters, optionally inside a box."""
+    from PIL import ImageDraw
+    img = Image.new('RGBA', size, (0, 0, 0, 0))
+    d = ImageDraw.Draw(img)
+    if box:
+        d.rectangle([0, 0, size[0] - 1, size[1] - 1], fill=box)
+    for x in range(40, 360, 60):
+        d.rectangle([x, 40, x + 30, 120], fill=fill, outline=outline, width=4 if outline else 0)
+    return img
+
+
+def test_legibility_finds_what_vanishes_on_its_screen():
+    white, black, yellow, navy = (255, 255, 255, 255), (0, 0, 0, 255), (255, 230, 0, 255), (20, 30, 70, 255)
+    assert image.vanishing(_drawing(white)) > 0.9                          # white letters on a light screen
+    assert image.vanishing(_drawing(black)) == 0
+    assert image.vanishing(_drawing(black, box=white)) == 0                # a white frame around black letters
+    assert image.vanishing(_drawing(white, outline=black)) == 0            # white letters edged in black
+    assert image.vanishing(_drawing(yellow)) == 0                          # hue: yellow stays visible
+    assert image.vanishing(_drawing(navy), dark=True) > 0.9                # navy on a dark screen
+    assert image.vanishing(_drawing(white), dark=True) == 0
