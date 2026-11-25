@@ -1,6 +1,6 @@
 # Switzerland: channels without a logo
 
-82 of 179 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
+92 of 161 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
 
 | Channel ID | Name | iptv-org ID |
 |---|---|---|
@@ -13,25 +13,6 @@
 | `ch_m40s7f546k` | Blue Event 1 | BlueEvent1.ch |
 | `ch_j9xa8x4ck6` | Blue Event 2 | BlueEvent2.ch |
 | `ch_fn7kh3y5d3` | Blue Retro | BlueRetro.ch |
-| `ch_dryacbc94w` | Blue Sport 1 | BlueSport1.ch |
-| `ch_6fzqnwnqb5` | blue Sport 1 Live D |  |
-| `ch_j2rfxt2yf5` | blue Sport 10 Live |  |
-| `ch_01v4qpjnta` | blue Sport 11 Live |  |
-| `ch_c1b4pqnsah` | blue Sport 12 Live |  |
-| `ch_a5xnarnc21` | blue Sport 13 Live |  |
-| `ch_1cfgwgt0b5` | blue Sport 14 Live |  |
-| `ch_t66yy5wve7` | blue Sport 15 Live |  |
-| `ch_v9m6yah2qd` | blue Sport 16 Live |  |
-| `ch_tne3qf147r` | blue Sport 17 Live |  |
-| `ch_3xjbyemhdg` | Blue Sport 2 | BlueSport2.ch |
-| `ch_0t4bmp6zd1` | blue Sport 2 Live D |  |
-| `ch_7zcbag6khj` | blue Sport 3 Live |  |
-| `ch_f32n4kq65x` | blue Sport 4 Live |  |
-| `ch_q352k032tm` | blue Sport 5 Live |  |
-| `ch_w2449b63jn` | blue Sport 6 Live |  |
-| `ch_vv3fssy3ff` | blue Sport 7 Live |  |
-| `ch_kx5kxx2wb8` | blue Sport 8 Live |  |
-| `ch_21fe20p06d` | blue Sport 9 Live |  |
 | `ch_qxrz5hhtsn` | Blue Zoom D | BlueZoomD.ch |
 | `ch_gss5mmb9ed` | Bodensee TV | BodenseeTV.ch |
 | `ch_cs00syr9hb` | Canal Alpha NE | CanalAlphaNE.ch |
@@ -60,15 +41,6 @@
 | `ch_5ev71n2yj3` | My German TV | MyGermanTV.ch |
 | `ch_fcc348z4pf` | My German TV + | MyGermanTVPlus.ch |
 | `ch_y5v2nhbmey` | MySports 10 |  |
-| `ch_d8tpw8yfas` | MySports 2 French | MySports2French.ch |
-| `ch_9mqn52w67h` | MySports 3 French | MySports3French.ch |
-| `ch_6xqtvptnc2` | MySports 4 French | MySports4French.ch |
-| `ch_h0epc9t12w` | MySports 5 French | MySports5French.ch |
-| `ch_jyxws7pmpn` | MySports 6 French | MySports6French.ch |
-| `ch_t5grpft4xj` | MySports 7 French | MySports7French.ch |
-| `ch_y8x725wxj1` | MySports 8 French | MySports8French.ch |
-| `ch_51kn6h15c0` | MySports 9 French | MySports9French.ch |
-| `ch_rvvrr7nf3d` | MySports Edge |  |
 | `ch_h99bb855nc` | MySports Preview |  |
 | `ch_4zbynfjsj4` | Newcomer TV | NewcomerTV.ch |
 | `ch_77h0fhgw2q` | Radio 3i | Radio3i.ch |

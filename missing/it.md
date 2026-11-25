@@ -1,30 +1,24 @@
 # Italy: channels without a logo
 
-125 of 618 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
+224 of 619 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
 
 | Channel ID | Name | iptv-org ID |
 |---|---|---|
 | `ch_a61qpjd1k5` | 111 TV | 111TV.it |
 | `ch_d5cbdzm47z` | 12 TV Parma | 12TVParma.it |
-| `ch_2wrtsdc504` | 50 Canale | 50Canale.it |
 | `ch_ds96w70mxj` | 51 Radio TV | 51RadioTV.it |
 | `ch_26rs1hs6vw` | 7 Gold Marche | 7GoldMarche.it |
-| `ch_hekrbtvcxv` | 7 Gold Telepadova | 7GoldTelepadova.it |
 | `ch_w0gbvhmj1a` | 7 RadioVisione | 7RadioVisione.it |
 | `ch_vsc73zss4e` | 7 STORIA | 7STORIA.it |
 | `ch_af2sd06faa` | 7 YOU & ME | 7YOUME.it |
-| `ch_8xym1n6xpw` | 70-80 TV | 7080TV.it |
 | `ch_v6ewhzas0c` | A2i TV | A2iTV.it |
 | `ch_ktz8pfjvyr` | A3 | A3.it |
-| `ch_hbb5wz05b5` | AB Channel | ABChannel.it |
 | `ch_ttzynb3c65` | ABC TV | ABCTV.it |
 | `ch_a4tr8sh5jb` | Agrigento TV | AgrigentoTV.it |
 | `ch_j4y31nf51w` | Air Italia | AirItalia.it |
 | `ch_ptcdxgckrm` | Alma TV | AlmaTV.it |
 | `ch_b5hrr283f5` | AltoAdige TV | AltoAdigeTV.it |
 | `ch_x9038y30rd` | Antenna 2 TV | Antenna2TV.it |
-| `ch_cx45f0psjt` | Antenna Sicilia | AntennaSicilia.it |
-| `ch_vnjdcnj5cz` | Antenna Sud | AntennaSud.it |
 | `ch_qwvnq63y1x` | Antenna Sud Extra | AntennaSudExtra.it |
 | `ch_dxxga1057h` | Antenna Tre | AntennaTre.it |
 | `ch_a2zbj01thq` | Antichita Chiossone | AntichitaChiossone.it |
@@ -34,11 +28,9 @@
 | `ch_bzthvdw4ce` | Arte Investimenti | ArteInvestimenti.it |
 | `ch_ryj127t7z1` | Arte Network Orler Canale Due | ArteNetworkOrlerCanaleDue.it |
 | `ch_frcg54d7dj` | Arte Network Orler Canale Uno | ArteNetworkOrlerCanaleUno.it |
-| `ch_pae55bgjxf` | Aurora Arte | AuroraArte.it |
 | `ch_91ammf9m8f` | Azzurra TV | AzzurraTV.it |
 | `ch_vc2jqgqnn6` | Babayaga TV | BabayagaTV.it |
 | `ch_ewxepk7qcc` | Bella Liguria TV | BellaLiguriaTV.it |
-| `ch_53eewg4c5z` | Bella TV | BellaTV.it |
 | `ch_y00f6xp6x2` | Bergamo TV | BergamoTV.it |
 | `ch_60zzrpyzfp` | BFC Forbes | BFCForbes.it |
 | `ch_t1cqs698nc` | Bike Channel | BikeChannel.it |
@@ -49,20 +41,16 @@
 | `ch_q3wtr8tedb` | ByoBlu | ByoBlu.it |
 | `ch_an8a5dbgz5` | CafeTV24 | CafeTV24.it |
 | `ch_w0j38gvag0` | Calabria TV | CalabriaTV.it |
-| `ch_hc7prcx2rh` | CalabriaUno TV | CalabriaUnoTV.it |
 | `ch_bj4t39s1wc` | Cam Tele3 | CamTele3.it |
 | `ch_4g8e6p44cd` | Canale 162 | Canale162.it |
 | `ch_8w6w5yqk8s` | Canale 165 | Canale165.it |
 | `ch_j5a2ft78dj` | Canale 2 Altamura | Canale2Altamura.it |
-| `ch_bs1hgk52ra` | Canale 21 | Canale21.it |
 | `ch_0aqktqrq7r` | Canale 21 Extra | Canale21Extra.it |
 | `ch_28rzxas7qr` | Canale 3 Toscana | Canale3Toscana.it |
 | `ch_wxf3xx3pyq` | Canale 48 | Canale48.it |
 | `ch_mr7n828ewt` | Canale 58 | Canale58.it |
-| `ch_4jt94nhew1` | Canale 7 | Canale7.it |
 | `ch_s2tfq34y16` | Canale 8 | Canale8.it |
 | `ch_w4kmhm7z6n` | Canale 88 | Canale88.it |
-| `ch_2p2svx12z3` | Canale Dieci | CanaleDieci.it |
 | `ch_535ckca7a2` | Canale Europa TV | CanaleEuropaTV.it |
 | `ch_s002266251` | Canale Italia | CanaleItalia.it |
 | `ch_ptetx1hv1b` | Canale Italia 83 | CanaleItalia83.it |
@@ -70,7 +58,6 @@
 | `ch_g8tm9vb243` | Capri Casino | CapriCasino.it |
 | `ch_h2d8p7vedy` | Capri Fashion | CapriFashion.it |
 | `ch_z9e01z4ar0` | CarinaTV | CarinaTV.it |
-| `ch_5qpq4w01yx` | Casa Italia 53 | CasaItalia53.it |
 | `ch_c506vbe7qn` | CG Entertainment | CGEntertainment.it |
 | `ch_ae5gxcf4sf` | Channel 24 | Channel24.it |
 | `ch_ps4mc5vbpd` | Cinema Segreto | CinemaSegreto.it |
@@ -90,25 +77,20 @@
 | `ch_ac3stjbvt1` | Entella TV | EntellaTV.it |
 | `ch_mn1a6z6x3h` | Epiqa | Epiqa.it |
 | `ch_d9scfn4ykd` | EQUtv | EQUtv.it |
-| `ch_890y31dgkg` | Espansione TV | EspansioneTV.it |
 | `ch_e4vwgwxgja` | Etna Espresso Channel | EtnaEspressoChannel.it |
 | `ch_w4kn9mry4b` | eTv Marche | eTvMarche.it |
-| `ch_xgnrg8s9t3` | eTv Rete 7 | eTvRete7.it |
 | `ch_st45rmetrs` | Euro Indie Music Chart TV | EuroIndieMusicChartTV.it |
 | `ch_pvad4zv25z` | Euro TV | EuroTV.it |
 | `ch_9svscge5jk` | Explorer HD Channel | ExplorerHDChannel.it |
 | `ch_zaghjzrxt1` | Extra TV | ExtraTV.it |
 | `ch_jprhv9n2qs` | Fano TV | FanoTV.it |
 | `ch_gtxxz44n6p` | Fire TV | FireTV.it |
-| `ch_fpna2vz8bj` | FM ITALIA | FMITALIA.it |
 | `ch_nkf016hr1q` | FM TV | FMTV.it |
 | `ch_81g6ds77jm` | Focus | Focus.it |
 | `ch_mnkn0wzbzy` | Genius 240 | Genius240.it |
 | `ch_fssnj6qp9a` | Giornale Radio News TV | GiornaleRadioNewsTV.it |
-| `ch_8v8ewdq7m9` | Giornale Radio TV | GiornaleRadioTV.it |
 | `ch_hjpvt0z4hm` | Giovanni Paolo TV | GiovanniPaoloTV.it |
 | `ch_fmamr02q7z` | GO-TV Canale 163 | GOTVCanale163.it |
-| `ch_bnwng2b45b` | Gold TV | GoldTV.it |
 | `ch_pnd0wbfnmf` | Gold TV Sat | GoldTVSat.it |
 | `ch_p5ebnq6kmy` | GoldBet League | GoldBetLeague.it |
 | `ch_ygjrdszrc0` | GoldBet Racing | GoldBetRacing.it |
@@ -117,20 +99,16 @@
 | `ch_2f87qt6zgk` | History Lab | HistoryLab.it |
 | `ch_8fcfy406cj` | HopeMedia Italia | HopeMediaItalia.it |
 | `ch_x68gh6gybb` | Horse TV | HorseTV.it |
-| `ch_2femp8zery` | Icaro TV | IcaroTV.it |
 | `ch_k66gbyrc9w` | Il13 | Il13.it |
 | `ch_07wzdz4mdj` | Info Media News | InfoMediaNews.it |
 | `ch_38egn001mn` | Inter TV | InterTV.it |
 | `ch_fvr1fheep3` | Italia 7 | Italia7.it |
 | `ch_rbn4a1t2mg` | Italia Channel | ItaliaChannel.it |
 | `ch_nadg7g63ex` | Italia2TV | Italia2TV.it |
-| `ch_v495ac17fx` | Italian Fishing TV | ItalianFishingTV.it |
 | `ch_fqkawxebms` | Italiana | Italiana.it |
 | `ch_gqdp7t4k8z` | Iunior TV | IuniorTV.it |
-| `ch_g009qw59sz` | Juwelo | Juwelo.it |
 | `ch_v6xyyasc6h` | Kiss Kiss Napoli TV | KissKissNapoliTV.it |
 | `ch_ggmcqd73qm` | Kiss Kiss TV | KissKissTV.it |
-| `ch_2604fvb8d7` | L'altro Corriere TV | LaltroCorriereTV.it |
 | `ch_b0at9dd5h6` | La 9 | La9.it |
 | `ch_tsxvqgtgnw` | La F | LaF.it |
 | `ch_b72dptkcgh` | La Grande Italia | LaGrandeItalia.it |
@@ -138,21 +116,14 @@
 | `ch_av8p940xar` | La Tr3 | LaTr3.it |
 | `ch_3q6a7t7b5d` | La TR3 Marsala | LaTR3Marsala.it |
 | `ch_dcq47cafjq` | La4 Italia | La4Italia.it |
-| `ch_gkgvt3x4qs` | Lab TV | LabTV.it |
-| `ch_mket2cwb7z` | LaC On Air | LaCOnAir.it |
 | `ch_3qpwje37d4` | Lazio Style Channel | LazioStyleChannel.it |
-| `ch_sehprthwnh` | Lazio TV | LazioTV.it |
 | `ch_mknds8yf0p` | Le Cronache TV | LeCronacheTV.it |
 | `ch_e4syyx3m12` | Life 120 Channel | Life120Channel.it |
-| `ch_z6m6medg6j` | Linea Gem | LineaGem.it |
-| `ch_kjzv7e0qmb` | Linea Italia | LineaItalia.it |
 | `ch_9h592s5zfc` | Lira TV | LiraTV.it |
 | `ch_34xqrbgzzw` | Lombardia Radio TV | LombardiaRadioTV.it |
-| `ch_yb61bsqd82` | Lombardia TV | LombardiaTV.it |
 | `ch_y3nh7njywp` | Love in Venice | LoveinVenice.it |
 | `ch_gd2p6xdyd5` | Lucania Channel | LucaniaChannel.it |
 | `ch_gzvzbnr9v5` | Luna TV | LunaTV.it |
-| `ch_zkcafa5za1` | MadeinBO TV | MadeinBOTV.it |
 | `ch_w11n907wbr` | Maria Vision Italia | MariaVisionItalia.it |
 | `ch_f04c6wd079` | Media TV | MediaTV.it |
 | `ch_t7r49y9kye` | MEDIA24 | MEDIA24.it |
@@ -161,16 +132,11 @@
 | `ch_jadw3ek1z8` | Medjugorje Italia TV | MedjugorjeItaliaTV.it |
 | `ch_3zhjn7n002` | Milan TV | MilanTV.it |
 | `ch_vmzzccv2nb` | Milanow | Milanow.it |
-| `ch_wtxqpf5s4s` | Minformo TV | MinformoTV.it |
 | `ch_mnrkf5kp5h` | Mojito TV | MojitoTV.it |
 | `ch_457rcb0cxb` | Mondo Kids | MondoKids.it |
 | `ch_rjeypvkppz` | Motor TV | MotorTV.it |
-| `ch_kdhky7rgy4` | Motori TV | MotoriTV.it |
-| `ch_1wr7ayzyzs` | MS Channel | MSChannel.it |
 | `ch_yxpr86f0ya` | NewSignal | NewSignal.it |
-| `ch_3kvnc2n1pc` | Nickelodeon | Nickelodeon.it |
 | `ch_5xvk9pdy48` | NoiTV | NoiTV.it |
-| `ch_xddcap7w25` | NOVAHOT22 TV | NOVAHOT22TV.it |
 | `ch_h65yyxs9eb` | NSL | NSL.it |
 | `ch_cb7v28gy8n` | NTN | NTN.it |
 | `ch_8wvqwqd5nt` | Nuova TV 1 | NuovaTV1.it |
@@ -181,24 +147,18 @@
 | `ch_9zgq5w24k7` | ORF 1 Sudtirol | ORF1Sudtirol.it |
 | `ch_gf88n6ehvg` | Orler TV | OrlerTV.it |
 | `ch_x3sckax522` | Otto Channel | OttoChannel.it |
-| `ch_atdsqfk3av` | Otto FM TV | OttoFMTV.it |
 | `ch_sv89pnqem7` | Paci Contemporary Channel | PaciContemporaryChannel.it |
 | `ch_j1k1f85x21` | Padre Pio TV | PadrePioTV.it |
 | `ch_qyefhkp922` | Paradise TV | ParadiseTV.it |
-| `ch_jjhefhqhny` | Parole di Vita | ParolediVita.it |
 | `ch_efqd974nhg` | Partenope TV | PartenopeTV.it |
 | `ch_9nzxqh1azc` | Passione Lotto | PassioneLotto.it |
 | `ch_tgp1a3rq3q` | Pop Economy | PopEconomy.it |
 | `ch_03rr6z3e49` | Prima Free | PrimaFree.it |
 | `ch_a90j3mab9p` | Prima Tivvu | PrimaTivvu.it |
-| `ch_gxcrdwpxsy` | Prima TV | PrimaTV.it |
 | `ch_k43dx700dw` | Prima TV Napoli | PrimaTVNapoli.it |
 | `ch_gh81c1fvyc` | PrimAntenna TV | PrimAntennaTV.it |
 | `ch_s26ycvjtbw` | Primocanale | Primocanale.it |
-| `ch_dxxztbcfjs` | Promovideo TV | PromovideoTV.it |
-| `ch_wzv53razby` | Quadrifoglio TV | QuadrifoglioTV.it |
 | `ch_sw7yyy50kw` | Quarto Canale Flegreo | QuartoCanaleFlegreo.it |
-| `ch_d3nztspj05` | R101 TV | R101TV.it |
 | `ch_7pwfap1np2` | Radio 105 TV | Radio105TV.it |
 | `ch_cmxpkja2kd` | Radio 51 TV | Radio51TV.it |
 | `ch_tgphhgbkfc` | Radio Adige TV | RadioAdigeTV.it |
@@ -206,20 +166,16 @@
 | `ch_h8m8b9fw4p` | Radio Bruno TV | RadioBrunoTV.it |
 | `ch_tag9jagz50` | Radio Capital TiVu | RadioCapitalTiVu.it |
 | `ch_9w4f9ppsnw` | Radio Capital TV | RadioCapitalTV.it |
-| `ch_y0qw621wtw` | Radio Cusano Italia TV | RadioCusanoItaliaTV.it |
 | `ch_18khxfrq7s` | Radio Ibiza TV | RadioIbizaTV.it |
 | `ch_zzwdzq0fx5` | Radio Iglesias | RadioIglesias.it |
 | `ch_w7gfs1e5nm` | Radio Iglesias Sardegna | RadioIglesiasSardegna.it |
 | `ch_t67r654xpb` | Radio Italia Anni 60 TV | RadioItaliaAnni60TV.it |
 | `ch_yb6krv16x7` | Radio Marte TV | RadioMarteTV.it |
 | `ch_kgm49a51kq` | Radio Millenium TV | RadioMilleniumTV.it |
-| `ch_v57crxw05j` | Radio Monte Carlo TV | RadioMonteCarloTV.it |
-| `ch_xcfmt7aw4v` | Radio Number One | RadioNumberOne.it |
 | `ch_d4a3fxa42n` | Radio Parsifal Radio Visione | RadioParsifalRadioVisione.it |
 | `ch_yzyvm66m53` | Radio Piter Pan TV | RadioPiterPanTV.it |
 | `ch_f02bra181d` | Radio Radio TV | RadioRadioTV.it |
 | `ch_s0n1s77c8d` | Radio Roma | RadioRoma.it |
-| `ch_dwtffy16w8` | Radio Roma News | RadioRomaNews.it |
 | `ch_gh25h2qm8k` | Radio Roma Television | RadioRomaTelevision.it |
 | `ch_6w6j4yczse` | Radio Studio Delta TV | RadioStudioDeltaTV.it |
 | `ch_rcst9syzps` | Radio Taormina Sicilia | RadioTaorminaSicilia.it |
@@ -227,13 +183,7 @@
 | `ch_fyhnqnvjnw` | Radio Zeta | RadioZeta.it |
 | `ch_rkwrm0qswb` | Radiolina TV | RadiolinaTV.it |
 | `ch_1jgx38px51` | RadioMusica TV | RadioMusicaTV.it |
-| `ch_5a8h0mq6k4` | Rai Alto Adige | RaiAltoAdige.it |
-| `ch_40sb5ct9s5` | Rai Radio 2 Visual | RaiRadio2Visual.it |
-| `ch_m636sn9m9f` | Rai World Premium | RaiWorldPremium.it |
 | `ch_zw8czsnvd4` | Rainbow | Rainbow.it |
-| `ch_1mbck4qxg0` | RDS Relax | RDSRelax.it |
-| `ch_fsb01qmz2y` | RDS Social TV | RDSSocialTV.it |
-| `ch_6edndf7nwd` | ReggioTV | ReggioTV.it |
 | `ch_acqjzadm8n` | Rei TV | ReiTV.it |
 | `ch_9vayekz6n2` | Rete 55 | Rete55.it |
 | `ch_5ffe158ah2` | Rete 8 | Rete8.it |
@@ -246,7 +196,6 @@
 | `ch_zwwje7h1z6` | Rete TV Italia | ReteTVItalia.it |
 | `ch_nghsj6q6yw` | Retecapri | Retecapri.it |
 | `ch_t0286ep5tw` | Retemia | Retemia.it |
-| `ch_n9sfgpb9z0` | ReteSette | ReteSette.it |
 | `ch_89xq53e622` | Retesole Lazio | RetesoleLazio.it |
 | `ch_x6tppa4jd3` | Reteveneta | Reteveneta.it |
 | `ch_tb87bfw395` | RMK TV Sciacca | RMKTVSciacca.it |
@@ -255,11 +204,8 @@
 | `ch_bxrrhfdsj3` | Rossini TV | RossiniTV.it |
 | `ch_amxk0p77te` | RTC Quarta Rete | RTCQuartaRete.it |
 | `ch_fzysnn100y` | RTC Telecalabria | RTCTelecalabria.it |
-| `ch_h5htm3vv2x` | RTI Canale 14 | RTICanale14.it |
 | `ch_ekfcnz6a3d` | RTL 102.5 Best | RTL1025Best.it |
 | `ch_hrcn98cryb` | RTL 102.5 Bro&Sis | RTL1025BroSis.it |
-| `ch_1rk324069f` | RTL 102.5 Caliente | RTL1025Caliente.it |
-| `ch_xdrzzvdhp4` | RTL 102.5 Disco | RTL1025Disco.it |
 | `ch_2msdb5jcw2` | RTL 102.5 Napule | RTL1025Napule.it |
 | `ch_qaw3ggd3qf` | RTL 102.5 Traffic | RTL1025Traffic.it |
 | `ch_skqf8nwsp3` | RTM TV | RTMTV.it |
@@ -269,19 +215,14 @@
 | `ch_dbkfbaq7mw` | RTV Ilirida Music | RTVIliridaMusic.it |
 | `ch_3jbt4af7ga` | RTV38 | RTV38.it |
 | `ch_h0znqrrvs4` | S1 TV | S1TV.it |
-| `ch_nrxchv5g80` | Seila TV | SeilaTV.it |
-| `ch_rreycb1jm5` | Senato TV | SenatoTV.it |
-| `ch_qnea5zrhmn` | Sesta Rete | SestaRete.it |
 | `ch_a3gd7wa8pv` | Sfera TV | SferaTV.it |
 | `ch_b8n079jmjy` | Sharing TV | SharingTV.it |
 | `ch_6b4ca7dbp1` | Sicilia TV | SiciliaTV.it |
-| `ch_ezwekaz5vv` | Siena TV | SienaTV.it |
 | `ch_wqpw6cc5r8` | Sisal TV 1 | SisalTV1.it |
 | `ch_6x13tgkt34` | Sisal TV 2 | SisalTV2.it |
 | `ch_qn79wtfj7a` | Sisal TV 3 | SisalTV3.it |
 | `ch_ean6drn5wr` | Sisal TV 4 | SisalTV4.it |
 | `ch_3cecrkr2wt` | Sisal TV 5 | SisalTV5.it |
-| `ch_bb00qjd4xs` | Sky Adventure | SkyAdventure.it |
 | `ch_gykd0eqg3c` | Sky Arte | SkyArte.it |
 | `ch_8s6ppv0tvp` | Sky Atlantic Maratone | SkyAtlanticMaratone.it |
 | `ch_gf9yqdk9sr` | Sky Calcio 10 | SkyCalcio10.it |
@@ -291,11 +232,8 @@
 | `ch_ebmp49xgcj` | Sky Cinema Comedy | SkyCinemaComedy.it |
 | `ch_tgts0dazan` | Sky Cinema Drama | SkyCinemaDrama.it |
 | `ch_m729bvfzfk` | Sky Cinema Family | SkyCinemaFamily.it |
-| `ch_0je21k3f99` | Sky Cinema Romance | SkyCinemaRomance.it |
-| `ch_tbnx4mqd8g` | Sky Cinema Suspense | SkyCinemaSuspense.it |
 | `ch_rsevtgx3nn` | Sky Cinema Uno | SkyCinemaUno.it |
 | `ch_rp7wbtpbpx` | Sky Classica | SkyClassica.it |
-| `ch_y26sdvx0zz` | Sky Investigation | SkyInvestigation.it |
 | `ch_zak0szbsnm` | Sky Primafila 1 | SkyPrimafila1.it |
 | `ch_5t67q5vj99` | Sky Primafila 10 | SkyPrimafila10.it |
 | `ch_fs9g1kba6m` | Sky Primafila 11 | SkyPrimafila11.it |
@@ -332,7 +270,6 @@
 | `ch_3bm7t9vna9` | Sky Sport 259 | SkySport259.it |
 | `ch_bq5yf9jdxz` | Sky Sport Bar 1 | SkySportBar1.it |
 | `ch_a3w1kkc1j6` | Sky Sport Bar 3 | SkySportBar3.it |
-| `ch_y5s8z0f8ew` | Sky Sport Max | SkySportMax.it |
 | `ch_erjdhdtqwq` | Sky Voices | SkyVoices.it |
 | `ch_5s50x805ag` | SL48 TV | SL48TV.it |
 | `ch_fvqve2jpkp` | SNAI Virtuali 1 | SNAIVirtuali1.it |
@@ -347,22 +284,16 @@
 | `ch_sbzswt0wr4` | ST Europe Channel | STEuropeChannel.it |
 | `ch_n49ktq95wb` | Stereo 5 TV | Stereo5TV.it |
 | `ch_j04q8g4yad` | Studio 100 Puglia | Studio100Puglia.it |
-| `ch_1wgbbxm6k6` | Studio 7 TV | Studio7TV.it |
 | `ch_9dcvsx90c7` | Super J TV Teramo | SuperJTVTeramo.it |
 | `ch_mb1nrtadhj` | Super Six | SuperSix.it |
 | `ch_kc3qmv5p79` | Super TV | SuperTV.it |
-| `ch_g5zvqhn4sz` | Super TV Oristano | SuperTVOristano.it |
 | `ch_8mg7qapzs7` | T9 | T9.it |
 | `ch_1cxzb6g7yc` | Taurianova TV | TaurianovaTV.it |
-| `ch_6qdraft0w5` | TCF TV | TCFTV.it |
 | `ch_w87ngz0beq` | TCI | TCI.it |
-| `ch_ghq78vkc4q` | Teatro TV | TeatroTV.it |
 | `ch_71qnexewth` | Tele A | TeleA.it |
 | `ch_bvdqy7f6m9` | Tele Abruzzo | TeleAbruzzo.it |
 | `ch_6vc6t5t5k4` | Tele Chiara | TeleChiara.it |
 | `ch_00wnegjm7j` | Tele Clusone | TeleClusone.it |
-| `ch_mgbz8j9ttp` | Tele Costa Smeralda | TeleCostaSmeralda.it |
-| `ch_zmr2t739zc` | Tele Dehon | TeleDehon.it |
 | `ch_chqfnhdj3x` | Tele Liguria Sud | TeleLiguriaSud.it |
 | `ch_gcfsy2a59c` | Tele Moda | TeleModa.it |
 | `ch_wkcbccpqh5` | Tele One 16 | TeleOne16.it |
@@ -372,20 +303,13 @@
 | `ch_t94f7yf7h9` | Tele Roma Uno | TeleRomaUno.it |
 | `ch_qs0znsykdq` | Tele Shopping | TeleShopping.it |
 | `ch_4yy2297r0k` | Teleacras | Teleacras.it |
-| `ch_zpd0mx0j30` | TeleAmbiente TV | TeleAmbienteTV.it |
-| `ch_29br15hm65` | TeleArena | TeleArena.it |
 | `ch_h38wrysstv` | Telearte | Telearte.it |
-| `ch_e53z9xhwp2` | Telebari | Telebari.it |
-| `ch_crzhqmd4k4` | Telebelluno | Telebelluno.it |
-| `ch_h6nyr87rdc` | Telecity Liguria | TelecityLiguria.it |
 | `ch_f9p685q63e` | Telecity Lombardia | TelecityLombardia.it |
 | `ch_h8z2q3ygzk` | Telecity Piemonte | TelecityPiemonte.it |
 | `ch_8htk1jryr4` | Telecity Valle d'Aosta | TelecityValledAosta.it |
 | `ch_et6zgye9vx` | Telecolor Lombardia | TelecolorLombardia.it |
 | `ch_b487686xqc` | Telefoggia | Telefoggia.it |
-| `ch_j6x6b0sz69` | Telefriuli | Telefriuli.it |
 | `ch_k9h5ynyje3` | Telegela 647 | Telegela647.it |
-| `ch_d55zrre9nb` | TeleGenova | TeleGenova.it |
 | `ch_42115hvee1` | Telegranda | Telegranda.it |
 | `ch_sxhk5aa38j` | Teleiblea 89 | Teleiblea89.it |
 | `ch_cggjexywp2` | Telejato | Telejato.it |
@@ -393,14 +317,11 @@
 | `ch_9dxa6818sc` | Teleliberta | Teleliberta.it |
 | `ch_5mawstgd59` | Telelombardia | Telelombardia.it |
 | `ch_0n5be4mb10` | TeleMajg | TeleMajg.it |
-| `ch_x8cg5y09n7` | Telemantova | Telemantova.it |
-| `ch_v607y5cz65` | TeleMia | TeleMia.it |
 | `ch_geepgrg6sx` | TeleMia Extra | TeleMiaExtra.it |
 | `ch_0dz7e8snfw` | TeleMistretta | TeleMistretta.it |
 | `ch_95e631yvm6` | Telemolise | Telemolise.it |
 | `ch_zhnas1916k` | teleMonteneve | teleMonteneve.it |
 | `ch_h25p5m99z4` | Telenorba | Telenorba.it |
-| `ch_qa0th0pm5r` | Telenord | Telenord.it |
 | `ch_4wxz9wpwxk` | TeleNordest | TeleNordest.it |
 | `ch_bjs5nrafm8` | Telenova | Telenova.it |
 | `ch_dgpnb2q8d7` | Telepace 1 | Telepace1.it |
@@ -408,17 +329,13 @@
 | `ch_m0r136ca1y` | Telepace 3 | Telepace3.it |
 | `ch_kepmee86vb` | Telepace 4 | Telepace4.it |
 | `ch_mqrdq639tc` | Telepace News | TelepaceNews.it |
-| `ch_9g7v6m805x` | Telepace Trento | TelepaceTrento.it |
 | `ch_nctcbvnffc` | Telepavia | Telepavia.it |
 | `ch_hqac9vfgyw` | TelePordenone | TelePordenone.it |
-| `ch_tfjtv17x3r` | Teleradio Futura Nissa | TeleradioFuturaNissa.it |
 | `ch_qadahzv6pg` | TeleRama | TeleRama.it |
 | `ch_6aadrd585j` | TeleReggio | TeleReggio.it |
 | `ch_dmp6p3xv19` | Teleregione | Teleregione.it |
-| `ch_qdb4sfyarj` | Teleregione Live | TeleregioneLive.it |
 | `ch_rwm54f0x3m` | Teleromagna | Teleromagna.it |
 | `ch_5jw04w6pzf` | TeleSanDomenico | TeleSanDomenico.it |
-| `ch_km84njbz0z` | Telesardegna | Telesardegna.it |
 | `ch_rtct5xcqpb` | Telesirio Web TV | TelesirioWebTV.it |
 | `ch_4pd760bfvd` | Telestense | Telestense.it |
 | `ch_f2xdskmar6` | Telesud | Telesud.it |
@@ -428,7 +345,6 @@
 | `ch_fhw1gz8mm1` | Teletruria | Teletruria.it |
 | `ch_sj423jkdew` | TeleTusciaSabina 2000 | TeleTusciaSabina2000.it |
 | `ch_jw3f93scb8` | Teleuniverso | Teleuniverso.it |
-| `ch_7pycej53dt` | Televallo | Televallo.it |
 | `ch_d6jykcsxs1` | TeleVenezia | TeleVenezia.it |
 | `ch_jbtwawb1xp` | TeleVideo Agrigento | TeleVideoAgrigento.it |
 | `ch_6es7h5yv9f` | Ten TV | TenTV.it |
@@ -438,7 +354,6 @@
 | `ch_744wa20tqr` | Tiziana Lotto | TizianaLotto.it |
 | `ch_7cbzyae6eq` | TLN Tele Lazio Nord | TLNTeleLazioNord.it |
 | `ch_7dwwkftzh0` | TLT Molise | TLTMolise.it |
-| `ch_d8xwbmh6fx` | Top Calcio 24 | TopCalcio24.it |
 | `ch_paqgg80rwe` | Top Planet | TopPlanet.it |
 | `ch_8wdmennsjm` | TR Sport | TRSport.it |
 | `ch_gqp8hfq2f1` | TRC Bologna | TRCBologna.it |
@@ -446,48 +361,35 @@
 | `ch_mgb9yrz9xd` | Tremedia TV | TremediaTV.it |
 | `ch_12x45bc4r0` | Trentino TV | TrentinoTV.it |
 | `ch_vhhgpdygvy` | TRG Media | TRGMedia.it |
-| `ch_674rvd643p` | TriS | TriS.it |
 | `ch_69q0pt8cdp` | TSN Lecco | TSNLecco.it |
 | `ch_bc96ybgeae` | TSN TeleSondrio News | TSNTeleSondrioNews.it |
 | `ch_rh45162ajd` | TSN Visual Radio | TSNVisualRadio.it |
-| `ch_44ws1s0ktr` | TT Teletutto | TTTeletutto.it |
 | `ch_75ddxm6g10` | TT2 Teletutto | TT2Teletutto.it |
 | `ch_4z8mb3gnht` | TT24 Teletutto | TT24Teletutto.it |
 | `ch_5thjm8vy3f` | TV Campane 1 | TVCampane1.it |
 | `ch_ph78cztxgh` | TV Campane 2 | TVCampane2.it |
 | `ch_bpw0x1enyr` | TV Luna | TVLuna.it |
-| `ch_65d1qt3ggn` | TV Prato | TVPrato.it |
 | `ch_9rxycy2caf` | TV Qui Modena | TVQuiModena.it |
 | `ch_9sw39mkqse` | TV Sei | TVSei.it |
 | `ch_nc0en5ezvc` | TV Yes Italia | TVYesItalia.it |
 | `ch_96b431xyrw` | TV1 | TV1.it |
 | `ch_h8jwaxxyka` | TV7 Benevento | TV7Benevento.it |
 | `ch_rbqsn18z6m` | TV7 Triveneta | TV7Triveneta.it |
-| `ch_e204zgqk54` | tv9 Telemaremma | tv9Telemaremma.it |
 | `ch_c92yn0btq3` | TVL | TVL.it |
-| `ch_d8gs5y9f05` | TVRS | TVRS.it |
 | `ch_fv40s7kvvx` | Udinese TV | UdineseTV.it |
 | `ch_rmx31633ga` | Umbria TV | UmbriaTV.it |
-| `ch_kkbz6zd68k` | UniNettuno University TV | UniNettunoUniversityTV.it |
 | `ch_b7dnqgw7ry` | Unire Blu | UnireBlu.it |
 | `ch_rg1ft3fcqy` | Unire Sat | UnireSat.it |
 | `ch_tnv0mmq8ze` | Unire TV | UnireTV.it |
 | `ch_8hsz3s0tqd` | Unire TV 1 | UnireTV1.it |
 | `ch_1f49kev9s1` | Unire TV 2 | UnireTV2.it |
-| `ch_1p4jzkwx3f` | Uno4 | Uno4.it |
-| `ch_m0wvkne45d` | V2BEAT TV | V2BEATTV.it |
-| `ch_0p1zxpxxf0` | Value 24 TV | Value24TV.it |
 | `ch_2z5by12mn5` | Vera TV | VeraTV.it |
 | `ch_2jj0wnac4m` | Video 33 | Video33.it |
 | `ch_bs399q59fm` | Video Calabria | VideoCalabria.it |
-| `ch_rfrvrantnn` | Video Mediterraneo | VideoMediterraneo.it |
 | `ch_sqh7xnt57w` | Video Rola | VideoRola.it |
-| `ch_773y7at175` | Videolina | Videolina.it |
 | `ch_csg7ekatdc` | Videolina Sardegna | VideolinaSardegna.it |
 | `ch_38kn08tqg6` | VideoRegione | VideoRegione.it |
 | `ch_1az4dv6za7` | Videostar Canale 193 | VideostarCanale193.it |
-| `ch_cf6dpdrdhz` | VideoTouring | VideoTouring.it |
-| `ch_rbhapykm4g` | Virgin Radio TV | VirginRadioTV.it |
 | `ch_dge52jev2c` | Visual Radio | VisualRadio.it |
 | `ch_gydma7e2a7` | Vuemme | Vuemme.it |
 | `ch_pp6812pfma` | Wedding TV | WeddingTV.it |

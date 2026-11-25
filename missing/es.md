@@ -1,12 +1,11 @@
 # Spain: channels without a logo
 
-266 of 645 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
+305 of 648 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
 
 | Channel ID | Name | iptv-org ID |
 |---|---|---|
 | `ch_dnnm8qbdcw` | 101tv Antequera | 101tvAntequera.es |
 | `ch_vcz4t7mz5r` | 101tv Axarquia | 101tvAxarquia.es |
-| `ch_5j44vgyve0` | 101tv Cadiz | 101tvCadiz.es |
 | `ch_xv05g58seq` | 101tv Malaga | 101tvMalaga.es |
 | `ch_9rmbf316z1` | 101tv Ronda | 101tvRonda.es |
 | `ch_br5npx11rm` | 101tv Sevilla | 101tvSevilla.es |
@@ -15,7 +14,6 @@
 | `ch_zwm7ca3rc6` | 24 Horas Canarias | 24HorasCanarias.es |
 | `ch_t2ek1atb2s` | 24 Horas Catalunya | 24HorasCatalunya.es |
 | `ch_vgbzs7nzg0` | 25 TV | 25TV.es |
-| `ch_m1bv0dq62k` | 28 kanala | 28kanala.es |
 | `ch_fgar3p24hm` | 3Cat Exclusiu 2 | 3CatExclusiu2.es |
 | `ch_kq3n1ewj2e` | 3Cat Exclusiu 3 | 3CatExclusiu3.es |
 | `ch_p74dmyrtcx` | 7 La Rioja | 7LaRioja.es |
@@ -23,14 +21,11 @@
 | `ch_bj9z5v3kf8` | 8 TV Cadiz | 8TVCadiz.es |
 | `ch_qrt68xqf65` | 9 la Loma TV | 9laLomaTV.es |
 | `ch_r2g92kzxee` | 987tv | 987tv.es |
-| `ch_b8zbs6qc5n` | A Nove TV | ANoveTV.es |
 | `ch_penrrx3fcd` | AC Principado TV | ACPrincipadoTV.es |
 | `ch_yn5cqhbq2g` | Action Movies | ActionMovies.es |
 | `ch_4ph4bsjktk` | Activa TV | ActivaTV.es |
 | `ch_cvtdf8errw` | Actualidad 360 | Actualidad360.es |
-| `ch_m66jdxh7f6` | Afortunadas TV | AfortunadasTV.es |
 | `ch_nkf2dq3wkm` | Ahora TV | AhoraTV.es |
-| `ch_vpygnk4vkk` | Alacanti TV | AlacantiTV.es |
 | `ch_tmk9r4kqy6` | Alcarria TV | AlcarriaTV.es |
 | `ch_sgbnrhsvxb` | Almeria 24h TV | Almeria24hTV.es |
 | `ch_5y1cz8xx1m` | Alquiler HD | AlquilerHD.es |
@@ -38,7 +33,6 @@
 | `ch_wjfrery7tg` | Anime Vision | AnimeVision.es |
 | `ch_4x846hsbbt` | Anime Vision Classics | AnimeVisionClassics.es |
 | `ch_81zzgsw3gg` | Aqui No Hay Quien Viva | AquiNoHayQuienViva.es |
-| `ch_x7ese6e6hm` | Arabi TV | ArabiTV.es |
 | `ch_ct4s7r3w6s` | AstroShow | AstroShow.es |
 | `ch_7kf2fv8w6y` | Atreseries Internacional | AtreseriesInternacional.es |
 | `ch_qbz3ww6080` | Atresplayer Comedia | AtresplayerComedia.es |
@@ -51,8 +45,6 @@
 | `ch_n0vgndbf0g` | BDN | BDN.es |
 | `ch_4jjjx9fss0` | Betania TV | BetaniaTV.es |
 | `ch_tyj82er4wm` | Biosfera TV | BiosferaTV.es |
-| `ch_wr3n73x1g8` | Bon Dia TV | BonDiaTV.es |
-| `ch_kj2afc8gjz` | BurrianaTeVe | BurrianaTeVe.es |
 | `ch_2kg7ppbdn7` | Cacavision | Cacavision.es |
 | `ch_r01gasf3gs` | Caceres TeVe | CaceresTeVe.es |
 | `ch_nzeaxq8nft` | Cadena Elite | CadenaElite.es |
@@ -64,19 +56,14 @@
 | `ch_0q1ghkcmqy` | Canal 2000 | Canal2000.es |
 | `ch_d7pcxqzh5r` | Canal 21 Ebre | Canal21Ebre.es |
 | `ch_852zyngyfe` | Canal 25 TV | Canal25TV.es |
-| `ch_j0ng747433` | Canal 3 TV Biar | Canal3TVBiar.es |
 | `ch_kqx1ng3xjb` | Canal 4 Catalunya | Canal4Catalunya.es |
 | `ch_sspwdpcj98` | Canal 4 Mancha Centro | Canal4ManchaCentro.es |
 | `ch_waswy1yjbk` | Canal 45 | Canal45.es |
 | `ch_g9prs5v724` | Canal 56 | Canal56.es |
 | `ch_km0v1w5s54` | Canal 6 | Canal6.es |
 | `ch_qg4qtjapje` | Canal Blau | CanalBlau.es |
-| `ch_xehmbt4kps` | Canal Coin TV | CanalCoinTV.es |
-| `ch_da60xnww7x` | Canal Luz Television | CanalLuzTelevision.es |
 | `ch_3qgp5mhswe` | Canal Parlamento | CanalParlamento.es |
 | `ch_ftjpfx6xdx` | Canal Portada | CanalPortada.es |
-| `ch_962q6endzf` | Canal Sierra de Cadiz | CanalSierradeCadiz.es |
-| `ch_xfemsg0fj2` | Canal Taronja Comarques Centrals | CanalTaronjaComarquesCentrals.es |
 | `ch_axhj7h5ck6` | Canal Taronja Osona i Moianes | CanalTaronjaOsonaiMoianes.es |
 | `ch_bcn081cm78` | Canal Terrassa | CanalTerrassa.es |
 | `ch_sj4qgmarnr` | Canal Terres de l'Ebre | CanalTerresdelEbre.es |
@@ -101,7 +88,8 @@
 | `ch_g9rjjjnzan` | Costa del Sol TV | CostadelSolTV.es |
 | `ch_m1rzwxz65r` | Crimen & Historia | CrimenHistoria.es |
 | `ch_dswy1vvh75` | Cristiana TV | CristianaTV.es |
-| `ch_kwwgca3x6v` | Cugat TV | CugatTV.es |
+| `ch_dd4kykhdsh` | DAZN Baloncesto |  |
+| `ch_med0ghyr9j` | DAZN MotoGP |  |
 | `ch_j4zysypqyf` | EITB | EITB.es |
 | `ch_rem4fd66cq` | EiTB 2 | EiTB2.es |
 | `ch_rqrvxp12ca` | El 33/SX3 | El33SX3.es |
@@ -118,7 +106,6 @@
 | `ch_nne2mkvefy` | Erlo Telebista | ErloTelebista.es |
 | `ch_wxmnmpe45g` | Este Canal TV | EsteCanalTV.es |
 | `ch_jzqjc0mh3y` | Estepona Television | EsteponaTelevision.es |
-| `ch_mbrf8xensx` | EsTuTele | EsTuTele.es |
 | `ch_zxay976n4b` | ETB Events 1 | ETBEvents1.es |
 | `ch_qv99gqtygy` | etv | etv.es |
 | `ch_s0bjr8j7eg` | Eurolatina TV | EurolatinaTV.es |
@@ -131,14 +118,11 @@
 | `ch_0zpsd2ebrg` | Fion TV | FionTV.es |
 | `ch_wn650m72vg` | Fisica o Quimica | FisicaoQuimica.es |
 | `ch_3jf5bfcg3q` | Fitel TV | FitelTV.es |
-| `ch_1p45z1xarj` | Fuengirola TV | FuengirolaTV.es |
 | `ch_yktrh625f7` | Fuerteventura TV | FuerteventuraTV.es |
 | `ch_hjkmsbns0z` | Futbol Replay | FutbolReplay.es |
 | `ch_p6yazd1xeb` | Galicia TV America | GaliciaTVAmerica.es |
 | `ch_qmbbkj9nj8` | Garage TV | GarageTV.es |
 | `ch_y5rdzqj8x9` | GCM TV | GCMTV.es |
-| `ch_jnd96vjvq2` | Goiena Eus | GoienaEus.es |
-| `ch_0nrj6v07wt` | Goierri Irrati Telebista | GoierriIrratiTelebista.es |
 | `ch_5dmgnkpnkg` | Gol Classics | GolClassics.es |
 | `ch_0zx0a2k9wv` | Golf 2 por Movistar Plus+ | Golf2porMovistarPlusPlus.es |
 | `ch_vvv626ddsd` | Gran Canaria TV | GranCanariaTV.es |
@@ -169,7 +153,6 @@
 | `ch_wqjj20aqrz` | Huelva Conecta TV | HuelvaConectaTV.es |
 | `ch_45n9m617zn` | Huelva TV | HuelvaTV.es |
 | `ch_0jbqnpf8hf` | Huesca TV | HuescaTV.es |
-| `ch_5phxx9a5dp` | Iberalia 100% Caza | Iberalia100Caza.es |
 | `ch_9fc87hxqtb` | Iberalia 100% Pesca | Iberalia100Pesca.es |
 | `ch_6fxym11k9w` | Iberoamerica TV | IberoamericaTV.es |
 | `ch_06b28c6mpg` | Ibiza Global TV | IbizaGlobalTV.es |
@@ -185,7 +168,6 @@
 | `ch_86gqckz7n4` | La 1 Catalunya | La1Catalunya.es |
 | `ch_1evpj1tx0m` | La 8 Zaragoza TV | La8ZaragozaTV.es |
 | `ch_b4xv3s0tvg` | La de Burgos TV | LadeBurgosTV.es |
-| `ch_42tw094hwg` | La Movida Latina | LaMovidaLatina.es |
 | `ch_htr0n69ae3` | La Resistencia por Movistar Plus+ | LaResistenciaporMovistarPlusPlus.es |
 | `ch_h297cfcdch` | La Voz 24h | LaVoz24h.es |
 | `ch_rqb6cq6tb2` | LaLiga 1 por Movistar Plus+ | LaLiga1porMovistarPlusPlus.es |
@@ -200,7 +182,6 @@
 | `ch_wsnv243zge` | LaLiga TV Bar 4 | LaLigaTVBar4.es |
 | `ch_06pejpkatp` | LaLigaTV 2 por Movistar Plus+ | LaLigaTV2porMovistarPlusPlus.es |
 | `ch_b7h7a1sjqa` | LaLigaTV UHD por Movistar Plus+ | LaLigaTVUHDporMovistarPlusPlus.es |
-| `ch_hgvkm27w57` | Lancelot TV | LancelotTV.es |
 | `ch_m7f7ezcn3r` | Lebrija TV | LebrijaTV.es |
 | `ch_592r3vj2w8` | Levante TV | LevanteTV.es |
 | `ch_9nve101j23` | Liga de Campeones 13 por Movistar Plus+ | LigadeCampeones13porMovistarPlusPlus.es |
@@ -210,14 +191,12 @@
 | `ch_kk823wy7dq` | Liga de Campeones 17 por Movistar Plus+ | LigadeCampeones17porMovistarPlusPlus.es |
 | `ch_fqxffp8ttq` | Liga de Campeones 2 UHD por Movistar Plus+ | LigadeCampeones2UHDporMovistarPlusPlus.es |
 | `ch_2vhvb62kms` | Liga de Campeones UHD por Movistar Plus+ | LigadeCampeonesUHDporMovistarPlusPlus.es |
-| `ch_rgav62xjd1` | LiraTV | LiraTV.es |
 | `ch_6eec21cm4r` | Lleida Televisio | LleidaTelevisio.es |
 | `ch_5p23eq2mjx` | Logos TV Estudio | LogosTVEstudio.es |
 | `ch_j03xz4n1vx` | Logos TV Kids | LogosTVKids.es |
 | `ch_hxjjj58b10` | LokuraFm TV | LokuraFmTV.es |
 | `ch_yvt0j6cq1m` | Love The Planet | LoveThePlanet.es |
 | `ch_kt2paqxr8r` | M95 Television Marbella | M95TelevisionMarbella.es |
-| `ch_e3gzssd510` | Maestrat TV | MaestratTV.es |
 | `ch_ac1kcrj7p0` | Malaga 24h | Malaga24h.es |
 | `ch_0wntgjn4xh` | Mannersache TV | MannersacheTV.es |
 | `ch_bpyz3a80p4` | Mar TV | MarTV.es |
@@ -231,7 +210,6 @@
 | `ch_vjgsvajeeb` | MyTime Movie Network | MyTimeMovieNetwork.es |
 | `ch_ggapa0rjgj` | Navarra TV | NavarraTV.es |
 | `ch_b89jbkfsw7` | Navarra TV 2 | NavarraTV2.es |
-| `ch_fsx197jj9x` | Nesting TV | NestingTV.es |
 | `ch_a4hyv2jj89` | NIUS | NIUS.es |
 | `ch_y000xzbnqp` | Noroeste TV | NoroesteTV.es |
 | `ch_sr72krhrke` | Nortevision | Nortevision.es |
@@ -244,13 +222,10 @@
 | `ch_28jmefxfwy` | Onda Gran Canaria | OndaGranCanaria.es |
 | `ch_vtzcq086fc` | Onda Madrid | OndaMadrid.es |
 | `ch_ncmzwzvqrq` | Onda Valencia TV | OndaValenciaTV.es |
-| `ch_3sd68cq19w` | OnSortir.tv | OnSortirtv.es |
 | `ch_bhbz063b0k` | Oscars por Movistar+ | OscarsporMovistarPlus.es |
-| `ch_c924tbxxtq` | Parlamento de Andalucia | ParlamentodeAndalucia.es |
 | `ch_28bqwsjy30` | Parlamento de Navarra | ParlamentodeNavarra.es |
 | `ch_y9xwway18a` | Pequeradio | Pequeradio.es |
 | `ch_zrvpv2ysmj` | Piera TV | PieraTV.es |
-| `ch_vaa3nac687` | Pirineus TV | PirineusTV.es |
 | `ch_byftkvt4g2` | Planeta de Cine | PlanetadeCine.es |
 | `ch_sfq7xrj7b7` | Planeta Kids | PlanetaKids.es |
 | `ch_7n95th9rbg` | Platzi TV | PlatziTV.es |
@@ -263,7 +238,6 @@
 | `ch_pwzh5k97fz` | Punt 3 | Punt3.es |
 | `ch_ek67zjn3q9` | Radio Bocairent TV | RadioBocairentTV.es |
 | `ch_vyw9f9asa8` | Radio Carnaval TV | RadioCarnavalTV.es |
-| `ch_rfagvn7xhc` | Radio Rutas del Peru | RadioRutasdelPeru.es |
 | `ch_q2b4cxx91a` | Radio Television Marbella | RadioTelevisionMarbella.es |
 | `ch_4sxxasfwh7` | Radio Television Mogan | RadioTelevisionMogan.es |
 | `ch_kawgejts58` | Rakuten TV Action Movies | RakutenTVActionMovies.es |
@@ -303,32 +277,26 @@
 | `ch_w2m6zeq1r7` | STZ Telebista | STZTelebista.es |
 | `ch_qza0eb1y91` | Taroteame | Taroteame.es |
 | `ch_zq05spddj8` | TEF | TEF.es |
-| `ch_gnqcqm215d` | Tele 7 | Tele7.es |
 | `ch_wd7n25fan6` | Tele Safor | TeleSafor.es |
 | `ch_9q9ebzm53s` | TeleBilbao | TeleBilbao.es |
 | `ch_ab79qnm3r3` | Telecija | Telecija.es |
 | `ch_vatzc5wcyz` | Teleganes | Teleganes.es |
 | `ch_g97nyejppg` | Telemino | Telemino.es |
 | `ch_3y4bezs02v` | Telemotril | Telemotril.es |
-| `ch_qfy520nvx0` | Teleonuba | Teleonuba.es |
-| `ch_7tffr0zsmm` | Telequivir | Telequivir.es |
 | `ch_2dhf9kpj01` | TeleRibera | TeleRibera.es |
 | `ch_w9yd5w8mw2` | Televisio Castello | TelevisioCastello.es |
 | `ch_x5gqyhw792` | Television Aranda | TelevisionAranda.es |
 | `ch_kta83yzfsg` | Television Consciente | TelevisionConsciente.es |
 | `ch_00dtcbqanf` | Television de San Vicente | TelevisiondeSanVicente.es |
-| `ch_8km7476pr7` | Tenerife Plus TV | TenerifePlusTV.es |
 | `ch_6k5xgn6d3c` | Terror por Movistar Plus+ | TerrorporMovistarPlusPlus.es |
 | `ch_bna0wfhpee` | Teve.cat | Tevecat.es |
 | `ch_bb5s0wxthf` | TG7 | TG7.es |
 | `ch_80x9jtq8tg` | Thader TV | ThaderTV.es |
-| `ch_qecvbp97mw` | Titan Channel | TitanChannel.es |
 | `ch_2f57xxdn62` | Tito TV | TitoTV.es |
 | `ch_kjpve2cnt9` | Torrevision | Torrevision.es |
 | `ch_8z6vsahe0j` | TPA9 HD | TPA9HD.es |
 | `ch_3pk303ekb2` | Trebujena TV | TrebujenaTV.es |
 | `ch_jgyavaphs9` | Tuya La Janda Television | TuyaLaJandaTelevision.es |
-| `ch_61bpjbafan` | TV Almassora | TVAlmassora.es |
 | `ch_6f4kb0c7hf` | TV Benavente | TVBenavente.es |
 | `ch_998b2arwkt` | TV Bergueda | TVBergueda.es |
 | `ch_hjk3matp08` | TV Carmona | TVCarmona.es |
@@ -344,7 +312,6 @@
 | `ch_62q1zjwajd` | TV4 | TV4.es |
 | `ch_8t9z91828h` | TV4 La Vall | TV4LaVall.es |
 | `ch_seer6xy518` | TVA | TVA.es |
-| `ch_cf14j57jwj` | TVCentro Andalucia | TVCentroAndalucia.es |
 | `ch_zw78b4dnfx` | TVE Internacional America | TVEInternacionalAmerica.es |
 | `ch_emymvheev8` | TVE Internacional Asia-Oceania | TVEInternacionalAsiaOceania.es |
 | `ch_mrrwt7tda2` | TVG Cativos | TVGCativos.es |
@@ -366,8 +333,6 @@
 | `ch_gjmyd0n3g5` | UDTV | UDTV.es |
 | `ch_rjrtbq6k0q` | Une Vinalopo | UneVinalopo.es |
 | `ch_5rs9bzcx9j` | Univers TV | UniversTV.es |
-| `ch_818hfbxvzg` | Urola Telebista | UrolaTelebista.es |
-| `ch_e26qbvpp86` | Uvitel TV | UvitelTV.es |
 | `ch_531dyf8qmr` | Valles Visio | VallesVisio.es |
 | `ch_vgy34pc5js` | Vamos Bar por Movistar Plus+ | VamosBarporMovistarPlusPlus.es |
 | `ch_cjgapagwqc` | Ventdelnord TV | VentdelnordTV.es |
@@ -380,6 +345,5 @@
 | `ch_6apgwj0cv4` | VOTV | VOTV.es |
 | `ch_0rq01zpttn` | Voyages & Saveurs | VoyagesSaveurs.es |
 | `ch_w6gwqqftff` | Xaloa Telebista | XaloaTelebista.es |
-| `ch_c4e0e4rq4y` | XPTV US | XPTVUS.es |
 | `ch_6rh2y9mxrr` | Xtra TV | XtraTV.es |
 | `ch_k0w63f94h0` | Zafra TV | ZafraTV.es |

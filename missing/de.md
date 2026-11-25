@@ -1,25 +1,21 @@
 # Germany: channels without a logo
 
-465 of 679 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
+499 of 680 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
 
 | Channel ID | Name | iptv-org ID |
 |---|---|---|
-| `ch_394872nbym` | 123.live | 123live.de |
 | `ch_vqmpyfj0z9` | 17:30 SAT.1 LIVE | 1730SAT1LIVE.de |
 | `ch_1gzd101r7t` | 17:30 SAT.1 REGIONAL Hamburg & Schleswig-Holstein | 1730SAT1REGIONALHamburgSchleswigHolstein.de |
 | `ch_wnffbcyxjx` | 17:30 SAT.1 REGIONAL Lower Saxony & Bremen | 1730SAT1REGIONALLowerSaxonyBremen.de |
-| `ch_cfes6bqphd` | Adria Music Television | AdriaMusicTelevision.de |
 | `ch_xnd1tgm58p` | Adventure Earth | AdventureEarth.de |
 | `ch_fgn95jysrt` | Alarm fur Cobra 11 / Balko | AlarmfurCobra11Balko.de |
 | `ch_zgvv912g13` | Alex Berlin | AlexBerlin.de |
 | `ch_5zrqfz7pw2` | Altenburg TV | AltenburgTV.de |
 | `ch_srbc7jbrqr` | ANIMAL KINGDOM | ANIMALKINGDOM.de |
-| `ch_c82bk7nc5w` | Aristo TV | AristoTV.de |
 | `ch_rk436ezwj1` | Arti TV | ArtiTV.de |
 | `ch_yyhrwxc5tv` | Bauer sucht Frau | BauersuchtFrau.de |
 | `ch_k4dmhp7y84` | Bibel TV Impuls | BibelTVImpuls.de |
 | `ch_3kkebvs0s1` | Bjgtjme Free Movies | BjgtjmeFreeMovies.de |
-| `ch_dmww6zg7qm` | BLK Regional TV | BLKRegionalTV.de |
 | `ch_5ht5kjbsrx` | BW TV Alpha | BWTVAlpha.de |
 | `ch_mmpqxkrmnx` | BW TV Bravo | BWTVBravo.de |
 | `ch_y4259naydt` | Cira TV | CiraTV.de |
@@ -27,8 +23,7 @@
 | `ch_00y2tqw68t` | Da Vinci Asia | DaVinciAsia.de |
 | `ch_y4jy5g28ff` | DASDING 90.8 | DASDING908.de |
 | `ch_2qyzra8fw8` | DAZN FAST | DAZNFAST.de |
-| `ch_c0mh1z5pbt` | dctp.tv | dctptv.de |
-| `ch_g5z7wpb5gx` | Deluxe Dance | DeluxeDance.de |
+| `ch_c9arwky292` | DAZN Rise |  |
 | `ch_2q9jbf70qd` | Deutschlands GayChat | DeutschlandsGayChat.de |
 | `ch_02p0j6c2ja` | Eagle Cinema Aktion | EagleCinemaAktion.de |
 | `ch_ed3brkgq0m` | EchtJetzt TV | EchtJetztTV.de |
@@ -41,25 +36,19 @@
 | `ch_y54y6gef3v` | Fabella | Fabella.de |
 | `ch_mbqdhc20ca` | Filmgold | Filmgold.de |
 | `ch_vzzmjpsvbx` | Finest TV | FinestTV.de |
-| `ch_213tyapf3n` | Fix & Foxi | FixFoxi.de |
 | `ch_qr6c6y4j56` | FRM-TV | FRMTV.de |
 | `ch_bvxwjzkgcg` | Gabriele TV Africa | GabrieleTVAfrica.de |
 | `ch_v1yp6txmrg` | Genius Plus TV | GeniusPlusTV.de |
 | `ch_1s4zngz4j9` | German Tote TV | GermanToteTV.de |
 | `ch_a1stqxkcw6` | Gluck Auf! TV | GluckAufTV.de |
 | `ch_c045sb8dw5` | Goldstar TV | GoldstarTV.de |
-| `ch_vmt5ffbtkc` | Greifswald TV | GreifswaldTV.de |
 | `ch_dqnx14sb4a` | GustrowTV | GustrowTV.de |
-| `ch_rp7ptv4m7j` | Handystar | Handystar.de |
 | `ch_5w8dnbztb5` | Handystar 2 | Handystar2.de |
 | `ch_bv9g7jshk6` | Health TV | HealthTV.de |
-| `ch_13902ekwva` | Hope Channel German | HopeChannelGerman.de |
 | `ch_sd6sav6a02` | hundkatzemaus | hundkatzemaus.de |
-| `ch_6678ffjwy0` | iSTUFF | iSTUFF.de |
 | `ch_y72kjvsjhk` | JenaTV | JenaTV.de |
 | `ch_pwp3b1fmxs` | Juwelo Schweiz | JuweloSchweiz.de |
 | `ch_w26g2yrhpx` | Kanal 13 | Kanal13.de |
-| `ch_tz75q8rpfj` | Kanal 9 Erzgebirge | Kanal9Erzgebirge.de |
 | `ch_a7m06mxz1m` | Kanal Avrupa | KanalAvrupa.de |
 | `ch_exagt93n76` | Khatereh TV | KhaterehTV.de |
 | `ch_49jmy0g7xw` | KultKrimi | KultKrimi.de |
@@ -69,11 +58,8 @@
 | `ch_96q6c2daed` | Lalish TV | LalishTV.de |
 | `ch_z7pqpg2jbt` | Landlust TV | LandlustTV.de |
 | `ch_fq0kdw53rj` | Lausitz TV | LausitzTV.de |
-| `ch_fkkwsktamx` | Lausitzwelle | Lausitzwelle.de |
-| `ch_mc29tsehka` | Lilo TV | LiloTV.de |
 | `ch_9cxa31r8n6` | MC EU | MCEU.de |
 | `ch_4dtrf9bh5k` | MC TV | MCTV.de |
-| `ch_hpvyxmefsc` | MDF.1 | MDF1.de |
 | `ch_3xrz36nxnw` | MeieTV | MeieTV.de |
 | `ch_yzec55baqm` | Mein TV Shop | MeinTVShop.de |
 | `ch_8z2pe35b7q` | Meissen Fernsehen | MeissenFernsehen.de |
@@ -82,11 +68,8 @@
 | `ch_xakr72b063` | MOMENTS | MOMENTS.de |
 | `ch_pps2cw4de4` | MS Sport | MSSport.de |
 | `ch_ky8x0ah2m5` | MTV Cribs | MTVCribs.de |
-| `ch_50yhjg71bw` | Muxx.tv | Muxxtv.de |
 | `ch_b220dh8xbb` | MV1 | MV1.de |
-| `ch_byz15n0dj9` | MyTVplus | MyTVplus.de |
 | `ch_wavktedywc` | n-tv Event | ntvEvent.de |
-| `ch_ek238r8rqx` | naheTV | naheTV.de |
 | `ch_cxm7ff63w2` | Nash Kinomir | NashKinomir.de |
 | `ch_mn023fgrwa` | National Geographic Wild | NationalGeographicWild.de |
 | `ch_3ya5hjw551` | National Geographic Wild Europe | NationalGeographicWildEurope.de |
@@ -136,12 +119,10 @@
 | `ch_9vfrahzj14` | RiC.today | RiCtoday.de |
 | `ch_dtj8fkqg5d` | Rockland TV | RocklandTV.de |
 | `ch_j31t6dek4d` | RON TV | RONTV.de |
-| `ch_d2a2sakpzk` | RT DE | RTDE.de |
 | `ch_03r4psnw9r` | RTL Bayern | RTLBayern.de |
 | `ch_9wqqxnbntm` | RTL Nord Hamburg & Schleswig-Holstein | RTLNordHamburgSchleswigHolstein.de |
 | `ch_spj3jwdzyz` | RTL Nord Niedersachsen & Bremen | RTLNordNiedersachsenBremen.de |
 | `ch_0tf8a47cgm` | RTL West | RTLWest.de |
-| `ch_xp5g7fvac2` | Rugen TV | RugenTV.de |
 | `ch_ck0wpwnxsa` | RWE Erfurt | RWEErfurt.de |
 | `ch_73t8j9yf4h` | Saale Info TV | SaaleInfoTV.de |
 | `ch_264ftr1gw2` | Saarland Fernsehen 1 | SaarlandFernsehen1.de |
@@ -157,7 +138,6 @@
 | `ch_66bpcbtpy4` | Sender Neu Jerusalem | SenderNeuJerusalem.de |
 | `ch_cf7ajed8r4` | ServusTV Deutschland | ServusTVDeutschland.de |
 | `ch_j6mjncrk11` | Shop 24 Direct | Shop24Direct.de |
-| `ch_28j8t3yr13` | Shopping Queen | ShoppingQueen.de |
 | `ch_65ehpn3zcn` | Sky Atlantic | SkyAtlantic.de |
 | `ch_samndca1mz` | Sky Cinema Family | SkyCinemaFamily.de |
 | `ch_xnaq202d78` | Sky Cinema Premieren | SkyCinemaPremieren.de |
@@ -169,14 +149,8 @@
 | `ch_5pxa227rab` | Sky Sport 7 | SkySport7.de |
 | `ch_4byr45mbc1` | Sky Sport 8 | SkySport8.de |
 | `ch_jxycctqz0n` | Sky Sport 9 | SkySport9.de |
-| `ch_jmb9t7j63f` | Sky Sport Bundesliga 5 | SkySportBundesliga5.de |
-| `ch_1hhn1bgynm` | Sky Sport Bundesliga 6 | SkySportBundesliga6.de |
-| `ch_f27a2v33r3` | Sky Sport Bundesliga 7 | SkySportBundesliga7.de |
-| `ch_m8x0rz9djy` | Sky Sport Bundesliga 8 | SkySportBundesliga8.de |
-| `ch_5rv218ecnm` | Sky Sport Bundesliga 9 | SkySportBundesliga9.de |
 | `ch_eeag5vkzkw` | Sky Sport Kompakt 4 | SkySportKompakt4.de |
 | `ch_qhtn75c9dh` | Sky Sport Kompakt 5 | SkySportKompakt5.de |
-| `ch_p3n8q32mxe` | Sky Sport Tennis | SkySportTennis.de |
 | `ch_hdd75xvx17` | Sophia TV | SophiaTV.de |
 | `ch_4asxa56xek` | Sophia TV Espanol | SophiaTVEspanol.de |
 | `ch_wbm679xyts` | Sophia TV Francais | SophiaTVFrancais.de |
@@ -188,13 +162,11 @@
 | `ch_p0heqbp7zn` | Sport 8 myTeamTV | Sport8myTeamTV.de |
 | `ch_a5m6wkne60` | Sport 9 myTeamTV | Sport9myTeamTV.de |
 | `ch_fmxspr1kwh` | SRF | SRF.de |
-| `ch_2zex9q8cr0` | Stralsund TV | StralsundTV.de |
 | `ch_awaxhaz0tp` | Streamster.tv | Streamstertv.de |
 | `ch_mhjvyk7qp3` | SWR 3 Visual Radio | SWR3VisualRadio.de |
 | `ch_krhe9japqj` | Teins TV | TeinsTV.de |
 | `ch_htqdp2vqdq` | Telebom | Telebom.de |
 | `ch_dxhj5vdt6w` | Teledom | Teledom.de |
-| `ch_xvr8yq024v` | TeleGold | TeleGold.de |
 | `ch_yffkvhpx11` | Terra Mater WILD | TerraMaterWILD.de |
 | `ch_x8ad619r4r` | Tesas TV | TesasTV.de |
 | `ch_btdj83szbt` | Tide TV | TideTV.de |
@@ -207,14 +179,9 @@
 | `ch_0kj0w9bbcg` | TV Westsachsen | TVWestsachsen.de |
 | `ch_e7f2cx7mh0` | TV38 Sudost-Niedersachen | TV38SudostNiedersachen.de |
 | `ch_gqn08qks4a` | TV:SCHWERIN | TVSCHWERIN.de |
-| `ch_49m86zvean` | TVRUS | TVRUS.de |
 | `ch_8escx8qrrq` | TVRUS+ | TVRUSPlus.de |
-| `ch_nrqnyv7qqj` | Unserding | Unserding.de |
-| `ch_arh7ry8wt8` | Usedom TV | UsedomTV.de |
 | `ch_e4weqqrsa7` | Vodafone TV | VodafoneTV.de |
-| `ch_4va5h642nz` | Waidwerk | Waidwerk.de |
 | `ch_gc2a12e12r` | WDR 1 Live | WDR1Live.de |
-| `ch_0767ye8jrw` | Welt der Wunder TV | WeltderWunderTV.de |
 | `ch_kvnmaks8pa` | Wismar TV | WismarTV.de |
 | `ch_1jeq5jcrn0` | WTV | WTV.de |
 | `ch_w9qrjfxg7h` | YOL TV | YOLTV.de |

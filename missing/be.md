@@ -1,30 +1,19 @@
 # Belgium: channels without a logo
 
-105 of 159 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
+117 of 159 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
 
 | Channel ID | Name | iptv-org ID |
 |---|---|---|
-| `ch_k047j11fjd` | Al Jazeera English |  |
-| `ch_tmj0k1zv45` | Arte Belgique |  |
 | `ch_2yapc3cfh8` | AVS | AVS.be |
 | `ch_jjhbp0x5xt` | BAM-TV | BAMTV.be |
 | `ch_h8shhywzw6` | Be 1+1hr | Be1Plus1hr.be |
 | `ch_hxqkrmh5bp` | Belgian Federal Parliament | BelgianFederalParliament.be |
-| `ch_5nyxw2jnvh` | Bloomberg |  |
 | `ch_sx89qh7e6y` | City Music TV | CityMusicTV.be |
 | `ch_ee6yd9d9b3` | Comedy Central VL |  |
-| `ch_5ze78kgaf7` | DAZN Pro League 1 FR |  |
-| `ch_a5se966g1c` | DAZN Pro League 2 FR |  |
-| `ch_s4wncc78vh` | Discovery Science |  |
-| `ch_wwqwbk9ztq` | Disney VL |  |
-| `ch_6r6c2br61z` | E! Ent |  |
 | `ch_6fzmc3525c` | EbS | EbS.be |
 | `ch_5qcv217rwn` | EbS+ | EbSPlus.be |
 | `ch_6gbbb10565` | Eurosport 2 VL |  |
-| `ch_jnkrfx1d7h` | History |  |
-| `ch_b22vebrmnj` | Investigation Discovery |  |
 | `ch_v8fv9588ym` | JapanimTV | JapanimTV.be |
-| `ch_7sgmv844mm` | MTV VL |  |
 | `ch_56ejz1g3em` | Nat Geo Wild VL |  |
 | `ch_kv0enxzsrc` | National Geographic VL |  |
 | `ch_a094ap86rc` | Nickelodeon Flanders | NickelodeonFlanders.be |
@@ -44,7 +33,6 @@
 | `ch_0bntp0nt07` | Pickx+ Sports 8 | PickxPlusSports8.be |
 | `ch_ywpz9ksyrx` | Pickx+ Sports 9 | PickxPlusSports9.be |
 | `ch_53e374yj58` | Play 24/7 | Play247.be |
-| `ch_pdkd2mcbp6` | Play Sports 5 Premier League | PlaySports5PremierLeague.be |
 | `ch_v2zrrrbddq` | Play Sports 6 |  |
 | `ch_f1dt8q5ned` | Play Sports 7 |  |
 | `ch_qfy4ckwrzh` | Promius Pickx InfoChannel | PromiusPickxInfoChannel.be |

@@ -414,7 +414,6 @@ ch_8mccr5txvd,iptv-org,ActionSports.us,import,2026-11-23
 ch_hrrp9eb9vw,iptv-org,ActivaTV.bo,import,2026-11-24
 ch_4ph4bsjktk,iptv-org,ActivaTV.es,import,2026-11-23
 ch_5jdy1fky9g,iptv-org,ActivaTV.hn,import,2026-11-23
-ch_mxpmmkpmgx,iptv-org,ActivaTV.pe,import,2026-11-24
 ch_9fgb191p17,iptv-org,ActivaTV.uy,import,2026-11-24
 ch_9rchry9k76,iptv-org,ActiveFamily.pl,import,2026-11-23
 ch_4mk3tqsyax,iptv-org,ACTNTheVoice.tt,import,2026-11-23
@@ -2041,7 +2040,7 @@ ch_pjdxt185pq,iptv-org,BMSTV.id,import,2026-11-23
 ch_7s8cy4a04q,iptv-org,BMTV.br,import,2026-11-24
 ch_yq1qg1zzqd,iptv-org,BMTVAfrica.ug,import,2026-11-23
 ch_9fmypffck2,iptv-org,BN2.ba,import,2026-11-23
-ch_rsh47zq8x3,iptv-org,BNBDigital.pe,import,2026-11-24
+ch_mxpmmkpmgx,iptv-org,BNBDigital.pe,match,2026-11-25
 ch_a13pgazvhp,iptv-org,BNCGO.us,import,2026-11-23
 ch_gpfy827m9j,iptv-org,BNChannel.id,import,2026-11-23
 ch_wq669yx46t,iptv-org,BNMusic.ba,import,2026-11-23
@@ -9682,7 +9681,6 @@ ch_c7pa219fy6,iptv-org,MilIdeasTVCanal10.py,import,2026-11-24
 ch_wbkt0g1ma1,iptv-org,MilitaryHistory.us,import,2026-11-23
 ch_t9dd5tre0z,iptv-org,MiLlanoTV.co,import,2026-11-24
 ch_9s569bybkd,iptv-org,Millenium109FM.pe,import,2026-11-24
-ch_dyp3vm026n,iptv-org,MilleniumTV.pe,import,2026-11-24
 ch_cr4df7n5hw,iptv-org,MillenniumTV24.us,import,2026-11-23
 ch_zvav0qb3ja,iptv-org,MillenniumTVUSA.us,import,2026-11-23
 ch_625js4tsz1,iptv-org,MilodonTV.cl,import,2026-11-24
@@ -16224,7 +16222,7 @@ ch_9vca9fhp00,iptv-org,Telecafe2.co,import,2026-11-24
 ch_n50vbfp5ck,iptv-org,TeleCamoapa.ni,import,2026-11-23
 ch_nvczmeks9n,iptv-org,Telecanal.cl,import,2026-11-24
 ch_pt29eqvg5m,iptv-org,Telecanal.co,import,2026-11-24
-ch_t50nczg46q,iptv-org,Telecanal.pe,import,2026-11-24
+ch_dyp3vm026n,iptv-org,Telecanal.pe,match,2026-11-25
 ch_8wgvj58v5e,iptv-org,TeleCanal50.py,import,2026-11-24
 ch_w4fzk2382n,iptv-org,TelecanalSantaCruz.cl,import,2026-11-24
 ch_3xgtx24rmw,iptv-org,Telecaribe.co,import,2026-11-23
@@ -16427,7 +16425,7 @@ ch_r8ywrge6bh,iptv-org,TeleQuebec.ca,import,2026-11-23
 ch_ajvew7nc0n,iptv-org,Telequince.py,import,2026-11-24
 ch_sq0m0gfkg0,iptv-org,TeleQuindio.co,import,2026-11-24
 ch_7tffr0zsmm,iptv-org,Telequivir.es,import,2026-11-23
-ch_1zmetkha1q,iptv-org,TeleR.uy,import,2026-11-24
+ch_44prjqbhr2,iptv-org,TeleR.uy,match,2026-11-25
 ch_tfjtv17x3r,iptv-org,TeleradioFuturaNissa.it,import,2026-11-23
 ch_kxtfrhcwwa,iptv-org,TeleRadioNorte.do,import,2026-11-23
 ch_46p0bzx8jw,iptv-org,TeleRadioSciacca.it,import,2026-11-23
@@ -17957,7 +17955,6 @@ ch_j1z7tk19m9,iptv-org,TVLiberal.br,import,2026-11-24
 ch_bq8pwqxfk4,iptv-org,TVLiberdade.br,import,2026-11-24
 ch_bf96j50g4w,iptv-org,TVLibertad.mx,import,2026-11-24
 ch_ccxfc5d10e,iptv-org,TVLibertes.fr,import,2026-11-23
-ch_44prjqbhr2,iptv-org,TVLibre.uy,import,2026-11-24
 ch_t4d5kab74v,iptv-org,TVLifeAmerica.br,import,2026-11-24
 ch_4c91fcejfg,iptv-org,TVLimburg.be,import,2026-11-23
 ch_bwmnvzn32j,iptv-org,TVLine.kz,import,2026-11-23
@@ -31019,4 +31016,7 @@ ch_b0k90s6rxv,iptv-org-feed,ZNation.us@enespanol,import,2026-11-23
 ch_jnb0xnnc3m,iptv-org-feed,ZNation.us@ES,import,2026-11-23
 ch_68sc4df5kn,iptv-org-feed,ZNation.us@FR,import,2026-11-23
 ch_f5eep8wm4x,iptv-org-feed,ZNation.us@LATAM,import,2026-11-23
+ch_mxpmmkpmgx,iptv-org-former,ActivaTV.pe,import,2026-11-24
+ch_dyp3vm026n,iptv-org-former,MilleniumTV.pe,import,2026-11-24
 ch_setzrvdkjm,iptv-org-former,SkySportsArena.uk,import,2026-11-23
+ch_44prjqbhr2,iptv-org-former,TVLibre.uy,import,2026-11-24

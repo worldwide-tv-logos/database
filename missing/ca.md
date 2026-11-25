@@ -305,6 +305,7 @@
 | `ch_xg6q0md4ra` | The Channel TV | TheChannelTV.ca |
 | `ch_6h9jpy77mn` | The Cowboy Channel Canada | TheCowboyChannelCanada.ca |
 | `ch_s5vnx1mb8s` | The Scenic City | TheScenicCity.ca |
+| `ch_ec195n87hz` | TLN en Espanol | TLNenEspanol.ca |
 | `ch_37mmkhh6vw` | Toronto 360 TV | Toronto360TV.ca |
 | `ch_p63e4kbes6` | Total Crime | TotalCrime.ca |
 | `ch_8agz1s3nzz` | TQ5 TV | TQ5TV.ca |
@@ -340,7 +341,6 @@
 | `ch_eqkkde1mg4` | Venus 9 | Venus9.ca |
 | `ch_vf1am63gcs` | Venus Information Channel | VenusInformationChannel.ca |
 | `ch_9nqejy2vsh` | Venus Preview | VenusPreview.ca |
-| `ch_gemvtxfjpc` | VOS Television | VOSTelevision.ca |
 | `ch_nkdjy0mn0m` | Watan-e-Maa TV | WataneMaaTV.ca |
 | `ch_jj4xjajvdm` | Water Television Network | WaterTelevisionNetwork.ca |
 | `ch_5qrhvmngfg` | WCGtv | WCGtv.ca |
