@@ -67,8 +67,11 @@ def build(db: Database, iptv: IptvOrg, countries: list[dict], out: Path, guides_
             editions[c.parent].append(c)
     by_country = defaultdict(list)
     for c in db.channels.values():
-        if c.parent and c.status != 'merged':
+        main = db.channels.get(c.parent) if c.parent and c.status != 'merged' else None
+        if c.parent and c.status != 'merged' and (main is None or main.country == c.country):
             continue                                               # listed with its channel
+        # an edition of another country's channel (beIN Sports 1 France of beIN Sports 1, Qatar) is also listed on
+        # its own country's page, so that each country page lists every channel of that country
         ident = registry.iptv_id(db, c.id)
         rec = iptv.channels.get(ident.split('@')[0]) or {} if ident else {}
         if rec.get('is_nsfw'):
@@ -81,7 +84,10 @@ def build(db: Database, iptv: IptvOrg, countries: list[dict], out: Path, guides_
                   'replaced_by': merged.id if merged else None,
                   'replaced_by_country': merged.country if merged else None,
                   'feeds': [], 'logos': logos_of(c.id, None),
-                  'aliases': [dict(a, feed=None) for a in aliases.get(c.id, [])]}
+                  'aliases': [dict(a, feed=None) for a in aliases.get(c.id, [])],
+                  'parent': main.id if main else None, 'parent_country': main.country if main else None}
+        if main and not record['logos']:
+            record['logos'] = logos_of(main.id, None)              # its channel's logo, as in channels.json
         for e in sorted(editions.get(c.id, []), key=lambda e: e.name.lower()):
             record['feeds'].append({'id': e.id, 'slug': e.slug, 'name': e.name, 'is_main': False, 'format': None,
                                     'country': e.country, 'closed': e.status == 'closed'})
