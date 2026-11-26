@@ -17,7 +17,7 @@ Python 3.12 and [uv](https://docs.astral.sh/uv/). `uv sync` once, then `uv run l
 | `logos legibility [--country cc] [--min 0.02] [--sheets 300]` | logos whose drawing vanishes on the screen they are made for (the logo on a light screen, its white variant on a dark one): white or silver letters, navy on dark, measured by colour difference (CIEDE2000) of the parts that meet the transparent outside, frames and outlined shapes left out; `temp/legibility/legibility.csv` (worst first) and contact sheets |
 | `logos country-add <cc>...` | follow countries (`data/countries.csv`, iptv-org codes: `uk` for the United Kingdom): harvested and hunted every week |
 | `logos site-check --country <cc>... [--size 150] [--review 20] [--offset n]` | current logos looked for on their channel's website (a weekly slice); those absent from it while the website shows another logo are listed for review in `temp/site-check/<cc>/` (summary.md, sites-NN.png) |
-| `logos find <id>` | every candidate for a channel or feed from every source (`worldwide_tv_logos/sources/`, the channel website included), checked, ranked, on a contact sheet (temp/find/<id>/) |
+| `logos find <id>` | every candidate for a channel or feed from every source (`worldwide_tv_logos/sources/`: a DuckDuckGo image search first, the channel website included), checked, ranked, on a contact sheet (temp/find/<id>/) |
 | `logos set <id> <url or file>` | add or replace a logo (same preparation and checks as a request) |
 | `logos move <id> <other id>` | move the logos, originals and aliases of a channel to another channel of the registry (a channel registered twice; a rename keeps its ID) |
 | `logos remove <id>` | remove a logo with its variant, original and aliases |

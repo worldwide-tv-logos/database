@@ -27,6 +27,15 @@ SVG = b'<svg xmlns="http://www.w3.org/2000/svg" width="40" height="20"><rect x="
 F3, ALS, TF1, BIS = 'ch_france3000', 'ch_f3a5ace000', 'ch_tf1000000a', 'ch_tf1b000000'   # channels of the test registry
 
 
+@pytest.fixture(autouse=True)
+def no_image_search(monkeypatch):
+    """No DuckDuckGo search in tests: no result, and no pause between searches."""
+    from worldwide_tv_logos.sources import duckduckgo
+    monkeypatch.setattr(duckduckgo, 'search_images', lambda query, n: [])
+    monkeypatch.setattr(duckduckgo, 'PAUSE', 0)
+    monkeypatch.setattr(duckduckgo, 'RETRY_AFTER', 0)
+
+
 @pytest.fixture
 def bare(tmp_path):
     """A repository with an empty registry."""
@@ -802,6 +811,40 @@ def _ctx(tmp_path, responses, **kw):
                 return value if isinstance(value, bytes) else json.dumps(value).encode()
         raise sources.net.DownloadError('HTTP 404')
     return sources.Context(root=tmp_path, cc=kw.pop('cc', 'us'), downloader=get, log=lambda s: None, pause=0, **kw)
+
+
+def test_duckduckgo_keeps_large_images_from_other_sites_than_social_and_stock(tmp_path, monkeypatch):
+    from worldwide_tv_logos.sources import duckduckgo
+    asked = []
+
+    def search(query, n):
+        asked.append(query)
+        return [{'image': 'https://www.example-tv.es/logo.png', 'width': 1200, 'height': 400},
+                {'image': 'https://www.example-tv.es/small.png', 'width': 320, 'height': 320},
+                {'image': 'https://img.freepik.com/stock-logo.jpg', 'width': 2000, 'height': 2000},
+                {'image': 'https://upload.wikimedia.org/x/Logo.svg', 'width': '960', 'height': '300'},
+                {'image': 'https://www.example-tv.es/logo.png', 'width': 1200, 'height': 400}]
+    monkeypatch.setattr(duckduckgo, 'search_images', search)
+    ctx = _ctx(tmp_path, {})
+    unit = {'id': 'ch_levante0000', 'name': 'Levante TV'}
+    assert duckduckgo.find(unit, ctx) == ['https://www.example-tv.es/logo.png', 'https://upload.wikimedia.org/x/Logo.svg']
+    assert duckduckgo.find(unit, ctx) and asked == ['Levante TV logo']         # the second time from the cache
+    ctx.ambiguous = {'eurosport1'}
+    duckduckgo.find({'id': 'ch_es0000000', 'name': 'Eurosport 1'}, ctx)
+    assert asked[-1].startswith('Eurosport 1 ') and asked[-1].endswith(' TV logo')   # with the country's name
+
+
+def test_duckduckgo_without_result_is_retried_never_cached(tmp_path, monkeypatch):
+    from worldwide_tv_logos import sources
+    from worldwide_tv_logos.sources import duckduckgo
+    calls = []
+    monkeypatch.setattr(duckduckgo, 'search_images', lambda q, n: calls.append(q) or [])
+    ctx = _ctx(tmp_path, {}, deep=True)
+    unit = {'id': 'ch_levante0000', 'name': 'Levante TV'}
+    with pytest.raises(sources.net.DownloadError):
+        duckduckgo.find(unit, ctx)
+    assert len(calls) == 2 and not (tmp_path / '.cache' / 'duckduckgo').exists()   # a throttled search: one retry
+    assert sources.collect(unit, ctx, only={'duckduckgo'}) == []                    # logged and skipped
 
 
 def test_wikipedia_gives_the_logo_of_the_article_of_the_item_or_of_the_name(tmp_path):

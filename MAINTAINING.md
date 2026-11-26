@@ -59,6 +59,11 @@ Every Sunday the `harvest` workflow looks for the logos of each country of `data
 much larger, logo replaced in iptv-org). It opens one pull request per country, `Weekly harvest: <country>`, unless
 the previous one is still open.
 
+The DuckDuckGo image search (first source of `logos find` and of the weekly hunts of missing logos, not of the full
+harvests: one search per channel, spaced by 8 seconds) finds many logos the other sources miss, but most of its
+results are photos, posters, older brandings or namesakes: check its candidates with extra care, ideally against the
+channel's own website.
+
 1. Open the *Files changed* tab: every new logo is shown, and an update is shown before and after.
 2. Check each one like a logos/add request: the logo currently on air for this exact channel.
 3. Refuse a logo by commenting `/reject <channel id> <reason>` (e.g. `/reject Cuatro.es old branding`): the bot

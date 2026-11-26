@@ -64,7 +64,7 @@ from a harvest. Check the same three points, then:
 |---|---|
 | `sheet --changed` / `--channels A,B` / `--country cc` | contact sheets of logos of the repository (temp/sheets/): look at them instead of opening PNG files one by one |
 | `legibility [--country cc]` | logos whose drawing vanishes on their screen (white letters on light, navy on dark): report and contact sheets in temp/legibility/ |
-| `find <id>` | every candidate for a channel or feed (iptv-org, iptv-epg, Wikidata with its dates, the channel website), checked, ranked, on a contact sheet (temp/find/<id>/) with the current logo first |
+| `find <id>` | every candidate for a channel or feed (DuckDuckGo image search first, then Wikidata with its dates, Wikipedia, Commons, iptv-org, iptv-epg, picons, xmltv-se, the channel website), checked, ranked, on a contact sheet (temp/find/<id>/) with the current logo first |
 | `set <id> <url>` | add or replace a logo (same preparation and checks as a request) |
 | `reject <channel id> --base ../base --reason "..."` | refuse a logo of a harvest: back to the logo of main, URL never proposed again |
 | `move <id> <other id>` / `remove <id>` | a channel registered twice / remove a wrong logo |
@@ -74,12 +74,21 @@ from a harvest. Check the same three points, then:
 Wikidata gives dates: a logo with an end date, or whose file name gives a period already over ("2011-2017"), is an
 old branding and is never proposed. The website of the channel is the best proof of what is on air now.
 
+**Looking for a missing logo: start with `logos find`**, whose first source is a DuckDuckGo image search ("<name>
+logo", images of 500 px or more, social networks and stock-image sites left out; free, no key, through the `ddgs`
+package, which falls back to Bing). It finds the most logos that the other sources miss (about a quarter of the
+channels without a logo in the 2026-11 hunts of eleven European countries), but its results are the least sure: most
+are photos, posters, older brandings, the brand logo of a numbered channel or a namesake. Look at every candidate on
+the sheet and keep one only when it is clearly this channel's current logo, ideally from its own website or owner
+(the address is under each tile). Searches are spaced (8 s, `WTL_DDG_PAUSE`); a throttled search answers nothing and
+is retried, never cached.
+
 ## Autonomous work
 
 - Look at **every** logo you are responsible for (contact sheets), never a sample. Say how many you looked at.
 - **Confirm on the web** every logo that does not come from Wikidata, from the channel's Wikipedia article or from
-  the channel's own website (iptv-org, iptv-epg, picons, xmltv-se, a Commons file found by name, image hosts such as
-  imgur or ibb, app stores, other sites): open the channel's website (iptv-org field
+  the channel's own website (DuckDuckGo image search, iptv-org, iptv-epg, picons, xmltv-se, a Commons file found by
+  name, image hosts such as imgur or ibb, app stores, other sites): open the channel's website (iptv-org field
   `website`, or found with a web search) or search for its current logo, and compare. A logo you could not confirm
   as the current one is not published: set it aside (`logos reject --unconfirmed`), it is proposed again next time.
   A clear sheet is not a proof: a logo can be clean and outdated.
@@ -95,8 +104,8 @@ old branding and is never proposed. The website of the channel is the best proof
 - In your report, give for every kept logo from such a source the page that confirmed it (one short line each),
   so that anyone can check your decisions.
 - Prefer, in this order: the logo on the channel's own website or press kit, a current Wikidata/Wikimedia Commons
-  logo (SVG), the logo of the channel's Wikipedia article, then iptv-org, iptv-epg, picons and xmltv-se (collections
-  matched by name: check that it is this channel, not a namesake of another country). iptv-epg and picons logos are
+  logo (SVG), the logo of the channel's Wikipedia article, then iptv-org, iptv-epg, picons, xmltv-se and DuckDuckGo
+  (collections and searches matched by name: check that it is this channel, not a namesake of another country). iptv-epg and picons logos are
   often older brandings or small bitmaps: check that they are current. The Source column of a harvest says where each
   logo comes from (sources listed in `worldwide_tv_logos/sources/__init__.py`). A group or corporate logo (e.g. "Radio y Televisión") is not the logo of
   one of its channels.

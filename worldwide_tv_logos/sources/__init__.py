@@ -4,6 +4,7 @@ of SOURCES: `logos find`, harvests and hunts all go through it, so a source adde
 
 | Source | Rank | Asked | What |
 |---|---|---|---|
+| duckduckgo | 2 | deep | image search "<name> logo", images of 500 px or more, social and stock sites left out |
 | wikidata | 3 | always | current logo of the channel's item (P154, with dates) |
 | wikipedia | 2 | missing | image of the channel's article, in the country's languages then English (local files too) |
 | commons | 2 | missing | Commons files named after the channel with "logo" |
@@ -13,7 +14,9 @@ of SOURCES: `logos find`, harvests and hunts all go through it, so a source adde
 | xmltv-se | 1 | always | xmltv.se vector logos, by XMLTV ID |
 | website | 0 | deep | images named "logo" on the channel's home page |
 
-Rank: at equal quality (SVG, size), the candidate of the higher rank wins. Asked: `always` (local data, or read
+DuckDuckGo is asked first: it finds the most logos that the other sources miss (see duckduckgo.py), but its results
+are the least sure, so its rank stays below Wikidata's. Rank: at equal quality (SVG, size), the candidate of the higher
+rank wins. Asked: `always` (local data, or read
 once per country), `missing` (one request or more per channel: only for channels without a logo, unless deep),
 `deep` (hunts and `logos find` only).
 """
@@ -23,7 +26,17 @@ from collections.abc import Callable
 from dataclasses import dataclass
 
 from worldwide_tv_logos import net
-from worldwide_tv_logos.sources import commons, iptvepg, iptvorg_logos, picons, website, wikidata, wikipedia, xmltvse
+from worldwide_tv_logos.sources import (
+    commons,
+    duckduckgo,
+    iptvepg,
+    iptvorg_logos,
+    picons,
+    website,
+    wikidata,
+    wikipedia,
+    xmltvse,
+)
 from worldwide_tv_logos.sources.context import Context
 from worldwide_tv_logos.sources.iptvepg import EpgIndex, load_iptv_epg, parse_iptv_epg
 from worldwide_tv_logos.sources.names import channel_keys, key
@@ -40,6 +53,7 @@ class Source:
 
 
 SOURCES = (
+    Source('duckduckgo', 2, 'deep', duckduckgo.find),
     Source('wikidata', 3, 'always', wikidata.find),
     Source('wikipedia', 2, 'missing', wikipedia.find),
     Source('commons', 2, 'missing', commons.find),

@@ -4,6 +4,7 @@ version = "0.1.0"
 description = "Clean TV channel logos keyed by iptv-org channel id"
 requires-python = ">=3.12"
 dependencies = [
+    "ddgs>=9.16.1",
     "numpy>=2.5.5",
     "pillow>=13.0.0",
     "pyoxipng>=9.1.1",
