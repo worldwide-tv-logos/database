@@ -16,6 +16,7 @@ channel before giving it a logo.
 | Guide matching | A `guides.json` index rebuilt every night (guide channel ID → likely `ch_` and logos, with a score), plus matching by name and country on the site for unknown guides. Derived, never maintained by hand. |
 | iptv-org | A **source** only: its channels, feeds and issues tell us about new, renamed and closed channels. |
 | Provider | This repository **never** connects to an IPTV provider. Channels seen at a provider arrive as requests with public information only (name, country, website), sent by canonical-catalog. |
+| Image search | DuckDuckGo image search (free, no key, `ddgs` package) is the first source of `logos find` and of the hunts of missing logos (2026-11-27): it found a logo for about a quarter of the channels every other source had missed; its results are always checked by eye. Not used by the full harvests (one search per channel, 8 s apart). |
 | Hosting | Data and site on GitHub (Pages). A read-only API (FastAPI on Vercel) loads the published files; it never writes, and the site works without it. |
 | Edits | Data still changes only through `uv run logos` commands, never by hand. |
 
