@@ -513,6 +513,29 @@ def test_white_version_rules_for_dark_logos():
     assert image.white_variant(block) is None
 
 
+def test_painted_holes_of_letters_but_not_letters_in_a_box_are_repainted():
+    from PIL import ImageDraw
+
+    def lit(draw):
+        im = Image.new('RGBA', (600, 200), (0, 0, 0, 0))
+        d = ImageDraw.Draw(im)
+        d.rectangle((260, 60, 580, 140), fill=(10, 20, 60, 255))                               # navy text: it vanishes
+        draw(d)
+        return image.legible(im, dark=True)
+    ring = lit(lambda d: (d.ellipse((20, 20, 180, 180), fill=(10, 20, 60, 255)),              # navy "o" whose hole
+                          d.ellipse((70, 70, 130, 130), fill=(255, 255, 255, 255))))           # is painted white
+    assert ring.getpixel((100, 100))[:3] != (255, 255, 255)                                    # reads as a hole again
+    assert ring.getpixel((40, 100))[:3] != (10, 20, 60)                                        # and the letter is lit
+    box = lit(lambda d: (d.rectangle((20, 20, 220, 180), fill=(0, 0, 0, 255)),                # Cartoon Network: a
+                         d.rectangle((60, 50, 180, 70), fill=(255, 255, 255, 255)),            # white C, a long
+                         d.rectangle((60, 50, 80, 150), fill=(255, 255, 255, 255)),            # stroke, in a black
+                         d.rectangle((60, 130, 180, 150), fill=(255, 255, 255, 255))))         # box stays white
+    assert box.getpixel((70, 100))[:3] == (255, 255, 255)
+    badge = lit(lambda d: (d.ellipse((20, 20, 180, 180), fill=(10, 10, 10, 255)),             # red HD disc in a
+                           d.ellipse((70, 70, 130, 130), fill=(220, 30, 30, 255))))            # black badge stays red
+    assert badge.getpixel((100, 100))[:3] == (220, 30, 30)
+
+
 def test_sharper_version_says_whether_it_is_the_same_drawing(tmp_path):
     src = tmp_path / 'X.fr.png'
     src.write_bytes(png(512, 200))
@@ -1207,3 +1230,20 @@ def test_legibility_finds_what_vanishes_on_its_screen():
     assert image.vanishing(_drawing(yellow)) == 0                          # hue: yellow stays visible
     assert image.vanishing(_drawing(navy), dark=True) > 0.9                # navy on a dark screen
     assert image.vanishing(_drawing(white), dark=True) == 0
+
+
+def test_what_vanishes_is_made_legible_keeping_the_rest():
+    white, black, red, navy = (255, 255, 255, 255), (0, 0, 0, 255), (220, 20, 30, 255), (20, 30, 70, 255)
+    fixed = image.legible(_drawing(white))
+    assert image.vanishing(fixed) < image.VANISH_ALERT
+    assert image.legible(_drawing(red)) is not None and image.vanishing(_drawing(red)) == 0
+    same = _drawing(black)
+    assert image.legible(same) is same                                     # nothing vanishes: unchanged
+    assert image.vanishing(image.legible(_drawing(navy), dark=True), dark=True) < image.VANISH_ALERT
+
+
+def test_variants_give_a_logo_readable_on_light_and_a_white_variant_readable_on_dark():
+    for colour in ((255, 255, 255, 255), (200, 200, 205, 255), (20, 30, 70, 255)):   # white, silver, navy letters
+        logo, white = image.variants(_drawing(colour))
+        assert image.vanishing(logo) < image.VANISH_ALERT
+        assert image.vanishing(white if white is not None else logo, dark=True) < image.VANISH_ALERT

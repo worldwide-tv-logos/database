@@ -351,10 +351,21 @@ def dark_version(img: Image.Image) -> Image.Image | None:
 
 def variants(img: Image.Image) -> tuple[Image.Image, Image.Image | None]:
     """(logo, white variant or None). A logo whose outline is white (made for dark screens) becomes its own white
-    variant, and the logo is its dark version; a mostly black or grey logo gets a white variant (white_variant)."""
+    variant, and the logo is its dark version; a mostly black or grey logo gets a white variant (white_variant).
+    Then what still vanishes is made visible (legible): on a light screen in the logo, on a dark one in the white
+    variant, made from the logo when there was none."""
     if white_edge_share(img) > WHITE_EDGE and (dark := dark_version(img)) is not None:
-        return dark, img
-    return img, white_variant(img)
+        logo, white = dark, img
+    else:
+        logo, white = img, white_variant(img)
+    light = legible(logo)                                 # what still vanishes on a light screen is darkened…
+    if white is None and light is not logo and vanishing(logo, dark=True) < VANISH_ALERT:
+        white = logo                                      # (the original, made for dark screens, is their version)
+    logo = light
+    on_dark = white if white is not None else logo
+    if vanishing(on_dark, dark=True) >= VANISH_ALERT:   # …and on a dark one lightened, as a white variant
+        white = legible(on_dark, dark=True)
+    return logo, white
 
 
 def _ink(img: Image.Image) -> np.ndarray:
@@ -397,8 +408,100 @@ VISIBLE_ON_LIGHT = 16           # colour difference (CIEDE2000) to the screen un
 VISIBLE_ON_DARK = 20            # …larger on a dark screen, where dark colours blend more (navy, dark grey)
 FRAME_CONTENT = 0.03            # a vanishing part enclosing visible drawing (this share of its area) is a frame
 OUTLINE_SHARE = 0.5             # a vanishing part mostly bordered by a visible outline keeps its shape
+PLATE_LIGHTNESS = 65            # CIELAB L of drawing a part lightened for a dark screen would no longer stand out from
+PLATE_SHARE = 0.25              # share of a part's border along such drawing above which the part is its plate
+COUNTER_CHROMA = 10             # CIELAB chroma above which a filled area is drawing, not a hole painted like the page
+COUNTER_SPREAD = 4            # the hole of a letter covers at most this many discs of its inscribed circle
 VANISH_ALERT = 0.02             # share of the drawing above which a logo is reported as unreadable
 LEGIBILITY_SIDE = 300           # measured on a copy this size
+
+
+def _vanishing_parts(img: Image.Image, dark: bool, soft_edge: bool = False) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+    """(parts that vanish, opaque pixels, colour difference to the screen) of an RGBA image, at its own size.
+    `soft_edge`: the outside reaches the drawing through its anti-aliased edge (full size images, where that edge is
+    a band of half-transparent pixels); the measure itself is calibrated without it, on small copies."""
+    from scipy import ndimage
+    from skimage.color import deltaE_ciede2000, rgb2lab
+    a = np.asarray(img.convert('RGBA')).astype(np.float32) / 255
+    opaque = a[:, :, 3] > 0.5
+    screen = np.array(DARK_SCREEN if dark else LIGHT_SCREEN, dtype=np.float32).reshape(1, 1, 3) / 255
+    lab = rgb2lab(a[:, :, :3])
+    diff = deltaE_ciede2000(lab, np.broadcast_to(rgb2lab(screen), lab.shape))
+    gone = np.zeros_like(opaque)
+    counters = np.zeros_like(opaque)
+    inside = np.zeros_like(opaque)
+    if not opaque.any():
+        return gone, opaque, diff, counters
+    low = opaque & (diff < (VISIBLE_ON_DARK if dark else VISIBLE_ON_LIGHT))
+    clear, _ = ndimage.label(np.pad(~opaque if soft_edge else a[:, :, 3] < 0.12, 1, constant_values=True))
+    outside = (clear == clear[0, 0])[1:-1, 1:-1]                      # the outside, not the holes…
+    if soft_edge:               # …but at full size a hole shows the screen too (the digit in a ring)
+        outside = ~opaque
+    ring = ndimage.binary_dilation(outside) & ~outside                 # first ring of the drawing
+    parts, _ = ndimage.label(low)
+    if soft_edge:               # full size: the outside is a few px away, past a dark matte or a drop shadow
+        reach = ndimage.binary_dilation(outside, iterations=3) & ~outside
+        candidates = np.unique(parts[low & reach])
+    else:
+        candidates = np.unique(parts[low & ring])
+    for i in candidates:
+        if i == 0:
+            continue
+        part = parts == i
+        enclosed = ndimage.binary_fill_holes(part) & ~part & opaque & ~low
+        if soft_edge:           # a shadow in the hole of a letter is no drawing framed by it
+            enclosed = ndimage.binary_opening(enclosed, iterations=2)
+        painted = enclosed.sum() > FRAME_CONTENT * part.sum()
+        if painted and not (soft_edge and _filled_counter(part, enclosed, lab, dark)):
+            continue
+        if soft_edge:           # an outline goes round the part; a shadow or a matte leaves it open to the outside
+            near = ndimage.binary_dilation(part, iterations=3) & ~ndimage.binary_dilation(part)
+            edge = (near & outside).sum()
+        else:
+            near = ndimage.binary_dilation(part) & ~part
+            edge = (part & ring).sum()
+        outline = (near & ~outside & opaque & ~low).sum()
+        if edge < OUTLINE_SHARE * (edge + outline):
+            continue
+        if soft_edge and dark:  # a plate under white drawing keeps its colour, or the drawing would vanish into it
+            alike = lab[:, :, 0] > PLATE_LIGHTNESS  # (painted holes of letters are not drawing on it; on a light
+            if painted:                             # screen, white letters crossing black drawing would pass for one)
+                alike &= ~ndimage.binary_fill_holes(part)
+            if (near & ~outside & opaque & ~low & alike).sum() > PLATE_SHARE * (edge + outline):
+                continue
+        gone |= part
+        if painted:             # repainted only with the letter around it
+            filled = ndimage.binary_fill_holes(part) & ~part
+            inside |= filled
+            paint = filled & (np.abs(lab - np.median(lab[enclosed], axis=0)).max(axis=2) < 12)
+            counters |= filled & ndimage.binary_dilation(paint, iterations=2)  # its paint and rim, not what is drawn
+            # in it (the red HD in the white hole of a black play sign)
+    gone |= inside & low        # drawing in the painted hole (the R of ®) goes with the letter around it
+    return gone, opaque, diff, counters & ~low
+
+
+def _filled_counter(part: np.ndarray, enclosed: np.ndarray, lab: np.ndarray, dark: bool) -> bool:
+    """Whether what a part encloses is the filled hole of a letter (an "a" whose hole is painted white), not drawing
+    framed by it: one or two plain round areas, as wide as the stroke of the part around them (the text of a box is
+    thinner than the box), painted white or grey for a dark screen (a red disc in a black badge is drawing)."""
+    from scipy import ndimage
+    holes, n = ndimage.label(enclosed)
+    if not 1 <= n <= 2:
+        return False
+    colours = lab[enclosed]     # plain: most of it one colour, past its anti-aliased rim
+    if (np.abs(colours - np.median(colours, axis=0)).max(axis=1) < 6).mean() < 0.5:
+        return False
+    if dark and np.hypot(*np.median(colours, axis=0)[1:]) > COUNTER_CHROMA:
+        return False
+    stroke = ndimage.distance_transform_edt(part).max()  # a hole is about as wide as the stroke; a badge is wider
+    for k in range(1, n + 1):
+        hole = holes == k
+        radius = ndimage.distance_transform_edt(hole).max()
+        if not 0.5 * stroke <= radius <= 5 * stroke:
+            return False
+        if hole.sum() > COUNTER_SPREAD * np.pi * radius ** 2:  # a hole is round-ish; a letter in a box is a long stroke
+            return False
+    return True
 
 
 def vanishing(img: Image.Image, dark: bool = False) -> float:
@@ -406,33 +509,40 @@ def vanishing(img: Image.Image, dark: bool = False) -> float:
     the screen (white letters on a light screen, navy on a dark one) and that meet the transparent outside. Not
     counted: a frame around visible drawing (the white box of a logo), a part drawn with a visible outline (a white
     shape edged in black), colours that differ by their hue (yellow on a light screen)."""
-    from scipy import ndimage
-    from skimage.color import deltaE_ciede2000, rgb2lab
     small = img.convert('RGBA')
     small.thumbnail((LEGIBILITY_SIDE, LEGIBILITY_SIDE))
-    a = np.asarray(small).astype(np.float32) / 255
-    opaque = a[:, :, 3] > 0.5
-    if not opaque.any():
-        return 0.0
-    screen = np.array(DARK_SCREEN if dark else LIGHT_SCREEN, dtype=np.float32).reshape(1, 1, 3) / 255
-    lab = rgb2lab(a[:, :, :3])
-    diff = deltaE_ciede2000(lab, np.broadcast_to(rgb2lab(screen), lab.shape))
-    low = opaque & (diff < (VISIBLE_ON_DARK if dark else VISIBLE_ON_LIGHT))
-    clear, _ = ndimage.label(np.pad(a[:, :, 3] < 0.12, 1, constant_values=True))
-    outside = (clear == clear[0, 0])[1:-1, 1:-1]                      # transparent outside, not the holes
-    ring = ndimage.binary_dilation(outside) & ~outside                 # first ring of the drawing
-    parts, _ = ndimage.label(low)
-    gone = np.zeros_like(low)
-    for i in np.unique(parts[low & ring]):
-        if i == 0:
-            continue
-        part = parts == i
-        enclosed = ndimage.binary_fill_holes(part) & ~part & opaque & ~low
-        if enclosed.sum() > FRAME_CONTENT * part.sum():
-            continue
-        edge = (part & ring).sum()
-        outline = (ndimage.binary_dilation(part) & ~part & ~outside & opaque & ~low).sum()
-        if edge < OUTLINE_SHARE * (edge + outline):
-            continue
-        gone |= part
-    return float(gone.sum() / opaque.sum())
+    gone, opaque, _, _ = _vanishing_parts(small, dark)
+    return float(gone.sum() / opaque.sum()) if opaque.any() else 0.0
+
+
+LEGIBLE_ON_LIGHT = (12.0, 38.0)  # lightness (CIELAB, 0..100) given to the parts that vanished on a light screen…
+LEGIBLE_ON_DARK = (80.0, 100.0)  # …and on a dark one; their hue and their shading (lighter / darker) are kept
+
+
+def legible(img: Image.Image, dark: bool = False) -> Image.Image:
+    """The logo with the parts that vanish on its screen made visible: darkened for a light screen, lightened for a
+    dark one, keeping their hue (a pale pink becomes a dark pink, white becomes a dark ink, navy a light blue) and
+    their shading. Their anti-aliased edge goes with them. Unchanged when nothing vanishes."""
+    from scipy import ndimage
+    from skimage.color import lab2rgb, rgb2lab
+    if vanishing(img, dark) < VANISH_ALERT:
+        return img
+    a = np.asarray(img.convert('RGBA')).copy()
+    gone, _, diff, counters = _vanishing_parts(img, dark, soft_edge=True)
+    limit = VISIBLE_ON_DARK if dark else VISIBLE_ON_LIGHT
+    fringe = ndimage.binary_dilation(gone, iterations=2) & (a[:, :, 3] > 0) & (diff < 1.5 * limit)
+    mask = gone | fringe
+    if not mask.any():
+        return img
+    if counters.any():          # the painted hole of a letter takes the letter's colour, and reads as a hole again
+        a[:, :, :3][counters] = np.median(a[:, :, :3][gone], axis=0).astype(np.uint8)
+        mask &= ~counters
+    lab = rgb2lab(a[:, :, :3].astype(np.float32) / 255)
+    lightness = lab[:, :, 0][mask]
+    low, high = lightness.min(), lightness.max()
+    lo, hi = LEGIBLE_ON_DARK if dark else LEGIBLE_ON_LIGHT
+    span = (lightness - low) / (high - low) if high - low > 1 else np.full_like(lightness, 0.5)
+    lab[:, :, 0][mask] = lo + span * (hi - lo)
+    a[:, :, :3][mask] = np.clip(lab2rgb(lab)[mask] * 255 + 0.5, 0, 255).astype(np.uint8)
+    return Image.fromarray(a, 'RGBA')
+
