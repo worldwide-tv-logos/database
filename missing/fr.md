@@ -1,6 +1,6 @@
 # France: channels without a logo
 
-386 of 586 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
+389 of 586 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
 
 | Channel ID | Name | iptv-org ID |
 |---|---|---|
@@ -19,8 +19,6 @@
 | `ch_bx2944f83n` | Al Rawda | AlRawda.fr |
 | `ch_wvwmjg73w6` | Al-Faydatou Tidjania TV | AlFaydatouTidjaniaTV.fr |
 | `ch_6jxw39kzwx` | Amuse Animation | AmuseAnimation.fr |
-| `ch_7jmys3f2gr` | Angers Tele | AngersTele.fr |
-| `ch_p214k7ec4m` | AraBel | AraBel.fr |
 | `ch_t1f2af42kf` | Atelier des chefs | Atelierdeschefs.fr |
 | `ch_tne49r8a96` | BAZIK TV | BAZIKTV.fr |
 | `ch_8y3jx5nsmz` | BAZIK TV Hot | BAZIKTVHot.fr |
@@ -58,7 +56,6 @@
 | `ch_xr3j6xs0wg` | Cannes Lerins TV | CannesLerinsTV.fr |
 | `ch_q48wdhbsn2` | CDirect | CDirect.fr |
 | `ch_16ps4rd5dx` | Central TV | CentralTV.fr |
-| `ch_sebbc5n432` | Chasse & Peche | ChassePeche.fr |
 | `ch_yqdxybzfpz` | Cine Nanar | CineNanar.fr |
 | `ch_h1zym0mynk` | Ciné+ Club |  |
 | `ch_enzmb4x1z2` | Clique TV | CliqueTV.fr |

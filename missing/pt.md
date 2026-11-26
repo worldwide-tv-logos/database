@@ -1,6 +1,6 @@
 # Portugal: channels without a logo
 
-100 of 140 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
+101 of 140 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
 
 | Channel ID | Name | iptv-org ID |
 |---|---|---|
@@ -16,7 +16,6 @@
 | `ch_508n4tvgmk` | Famatv | Famatv.pt |
 | `ch_hxgd9jrn5e` | iesTV | iesTV.pt |
 | `ch_grbjxe1nes` | Kuriakos Cine | KuriakosCine.pt |
-| `ch_hk4wpe40cf` | Mana Eglise Online | ManaEgliseOnline.pt |
 | `ch_1mds1ytbev` | Mana Igreja Online | ManaIgrejaOnline.pt |
 | `ch_jgbb31qwf0` | Mana Tserkov' Onlayn | ManaTserkovOnlayn.pt |
 | `ch_28kvwxe11q` | Morangos com Acucar | MorangoscomAcucar.pt |

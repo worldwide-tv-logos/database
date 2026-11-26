@@ -1,6 +1,6 @@
 # Peru: channels without a logo
 
-97 of 419 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
+140 of 419 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
 
 | Channel ID | Name | iptv-org ID |
 |---|---|---|
@@ -22,7 +22,6 @@
 | `ch_3s1d67k0q0` | Antena Regional TV | AntenaRegionalTV.pe |
 | `ch_2wdaj19jdk` | Antena SUR | AntenaSUR.pe |
 | `ch_7ca9vwzte3` | Antena Television | AntenaTelevision.pe |
-| `ch_eje1mq75g8` | Arpegio TV | ArpegioTV.pe |
 | `ch_5zasqhyfmp` | AsiriTV | AsiriTV.pe |
 | `ch_ah9e5htv1q` | Astros Television | AstrosTelevision.pe |
 | `ch_gzyrbg1as3` | ATL Television | ATLTelevision.pe |
@@ -58,19 +57,15 @@
 | `ch_a8jenc5wpr` | CANAL M Television | CANALMTelevision.pe |
 | `ch_hrvzt4qm24` | Canal Mas TV | CanalMasTV.pe |
 | `ch_524wexvfcz` | Canal TeleTres | CanalTeleTres.pe |
-| `ch_72zf2yfcmb` | CanalB | CanalB.pe |
 | `ch_795f3pf453` | Caribe Television | CaribeTelevision.pe |
 | `ch_kbfqbj6pzk` | Central TV | CentralTV.pe |
 | `ch_rtknbes2ba` | Charapa TV | CharapaTV.pe |
 | `ch_wsmwrjw9ah` | Chicos IPe | ChicosIPe.pe |
 | `ch_xka9vrgabj` | Chikitoonz | Chikitoonz.pe |
-| `ch_nsnemvxxp5` | Chincha TV | ChinchaTV.pe |
 | `ch_9mvhn0q0jn` | Chupaca Television | ChupacaTelevision.pe |
 | `ch_25dz5qw7v2` | Cine Club TV | CineClubTV.pe |
-| `ch_76xeyje96z` | Clarin TV Canal 12 | ClarinTVCanal12.pe |
 | `ch_cde2k05zw0` | ClipsTV | ClipsTV.pe |
 | `ch_ceezyv42dp` | CN TV | CNTV.pe |
-| `ch_2ccrdef6jr` | CNC Cajamarca | CNCCajamarca.pe |
 | `ch_91pc81489s` | CNC Digital | CNCDigital.pe |
 | `ch_0fwjzkwk6z` | CNH TV | CNHTV.pe |
 | `ch_m5gh6djdcy` | Conecta2TV | Conecta2TV.pe |
@@ -91,12 +86,10 @@
 | `ch_nmddwhr7ps` | CVN TV | CVNTV.pe |
 | `ch_r4rw4mrdqc` | DeltaTV | DeltaTV.pe |
 | `ch_q99b3mszhf` | Diario Hechicera | DiarioHechicera.pe |
-| `ch_19cydwwgtw` | Diaspora TV | DiasporaTV.pe |
 | `ch_wbp62t0dr5` | DMJ | DMJ.pe |
 | `ch_g6kqcac9nb` | Doble C Television | DobleCTelevision.pe |
 | `ch_d3kygqq00m` | DTV | DTV.pe |
 | `ch_64xmddws0h` | DUB TV | DUBTV.pe |
-| `ch_1sgxb6rxe2` | Dunas TV | DunasTV.pe |
 | `ch_wbjh6yme68` | ECO Television | ECOTelevision.pe |
 | `ch_sfhhw5h7p7` | El Pueblo Television | ElPuebloTelevision.pe |
 | `ch_ej8ccwdwae` | Estelar TV | EstelarTV.pe |
@@ -105,9 +98,7 @@
 | `ch_hszv3qmts0` | Fama TV | FamaTV.pe |
 | `ch_0wg53pavzf` | Fillka TV | FillkaTV.pe |
 | `ch_skj8g9wrw3` | Foro TV | ForoTV.pe |
-| `ch_hmpx9wp5x8` | Frecuencia Amazonica | FrecuenciaAmazonica.pe |
 | `ch_zmezcatjdb` | FullTV | FullTV.pe |
-| `ch_r0admbhrdy` | Gaceta Ucayalina | GacetaUcayalina.pe |
 | `ch_jn86s85ebr` | Genios TV | GeniosTV.pe |
 | `ch_57n99m4wfy` | Global TV | GlobalTV.pe |
 | `ch_avdk81s5pc` | Gold Valley TV | GoldValleyTV.pe |
@@ -127,8 +118,6 @@
 | `ch_8hrwbp5mgn` | Imagen Television Rioja | ImagenTelevisionRioja.pe |
 | `ch_qnabmeb19b` | Impacto Television | ImpactoTelevision.pe |
 | `ch_9z3qwxga5s` | Imperial Television | ImperialTelevision.pe |
-| `ch_qpm11ae1p5` | Inkavision | Inkavision.pe |
-| `ch_yqf88jyj7v` | Innova FM TV | InnovaFMTV.pe |
 | `ch_ythqae0121` | JN 19 | JN19.pe |
 | `ch_5yjktbswfe` | JN 19.2 | JN192.pe |
 | `ch_q2n6qy9eed` | JNE TV | JNETV.pe |
@@ -136,13 +125,10 @@
 | `ch_f1sjdn0t3g` | Justicia TV | JusticiaTV.pe |
 | `ch_knkq32bdhd` | Kairos TV | KairosTV.pe |
 | `ch_zx7s4m0w3n` | Kallpa TV | KallpaTV.pe |
-| `ch_7q8q3es7k5` | Karibena | Karibena.pe |
 | `ch_2cp028dvdv` | KBO | KBO.pe |
 | `ch_bvc09hpxqm` | KeBuena | KeBuena.pe |
 | `ch_2v4qgk8se5` | Kora TV | KoraTV.pe |
 | `ch_z0k564pykx` | La 5ta | La5ta.pe |
-| `ch_v56v6dxjqn` | La Abeja | LaAbeja.pe |
-| `ch_rmwp7fjf48` | La Fabulosa TV | LaFabulosaTV.pe |
 | `ch_yk4bnq9qw9` | La Islilla TV | LaIslillaTV.pe |
 | `ch_rnwg3n0m9k` | La Luz TV | LaLuzTV.pe |
 | `ch_2v5bbzccet` | La Tremenda TV | LaTremendaTV.pe |
@@ -165,14 +151,11 @@
 | `ch_eznr1q51hw` | Miel TV | MielTV.pe |
 | `ch_f33jq8hfxv` | Milenia TV | MileniaTV.pe |
 | `ch_7p38kz1qq4` | Milenial TV | MilenialTV.pe |
-| `ch_9s569bybkd` | Millenium 109 FM | Millenium109FM.pe |
 | `ch_4hdhpp2spd` | MitosTV | MitosTV.pe |
 | `ch_0nxabqxxzy` | Moda Huancayo TV | ModaHuancayoTV.pe |
-| `ch_g6r1q1xptp` | Monterrico TV | MonterricoTV.pe |
 | `ch_nmshm76xex` | Movistar Eventos | MovistarEventos.pe |
 | `ch_vv541t2jpr` | MTV Mas Ancash | MTVMasAncash.pe |
 | `ch_hhwbkb07hv` | Nativa TV Satipo | NativaTVSatipo.pe |
-| `ch_b6awrat1sg` | Nazarenas TV | NazarenasTV.pe |
 | `ch_xdah6fjgbs` | NorSelva RTV | NorSelvaRTV.pe |
 | `ch_gd1y7xzrxd` | Nortena Mix Radio TV | NortenaMixRadioTV.pe |
 | `ch_7v77f4tb2b` | Nova TV Star | NovaTVStar.pe |
@@ -183,36 +166,27 @@
 | `ch_bhsjxnbev3` | ONDA DIGITAL | ONDADIGITAL.pe |
 | `ch_kqm68adn2e` | Onda TV | OndaTV.pe |
 | `ch_amdnkmebkk` | Oriental TV | OrientalTV.pe |
-| `ch_echxfvgswq` | Ovacion TV | OvacionTV.pe |
 | `ch_xzb0mjxce7` | Pax TV | PaxTV.pe |
-| `ch_g3p885pcx4` | PBO | PBO.pe |
 | `ch_egr3ke51jh` | Peru Magico | PeruMagico.pe |
 | `ch_jm64m1redz` | PeruvianRadio TV | PeruvianRadioTV.pe |
 | `ch_n9855yg46r` | PiuraTV | PiuraTV.pe |
 | `ch_a71nxgz2st` | Planea TV | PlaneaTV.pe |
 | `ch_xqqg3141jr` | Planeta TV | PlanetaTV.pe |
 | `ch_85a1qn37sg` | Prattel TV | PrattelTV.pe |
-| `ch_h542552fed` | Presencia TV | PresenciaTV.pe |
 | `ch_znhak3xfjg` | Primavera 15 | Primavera15.pe |
 | `ch_7rmdpr5315` | Proyecta Television | ProyectaTelevision.pe |
 | `ch_60adq20sd1` | Pucallpa Television | PucallpaTelevision.pe |
 | `ch_z7z9k2p04g` | PymeTV | PymeTV.pe |
 | `ch_g07g28fa9v` | Qollasuyo TV | QollasuyoTV.pe |
-| `ch_ccbpgpbh80` | QT Television | QTTelevision.pe |
 | `ch_w0z7r3mh5e` | Quatro TV | QuatroTV.pe |
 | `ch_5ynx7bwfbb` | Quillavision | Quillavision.pe |
 | `ch_61rj907jww` | Radio Calor | RadioCalor.pe |
-| `ch_2zp67w93yg` | Radio Chalaca | RadioChalaca.pe |
 | `ch_drybnv1ny4` | Radio Corporacion TV | RadioCorporacionTV.pe |
 | `ch_gjvpq18ey2` | Radio Digital 94.1 TV | RadioDigital941TV.pe |
-| `ch_p2n9mgf727` | Radio El Pueblo | RadioElPueblo.pe |
 | `ch_aygr3152gb` | Radio Inka TV | RadioInkaTV.pe |
-| `ch_c79p91bdnf` | Radio Las Vegas TV | RadioLasVegasTV.pe |
 | `ch_k8w8nmg45c` | Radio Milenia | RadioMilenia.pe |
 | `ch_46jpzt3a79` | Radio Onda Digital | RadioOndaDigital.pe |
 | `ch_taeh4f5yaa` | Radio Pachatusan | RadioPachatusan.pe |
-| `ch_jztbdk3vyr` | Radio Rumba TV | RadioRumbaTV.pe |
-| `ch_6pdekvtdw9` | Radio San Borja TV | RadioSanBorjaTV.pe |
 | `ch_0wnnj351ra` | Radio Sistema | RadioSistema.pe |
 | `ch_g4jknzaazf` | Radio TV Binacional | RadioTVBinacional.pe |
 | `ch_emy4nyhx5q` | Radio TV Charles | RadioTVCharles.pe |
@@ -226,37 +200,29 @@
 | `ch_pbrak25s88` | RCR | RCR.pe |
 | `ch_cazy395567` | Real Television | RealTelevision.pe |
 | `ch_4eqrv0hyxr` | Region TV Callao | RegionTVCallao.pe |
-| `ch_wqgkzmfrsr` | Riku TV | RikuTV.pe |
 | `ch_h7s4yqwr9q` | RN Television | RNTelevision.pe |
-| `ch_vv39k942rd` | RSelvaTV | RSelvaTV.pe |
 | `ch_7ww55braj5` | RTP | RTP.pe |
 | `ch_6cr8n8wqjf` | RTV Chota | RTVChota.pe |
 | `ch_r4crfae317` | RTV El Diario | RTVElDiario.pe |
 | `ch_zf5p6m4bfr` | RTV Total Yurimaguas | RTVTotalYurimaguas.pe |
 | `ch_b857nnyefg` | RumbaMix TV | RumbaMixTV.pe |
 | `ch_fmt63sfab5` | RW Television Tarapoto | RWTelevisionTarapoto.pe |
-| `ch_y2mdp5ttww` | Salgalu TV | SalgaluTV.pe |
-| `ch_08g08wjhfb` | SanjuaneraTV | SanjuaneraTV.pe |
 | `ch_mz88w027z2` | Santa Rosa Radio TV | SantaRosaRadioTV.pe |
 | `ch_dsy0c1t47e` | SatelTV | SatelTV.pe |
 | `ch_j72f5v1131` | SelvaMia TV | SelvaMiaTV.pe |
 | `ch_524t27jgzm` | SelvaTV | SelvaTV.pe |
 | `ch_2k6at41kgm` | Sin TV | SinTV.pe |
-| `ch_5ng9dawbc1` | Siscom TV | SiscomTV.pe |
 | `ch_4f672917h0` | Sistema 1 | Sistema1.pe |
 | `ch_f7vydm2cdy` | Sol Stereo TV | SolStereoTV.pe |
 | `ch_xj8m0vhxzb` | Solar Television | SolarTelevision.pe |
-| `ch_rwj7dkyaea` | SolTV | SolTV.pe |
 | `ch_4bsy7y2ty4` | SoriTV | SoriTV.pe |
 | `ch_mq58xf67ym` | Sqala TV | SqalaTV.pe |
 | `ch_44w1jmbtn5` | Sumac TV | SumacTV.pe |
-| `ch_qr4anh85zk` | Super Canal | SuperCanal.pe |
 | `ch_rkt85fhh6s` | Sur Peru | SurPeru.pe |
 | `ch_fdfyf13v43` | SurTV | SurTV.pe |
 | `ch_gn2j8f967b` | Taky Peru TV | TakyPeruTV.pe |
 | `ch_1gwfs3x2yg` | Tele2000 | Tele2000.pe |
 | `ch_dyp3vm026n` | Telecanal | Telecanal.pe |
-| `ch_s072ayx9qc` | TeleCentro | TeleCentro.pe |
 | `ch_ayx8r0wpph` | Telecolor Yurimaguas | TelecolorYurimaguas.pe |
 | `ch_ry94c8qmdb` | Teleoriente Internacional | TeleorienteInternacional.pe |
 | `ch_kz9cbtw2hm` | TelePeru | TelePeru.pe |
@@ -274,19 +240,16 @@
 | `ch_5xm7y3eq40` | Top Latino TV | TopLatinoTV.pe |
 | `ch_nwa6ynwwsc` | Top TV | TopTV.pe |
 | `ch_sznka2hvty` | TPTO Channel | TPTOChannel.pe |
-| `ch_kkhkbjv6eg` | Trivu | Trivu.pe |
 | `ch_w1pm7ts65p` | Tropical TV | TropicalTV.pe |
 | `ch_mv71xjt66f` | Tumpis TV | TumpisTV.pe |
 | `ch_6s896j19eq` | Turbo Mix Radio TV | TurboMixRadioTV.pe |
 | `ch_h78txrd4ns` | TuSami by Bitel | TuSamibyBitel.pe |
 | `ch_rzhtvv3ma0` | TV Andahuaylas | TVAndahuaylas.pe |
-| `ch_dwfm65pb5g` | TV Cosmos | TVCosmos.pe |
 | `ch_0bpgetyyqq` | TV Cosmos 15.2 | TVCosmos152.pe |
 | `ch_n0w8reqrm6` | TV Huarmey | TVHuarmey.pe |
 | `ch_ktr57k1zkp` | TV Kaliente | TVKaliente.pe |
 | `ch_26zxzy61ts` | TV MAR | TVMAR.pe |
 | `ch_644pajh5qd` | TV MAX | TVMAX.pe |
-| `ch_e2zt12ffc1` | TV Mundo Arequipa | TVMundoArequipa.pe |
 | `ch_y3355pwh12` | TV Norte Chiclayo | TVNorteChiclayo.pe |
 | `ch_pk1htj509g` | TV Palmeras | TVPalmeras.pe |
 | `ch_psxjk3qpap` | TV Peruanisima | TVPeruanisima.pe |
@@ -304,14 +267,10 @@
 | `ch_qrztds8cf4` | Universitaria TV | UniversitariaTV.pe |
 | `ch_0a2nt7t858` | Universitario TV | UniversitarioTV.pe |
 | `ch_mn06r6qere` | UPAO Television | UPAOTelevision.pe |
-| `ch_qh2ahn87a0` | USIL TV | USILTV.pe |
-| `ch_wpb44t42h1` | USMPTV | USMPTV.pe |
 | `ch_5yjdpjwn13` | Via Altomayo | ViaAltomayo.pe |
-| `ch_kepj2s2p4w` | Via Television | ViaTelevision.pe |
 | `ch_kfjbp7v93y` | Vigil TV | VigilTV.pe |
 | `ch_4edbd469vj` | Vinilos TV | VinilosTV.pe |
 | `ch_1sbpnwcmt6` | Virgen de Natividad de Paruro | VirgendeNatividaddeParuro.pe |
-| `ch_6avwy1gmn4` | Vision | Vision.pe |
 | `ch_fv1h94gxwb` | Vision TV Musica | VisionTVMusica.pe |
 | `ch_98b3kh8933` | Viva TV Yurimaguas | VivaTVYurimaguas.pe |
 | `ch_4p133p1y1m` | VivaTV | VivaTV.pe |
@@ -319,10 +278,8 @@
 | `ch_4yc1yy0ywk` | VR Canal 21 Nasca | VRCanal21Nasca.pe |
 | `ch_aazv6cpbvp` | VZ TV | VZTV.pe |
 | `ch_ye1fr1y8yh` | Wayra TV | WayraTV.pe |
-| `ch_1hn017ebws` | Willax TV | WillaxTV.pe |
 | `ch_jamq78d6n6` | Wtv | Wtv.pe |
 | `ch_yah8djbs7h` | X TV Chachapoyas | XTVChachapoyas.pe |
 | `ch_800864yj15` | Yumi Television | YumiTelevision.pe |
 | `ch_vwpphvwyr0` | Yurimaguas TV | YurimaguasTV.pe |
 | `ch_hv4av46bak` | Yurivision | Yurivision.pe |
-| `ch_9a7mwsggqk` | Zeleve TV | ZeleveTV.pe |

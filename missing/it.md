@@ -1,6 +1,6 @@
 # Italy: channels without a logo
 
-224 of 619 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
+228 of 619 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
 
 | Channel ID | Name | iptv-org ID |
 |---|---|---|
@@ -153,7 +153,6 @@
 | `ch_efqd974nhg` | Partenope TV | PartenopeTV.it |
 | `ch_9nzxqh1azc` | Passione Lotto | PassioneLotto.it |
 | `ch_tgp1a3rq3q` | Pop Economy | PopEconomy.it |
-| `ch_03rr6z3e49` | Prima Free | PrimaFree.it |
 | `ch_a90j3mab9p` | Prima Tivvu | PrimaTivvu.it |
 | `ch_k43dx700dw` | Prima TV Napoli | PrimaTVNapoli.it |
 | `ch_gh81c1fvyc` | PrimAntenna TV | PrimAntennaTV.it |
@@ -167,14 +166,11 @@
 | `ch_tag9jagz50` | Radio Capital TiVu | RadioCapitalTiVu.it |
 | `ch_9w4f9ppsnw` | Radio Capital TV | RadioCapitalTV.it |
 | `ch_18khxfrq7s` | Radio Ibiza TV | RadioIbizaTV.it |
-| `ch_zzwdzq0fx5` | Radio Iglesias | RadioIglesias.it |
 | `ch_w7gfs1e5nm` | Radio Iglesias Sardegna | RadioIglesiasSardegna.it |
-| `ch_t67r654xpb` | Radio Italia Anni 60 TV | RadioItaliaAnni60TV.it |
 | `ch_yb6krv16x7` | Radio Marte TV | RadioMarteTV.it |
 | `ch_kgm49a51kq` | Radio Millenium TV | RadioMilleniumTV.it |
 | `ch_d4a3fxa42n` | Radio Parsifal Radio Visione | RadioParsifalRadioVisione.it |
 | `ch_yzyvm66m53` | Radio Piter Pan TV | RadioPiterPanTV.it |
-| `ch_f02bra181d` | Radio Radio TV | RadioRadioTV.it |
 | `ch_s0n1s77c8d` | Radio Roma | RadioRoma.it |
 | `ch_gh25h2qm8k` | Radio Roma Television | RadioRomaTelevision.it |
 | `ch_6w6j4yczse` | Radio Studio Delta TV | RadioStudioDeltaTV.it |

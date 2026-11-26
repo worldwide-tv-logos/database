@@ -1,6 +1,6 @@
 # United States: channels without a logo
 
-1488 of 4981 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
+1489 of 4981 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
 
 | Channel ID | Name | iptv-org ID |
 |---|---|---|
@@ -493,7 +493,6 @@
 | `ch_34eyjaq3qw` | CFM TV Channel 98 | CFMTVChannel98.us |
 | `ch_jbk49f605t` | CGNTV America | CGNTVAmerica.us |
 | `ch_ywq0bdnjw5` | CGOV | CGOV.us |
-| `ch_mf1nt59agz` | CGTV | CGTV.us |
 | `ch_mmhqwcc4sv` | CGTV Channel 7 | CGTVChannel7.us |
 | `ch_neydve6znt` | Channel 15 | Channel15.us |
 | `ch_66ygs967gh` | Channel 15 Agawam | Channel15Agawam.us |

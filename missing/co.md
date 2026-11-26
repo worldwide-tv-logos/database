@@ -1,23 +1,20 @@
 # Colombia: channels without a logo
 
-209 of 503 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
+248 of 503 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
 
 | Channel ID | Name | iptv-org ID |
 |---|---|---|
 | `ch_qk8xebtbqs` | Acuario Television | AcuarioTelevision.co |
 | `ch_h24kv0809z` | Aguachica Online | AguachicaOnline.co |
-| `ch_1rsrghvb98` | Alerta Bogota | AlertaBogota.co |
 | `ch_h5ft8687pd` | Amaga Television | AmagaTelevision.co |
 | `ch_t8ywb36921` | America TV El Santuario | AmericaTVElSantuario.co |
 | `ch_sdaazc6vce` | Amordiscos | Amordiscos.co |
 | `ch_3n005bzdh6` | ANC Television | ANCTelevision.co |
 | `ch_jk56xyzpzp` | Angeles Television | AngelesTelevision.co |
-| `ch_6zcza03yxz` | Animal Planet | AnimalPlanet.co |
 | `ch_fn8zj7dkvg` | Anserma Canal Local CCP | AnsermaCanalLocalCCP.co |
 | `ch_jzasj6t69k` | Antena 4 Jardin | Antena4Jardin.co |
 | `ch_7b096p0wb0` | Apacibol TV | ApacibolTV.co |
 | `ch_axw4jm78db` | Asanpas Television | AsanpasTelevision.co |
-| `ch_98j5tq6fwq` | ATN Television | ATNTelevision.co |
 | `ch_9y46ds7e9r` | Aupabe TV | AupabeTV.co |
 | `ch_fhnyc0zdg6` | Aupan TV | AupanTV.co |
 | `ch_q992w55zfq` | Aupur Television | AupurTelevision.co |
@@ -28,13 +25,10 @@
 | `ch_xx2ss7pqz8` | Big TV | BigTV.co |
 | `ch_f04xw6r9p1` | C4 Television | C4Television.co |
 | `ch_2bmvc4r7t7` | Cable Nobsa TV | CableNobsaTV.co |
-| `ch_hyfct6p8pj` | Cable Sur TV | CableSurTV.co |
 | `ch_7jj24mvxbh` | Cableba TV Canal 9 | CablebaTVCanal9.co |
-| `ch_b8w86k0gkt` | Cableplus Television | CableplusTelevision.co |
 | `ch_2psf0d7mqj` | Campo Television | CampoTelevision.co |
 | `ch_yngp7cjfqf` | Canal 14 Codazzi | Canal14Codazzi.co |
 | `ch_aqedyrap2f` | Canal 14 Regional | Canal14Regional.co |
-| `ch_22xhv4022f` | Canal 2 | Canal2.co |
 | `ch_qjpmhyec76` | Canal 2 Alpavision Ibague | Canal2AlpavisionIbague.co |
 | `ch_td3n1s12vr` | Canal 2 Alpavision Neiva | Canal2AlpavisionNeiva.co |
 | `ch_q9t0dk4859` | Canal 2 Mi Canal | Canal2MiCanal.co |
@@ -46,7 +40,6 @@
 | `ch_vd0sd00zmm` | Canal 8 TV+ | Canal8TVPlus.co |
 | `ch_gpetks4pdw` | Canal 9 Cosespu | Canal9Cosespu.co |
 | `ch_59qc0yznp0` | Canal APG | CanalAPG.co |
-| `ch_kh1dkkdkbh` | Canal C | CanalC.co |
 | `ch_2wts73cha0` | Canal Calima TV | CanalCalimaTV.co |
 | `ch_t0gd8jr5w1` | Canal CHD | CanalCHD.co |
 | `ch_9d8sv8rpym` | Canal Cine Dios | CanalCineDios.co |
@@ -54,8 +47,6 @@
 | `ch_4d1h8wmphp` | Canal FBN | CanalFBN.co |
 | `ch_kz6h47k3ad` | Canal Guanevision | CanalGuanevision.co |
 | `ch_gbdj6p69t9` | Canal Mas Television | CanalMasTelevision.co |
-| `ch_ft7sg8yrgv` | Canal Metropolitano | CanalMetropolitano.co |
-| `ch_5ntkm79dq5` | Canal Mundo Vision | CanalMundoVision.co |
 | `ch_6d7t6stfsr` | Canal Nortevision | CanalNortevision.co |
 | `ch_t52tdqk4p0` | Canal Nova TV | CanalNovaTV.co |
 | `ch_p4wvv632e9` | Canal PyC | CanalPyC.co |
@@ -72,19 +63,15 @@
 | `ch_bb4j7xfpzt` | Canal Telesantiago | CanalTelesantiago.co |
 | `ch_rfazb25jgk` | Canal TRO | CanalTRO.co |
 | `ch_ymyzr6mmmy` | Canal Tronc TV | CanalTroncTV.co |
-| `ch_8sqbxz8bbf` | Canal TV Costa | CanalTVCosta.co |
 | `ch_3dmcgpcsg3` | Canal TV3 | CanalTV3.co |
 | `ch_jjqbjetpwd` | Canal UTV | CanalUTV.co |
 | `ch_dk3axgx5qz` | Canal Womtv | CanalWomtv.co |
 | `ch_d6bacgb63e` | Canal Zona 6 TV | CanalZona6TV.co |
 | `ch_c16pmwmx29` | Canal Zona D TV | CanalZonaDTV.co |
-| `ch_jkhepcm4nc` | Canica TV | CanicaTV.co |
 | `ch_zkdkeprjy3` | Capsos TV | CapsosTV.co |
 | `ch_wpfrwsdr7p` | Caracol HD2 | CaracolHD2.co |
-| `ch_e4kctvgvnr` | Caracol Internacional | CaracolInternacional.co |
 | `ch_qwh1whk8e6` | Caracol TV | CaracolTV.co |
 | `ch_mwmpvf0xns` | Carare TV | CarareTV.co |
-| `ch_6rrt9e355r` | CCM Television | CCMTelevision.co |
 | `ch_dp8x0tcnjq` | CDB Radio y TV | CDBRadioyTV.co |
 | `ch_qmw7zrn4by` | Chamorro Television | ChamorroTelevision.co |
 | `ch_dtw2emem2c` | Champion TV | ChampionTV.co |
@@ -103,15 +90,11 @@
 | `ch_tvygb27sqs` | CNC Santa Rosa | CNCSantaRosa.co |
 | `ch_nz6f5v5mzm` | Colombia Extremo Television | ColombiaExtremoTelevision.co |
 | `ch_kddtb3t15k` | Comuna 13 Television | Comuna13Television.co |
-| `ch_scg62pr2j2` | Conectic.tv | Conectictv.co |
 | `ch_2c1pbcxj10` | Contacto Oriente | ContactoOriente.co |
-| `ch_xr3658v5gd` | Copavapen TV | CopavapenTV.co |
-| `ch_yhsb03bzx7` | Corpagua TV | CorpaguaTV.co |
 | `ch_wq7042jx2y` | CTV Barranquilla | CTVBarranquilla.co |
 | `ch_r64km97npa` | Cuapac TV | CuapacTV.co |
 | `ch_bxgkxvt9wv` | Cucuta TV | CucutaTV.co |
 | `ch_nnej4mcfhm` | Cumaral TV | CumaralTV.co |
-| `ch_4933nv135b` | Deportes RCN | DeportesRCN.co |
 | `ch_x16tpv6tx4` | Educa Tigo | EducaTigo.co |
 | `ch_389e89xk5p` | Edupol | Edupol.co |
 | `ch_sta56bh7x5` | Edupol 2 | Edupol2.co |
@@ -119,8 +102,6 @@
 | `ch_2sdnj2w0y9` | Edupol 4 | Edupol4.co |
 | `ch_c75m87gtx5` | Eduvision | Eduvision.co |
 | `ch_kex75e3t69` | EDV TV | EDVTV.co |
-| `ch_3xrtdbbnyd` | El Gen Caribe | ElGenCaribe.co |
-| `ch_9vkqvscr9g` | El Mundo del Campo | ElMundodelCampo.co |
 | `ch_e5a61wf4ys` | El Tiempo TV | ElTiempoTV.co |
 | `ch_jdcd0tstx2` | ElCanal.co | ElCanalco.co |
 | `ch_m5yapyf1gg` | EMCALI TV | EMCALITV.co |
@@ -130,32 +111,24 @@
 | `ch_qgjcxdjmph` | EsperanzaTV Colombia | EsperanzaTVColombia.co |
 | `ch_52x3p3cmpm` | Evol Television | EvolTelevision.co |
 | `ch_vq1wgdkd2w` | Famili Channel | FamiliChannel.co |
-| `ch_7whfrbeza5` | Fiesta TV | FiestaTV.co |
-| `ch_mnmq2cerx7` | Frecuencia F TV | FrecuenciaFTV.co |
 | `ch_hn4542q841` | Full Musica | FullMusica.co |
 | `ch_yeke710g2q` | Galeras TV | GalerasTV.co |
 | `ch_e0y9dnd696` | Gamarra TV | GamarraTV.co |
-| `ch_08k9xehs6f` | Garagoa TV | GaragoaTV.co |
 | `ch_71hz21c8ax` | Girardot Television | GirardotTelevision.co |
 | `ch_m3wx8bvqq3` | Global Television | GlobalTelevision.co |
 | `ch_6m4xjgddc8` | Guasca FM 88.9 | GuascaFM889.co |
 | `ch_2wv3t5pfzj` | Heliconia Radio TV | HeliconiaRadioTV.co |
 | `ch_pf4k7vfq0y` | Hits Channel | HitsChannel.co |
 | `ch_7c0skk3m1b` | Honda TV Canal 6 | HondaTVCanal6.co |
-| `ch_896fhkcskw` | Huellas.TV | HuellasTV.co |
 | `ch_w4ghs9m5kk` | Huila TV | HuilaTV.co |
 | `ch_x02e700kcd` | Humor Channel | HumorChannel.co |
 | `ch_7q37024da6` | Ingruma TV | IngrumaTV.co |
-| `ch_sktht2rs40` | Kalu TV | KaluTV.co |
 | `ch_d3hpfwrtjx` | La Cadena de la Bendicion | LaCadenadelaBendicion.co |
 | `ch_exqkjw878m` | La Cantina Memorias | LaCantinaMemorias.co |
-| `ch_cppm7nvgfc` | La Cheverisima Radio TV | LaCheverisimaRadioTV.co |
 | `ch_sv7p7ngg3v` | La Costena TV | LaCostenaTV.co |
 | `ch_v3tt8qkwey` | La Despechada TV | LaDespechadaTV.co |
 | `ch_bte9jf4xj8` | La Hermandad Salsera | LaHermandadSalsera.co |
-| `ch_7fef2x1d13` | La Hermosa Stereo TV | LaHermosaStereoTV.co |
 | `ch_089kgc6hhj` | La Kalle | LaKalle.co |
-| `ch_jd6jfd2366` | La Morada Radio TV | LaMoradaRadioTV.co |
 | `ch_qc1hm62dpb` | La Popular Stereo TV | LaPopularStereoTV.co |
 | `ch_dp4rjfzpr9` | Latina Stereo 103.5 FM | LatinaStereo1035FM.co |
 | `ch_0bwq409jgj` | LCD Television | LCDTelevision.co |
@@ -163,7 +136,6 @@
 | `ch_r13cq2rnwm` | Lo Nuestro Digital Radio TV | LoNuestroDigitalRadioTV.co |
 | `ch_bs0myp9bbk` | Luna Estereo 106.4 FM | LunaEstereo1064FM.co |
 | `ch_a1ktgva44v` | Magazin 7:40 | Magazin740.co |
-| `ch_k3jqk2fcby` | Maguare Estereo TV | MaguareEstereoTV.co |
 | `ch_3frk1qvxsp` | Marina Stereo | MarinaStereo.co |
 | `ch_vb9gyghjzx` | Marsella TV | MarsellaTV.co |
 | `ch_beq7fvmc6s` | Mas Norte TV | MasNorteTV.co |
@@ -178,13 +150,11 @@
 | `ch_ke2dfw7ak3` | Memorias TV Tropical | MemoriasTVTropical.co |
 | `ch_c3s4d73mjd` | Metro TV | MetroTV.co |
 | `ch_jv20s2f29n` | Mi Canal | MiCanal.co |
-| `ch_t9dd5tre0z` | Mi Llano TV | MiLlanoTV.co |
 | `ch_wjqxjabqhe` | Mi Senal Colombia | MiSenalColombia.co |
 | `ch_km6drfngrr` | MITV Canal 20 | MITVCanal20.co |
 | `ch_289tdr1sg5` | Momento24 | Momento24.co |
 | `ch_cpv5yk3hj8` | MoniTV | MoniTV.co |
 | `ch_mcx6ws6vr7` | Montevision | Montevision.co |
-| `ch_12fnvg59zj` | Multicanal Television | MulticanalTelevision.co |
 | `ch_evw50z6x1q` | Mundo Mas | MundoMas.co |
 | `ch_c3kcfjh730` | Nacion TV | NacionTV.co |
 | `ch_svwaztw2h6` | Necocli TV | NecocliTV.co |
@@ -193,7 +163,6 @@
 | `ch_x65rqmnbzt` | Nosotros TV | NosotrosTV.co |
 | `ch_tncnjeb4dk` | Noticias Caracol En Vivo | NoticiasCaracolEnVivo.co |
 | `ch_ksxsnd9pxs` | Noticias RCN | NoticiasRCN.co |
-| `ch_pfgd2jz503` | Noticiero 90 Minutos | Noticiero90Minutos.co |
 | `ch_n3fvmkftn3` | Notivision | Notivision.co |
 | `ch_3b9sc8ddhp` | NSTV | NSTV.co |
 | `ch_tbkfkqbjs0` | Nuestro Llano TV | NuestroLlanoTV.co |
@@ -214,7 +183,6 @@
 | `ch_hzt429azfy` | RCN Movil | RCNMovil.co |
 | `ch_wzghjy90se` | RCN Xtra | RCNXtra.co |
 | `ch_hhnwd3xa10` | Red Oriente TV | RedOrienteTV.co |
-| `ch_fmjf481hwm` | Red+ | RedPlus.co |
 | `ch_ymnsdrx1g0` | Reyali | Reyali.co |
 | `ch_k31bwr4r18` | Rio Television | RioTelevision.co |
 | `ch_5k3ygkhhg4` | RTP Television | RTPTelevision.co |
@@ -229,29 +197,22 @@
 | `ch_e67mayvxjr` | Santel TV | SantelTV.co |
 | `ch_dd7x4n3y6n` | Satel Canal 4 | SatelCanal4.co |
 | `ch_fxxwwdaqjj` | Segovision | Segovision.co |
-| `ch_wvac2bxc4f` | Senal Colombia | SenalColombia.co |
 | `ch_91y30fx09a` | Senal Villeta Dulce | SenalVilletaDulce.co |
 | `ch_y61fs3r94f` | Sin Limites | SinLimites.co |
 | `ch_0nqs1xm07r` | Son Corazon | SonCorazon.co |
 | `ch_cvkh4pdbd9` | Son Latino | SonLatino.co |
 | `ch_26qb4nhqkw` | Son Popular | SonPopular.co |
 | `ch_0cqjt123ha` | Sonson TV | SonsonTV.co |
-| `ch_10rw1mtzgn` | Soto Red TV | SotoRedTV.co |
 | `ch_q3h03z7pmv` | Star Channel | StarChannel.co |
-| `ch_pks8zjjpw7` | StreamForce 360 | StreamForce360.co |
 | `ch_fjet29qstc` | Supia TV | SupiaTV.co |
 | `ch_05yrsp9rb1` | Survision TV | SurvisionTV.co |
 | `ch_gcscwctdt9` | Tamesis TeVe | TamesisTeVe.co |
-| `ch_1hx44bnnxj` | TDI Colombia | TDIColombia.co |
 | `ch_f34x9maqc1` | Tele Mocoa Canal 10 | TeleMocoaCanal10.co |
-| `ch_65wptrkswj` | Tele San Roque | TeleSanRoque.co |
 | `ch_e10dmw1tsr` | Tele Vid | TeleVid.co |
-| `ch_hzx7dyqm0g` | Teleaguadas | Teleaguadas.co |
 | `ch_m5c75gfmt1` | TeleAmalfi | TeleAmalfi.co |
 | `ch_0gjnp0p2ct` | TeleAndes | TeleAndes.co |
 | `ch_s0h6vw9ekg` | Teleantioquia Plus | TeleantioquiaPlus.co |
 | `ch_t9jwjek9tq` | Telebolivar | Telebolivar.co |
-| `ch_9vca9fhp00` | Telecafe 2 | Telecafe2.co |
 | `ch_pt29eqvg5m` | Telecanal | Telecanal.co |
 | `ch_1ttgw0gz58` | Telecaribe Plus | TelecaribePlus.co |
 | `ch_pmqypawx2z` | TeleCesar | TeleCesar.co |

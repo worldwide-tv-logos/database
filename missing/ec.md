@@ -1,6 +1,6 @@
 # Ecuador: channels without a logo
 
-81 of 216 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
+110 of 216 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
 
 | Channel ID | Name | iptv-org ID |
 |---|---|---|
@@ -29,50 +29,33 @@
 | `ch_f24r2d1y2b` | Chone Vision | ChoneVision.ec |
 | `ch_mxcqsjvewg` | CineCable TV | CineCableTV.ec |
 | `ch_t0n0q5b8w5` | Ciracu TV | CiracuTV.ec |
-| `ch_0f5gj26mdk` | Colorados Vision TV | ColoradosVisionTV.ec |
 | `ch_fafe4gk1s9` | Conectate TV | ConectateTV.ec |
 | `ch_v9hrhph99e` | CONTV Guala | CONTVGuala.ec |
-| `ch_d1cjtr3wz4` | Curiquingue TV | CuriquingueTV.ec |
 | `ch_bvh007ne2g` | Digital TV | DigitalTV.ec |
 | `ch_5txp8xfbyv` | Duran TV | DuranTV.ec |
-| `ch_s9ms5hea9c` | Ecotel TV | EcotelTV.ec |
-| `ch_w7y20rn51k` | Ecovision | Ecovision.ec |
 | `ch_rnp46r9q9e` | Ecua Stereo Radio TV | EcuaStereoRadioTV.ec |
-| `ch_jp4djqak1x` | Ecuavisa Internacional | EcuavisaInternacional.ec |
 | `ch_w317cck07w` | Educa TV | EducaTV.ec |
 | `ch_ey55h7z868` | El Canal del Futbol 2 | ElCanaldelFutbol2.ec |
 | `ch_3n4jba3md7` | El Canal del Futbol 3 | ElCanaldelFutbol3.ec |
 | `ch_59qh8yzcgf` | ELITE Television | ELITETelevision.ec |
 | `ch_6sncwx6w0w` | ESTV Canal Peninsular | ESTVCanalPeninsular.ec |
-| `ch_jtf01yn65p` | FM Mundo | FMMundo.ec |
-| `ch_8sevzxhzn3` | Futbol Ecuatoriano | FutbolEcuatoriano.ec |
 | `ch_mnpja8aydg` | Gaviota TV | GaviotaTV.ec |
 | `ch_mya6jsp5h1` | Gloriavision TV | GloriavisionTV.ec |
-| `ch_kdqyaejshf` | GM7 Digital | GM7Digital.ec |
 | `ch_t9yabtqn4t` | Hatv Gonzanama | HatvGonzanama.ec |
-| `ch_xfr4f4vz69` | Hechos Ecuador | HechosEcuador.ec |
-| `ch_znp42qpbsk` | IeanJesus Ecuador | IeanJesusEcuador.ec |
 | `ch_4ahg3btkbe` | Infinita TV | InfinitaTV.ec |
-| `ch_8gt0r6r416` | Intercom TV | IntercomTV.ec |
 | `ch_7r07y60qeg` | Inti TV | IntiTV.ec |
 | `ch_jg7rpt1j4z` | Jama TV | JamaTV.ec |
 | `ch_zn4n29qwgv` | Jipitv | Jipitv.ec |
-| `ch_zgymfvqknx` | Kasterwey Media | KasterweyMedia.ec |
-| `ch_sstjwbh47s` | KCHTV | KCHTV.ec |
 | `ch_cnnwef3r1w` | La Mana TV | LaManaTV.ec |
 | `ch_zf8jaddy02` | La Nueva Radio TV 97.7 | LaNuevaRadioTV977.ec |
 | `ch_5700d59qzt` | La Redonda TV | LaRedondaTV.ec |
-| `ch_1rr3dw13dt` | LatacungaTV | LatacungaTV.ec |
 | `ch_gewze62h6g` | Loreto TV | LoretoTV.ec |
 | `ch_482vy0bdk4` | Luz de America TV | LuzdeAmericaTV.ec |
 | `ch_e9rmafjzmq` | Manavision | Manavision.ec |
 | `ch_q91wy0x0b4` | Manglar TV | ManglarTV.ec |
 | `ch_8mqwtmvzt8` | Maxivision Canal 8 | MaxivisionCanal8.ec |
-| `ch_mbkn7rg1t2` | Megavision TV | MegavisionTV.ec |
-| `ch_acdpxb82a1` | Mel Radio TV | MelRadioTV.ec |
 | `ch_qv65kern4a` | Multicanal | Multicanal.ec |
 | `ch_6n99tc0pb4` | Multicanal Catamayo | MulticanalCatamayo.ec |
-| `ch_1kpyjd163f` | Nuka TV | NukaTV.ec |
 | `ch_axrj313dmh` | OKTV | OKTV.ec |
 | `ch_egfs63nftt` | Oromar TV+ | OromarTVPlus.ec |
 | `ch_nbk4cgacg2` | Palmita Radio TV | PalmitaRadioTV.ec |
@@ -84,28 +67,21 @@
 | `ch_zqj9826ecf` | Premier Television | PremierTelevision.ec |
 | `ch_n8h8ja7w9f` | PrensaEc | PrensaEc.ec |
 | `ch_4m3kga29jh` | Princesa Estereo TV | PrincesaEstereoTV.ec |
-| `ch_txnx3jpc3v` | Punto Rojo Radio | PuntoRojoRadio.ec |
 | `ch_qk3r0869nt` | Puruwa TV | PuruwaTV.ec |
-| `ch_w2tt8eb3tt` | Radio Alegria 98.5 FM | RadioAlegria985FM.ec |
 | `ch_4zwt5ep7m2` | Radio Bonita 106.7 | RadioBonita1067.ec |
 | `ch_ykd5826072` | Radio Cuenca Estereo | RadioCuencaEstereo.ec |
 | `ch_4avx9aqjyn` | Radio La Original TV | RadioLaOriginalTV.ec |
-| `ch_qwssp67fhg` | Radio Monumental TV | RadioMonumentalTV.ec |
-| `ch_bkxr64yc3m` | Radio Online EC | RadioOnlineEC.ec |
 | `ch_1hr7n4x51d` | Radio Rocafuerte TV | RadioRocafuerteTV.ec |
 | `ch_q3c58w56me` | RecTV | RecTV.ec |
 | `ch_9s7wqqfmdk` | Red TVE Ventanas | RedTVEVentanas.ec |
-| `ch_csrvpgdsz9` | Rios Vision Canal 5 | RiosVisionCanal5.ec |
 | `ch_bqv539fhmd` | RTRTV | RTRTV.ec |
 | `ch_m3h791y89t` | RTS | RTS.ec |
-| `ch_hw8k0dymfh` | RTV | RTV.ec |
 | `ch_xpnmktsyxk` | RTV Naranjal | RTVNaranjal.ec |
 | `ch_emxqafxe6p` | Sacha TV Canal 3 | SachaTVCanal3.ec |
 | `ch_rwbynneskq` | Saeta TV | SaetaTV.ec |
 | `ch_hzbexrbwhr` | Sarance Vision | SaranceVision.ec |
 | `ch_cryfehswqk` | Scandalo TV | ScandaloTV.ec |
 | `ch_ate59t7fg3` | Senal Positiva TV | SenalPositivaTV.ec |
-| `ch_wr8a9se5j9` | Sonovision | Sonovision.ec |
 | `ch_sb8ngft9gv` | Studio + TV | StudioPlusTV.ec |
 | `ch_xb9x4h3wfh` | Sumpa TV | SumpaTV.ec |
 | `ch_qf1sdvh129` | TeleAndina Canal 23 | TeleAndinaCanal23.ec |
@@ -122,20 +98,15 @@
 | `ch_3vd8m54pse` | TV Cisne | TVCisne.ec |
 | `ch_5vmm07c70b` | TV Color Canal 36 | TVColorCanal36.ec |
 | `ch_0akc4q0wrq` | TV Legislativa | TVLegislativa.ec |
-| `ch_5nrsawwtka` | TV Pacifico | TVPacifico.ec |
 | `ch_dc71wv1pq1` | TV Universal Ecuador | TVUniversalEcuador.ec |
 | `ch_f48a0v707v` | TvOro | TvOro.ec |
 | `ch_yn84w7b9z6` | TVS Canal 13 | TVSCanal13.ec |
-| `ch_hehcc0d8s7` | UBE TV | UBETV.ec |
 | `ch_f4shkj6sze` | Unicentro Canal 6 | UnicentroCanal6.ec |
 | `ch_7wreew11k0` | Unitv | Unitv.ec |
-| `ch_y2rkbafn38` | Unsion TV | UnsionTV.ec |
 | `ch_4dra0ts57w` | UTV | UTV.ec |
 | `ch_sr893rw17m` | UV Television | UVTelevision.ec |
 | `ch_gt2he500ex` | Vision al Sur | VisionalSur.ec |
 | `ch_ycxvnmq0xe` | VitoTVO | VitoTVO.ec |
 | `ch_qz5jesh20e` | Vos y TV | VosyTV.ec |
-| `ch_j8ydc1w5st` | Wuan+ | WuanPlus.ec |
 | `ch_y3rs468bk0` | Yasuni TV | YasuniTV.ec |
-| `ch_hr9zd19495` | Zaracay TV | ZaracayTV.ec |
 | `ch_b1bg8vna86` | Zu Canal | ZuCanal.ec |

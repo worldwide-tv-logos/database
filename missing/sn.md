@@ -1,6 +1,6 @@
 # Senegal: channels without a logo
 
-3 of 101 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
+11 of 101 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
 
 | Channel ID | Name | iptv-org ID |
 |---|---|---|
@@ -69,19 +69,12 @@
 | `ch_a25wrjk45n` | RFM | RFM.sn |
 | `ch_32sd5s453h` | RTJ TV | RTJTV.sn |
 | `ch_5b0rbgzvcj` | RTMD TV | RTMDTV.sn |
-| `ch_x0140g7nbe` | RTS 1 | RTS1.sn |
-| `ch_kh9myzdmj1` | RTS 2 | RTS2.sn |
-| `ch_n1766bwxqj` | RTS 3 | RTS3.sn |
-| `ch_kqekhwa7p7` | RTS 4 | RTS4.sn |
-| `ch_nwzaac4034` | RTS 5 | RTS5.sn |
 | `ch_eeeq16zg6n` | Sangalkam TV | SangalkamTV.sn |
-| `ch_rb512hy290` | Sen TV | SenTV.sn |
 | `ch_e8mmmh3v28` | Seneweb TV | SenewebTV.sn |
 | `ch_6kdyd0tted` | SenJeunes TV | SenJeunesTV.sn |
 | `ch_e1hc5qt5kw` | Siweul TV | SiweulTV.sn |
 | `ch_vk6xnwqfqk` | SK2 TV | SK2TV.sn |
 | `ch_ddb6jw5z83` | Sunu Yeuf | SunuYeuf.sn |
-| `ch_kdzc6dq5q0` | Sunugal 24 | Sunugal24.sn |
 | `ch_0tdjr0ghr0` | SunuLabel TV | SunuLabelTV.sn |
 | `ch_ct2yj6dk4b` | Tawhid TV | TawhidTV.sn |
 | `ch_r61m25r3c1` | Tele Senegal TV | TeleSenegalTV.sn |
@@ -94,7 +87,6 @@
 | `ch_rgzptabgv1` | TM.tv | TMtv.sn |
 | `ch_16qfa4msn8` | Touba Belel TV | ToubaBelelTV.sn |
 | `ch_qrbmrmshpw` | Touba TV | ToubaTV.sn |
-| `ch_jffzaya0ev` | ToubaMondeBi TV | ToubaMondeBiTV.sn |
 | `ch_z7ggmb1063` | TVS Saloum | TVSSaloum.sn |
 | `ch_ww2902f69z` | Urban Africa TV | UrbanAfricaTV.sn |
 | `ch_6y79xytp1t` | Walf TV | WalfTV.sn |

@@ -1,6 +1,6 @@
 # Canada: channels without a logo
 
-245 of 606 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
+247 of 606 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
 
 | Channel ID | Name | iptv-org ID |
 |---|---|---|
@@ -93,8 +93,6 @@
 | `ch_1jc2xtmqfb` | DesheBideshe TV | DesheBidesheTV.ca |
 | `ch_g7dtn0kx5f` | Deshi TV | DeshiTV.ca |
 | `ch_d1qq62pzwm` | Discovery Velocity | DiscoveryVelocity.ca |
-| `ch_kt4fd4a7z9` | Disney Channel | DisneyChannel.ca |
-| `ch_kchd7swnzh` | Dukh Nivaran | DukhNivaran.ca |
 | `ch_tnevwq0eay` | E! | E.ca |
 | `ch_3fsvmsjn4g` | EET TV | EETTV.ca |
 | `ch_3g3yhek734` | EMCI TV America | EMCITVAmerica.ca |

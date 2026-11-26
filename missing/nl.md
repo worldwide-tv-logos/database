@@ -1,6 +1,6 @@
 # Netherlands: channels without a logo
 
-222 of 340 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
+231 of 345 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
 
 | Channel ID | Name | iptv-org ID |
 |---|---|---|
@@ -64,18 +64,12 @@
 | `ch_ye7f45hkem` | RTV Rijnstreek TV | RTVRijnstreekTV.nl |
 | `ch_hgs4y1j1g4` | RTV Scheldemond | RTVScheldemond.nl |
 | `ch_ypjj29z2h2` | RTV Seaport | RTVSeaport.nl |
-| `ch_re3j1ptf7f` | RTV SLOS | RTVSLOS.nl |
 | `ch_7pm8pgmhhv` | RTV Veluwezoom TV | RTVVeluwezoomTV.nl |
-| `ch_avke0v2g4t` | RTV Zaanstreek | RTVZaanstreek.nl |
-| `ch_scm1csbcha` | Salto 1 | Salto1.nl |
-| `ch_99jrf3sfx5` | Salto 2 | Salto2.nl |
 | `ch_fes4r663dc` | Salto ADE | SaltoADE.nl |
 | `ch_dg6whzpcrh` | Salto Brasa Music | SaltoBrasaMusic.nl |
 | `ch_87kw4x4jp1` | Schagen TV | SchagenTV.nl |
 | `ch_dkn5t5mgy2` | Schie TV | SchieTV.nl |
-| `ch_7e576wjkza` | Schlager TV | SchlagerTV.nl |
 | `ch_zwk2w4d84s` | Silence TV | SilenceTV.nl |
-| `ch_4e1ab3mjyk` | Sleutelstad TV | SleutelstadTV.nl |
 | `ch_h64242dmgw` | SLOGO TV | SLOGOTV.nl |
 | `ch_50hprjptbp` | SLOS TV | SLOSTV.nl |
 | `ch_p7std7vpb8` | Slotstad TV | SlotstadTV.nl |
@@ -91,14 +85,11 @@
 | `ch_jr6zx2txtd` | Sport Klub Golf | SportKlubGolf.nl |
 | `ch_cbst4k0rpr` | Sport Klub Start | SportKlubStart.nl |
 | `ch_qp0w4e5szs` | SRC TV | SRCTV.nl |
-| `ch_hf00jfmht9` | Streekstad Central | StreekstadCentral.nl |
 | `ch_n4x090ys90` | StreekTV | StreekTV.nl |
 | `ch_bekqe1czxk` | Studio Alphen TV | StudioAlphenTV.nl |
-| `ch_c2drwfezzv` | Studio Rheden | StudioRheden.nl |
 | `ch_7zq84bn5dh` | Studio040 TV | Studio040TV.nl |
 | `ch_79nk9jtb66` | Tholen TV | TholenTV.nl |
 | `ch_58dpn1xjr3` | TMF | TMF.nl |
-| `ch_6by60tgxe9` | Tommy Teleshopping | TommyTeleshopping.nl |
 | `ch_6s9sms54ng` | TV Berghem | TVBerghem.nl |
 | `ch_fbevtvymjz` | TV Ellef | TVEllef.nl |
 | `ch_wwgfdecaw2` | TV Krimpenerwaard | TVKrimpenerwaard.nl |
@@ -115,6 +106,11 @@
 | `ch_8f25ctfwra` | Twente TV | TwenteTV.nl |
 | `ch_pdz7vcq4jp` | Viaplay TV+ | ViaplayTVPlus.nl |
 | `ch_mwyakznssw` | VOS TV | VOSTV.nl |
+| `ch_b5g49a04s3` | XITE 80s Flashback | XITE80sFlashback.nl |
+| `ch_4x5fntbjnp` | XITE Christian Hits | XITEChristianHits.nl |
+| `ch_dd3a1e4hrf` | XITE Country Today | XITECountryToday.nl |
+| `ch_72n6xds8tt` | XITE Gospel | XITEGospel.nl |
+| `ch_gvrvk8vgmm` | XITE R&B Classic Jams | XITERBClassicJams.nl |
 | `ch_hx3m7kd1jp` | XITE Reggae Vibes | XITEReggaeVibes.nl |
 | `ch_08kd8kx5wd` | Ziggo Sport 2 | ZiggoSport2.nl |
 | `ch_y53hzz0zyx` | Ziggo Sport 3 | ZiggoSport3.nl |

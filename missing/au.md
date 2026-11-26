@@ -1,13 +1,10 @@
 # Australia: channels without a logo
 
-122 of 182 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
+129 of 182 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
 
 | Channel ID | Name | iptv-org ID |
 |---|---|---|
 | `ch_tgcg74dgtg` | 10HD | 10HD.au |
-| `ch_g32ekdk9ne` | 3AW | 3AW.au |
-| `ch_j8cvw80rc3` | 4BC | 4BC.au |
-| `ch_bkkxsn84de` | 6PR | 6PR.au |
 | `ch_8z9kztms8d` | ABC Kids/ABC TV Plus | ABCKidsABCTVPlus.au |
 | `ch_3qdg69c1w1` | Adult Animation | AdultAnimation.au |
 | `ch_y072zcy0t4` | Aurora TV | AuroraTV.au |
@@ -15,9 +12,7 @@
 | `ch_rwkvj3dpdv` | Australia Channel | AustraliaChannel.au |
 | `ch_3g5hp1b9q0` | Australia Channel Sport | AustraliaChannelSport.au |
 | `ch_30cqmpqrs8` | Business TV | BusinessTV.au |
-| `ch_q03ajfty7t` | Comedy Central | ComedyCentral.au |
 | `ch_847wkx6se4` | Cricket Gold | CricketGold.au |
-| `ch_0mwmzrs2hq` | Crime + Investigation | CrimePlusInvestigation.au |
 | `ch_n9za6fxvzt` | CTB Perth | CTBPerth.au |
 | `ch_03s382mmzs` | CTB Perth Movies Channel | CTBPerthMoviesChannel.au |
 | `ch_1sgj2mdcn0` | Darwin TV | DarwinTV.au |
@@ -42,7 +37,6 @@
 | `ch_vjgp5awz6t` | Muntazar TV | MuntazarTV.au |
 | `ch_ng7m62as7n` | My Nepal TV | MyNepalTV.au |
 | `ch_hshhst2eaj` | Nick Jr Club | NickJrClub.au |
-| `ch_y8xd01vhmz` | Nick Jr. | NickJr.au |
 | `ch_bjgq7tt35m` | Nickelodeon | Nickelodeon.au |
 | `ch_0h1n8q7nph` | Optus Sport 10 | OptusSport10.au |
 | `ch_h594g5jk1q` | Optus Sport 11 | OptusSport11.au |
@@ -58,7 +52,6 @@
 | `ch_rdss77tp2h` | Sky News Extra 3 | SkyNewsExtra3.au |
 | `ch_rsc2ad7t27` | Snowy Mountains Television | SnowyMountainsTelevision.au |
 | `ch_f6h7p5hzpt` | ticker Docos | tickerDocos.au |
-| `ch_m438759qrm` | ticker News | tickerNews.au |
 | `ch_aqc7hyxmj5` | TLC | TLC.au |
 | `ch_8f9nhcg1be` | TVSN Beauty | TVSNBeauty.au |
 | `ch_p050rv6g57` | TVSN Jewellery | TVSNJewellery.au |

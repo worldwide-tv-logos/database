@@ -1,6 +1,6 @@
 # Uruguay: channels without a logo
 
-82 of 152 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
+87 of 152 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
 
 | Channel ID | Name | iptv-org ID |
 |---|---|---|
@@ -34,8 +34,6 @@
 | `ch_egydebt0vm` | Canal 8 Rivera | Canal8Rivera.uy |
 | `ch_kt4myx7h4j` | Canal 8 Trinidad | Canal8Trinidad.uy |
 | `ch_n0qm5t8q5r` | Canal 9 Palmitas | Canal9Palmitas.uy |
-| `ch_x0abkbmgjx` | Canal 9 Telerocha | Canal9Telerocha.uy |
-| `ch_wvrkx973nb` | Canal Mas | CanalMas.uy |
 | `ch_vgeaccmcwe` | Canelones Capital TV | CanelonesCapitalTV.uy |
 | `ch_aac3mpn8tt` | Charrua Television | CharruaTelevision.uy |
 | `ch_cs0ezggmwr` | Del Este TV | DelEsteTV.uy |
@@ -45,7 +43,6 @@
 | `ch_82yxpm2152` | Eventos MC HD 2 | EventosMCHD2.uy |
 | `ch_jj957q5d3r` | Eventos MC HD 3 | EventosMCHD3.uy |
 | `ch_qm4erf0d3z` | Eventos TV | EventosTV.uy |
-| `ch_nvmgpd4x0y` | FIX TV | FIXTV.uy |
 | `ch_q3s3ra4nnb` | FTC | FTC.uy |
 | `ch_yx265qgyv6` | La Costa TV | LaCostaTV.uy |
 | `ch_6ecqqy5hjq` | Latina TV Paysandu | LatinaTVPaysandu.uy |
@@ -71,6 +68,4 @@
 | `ch_erdd62b3ev` | TV ABC Palmira | TVABCPalmira.uy |
 | `ch_jsm9ncf9fs` | TV Universal Uruguay | TVUniversalUruguay.uy |
 | `ch_dv0c03qypn` | TV5 Artigas | TV5Artigas.uy |
-| `ch_x4d10hn3yw` | TVEO Dolores | TVEODolores.uy |
-| `ch_5e40yw010b` | TVFlorida | TVFlorida.uy |
 | `ch_d598arr94m` | Uruguay Natural TV | UruguayNaturalTV.uy |

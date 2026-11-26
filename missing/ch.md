@@ -1,13 +1,13 @@
 # Switzerland: channels without a logo
 
-92 of 161 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
+89 of 161 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
 
 | Channel ID | Name | iptv-org ID |
 |---|---|---|
 | `ch_wmq04g7t9a` | 6ter Switzerland | 6terSwitzerland.ch |
 | `ch_bbhte1m76f` | 7+ | 7Plus.ch |
+| `ch_bk0z67w1mt` | 7+/Nick Schweiz | 7PlusNickSchweiz.ch |
 | `ch_qbtt8485d8` | Alpen-Welle TV | AlpenWelleTV.ch |
-| `ch_2785wq8qzg` | Auftanken TV | AuftankenTV.ch |
 | `ch_4akbj558tg` | Blue Action | BlueAction.ch |
 | `ch_d8ppdv356n` | Blue City | BlueCity.ch |
 | `ch_m40s7f546k` | Blue Event 1 | BlueEvent1.ch |
@@ -17,7 +17,6 @@
 | `ch_gss5mmb9ed` | Bodensee TV | BodenseeTV.ch |
 | `ch_cs00syr9hb` | Canal Alpha NE | CanalAlphaNE.ch |
 | `ch_0xaqhssczr` | Canal Alpha Neuchatel | CanalAlphaNeuchatel.ch |
-| `ch_zy3345g8sj` | Carac 1 | Carac1.ch |
 | `ch_cgk0g5pvrb` | CH Music TV | CHMusicTV.ch |
 | `ch_ydd1ze0t6f` | Couleur 3 | Couleur3.ch |
 | `ch_vcm7qq6mmg` | Diaspora-TV Switzerland | DiasporaTVSwitzerland.ch |
@@ -41,6 +40,10 @@
 | `ch_5ev71n2yj3` | My German TV | MyGermanTV.ch |
 | `ch_fcc348z4pf` | My German TV + | MyGermanTVPlus.ch |
 | `ch_y5v2nhbmey` | MySports 10 |  |
+| `ch_bt5x00xcd3` | MySports 3 | MySports3.ch |
+| `ch_6jjhqyfn3m` | MySports 4 | MySports4.ch |
+| `ch_5jp6tb25d5` | MySports 7 | MySports7.ch |
+| `ch_a65djx6gs4` | MySports 9 | MySports9.ch |
 | `ch_h99bb855nc` | MySports Preview |  |
 | `ch_4zbynfjsj4` | Newcomer TV | NewcomerTV.ch |
 | `ch_77h0fhgw2q` | Radio 3i | Radio3i.ch |

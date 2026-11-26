@@ -1,27 +1,23 @@
 # Mexico: channels without a logo
 
-169 of 512 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
+206 of 512 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
 
 | Channel ID | Name | iptv-org ID |
 |---|---|---|
 | `ch_72r40ja6pa` | 15TV | 15TV.mx |
-| `ch_3vvzzadm2q` | 8NTV | 8NTV.mx |
 | `ch_deacgdtzpw` | Allende TV | AllendeTV.mx |
 | `ch_h3k7jt9e8k` | AMX Noticias | AMXNoticias.mx |
 | `ch_n3xj2wqheh` | Anesma TV | AnesmaTV.mx |
 | `ch_94z3mqwzxx` | Antena Lince UAdeO | AntenaLinceUAdeO.mx |
-| `ch_xff9a80f8e` | Antena TV | AntenaTV.mx |
 | `ch_jeavsjxmh4` | Aprende en casa 3.2 | Aprendeencasa32.mx |
 | `ch_htecpp8y4c` | Aprende TV | AprendeTV.mx |
 | `ch_04scfybpej` | Asi Sucede Guanajuato | AsiSucedeGuanajuato.mx |
 | `ch_17d1g67ja9` | Az Cinema | AzCinema.mx |
 | `ch_dyx5983tv3` | Az Clic | AzClic.mx |
 | `ch_qnw8f5q7hv` | Azteca Deportes Network | AztecaDeportesNetwork.mx |
-| `ch_qf1h512s9q` | Azteca Internacional | AztecaInternacional.mx |
 | `ch_17qe3set49` | Azteca Uno | AztecaUno.mx |
 | `ch_dyxjsf7p9j` | B15 Fresnillo | B15Fresnillo.mx |
 | `ch_7et7qw26dr` | B15 Zacatecas | B15Zacatecas.mx |
-| `ch_nh86v2pnfn` | BAMOS TV | BAMOSTV.mx |
 | `ch_wp0jdeqzbg` | Beat Box | BeatBox.mx |
 | `ch_69qv3rj9sy` | BITV | BITV.mx |
 | `ch_cyp6zgjt97` | C9NTV | C9NTV.mx |
@@ -32,7 +28,6 @@
 | `ch_s5dmsr83qt` | Canal 10.1 | Canal101.mx |
 | `ch_er9qsezvcf` | Canal 12 Durango | Canal12Durango.mx |
 | `ch_wey26efwgq` | Canal 12 Iguala | Canal12Iguala.mx |
-| `ch_qf00bnb7fn` | Canal 13 Bajio | Canal13Bajio.mx |
 | `ch_k9qhkjzzee` | Canal 13 Campeche | Canal13Campeche.mx |
 | `ch_r9ssyrfnmn` | Canal 13 Chiapas | Canal13Chiapas.mx |
 | `ch_2456r4vkfq` | Canal 13 Guadalajara | Canal13Guadalajara.mx |
@@ -51,7 +46,6 @@
 | `ch_vgqvnfh7wq` | Canal 21 Chignahuapan | Canal21Chignahuapan.mx |
 | `ch_rn8nbw6qw1` | Canal 22 Internacional | Canal22Internacional.mx |
 | `ch_p704dvksab` | Canal 22 Metropolitana y Nacional | Canal22MetropolitanayNacional.mx |
-| `ch_kvs0y9k4yv` | Canal 22 Nacional | Canal22Nacional.mx |
 | `ch_35yx4h51yw` | Canal 26 | Canal26.mx |
 | `ch_jzvghxgsk4` | Canal 26.2 | Canal262.mx |
 | `ch_85h8td8nd6` | Canal 28 | Canal28.mx |
@@ -62,13 +56,11 @@
 | `ch_5j6dfx9h4v` | Canal 30 Stars TV | Canal30StarsTV.mx |
 | `ch_0f68f3gnft` | Canal 33 Tijuana | Canal33Tijuana.mx |
 | `ch_npap35nmwk` | Canal 4 de Matehuala | Canal4deMatehuala.mx |
-| `ch_sq3h95r1hb` | Canal 44 | Canal44.mx |
 | `ch_48wnvcv6jn` | Canal 5 TV Cozumel | Canal5TVCozumel.mx |
 | `ch_9vgm0k2cm0` | Canal 6 de Tamazula | Canal6deTamazula.mx |
 | `ch_kpszfesqdz` | Canal 6 Tv | Canal6Tv.mx |
 | `ch_3kjd1a5rve` | Canal 6 TV Cable Hidalguense | Canal6TVCableHidalguense.mx |
 | `ch_zzwab6c92d` | Canal 7 SLP | Canal7SLP.mx |
-| `ch_bsa9jrv761` | Canal 8 Tu Nueva Vision | Canal8TuNuevaVision.mx |
 | `ch_qhb5vcyqrk` | Canal 96 Tizimin | Canal96Tizimin.mx |
 | `ch_9z4ey9tvzn` | Canal del Congreso 45.1 | CanaldelCongreso451.mx |
 | `ch_b2fqmg6v1c` | Canal del Congreso 45.2 | CanaldelCongreso452.mx |
@@ -76,9 +68,7 @@
 | `ch_ppp7tyate7` | Canal Doce Huejutla | CanalDoceHuejutla.mx |
 | `ch_an7acwp8pm` | Canal Iberoamericano | CanalIberoamericano.mx |
 | `ch_sx5yyqk6tg` | Canal Parlamento del Congreso de Jalisco | CanalParlamentodelCongresodeJalisco.mx |
-| `ch_k4jzpezqcp` | Capital 21 | Capital21.mx |
 | `ch_jqsg17k2tg` | Car One TV | CarOneTV.mx |
-| `ch_kdj568ykvv` | CB TV Michoacan | CBTVMichoacan.mx |
 | `ch_hm3jb5rxx1` | Cepropie | Cepropie.mx |
 | `ch_21sv18rk57` | Cinema Dinamita | CinemaDinamita.mx |
 | `ch_r58zmd4vab` | Cinema Platino | CinemaPlatino.mx |
@@ -92,7 +82,6 @@
 | `ch_fqwn8vvd53` | CorTV | CorTV.mx |
 | `ch_ah6w34jhse` | CreaLaTV | CreaLaTV.mx |
 | `ch_ndcnpdk9c6` | CV Directo | CVDirecto.mx |
-| `ch_2hpzffb0v6` | CV Shopping | CVShopping.mx |
 | `ch_ephdz2hb4z` | D99 TV | D99TV.mx |
 | `ch_crmqez8yr2` | De Pelicula Clasico | DePeliculaClasico.mx |
 | `ch_rafs5tqcmx` | De Pelicula Latin America | DePeliculaLatinAmerica.mx |
@@ -105,7 +94,6 @@
 | `ch_6g617b3pyt` | Espacio Television | EspacioTelevision.mx |
 | `ch_yhb46gewtq` | Espacio Universitario | EspacioUniversitario.mx |
 | `ch_gy2gam20b2` | Especiales | Especiales.mx |
-| `ch_tjfkgy8061` | Expresa TV | ExpresaTV.mx |
 | `ch_yzs2kh43sb` | FOX Central | FOXCentral.mx |
 | `ch_c4zk2ewx0s` | Frontera TV | FronteraTV.mx |
 | `ch_nk663f2wxx` | Genesis Television | GenesisTelevision.mx |
@@ -122,7 +110,6 @@
 | `ch_kzb6qp4dmm` | Imagen UABC TV | ImagenUABCTV.mx |
 | `ch_xv9vnycqr9` | IMRyT | IMRyT.mx |
 | `ch_617mj5tt99` | Ingenio TV | IngenioTV.mx |
-| `ch_rjg45hh9je` | Inova | Inova.mx |
 | `ch_p9nb70daq2` | ITV Deportes | ITVDeportes.mx |
 | `ch_tpfes9w1cw` | La Imagen de Tierra Caliente | LaImagendeTierraCaliente.mx |
 | `ch_nhf5avvbyz` | La Luperrona Ciudad Guzman | LaLuperronaCiudadGuzman.mx |
@@ -135,7 +122,6 @@
 | `ch_mesfvgdk4b` | Las Estrellas Europa | LasEstrellasEuropa.mx |
 | `ch_1x2b1twzwm` | Las Estrellas Latin America | LasEstrellasLatinAmerica.mx |
 | `ch_emk6m9eyv2` | Liga Mexicana de Beisbol | LigaMexicanadeBeisbol.mx |
-| `ch_8e8gd1jt79` | Lobo TV | LoboTV.mx |
 | `ch_172zqhz9ey` | Lobo+ | LoboPlus.mx |
 | `ch_zrvyvb1mfq` | Los Altos Television | LosAltosTelevision.mx |
 | `ch_aky0jtv5wf` | Maria Vision | MariaVision.mx |
@@ -144,7 +130,6 @@
 | `ch_kzan3hvg4w` | Megacanal | Megacanal.mx |
 | `ch_3tt2yh0zkg` | Meganoticias MX | MeganoticiasMX.mx |
 | `ch_jry67ecen7` | Metropoli Television | MetropoliTelevision.mx |
-| `ch_g9cggchv0d` | Mexicanal | Mexicanal.mx |
 | `ch_936deq9gy8` | Mexiquense TV | MexiquenseTV.mx |
 | `ch_7hxcyfam1b` | Monte Maria | MonteMaria.mx |
 | `ch_g58nrcyjcj` | Moovimex | Moovimex.mx |
@@ -158,10 +143,8 @@
 | `ch_g6r0e7edsz` | Multimedios Puebla | MultimediosPuebla.mx |
 | `ch_k185m1q656` | Multimedios Saltillo | MultimediosSaltillo.mx |
 | `ch_5sazv2hs5t` | MVM Noticias | MVMNoticias.mx |
-| `ch_zbew22fbgf` | MVS Noticias | MVSNoticias.mx |
 | `ch_ewsetabpxf` | MVS TV | MVSTV.mx |
 | `ch_kht38qx227` | MyTime Movie Network | MyTimeMovieNetwork.mx |
-| `ch_ejt9td2tmw` | N+ | NPlus.mx |
 | `ch_q72yyy1z7e` | N+ Bajio | NPlusBajio.mx |
 | `ch_z9h069dr30` | National Geographic | NationalGeographic.mx |
 | `ch_rktxdjmdw8` | Nayarit Comunica | NayaritComunica.mx |
@@ -170,12 +153,8 @@
 | `ch_2qc07fdk03` | Nueve TV | NueveTV.mx |
 | `ch_40w1zx8vfv` | Ola Grupera | OlaGrupera.mx |
 | `ch_gaqdejqqpc` | OnC.2 | OnC2.mx |
-| `ch_33jxp4jf1y` | Once Internacional | OnceInternacional.mx |
-| `ch_cwkq3gzcae` | Once Ninas y Ninos | OnceNinasyNinos.mx |
 | `ch_jtf3rcr5e1` | Panico | Panico.mx |
-| `ch_5jc76twfrm` | Paralelo 20 650 AM | Paralelo20650AM.mx |
 | `ch_ayf7xj7hq9` | Popcorn Central | PopcornCentral.mx |
-| `ch_d9e0tgrnb6` | Presumiendo Mexico | PresumiendoMexico.mx |
 | `ch_a9tnf6wcj9` | PSN Canal 45.2 | PSNCanal452.mx |
 | `ch_nd030n6fwa` | Queretaro Femenil TV | QueretaroFemenilTV.mx |
 | `ch_mxbjgspdde` | Quiero TV | QuieroTV.mx |
@@ -198,7 +177,6 @@
 | `ch_c81px3240m` | Sintesis TV | SintesisTV.mx |
 | `ch_62bqvhs5xh` | SIPSE TV 8.1 | SIPSETV81.mx |
 | `ch_a4xhpshs8n` | SIPSE TVCUN 8.1 | SIPSETVCUN81.mx |
-| `ch_6dv3q3j3a1` | Sistema Michoacano de TV | SistemaMichoacanodeTV.mx |
 | `ch_ntx07p588y` | Sky One | SkyOne.mx |
 | `ch_h8et8ar5f3` | Sky Premiere 1 | SkyPremiere1.mx |
 | `ch_bryp1wdqze` | Sky Premiere 10 | SkyPremiere10.mx |
@@ -244,7 +222,6 @@
 | `ch_3jr7vfxn8j` | Telemax | Telemax.mx |
 | `ch_420s96fnkw` | Teleplay Sureste | TeleplaySureste.mx |
 | `ch_3zjxkwb4mj` | Teleritmo | Teleritmo.mx |
-| `ch_zqxzejwz13` | Telesur Yucatan | TelesurYucatan.mx |
 | `ch_zz3p7fd89q` | Televisa Aguascalientes | TelevisaAguascalientes.mx |
 | `ch_0zvgpmygew` | Televisa Chihuahua | TelevisaChihuahua.mx |
 | `ch_rz1v4zkbsa` | Televisa Ciudad Juarez | TelevisaCiudadJuarez.mx |
@@ -264,13 +241,10 @@
 | `ch_pcfwawhrds` | Televisa San Luis Potosi | TelevisaSanLuisPotosi.mx |
 | `ch_4h9m5awmhw` | Televisa Sinaloa | TelevisaSinaloa.mx |
 | `ch_hbp8fy2jx3` | Televisa Sonora | TelevisaSonora.mx |
-| `ch_td7hxxxvjr` | Televisa Tijuana | TelevisaTijuana.mx |
 | `ch_0hdacspvk4` | Televisa Veracruz | TelevisaVeracruz.mx |
 | `ch_3hba2phyqf` | Televisa Victoria | TelevisaVictoria.mx |
 | `ch_t0dmnfe9ck` | Televisa Zacatecas | TelevisaZacatecas.mx |
 | `ch_16tepe8jed` | Television Altena | TelevisionAltena.mx |
-| `ch_3dfgdhqxtv` | Tlaxcala TV | TlaxcalaTV.mx |
-| `ch_6eevmctg1j` | TLN Network | TLNNetwork.mx |
 | `ch_x2nz04t064` | Tlnovelas Europa | TlnovelasEuropa.mx |
 | `ch_3acjpy64ej` | Tlnovelas Latin America | TlnovelasLatinAmerica.mx |
 | `ch_f1jaxpqhg9` | Tlnovelas Mexico | TlnovelasMexico.mx |
@@ -285,11 +259,9 @@
 | `ch_q9njf44sdv` | TV Independencia | TVIndependencia.mx |
 | `ch_bf96j50g4w` | TV Libertad | TVLibertad.mx |
 | `ch_7w7vfmq7ag` | TV Lobo | TVLobo.mx |
-| `ch_5pxenfmn32` | TV Mar La Paz | TVMarLaPaz.mx |
 | `ch_1qaaz0erqp` | TV Mar Los Cabos | TVMarLosCabos.mx |
 | `ch_k7s74f34ce` | TV Mar Puerto Vallarta | TVMarPuertoVallarta.mx |
 | `ch_65sbhvtg4a` | TV Mexiquense | TVMexiquense.mx |
-| `ch_j3s3m8v7zv` | TV UAQ | TVUAQ.mx |
 | `ch_e0msj31sc5` | TV UAT | TVUAT.mx |
 | `ch_y85t26zqd7` | TV UJED | TVUJED.mx |
 | `ch_7kbxrx63s7` | TV Universidad | TVUniversidad.mx |
@@ -299,15 +271,10 @@
 | `ch_zwentk84ya` | TVP Culiacan | TVPCuliacan.mx |
 | `ch_tasr0p5a70` | TVP Los Mochis | TVPLosMochis.mx |
 | `ch_na2r9nd0gw` | TVP Mazatlan | TVPMazatlan.mx |
-| `ch_wj8s8w4wfq` | TVP Obregon | TVPObregon.mx |
 | `ch_1j8e5kfshs` | TvQ Tabasco | TvQTabasco.mx |
-| `ch_ynmm890avf` | TVT | TVT.mx |
 | `ch_9c2mj3rtz7` | TVX Canal 18 | TVXCanal18.mx |
-| `ch_12mafrhzzh` | UDG TV | UDGTV.mx |
 | `ch_tjtzh4bsqj` | UMTV | UMTV.mx |
-| `ch_nm9bby8sfh` | Unife Mexico | UnifeMexico.mx |
 | `ch_4cxtk117ny` | Unison TV | UnisonTV.mx |
-| `ch_d5xxxzwgj6` | Univision Latin America | UnivisionLatinAmerica.mx |
 | `ch_yh7rpbpdy2` | Uno TV | UnoTV.mx |
 | `ch_g27trk3cnt` | Veracidad Channel | VeracidadChannel.mx |
 | `ch_5ay6br0mtv` | Veracruz Multimedios TV | VeracruzMultimediosTV.mx |
@@ -331,17 +298,13 @@
 | `ch_e70y1cgp5d` | XEWT-TDT | XEWTTDT.mx |
 | `ch_r7k3sryaa4` | XHBZC-TDT | XHBZCTDT.mx |
 | `ch_9g9wtrx2xv` | XHCCA-TDT | XHCCATDT.mx |
-| `ch_cn24r286tr` | XHFN-TDT1 | XHFNTDT1.mx |
 | `ch_j48ayjkj7s` | XHG-TDT | XHGTDT.mx |
 | `ch_jwvr309trx` | XHICCH-TDT | XHICCHTDT.mx |
 | `ch_f9tx9y3bbz` | XHILA-TDT | XHILATDT.mx |
-| `ch_qkcm8hmjcj` | XHJK-TDT | XHJKTDT.mx |
-| `ch_nqm7s8pg16` | XHKG-TDT | XHKGTDT.mx |
 | `ch_69cx42rmyq` | XHMNL-TDT | XHMNLTDT.mx |
 | `ch_wmwq63wtpt` | XHRIO-TV | XHRIOTV.mx |
 | `ch_stgj258d44` | XHS-TV | XHSTV.mx |
 | `ch_40bmn2tmde` | XHST-TDT | XHSTTDT.mx |
-| `ch_rra42zww19` | XHTJB-TDT | XHTJBTDT.mx |
 | `ch_bacqvzqp59` | XHTRES-TDT | XHTRESTDT.mx |
 | `ch_85b7tmv16f` | XHUNES-TDT | XHUNESTDT.mx |
 | `ch_4pjg8s8spy` | XHZHZ-TDT | XHZHZTDT.mx |

@@ -1,6 +1,6 @@
 # Poland: channels without a logo
 
-251 of 352 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
+256 of 352 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
 
 | Channel ID | Name | iptv-org ID |
 |---|---|---|
@@ -66,7 +66,6 @@
 | `ch_rf199avxs4` | Sport Klub | SportKlub.pl |
 | `ch_ntz3kqtghn` | Super Express TV | SuperExpressTV.pl |
 | `ch_m0zzzgmk1t` | Swiebodzin TV | SwiebodzinTV.pl |
-| `ch_61b13gas7n` | Telewizja Biznesowa | TelewizjaBiznesowa.pl |
 | `ch_xpk56hanpd` | Telewizja iTTV | TelewizjaiTTV.pl |
 | `ch_8b0vv8wx3x` | Telewizja Jaslo | TelewizjaJaslo.pl |
 | `ch_f4vjwsjdr1` | Telewizja Kalisz | TelewizjaKalisz.pl |
@@ -74,20 +73,16 @@
 | `ch_kak45jxt3s` | Telewizja Obiektyw | TelewizjaObiektyw.pl |
 | `ch_b1cb0q9wcv` | Telewizja Pogranicze Glubczyce | TelewizjaPograniczeGlubczyce.pl |
 | `ch_q9bey7stwd` | Telewizja Regionalna Zary | TelewizjaRegionalnaZary.pl |
-| `ch_paj395ch20` | Telewizja Torun | TelewizjaTorun.pl |
 | `ch_gvq2vst5ew` | Telewizja Wabrzezno | TelewizjaWabrzezno.pl |
 | `ch_3fn8n3dy96` | TOP Barca | TOPBarca.pl |
 | `ch_ea7dn923qq` | Top Million Dollar Agent | TopMillionDollarAgent.pl |
 | `ch_t2wc8kx7dp` | Top Movies Polska | TopMoviesPolska.pl |
-| `ch_ychzw3safa` | TV Mazowsze | TVMazowsze.pl |
 | `ch_zf6q7cn3ec` | TV Orion | TVOrion.pl |
 | `ch_vrhr0pk9x4` | TV Republika Plus | TVRepublikaPlus.pl |
-| `ch_5pgrp2zczd` | TV Slowianin | TVSlowianin.pl |
 | `ch_y6dk5c3zdf` | TV.Ropczyce | TVRopczyce.pl |
 | `ch_3jatm7jbxq` | TVC Super | TVCSuper.pl |
 | `ch_q92mq6jwxv` | TVMN | TVMN.pl |
 | `ch_5x94dmnt05` | TVN Fabula | TVNFabula.pl |
-| `ch_tc8n8gx3vc` | TVPM | TVPM.pl |
 | `ch_3k03n55fd2` | TVT Zgorzelec | TVTZgorzelec.pl |
 | `ch_6gxrgbtjtg` | V90 | V90.pl |
 | `ch_t99x9j4shf` | Viasat Explore Classic | ViasatExploreClassic.pl |

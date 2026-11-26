@@ -1,6 +1,6 @@
 # Germany: channels without a logo
 
-499 of 680 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
+501 of 680 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
 
 | Channel ID | Name | iptv-org ID |
 |---|---|---|
@@ -50,7 +50,6 @@
 | `ch_pwp3b1fmxs` | Juwelo Schweiz | JuweloSchweiz.de |
 | `ch_w26g2yrhpx` | Kanal 13 | Kanal13.de |
 | `ch_a7m06mxz1m` | Kanal Avrupa | KanalAvrupa.de |
-| `ch_exagt93n76` | Khatereh TV | KhaterehTV.de |
 | `ch_49jmy0g7xw` | KultKrimi | KultKrimi.de |
 | `ch_aetbmy4jg1` | KulturMD | KulturMD.de |
 | `ch_fp14rm9stz` | KW TV Wildau | KWTVWildau.de |
@@ -60,7 +59,6 @@
 | `ch_fq0kdw53rj` | Lausitz TV | LausitzTV.de |
 | `ch_9cxa31r8n6` | MC EU | MCEU.de |
 | `ch_4dtrf9bh5k` | MC TV | MCTV.de |
-| `ch_3xrz36nxnw` | MeieTV | MeieTV.de |
 | `ch_yzec55baqm` | Mein TV Shop | MeinTVShop.de |
 | `ch_8z2pe35b7q` | Meissen Fernsehen | MeissenFernsehen.de |
 | `ch_t9kqkmf0d7` | Mission Erweckung der Welt | MissionErweckungderWelt.de |

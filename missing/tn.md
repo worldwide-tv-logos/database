@@ -1,6 +1,6 @@
 # Tunisia: channels without a logo
 
-8 of 28 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
+11 of 28 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
 
 | Channel ID | Name | iptv-org ID |
 |---|---|---|
@@ -14,13 +14,10 @@
 | `ch_7rfhj8zgfk` | IFM TV | IFMTV.tn |
 | `ch_ajrpa1d69y` | Jawhara TV | JawharaTV.tn |
 | `ch_w1jt89bm5w` | Mosaique FM | MosaiqueFM.tn |
-| `ch_bdvn4gyya0` | Nefzawa TV | NefzawaTV.tn |
 | `ch_04nr2w1cjz` | Nessma El Jadida | NessmaElJadida.tn |
-| `ch_avwwszq080` | Radio Nationale Visuelle | RadioNationaleVisuelle.tn |
 | `ch_vz6v6mxf1z` | Sahel TV | SahelTV.tn |
 | `ch_zkc3e6nyvx` | SPLTV | SPLTV.tn |
 | `ch_dmfgjzf516` | Telvza TV | TelvzaTV.tn |
 | `ch_scng078wj4` | TT1 | TT1.tn |
-| `ch_vj683qswse` | Tunisna TV | TunisnaTV.tn |
 | `ch_acx098zrc4` | Watania Educative | WataniaEducative.tn |
 | `ch_551js836zw` | Watania Sports | WataniaSports.tn |
