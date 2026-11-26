@@ -297,6 +297,24 @@ def test_site_data(db, tmp_path):
     assert json.loads((out / 'countries.json').read_text(encoding='utf-8'))[0]['name'] == 'France'
 
 
+def test_an_edition_of_another_countrys_channel_is_also_on_its_own_country_page(db, tmp_path):
+    import json
+
+    from worldwide_tv_logos import site
+    qa = registry.add_channel(db, 'beIN Sports 1', 'qa').id
+    fr = registry.add_channel(db, 'beIN Sports 1 France', 'fr', parent=qa).id
+    ops.set_logo(db, qa, png(800, 300), 'x')
+    db.save()
+    out = tmp_path / 'api'
+    site.build(db, IPTV, [], out)
+    page = json.loads((out / 'countries' / 'fr.json').read_text(encoding='utf-8'))['channels']
+    card = next(c for c in page if c['id'] == fr)
+    assert (card['parent'], card['parent_country']) == (qa, 'qa')
+    assert card['logos'][0]['url'].endswith(f'logos/{qa}.png')              # its channel's logo
+    main = json.loads((out / 'countries' / 'qa.json').read_text(encoding='utf-8'))['channels'][0]
+    assert [f['id'] for f in main['feeds']] == [fr]                          # still listed with its channel
+
+
 def test_logos_json_gives_our_id_its_slug_and_iptv_org_id(db):
     ops.set_logo(db, ALS, png(800, 300), 'x')
     rec = cli.logo_record(db, db.logos[(ALS, '')])
