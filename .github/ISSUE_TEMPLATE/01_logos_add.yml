@@ -10,7 +10,7 @@ body:
         The logo is downloaded, checked and converted automatically once the request is approved.
         **Rules**: the channel must be on the [website](https://worldwide-tv-logos.github.io/database/countries)
         (a channel not listed yet is added first with the **channels/add** form). The image must
-        be on a transparent background (a white frame is removed automatically), at least 500 px on its longest side
+        be on a transparent background (a white frame is removed automatically), at least 300 px on its longest side
         (SVG preferred), and the link must be a direct `https://` link to the image.
         To replace an existing logo, use the **logos/edit** form instead.
 

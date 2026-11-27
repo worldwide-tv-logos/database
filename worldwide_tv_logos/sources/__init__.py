@@ -4,7 +4,7 @@ of SOURCES: `logos find`, harvests and hunts all go through it, so a source adde
 
 | Source | Rank | Asked | What |
 |---|---|---|---|
-| duckduckgo | 2 | deep | image search "<name> logo", images of 500 px or more, social and stock sites left out |
+| duckduckgo | 2 | deep | image search "<name> logo", images of 300 px or more, social and stock sites left out |
 | wikidata | 3 | always | current logo of the channel's item (P154, with dates) |
 | wikipedia | 2 | missing | image of the channel's article, in the country's languages then English (local files too) |
 | commons | 2 | missing | Commons files named after the channel with "logo" |
