@@ -1,6 +1,6 @@
 # Belgium: channels without a logo
 
-117 of 159 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
+122 of 159 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
 
 | Channel ID | Name | iptv-org ID |
 |---|---|---|
@@ -14,11 +14,9 @@
 | `ch_5qcv217rwn` | EbS+ | EbSPlus.be |
 | `ch_6gbbb10565` | Eurosport 2 VL |  |
 | `ch_v8fv9588ym` | JapanimTV | JapanimTV.be |
-| `ch_56ejz1g3em` | Nat Geo Wild VL |  |
 | `ch_kv0enxzsrc` | National Geographic VL |  |
 | `ch_a094ap86rc` | Nickelodeon Flanders | NickelodeonFlanders.be |
 | `ch_rsbk16fz8d` | Nickelodeon Wallonia | NickelodeonWallonia.be |
-| `ch_njrtgjny11` | NickToons |  |
 | `ch_abawwqekwd` | Notele | Notele.be |
 | `ch_vsqtwdzfh9` | Pickx Live | PickxLive.be |
 | `ch_sg9p60xe5g` | Pickx+ | PickxPlus.be |
@@ -33,8 +31,6 @@
 | `ch_0bntp0nt07` | Pickx+ Sports 8 | PickxPlusSports8.be |
 | `ch_ywpz9ksyrx` | Pickx+ Sports 9 | PickxPlusSports9.be |
 | `ch_53e374yj58` | Play 24/7 | Play247.be |
-| `ch_v2zrrrbddq` | Play Sports 6 |  |
-| `ch_f1dt8q5ned` | Play Sports 7 |  |
 | `ch_qfy4ckwrzh` | Promius Pickx InfoChannel | PromiusPickxInfoChannel.be |
 | `ch_wp8xsf6nrw` | Proximus 11 | Proximus11.be |
 | `ch_wbxx9pnn6g` | Q-music Vlaanderen | QmusicVlaanderen.be |
@@ -42,7 +38,6 @@
 | `ch_bnfq4gbkpj` | Sterk TV | SterkTV.be |
 | `ch_rz8v3eeq8k` | Studio 100 Hits | Studio100Hits.be |
 | `ch_ncrgq6xj12` | TipikVision | TipikVision.be |
-| `ch_z7zb66b5a4` | TLC VL |  |
 | `ch_1hwyd41p7g` | TV Oost | TVOost.be |
 | `ch_x3w1xtg218` | TVM | TVM.be |
 | `ch_fdpd5vyyvt` | WTV | WTV.be |

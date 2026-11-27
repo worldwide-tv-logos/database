@@ -1,6 +1,6 @@
 # United Kingdom: channels without a logo
 
-400 of 591 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
+456 of 593 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
 
 | Channel ID | Name | iptv-org ID |
 |---|---|---|
@@ -10,7 +10,6 @@
 | `ch_cnr525rawt` | A1TV UK | A1TVUK.uk |
 | `ch_5np090sn1m` | Aathavan TV | AathavanTV.uk |
 | `ch_8k5qypzs2b` | ACTS TV | ACTSTV.uk |
-| `ch_mcfpn2h116` | African Movie Channel | AfricanMovieChannel.uk |
 | `ch_xw3fsf5dby` | African Movie Channel Series | AfricanMovieChannelSeries.uk |
 | `ch_2nvaph1am5` | Afrobeat TV Entertainment | AfrobeatTVEntertainment.uk |
 | `ch_rwq4jmbady` | Ahwazna | Ahwazna.uk |
@@ -23,28 +22,6 @@
 | `ch_y0nbe1xg3f` | ATN Bangla UK | ATNBanglaUK.uk |
 | `ch_x38c05s8jx` | BBC Brit | BBCBrit.uk |
 | `ch_8a3srzgqy4` | BBC Lifestyle | BBCLifestyle.uk |
-| `ch_sefqhaxnx3` | BBC Red Button 10 | BBCRedButton10.uk |
-| `ch_z77pvs86jw` | BBC Red Button 11 | BBCRedButton11.uk |
-| `ch_34xysgav39` | BBC Red Button 12 | BBCRedButton12.uk |
-| `ch_k5hyxdw5hs` | BBC Red Button 13 | BBCRedButton13.uk |
-| `ch_pjbzdzejjy` | BBC Red Button 14 | BBCRedButton14.uk |
-| `ch_xvtwtxxmv4` | BBC Red Button 15 | BBCRedButton15.uk |
-| `ch_9f4ce401jw` | BBC Red Button 16 | BBCRedButton16.uk |
-| `ch_sv474ws4bd` | BBC Red Button 17 | BBCRedButton17.uk |
-| `ch_n5am1sgx2w` | BBC Red Button 18 | BBCRedButton18.uk |
-| `ch_wv65za8tyn` | BBC Red Button 19 | BBCRedButton19.uk |
-| `ch_c505a54m3s` | BBC Red Button 20 | BBCRedButton20.uk |
-| `ch_kv0gnhz2kk` | BBC Red Button 21 | BBCRedButton21.uk |
-| `ch_am77kr8mtb` | BBC Red Button 22 | BBCRedButton22.uk |
-| `ch_hw1h7syt16` | BBC Red Button 23 | BBCRedButton23.uk |
-| `ch_4kt84m2cy2` | BBC Red Button 24 | BBCRedButton24.uk |
-| `ch_xm79cparhe` | BBC Red Button 3 | BBCRedButton3.uk |
-| `ch_v5x20m2f7d` | BBC Red Button 4 | BBCRedButton4.uk |
-| `ch_xrb9gmwfeh` | BBC Red Button 5 | BBCRedButton5.uk |
-| `ch_wmmdv2s594` | BBC Red Button 6 | BBCRedButton6.uk |
-| `ch_nh3c28xsmw` | BBC Red Button 7 | BBCRedButton7.uk |
-| `ch_hw2hfza81t` | BBC Red Button 8 | BBCRedButton8.uk |
-| `ch_w8j9cf8qbv` | BBC Red Button 9 | BBCRedButton9.uk |
 | `ch_41w6fkgzb2` | BBC UHD 2 | BBCUHD2.uk |
 | `ch_m02agzjwhs` | BBC UHD 3 | BBCUHD3.uk |
 | `ch_3p9mz0zb9f` | BBC UHD 4 | BBCUHD4.uk |
@@ -55,12 +32,10 @@
 | `ch_2kcrnj7wea` | Brit Asia TV | BritAsiaTV.uk |
 | `ch_v9efdx5mbd` | Canaf54 TV | Canaf54TV.uk |
 | `ch_j18dtk1p6g` | Cars & Stars TV | CarsStarsTV.uk |
-| `ch_m32r2yxkzh` | Cartoon Network CEE | CartoonNetworkCEE.uk |
 | `ch_ah068rqn3a` | Cartoon Network MENA | CartoonNetworkMENA.uk |
 | `ch_nscerkp12y` | Cartoon Network Western Europe | CartoonNetworkWesternEurope.uk |
 | `ch_brwq3s8p03` | Cartoonito MENA | CartoonitoMENA.uk |
 | `ch_as4zbaqwgt` | Cartoonito Nordic | CartoonitoNordic.uk |
-| `ch_3x5mab9jgv` | Cartoonito Western Europe | CartoonitoWesternEurope.uk |
 | `ch_pg84y86bwt` | CBeebies Africa | CBeebiesAfrica.uk |
 | `ch_wk8tns7d38` | CBeebies Middle East | CBeebiesMiddleEast.uk |
 | `ch_f27ejbpxnc` | CBS Reality Africa | CBSRealityAfrica.uk |
@@ -68,17 +43,15 @@
 | `ch_445smffgma` | Channel Europe | ChannelEurope.uk |
 | `ch_z0aeepf7w6` | Channel S | ChannelS.uk |
 | `ch_qna5pycqrm` | Cinemachi Crime | CinemachiCrime.uk |
-| `ch_ap0rx9k0rf` | CNBC UK | CNBCUK.uk |
 | `ch_a11sfdrjs3` | Court TV | CourtTV.uk |
-| `ch_9b5t3n371p` | Crime + Investigation Benelux | CrimePlusInvestigationBenelux.uk |
 | `ch_vjsednx064` | Crime + Investigation CEE | CrimePlusInvestigationCEE.uk |
 | `ch_dpasc19j4a` | DAZN Combat | DAZNCombat.uk |
 | `ch_75vxyv11wx` | DAZN LaLiga 5 | DAZNLaLiga5.uk |
 | `ch_yrdg7wd9b4` | DAZN Women's Football | DAZNWomensFootball.uk |
+| `ch_pjvjb3cg34` | Dennis and Gnasher | DennisandGnasher.uk |
 | `ch_7w216f8c5r` | Direct Store TV | DirectStoreTV.uk |
 | `ch_rk45zym43f` | Discovery Channel Europe | DiscoveryChannelEurope.uk |
 | `ch_v890kn2hns` | Disney Channel Baltics | DisneyChannelBaltics.uk |
-| `ch_5a9f6bv9zs` | Disney Channel EMEA | DisneyChannelEMEA.uk |
 | `ch_bsjs3p5sc8` | Disney Junior Baltics | DisneyJuniorBaltics.uk |
 | `ch_ywqz9s06gq` | Disney Junior Scandinavia | DisneyJuniorScandinavia.uk |
 | `ch_yabqzsag9h` | Docu Crime | DocuCrime.uk |
@@ -97,16 +70,12 @@
 | `ch_3g77q02qkg` | Five Somali TV | FiveSomaliTV.uk |
 | `ch_9xvbt9nrt9` | Foodies | Foodies.uk |
 | `ch_srfar3ygbs` | Garshom TV | GarshomTV.uk |
-| `ch_mxr1f2t22t` | GOD TV | GODTV.uk |
+| `ch_gh72029pt8` | Gems TV |  |
 | `ch_ybwh9rar92` | GOD TV Asia | GODTVAsia.uk |
 | `ch_p3evmqaj77` | Goodnews TV | GoodnewsTV.uk |
-| `ch_3sx9s6yh7z` | GREAT! mystery | GREATmystery.uk |
 | `ch_yphzy1wbq0` | Hala London TV Cartoon | HalaLondonTVCartoon.uk |
 | `ch_yz845d4y7x` | Hala London TV Movies | HalaLondonTVMovies.uk |
 | `ch_bsw171x5db` | Hala London TV Series | HalaLondonTVSeries.uk |
-| `ch_2yh6zy9yaw` | High Street TV 2 | HighStreetTV2.uk |
-| `ch_yw7w2xgx55` | High Street TV 3 | HighStreetTV3.uk |
-| `ch_2tp4a9dksw` | High Street TV 4 | HighStreetTV4.uk |
 | `ch_n61zysewe2` | Hope Channel UK | HopeChannelUK.uk |
 | `ch_9dj761g7av` | IBC Bakthi | IBCBakthi.uk |
 | `ch_wb6xa3jcvp` | IBC Comedy | IBCComedy.uk |
@@ -141,9 +110,7 @@
 | `ch_jdzx6x26a3` | MTA7 Asia | MTA7Asia.uk |
 | `ch_z50we4fkbk` | MTA8 America | MTA8America.uk |
 | `ch_0855e1n8hf` | MTV 80s |  |
-| `ch_kft9aavspn` | MTV 90s |  |
 | `ch_s1v6q185cd` | MTV Global | MTVGlobal.uk |
-| `ch_9capw6bj5w` | MyTime Movie Network | MyTimeMovieNetwork.uk |
 | `ch_e3wx9rddv6` | National Geographic Middle East | NationalGeographicMiddleEast.uk |
 | `ch_p5v8qa3f4k` | National Geographic Wild Middle East | NationalGeographicWildMiddleEast.uk |
 | `ch_2ka88bc5w9` | New Media TV | NewMediaTV.uk |
@@ -152,43 +119,22 @@
 | `ch_v5d826r9nj` | Ocean News Network | OceanNewsNetwork.uk |
 | `ch_fzgttwatae` | Pet & Pal | PetPal.uk |
 | `ch_p3w4xz1eyp` | Planet Eat TV | PlanetEatTV.uk |
-| `ch_07srpw19zp` | QVC Beauty | QVCBeauty.uk |
 | `ch_2kvabjs0ta` | RAW TV | RAWTV.uk |
 | `ch_yk1t2e6kkg` | RTN Somali TV | RTNSomaliTV.uk |
 | `ch_14fxe1mjg0` | Setanta Sports | SetantaSports.uk |
 | `ch_bsabgbwx1x` | Shabelle TV | ShabelleTV.uk |
 | `ch_ce9gwrzgmp` | Shots! | Shots.uk |
 | `ch_b91zyza1nn` | Simaye Azadi | SimayeAzadi.uk |
-| `ch_qqbjqfytda` | Sky Arts | SkyArts.uk |
-| `ch_9dd9brt73f` | Sky Atlantic | SkyAtlantic.uk |
-| `ch_343q4ke6sv` | Sky Comedy | SkyComedy.uk |
-| `ch_srypaaw0hn` | Sky Crime | SkyCrime.uk |
-| `ch_0hswqa2gzz` | Sky Documentaries | SkyDocumentaries.uk |
-| `ch_4vmf4jp168` | Sky Nature | SkyNature.uk |
-| `ch_x6nb9hsjf3` | Sky Replay | SkyReplay.uk |
-| `ch_7655y5smws` | Sky Sports Cricket | SkySportsCricket.uk |
-| `ch_fmm8n4fdcq` | Sky Sports F1 | SkySportsF1.uk |
-| `ch_7qacdqxsw8` | Sky Sports Football | SkySportsFootball.uk |
-| `ch_gkzy4pye35` | Sky Sports Golf | SkySportsGolf.uk |
-| `ch_y97n9jrd1t` | Sky Sports News | SkySportsNews.uk |
-| `ch_khbademtcb` | Sky Sports NFL | SkySportsNFL.uk |
-| `ch_dtvyrdc1y0` | Sky Sports Premier League | SkySportsPremierLeague.uk |
 | `ch_jrxf078yf8` | Sky Sports Premier League ROI | SkySportsPremierLeagueROI.uk |
-| `ch_yry5t229fb` | Sky Sports Tennis | SkySportsTennis.uk |
-| `ch_ce0195tztt` | Sky Witness | SkyWitness.uk |
-| `ch_63zqbm9sts` | Sony Max | SonyMax.uk |
 | `ch_s8meqbn6m1` | STV Central | STVCentral.uk |
 | `ch_xv4exmt138` | Thane Direct | ThaneDirect.uk |
 | `ch_kqcxmfs0ec` | That's 20th Century | Thats20thCentury.uk |
-| `ch_d6f4fc689q` | That's 60s | Thats60s.uk |
-| `ch_cxz0yqzgk1` | That's 80s | Thats80s.uk |
 | `ch_9e99w6eshx` | That's Classics | ThatsClassics.uk |
 | `ch_9rk12p7g0p` | That's Entertainment | ThatsEntertainment.uk |
 | `ch_084m50m6h7` | TJC Beauty | TJCBeauty.uk |
 | `ch_hhhs3ma10s` | Totalmusic 2000s | Totalmusic2000s.uk |
 | `ch_qrx6rjkraf` | Travel Channel EMEA | TravelChannelEMEA.uk |
 | `ch_agmefcn6d1` | TV Warehouse | TVWarehouse.uk |
-| `ch_chspzmcf0p` | U&Dave | UDave.uk |
 | `ch_tdd5c53kv5` | Universal Somali TV | UniversalSomaliTV.uk |
 | `ch_k2x2xraznz` | Venus TV | VenusTV.uk |
 | `ch_gpn1sb3f12` | Verite TV | VeriteTV.uk |

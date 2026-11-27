@@ -1,11 +1,10 @@
 # Senegal: channels without a logo
 
-11 of 101 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
+13 of 101 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
 
 | Channel ID | Name | iptv-org ID |
 |---|---|---|
 | `ch_r5mzn72928` | 2A TV | 2ATV.sn |
-| `ch_07kpmaj7v0` | 2STV | 2STV.sn |
 | `ch_56hd4xa81w` | 313 Digital | 313Digital.sn |
 | `ch_w5cpjs6kfv` | 7TV Senegal | 7TVSenegal.sn |
 | `ch_7dkqh1en0r` | A2i Music | A2iMusic.sn |
@@ -81,7 +80,6 @@
 | `ch_z9e7d2ek0y` | Tele-Ecole | TeleEcole.sn |
 | `ch_r2pedp0fkq` | TeleMusik Senegal | TeleMusikSenegal.sn |
 | `ch_f38q58n7zy` | Teranga Senegal TV | TerangaSenegalTV.sn |
-| `ch_3e0cxc5gps` | TFM | TFM.sn |
 | `ch_ej96k5h8v3` | TFM Religions | TFMReligions.sn |
 | `ch_emz87nfqkt` | Tivaouane TV | TivaouaneTV.sn |
 | `ch_rgzptabgv1` | TM.tv | TMtv.sn |

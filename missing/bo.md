@@ -1,6 +1,6 @@
 # Bolivia: channels without a logo
 
-96 of 238 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
+96 of 241 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
 
 | Channel ID | Name | iptv-org ID |
 |---|---|---|
@@ -17,6 +17,7 @@
 | `ch_kgb58cmzye` | ANTv | ANTv.bo |
 | `ch_znepptj6dr` | As Contenidos | AsContenidos.bo |
 | `ch_mf78cx7mcd` | Asi es mi Pueblo TV | AsiesmiPuebloTV.bo |
+| `ch_8a5p7gghs8` | Asplur TV | AsplurTV.bo |
 | `ch_38d0jb7gtq` | Atesur | Atesur.bo |
 | `ch_yzx6vj9gjv` | AYNI TV | AYNITV.bo |
 | `ch_qc0mz7d6pk` | Benitv | Benitv.bo |
@@ -43,6 +44,7 @@
 | `ch_1d65t583m6` | CEACOM TV | CEACOMTV.bo |
 | `ch_ws0zskbthk` | Chapaca de Television | ChapacadeTelevision.bo |
 | `ch_zns13c0wrf` | Clitel HD | ClitelHD.bo |
+| `ch_bb46spb29s` | Conectatel TV | ConectatelTV.bo |
 | `ch_sg8ak1en8b` | Coral TV | CoralTV.bo |
 | `ch_mcabpr6mfe` | Cotes TV | CotesTV.bo |
 | `ch_35tztmjtj8` | CVC | CVC.bo |
@@ -130,6 +132,7 @@
 | `ch_xw172q8zw8` | TV Show Oruro | TVShowOruro.bo |
 | `ch_bfrpgdrrce` | TV Universitaria | TVUniversitaria.bo |
 | `ch_9s3yds6d4q` | TVU Santa Cruz | TVUSantaCruz.bo |
+| `ch_a7k7wkp1xm` | UDES TV | UDESTV.bo |
 | `ch_1sa69y6nev` | Unica TV | UnicaTV.bo |
 | `ch_021pseyg9t` | UPEA TV | UPEATV.bo |
 | `ch_8zxbbtde4j` | Vision TV Bolivia | VisionTVBolivia.bo |

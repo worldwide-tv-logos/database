@@ -1,6 +1,6 @@
 # Spain: channels without a logo
 
-305 of 648 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
+321 of 654 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
 
 | Channel ID | Name | iptv-org ID |
 |---|---|---|
@@ -45,7 +45,6 @@
 | `ch_n0vgndbf0g` | BDN | BDN.es |
 | `ch_4jjjx9fss0` | Betania TV | BetaniaTV.es |
 | `ch_tyj82er4wm` | Biosfera TV | BiosferaTV.es |
-| `ch_2kg7ppbdn7` | Cacavision | Cacavision.es |
 | `ch_r01gasf3gs` | Caceres TeVe | CaceresTeVe.es |
 | `ch_nzeaxq8nft` | Cadena Elite | CadenaElite.es |
 | `ch_qtjm9yhjg2` | Calamocha TV | CalamochaTV.es |
@@ -88,12 +87,10 @@
 | `ch_g9rjjjnzan` | Costa del Sol TV | CostadelSolTV.es |
 | `ch_m1rzwxz65r` | Crimen & Historia | CrimenHistoria.es |
 | `ch_dswy1vvh75` | Cristiana TV | CristianaTV.es |
-| `ch_dd4kykhdsh` | DAZN Baloncesto |  |
 | `ch_med0ghyr9j` | DAZN MotoGP |  |
 | `ch_j4zysypqyf` | EITB | EITB.es |
 | `ch_rem4fd66cq` | EiTB 2 | EiTB2.es |
 | `ch_rqrvxp12ca` | El 33/SX3 | El33SX3.es |
-| `ch_a2cb7ythb7` | El 9 TV | El9TV.es |
 | `ch_5xbh02edbx` | El Camino de Santiago TV | ElCaminodeSantiagoTV.es |
 | `ch_vjbw8228aj` | El Club de la Comedia | ElClubdelaComedia.es |
 | `ch_0081f24y42` | El Futuro en tu mano | ElFuturoentumano.es |
@@ -104,6 +101,7 @@
 | `ch_zkqb4fc4m5` | Enguera TV | EngueraTV.es |
 | `ch_6gzypq7nea` | Equipo de Investigacion | EquipodeInvestigacion.es |
 | `ch_nne2mkvefy` | Erlo Telebista | ErloTelebista.es |
+| `ch_rxybjzy1p5` | Escapa TV |  |
 | `ch_wxmnmpe45g` | Este Canal TV | EsteCanalTV.es |
 | `ch_jzqjc0mh3y` | Estepona Television | EsteponaTelevision.es |
 | `ch_zxay976n4b` | ETB Events 1 | ETBEvents1.es |
@@ -130,7 +128,6 @@
 | `ch_qtdcnpjq1c` | Hamaika Telebista | HamaikaTelebista.es |
 | `ch_jr2dtztnw1` | Hispasat 4K TV | Hispasat4KTV.es |
 | `ch_jx4hxar522` | Historia Y Vida | HistoriaYVida.es |
-| `ch_kz6qk3ayym` | HIT TV | HITTV.es |
 | `ch_fmfmqqb0b0` | HOLA! Play | HOLAPlay.es |
 | `ch_jpqe81ezzs` | HQM Arabic | HQMArabic.es |
 | `ch_17zdce3zmq` | HQM Baladas | HQMBaladas.es |
@@ -170,20 +167,15 @@
 | `ch_b4xv3s0tvg` | La de Burgos TV | LadeBurgosTV.es |
 | `ch_htr0n69ae3` | La Resistencia por Movistar Plus+ | LaResistenciaporMovistarPlusPlus.es |
 | `ch_h297cfcdch` | La Voz 24h | LaVoz24h.es |
-| `ch_rqb6cq6tb2` | LaLiga 1 por Movistar Plus+ | LaLiga1porMovistarPlusPlus.es |
 | `ch_7zwb73xp3h` | LaLiga 10 por Movistar Plus+ | LaLiga10porMovistarPlusPlus.es |
 | `ch_evpjps0828` | LaLiga 8 por Movistar Plus+ | LaLiga8porMovistarPlusPlus.es |
 | `ch_8tmyh7gyhm` | LaLiga 9 por Movistar Plus+ | LaLiga9porMovistarPlusPlus.es |
 | `ch_30jme09nx3` | LaLiga Hypermotion 2 | LaLigaHypermotion2.es |
 | `ch_p540fswprz` | LaLiga Hypermotion 3 | LaLigaHypermotion3.es |
 | `ch_mdqtqzfff4` | LaLiga Inside | LaLigaInside.es |
-| `ch_mnhjje8ga2` | LaLiga TV | LaLigaTV.es |
 | `ch_t5vjvsjcqf` | LaLiga TV Bar 1 | LaLigaTVBar1.es |
 | `ch_wsnv243zge` | LaLiga TV Bar 4 | LaLigaTVBar4.es |
-| `ch_06pejpkatp` | LaLigaTV 2 por Movistar Plus+ | LaLigaTV2porMovistarPlusPlus.es |
-| `ch_b7h7a1sjqa` | LaLigaTV UHD por Movistar Plus+ | LaLigaTVUHDporMovistarPlusPlus.es |
 | `ch_m7f7ezcn3r` | Lebrija TV | LebrijaTV.es |
-| `ch_592r3vj2w8` | Levante TV | LevanteTV.es |
 | `ch_9nve101j23` | Liga de Campeones 13 por Movistar Plus+ | LigadeCampeones13porMovistarPlusPlus.es |
 | `ch_f3rkekdj7q` | Liga de Campeones 14 por Movistar Plus+ | LigadeCampeones14porMovistarPlusPlus.es |
 | `ch_psjrbp7pxn` | Liga de Campeones 15 por Movistar Plus+ | LigadeCampeones15porMovistarPlusPlus.es |
@@ -195,7 +187,6 @@
 | `ch_5p23eq2mjx` | Logos TV Estudio | LogosTVEstudio.es |
 | `ch_j03xz4n1vx` | Logos TV Kids | LogosTVKids.es |
 | `ch_hxjjj58b10` | LokuraFm TV | LokuraFmTV.es |
-| `ch_yvt0j6cq1m` | Love The Planet | LoveThePlanet.es |
 | `ch_kt2paqxr8r` | M95 Television Marbella | M95TelevisionMarbella.es |
 | `ch_ac1kcrj7p0` | Malaga 24h | Malaga24h.es |
 | `ch_0wntgjn4xh` | Mannersache TV | MannersacheTV.es |
@@ -205,10 +196,10 @@
 | `ch_n9m1t6wazn` | Medi TV | MediTV.es |
 | `ch_7dvjh7ta7p` | Mijas 3.40TV | Mijas340TV.es |
 | `ch_7yqwk1wfbp` | Molahits TV | MolahitsTV.es |
+| `ch_1shjddr3e8` | Moto ADV |  |
 | `ch_3p304wy2wn` | Multideporte | Multideporte.es |
 | `ch_x86sz9chsd` | Mundo Nautica TV | MundoNauticaTV.es |
 | `ch_vjgsvajeeb` | MyTime Movie Network | MyTimeMovieNetwork.es |
-| `ch_ggapa0rjgj` | Navarra TV | NavarraTV.es |
 | `ch_b89jbkfsw7` | Navarra TV 2 | NavarraTV2.es |
 | `ch_a4hyv2jj89` | NIUS | NIUS.es |
 | `ch_y000xzbnqp` | Noroeste TV | NoroesteTV.es |
@@ -234,7 +225,6 @@
 | `ch_145ztcs547` | PTV Granada | PTVGranada.es |
 | `ch_rjv8h71ygz` | PTV Linares | PTVLinares.es |
 | `ch_q03pptr0c4` | PTV Malaga | PTVMalaga.es |
-| `ch_yewe61sadq` | PTV Sevilla | PTVSevilla.es |
 | `ch_pwzh5k97fz` | Punt 3 | Punt3.es |
 | `ch_ek67zjn3q9` | Radio Bocairent TV | RadioBocairentTV.es |
 | `ch_vyw9f9asa8` | Radio Carnaval TV | RadioCarnavalTV.es |
@@ -251,6 +241,7 @@
 | `ch_zg5az007mw` | Rakuten TV Top Movies | RakutenTVTopMovies.es |
 | `ch_h2m2512r9v` | Real Madrid TV English | RealMadridTVEnglish.es |
 | `ch_z5w5sd6pyf` | Ribera TV | RiberaTV.es |
+| `ch_hjaj2f77xv` | Romance por Movistar Plus+ |  |
 | `ch_pyk2tbdd9x` | ROTV Valencia | ROTVValencia.es |
 | `ch_b0xgdyf5gh` | RTV El Vendrell | RTVElVendrell.es |
 | `ch_ddjrt867zm` | RTV Eume | RTVEume.es |
@@ -270,11 +261,11 @@
 | `ch_dsebwv9tkn` | Runtime Series | RuntimeSeries.es |
 | `ch_4f40qrs7k0` | Runtime Thriller | RuntimeThriller.es |
 | `ch_yswnyypak3` | Sal Television | SalTelevision.es |
-| `ch_gxdncst8q6` | Sevilla FC TV | SevillaFCTV.es |
 | `ch_2t7jzc84g2` | Solidaria TV | SolidariaTV.es |
 | `ch_248sj79n2m` | Sophia TV | SophiaTV.es |
 | `ch_an4wn7vt20` | Storie Criminali | StorieCriminali.es |
 | `ch_w2m6zeq1r7` | STZ Telebista | STZTelebista.es |
+| `ch_2cnqhy6rwq` | Surf Channel |  |
 | `ch_qza0eb1y91` | Taroteame | Taroteame.es |
 | `ch_zq05spddj8` | TEF | TEF.es |
 | `ch_wd7n25fan6` | Tele Safor | TeleSafor.es |
@@ -289,7 +280,6 @@
 | `ch_kta83yzfsg` | Television Consciente | TelevisionConsciente.es |
 | `ch_00dtcbqanf` | Television de San Vicente | TelevisiondeSanVicente.es |
 | `ch_6k5xgn6d3c` | Terror por Movistar Plus+ | TerrorporMovistarPlusPlus.es |
-| `ch_bna0wfhpee` | Teve.cat | Tevecat.es |
 | `ch_bb5s0wxthf` | TG7 | TG7.es |
 | `ch_80x9jtq8tg` | Thader TV | ThaderTV.es |
 | `ch_2f57xxdn62` | Tito TV | TitoTV.es |

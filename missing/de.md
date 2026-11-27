@@ -1,6 +1,6 @@
 # Germany: channels without a logo
 
-501 of 680 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
+528 of 682 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
 
 | Channel ID | Name | iptv-org ID |
 |---|---|---|
@@ -8,12 +8,10 @@
 | `ch_1gzd101r7t` | 17:30 SAT.1 REGIONAL Hamburg & Schleswig-Holstein | 1730SAT1REGIONALHamburgSchleswigHolstein.de |
 | `ch_wnffbcyxjx` | 17:30 SAT.1 REGIONAL Lower Saxony & Bremen | 1730SAT1REGIONALLowerSaxonyBremen.de |
 | `ch_xnd1tgm58p` | Adventure Earth | AdventureEarth.de |
-| `ch_fgn95jysrt` | Alarm fur Cobra 11 / Balko | AlarmfurCobra11Balko.de |
 | `ch_zgvv912g13` | Alex Berlin | AlexBerlin.de |
 | `ch_5zrqfz7pw2` | Altenburg TV | AltenburgTV.de |
 | `ch_srbc7jbrqr` | ANIMAL KINGDOM | ANIMALKINGDOM.de |
 | `ch_rk436ezwj1` | Arti TV | ArtiTV.de |
-| `ch_yyhrwxc5tv` | Bauer sucht Frau | BauersuchtFrau.de |
 | `ch_k4dmhp7y84` | Bibel TV Impuls | BibelTVImpuls.de |
 | `ch_3kkebvs0s1` | Bjgtjme Free Movies | BjgtjmeFreeMovies.de |
 | `ch_5ht5kjbsrx` | BW TV Alpha | BWTVAlpha.de |
@@ -23,7 +21,6 @@
 | `ch_00y2tqw68t` | Da Vinci Asia | DaVinciAsia.de |
 | `ch_y4jy5g28ff` | DASDING 90.8 | DASDING908.de |
 | `ch_2qyzra8fw8` | DAZN FAST | DAZNFAST.de |
-| `ch_c9arwky292` | DAZN Rise |  |
 | `ch_2q9jbf70qd` | Deutschlands GayChat | DeutschlandsGayChat.de |
 | `ch_02p0j6c2ja` | Eagle Cinema Aktion | EagleCinemaAktion.de |
 | `ch_ed3brkgq0m` | EchtJetzt TV | EchtJetztTV.de |
@@ -34,18 +31,15 @@
 | `ch_0j8t0eh4k8` | EuroAl TV | EuroAlTV.de |
 | `ch_61mv5x2gw5` | Ewenyigba TV | EwenyigbaTV.de |
 | `ch_y54y6gef3v` | Fabella | Fabella.de |
-| `ch_mbqdhc20ca` | Filmgold | Filmgold.de |
 | `ch_vzzmjpsvbx` | Finest TV | FinestTV.de |
 | `ch_qr6c6y4j56` | FRM-TV | FRMTV.de |
 | `ch_bvxwjzkgcg` | Gabriele TV Africa | GabrieleTVAfrica.de |
 | `ch_v1yp6txmrg` | Genius Plus TV | GeniusPlusTV.de |
 | `ch_1s4zngz4j9` | German Tote TV | GermanToteTV.de |
 | `ch_a1stqxkcw6` | Gluck Auf! TV | GluckAufTV.de |
-| `ch_c045sb8dw5` | Goldstar TV | GoldstarTV.de |
 | `ch_dqnx14sb4a` | GustrowTV | GustrowTV.de |
 | `ch_5w8dnbztb5` | Handystar 2 | Handystar2.de |
 | `ch_bv9g7jshk6` | Health TV | HealthTV.de |
-| `ch_sd6sav6a02` | hundkatzemaus | hundkatzemaus.de |
 | `ch_y72kjvsjhk` | JenaTV | JenaTV.de |
 | `ch_pwp3b1fmxs` | Juwelo Schweiz | JuweloSchweiz.de |
 | `ch_w26g2yrhpx` | Kanal 13 | Kanal13.de |
@@ -64,12 +58,10 @@
 | `ch_t9kqkmf0d7` | Mission Erweckung der Welt | MissionErweckungderWelt.de |
 | `ch_pmb5er4s7p` | Mittel Erzgebirgs Fernsehen | MittelErzgebirgsFernsehen.de |
 | `ch_xakr72b063` | MOMENTS | MOMENTS.de |
-| `ch_pps2cw4de4` | MS Sport | MSSport.de |
 | `ch_ky8x0ah2m5` | MTV Cribs | MTVCribs.de |
 | `ch_b220dh8xbb` | MV1 | MV1.de |
 | `ch_wavktedywc` | n-tv Event | ntvEvent.de |
 | `ch_cxm7ff63w2` | Nash Kinomir | NashKinomir.de |
-| `ch_mn023fgrwa` | National Geographic Wild | NationalGeographicWild.de |
 | `ch_3ya5hjw551` | National Geographic Wild Europe | NationalGeographicWildEurope.de |
 | `ch_etmyazrdh1` | NDR Fernsehen International | NDRFernsehenInternational.de |
 | `ch_crq49xe53f` | neueins | neueins.de |
@@ -134,19 +126,8 @@
 | `ch_najkjkb4pw` | SchwarzRotGoldTV | SchwarzRotGoldTV.de |
 | `ch_2wjjvpwtna` | Seenluft24 | Seenluft24.de |
 | `ch_66bpcbtpy4` | Sender Neu Jerusalem | SenderNeuJerusalem.de |
-| `ch_cf7ajed8r4` | ServusTV Deutschland | ServusTVDeutschland.de |
 | `ch_j6mjncrk11` | Shop 24 Direct | Shop24Direct.de |
-| `ch_65ehpn3zcn` | Sky Atlantic | SkyAtlantic.de |
-| `ch_samndca1mz` | Sky Cinema Family | SkyCinemaFamily.de |
-| `ch_xnaq202d78` | Sky Cinema Premieren | SkyCinemaPremieren.de |
-| `ch_s4q6f2s913` | Sky Cinema Special | SkyCinemaSpecial.de |
 | `ch_06xke7swcc` | Sky Cinema Thriller | SkyCinemaThriller.de |
-| `ch_9b13tjbgc2` | Sky Sport | SkySport.de |
-| `ch_w8psg0q340` | Sky Sport 4 | SkySport4.de |
-| `ch_rk9t1kr9kj` | Sky Sport 5 | SkySport5.de |
-| `ch_5pxa227rab` | Sky Sport 7 | SkySport7.de |
-| `ch_4byr45mbc1` | Sky Sport 8 | SkySport8.de |
-| `ch_jxycctqz0n` | Sky Sport 9 | SkySport9.de |
 | `ch_eeag5vkzkw` | Sky Sport Kompakt 4 | SkySportKompakt4.de |
 | `ch_qhtn75c9dh` | Sky Sport Kompakt 5 | SkySportKompakt5.de |
 | `ch_hdd75xvx17` | Sophia TV | SophiaTV.de |
@@ -154,13 +135,7 @@
 | `ch_wbm679xyts` | Sophia TV Francais | SophiaTVFrancais.de |
 | `ch_327cmf3gds` | Sophia TV Portugues | SophiaTVPortugues.de |
 | `ch_7p3804vs9r` | Souvenirs from Earth TV | SouvenirsfromEarthTV.de |
-| `ch_wvyk25y932` | Sport 4 myTeamTV | Sport4myTeamTV.de |
-| `ch_w64bhvs8q5` | Sport 5 myTeamTV | Sport5myTeamTV.de |
-| `ch_9akrss67jf` | Sport 7 myTeamTV | Sport7myTeamTV.de |
-| `ch_p0heqbp7zn` | Sport 8 myTeamTV | Sport8myTeamTV.de |
-| `ch_a5m6wkne60` | Sport 9 myTeamTV | Sport9myTeamTV.de |
 | `ch_fmxspr1kwh` | SRF | SRF.de |
-| `ch_awaxhaz0tp` | Streamster.tv | Streamstertv.de |
 | `ch_mhjvyk7qp3` | SWR 3 Visual Radio | SWR3VisualRadio.de |
 | `ch_krhe9japqj` | Teins TV | TeinsTV.de |
 | `ch_htqdp2vqdq` | Telebom | Telebom.de |

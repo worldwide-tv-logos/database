@@ -1,6 +1,6 @@
 # Mexico: channels without a logo
 
-206 of 512 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
+209 of 512 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
 
 | Channel ID | Name | iptv-org ID |
 |---|---|---|
@@ -15,7 +15,6 @@
 | `ch_17d1g67ja9` | Az Cinema | AzCinema.mx |
 | `ch_dyx5983tv3` | Az Clic | AzClic.mx |
 | `ch_qnw8f5q7hv` | Azteca Deportes Network | AztecaDeportesNetwork.mx |
-| `ch_17qe3set49` | Azteca Uno | AztecaUno.mx |
 | `ch_dyxjsf7p9j` | B15 Fresnillo | B15Fresnillo.mx |
 | `ch_7et7qw26dr` | B15 Zacatecas | B15Zacatecas.mx |
 | `ch_wp0jdeqzbg` | Beat Box | BeatBox.mx |
@@ -119,7 +118,6 @@
 | `ch_z8fxyybbjd` | La Mexicana TV | LaMexicanaTV.mx |
 | `ch_jz1fn0cy8s` | La Ranchera de Cuauhtemoc | LaRancheradeCuauhtemoc.mx |
 | `ch_gtnv906pw5` | La Voz Grupera TV | LaVozGruperaTV.mx |
-| `ch_mesfvgdk4b` | Las Estrellas Europa | LasEstrellasEuropa.mx |
 | `ch_1x2b1twzwm` | Las Estrellas Latin America | LasEstrellasLatinAmerica.mx |
 | `ch_emk6m9eyv2` | Liga Mexicana de Beisbol | LigaMexicanadeBeisbol.mx |
 | `ch_172zqhz9ey` | Lobo+ | LoboPlus.mx |
@@ -245,7 +243,6 @@
 | `ch_3hba2phyqf` | Televisa Victoria | TelevisaVictoria.mx |
 | `ch_t0dmnfe9ck` | Televisa Zacatecas | TelevisaZacatecas.mx |
 | `ch_16tepe8jed` | Television Altena | TelevisionAltena.mx |
-| `ch_x2nz04t064` | Tlnovelas Europa | TlnovelasEuropa.mx |
 | `ch_3acjpy64ej` | Tlnovelas Latin America | TlnovelasLatinAmerica.mx |
 | `ch_f1jaxpqhg9` | Tlnovelas Mexico | TlnovelasMexico.mx |
 | `ch_cv9793t7qr` | Transmedia Television Morelia | TransmediaTelevisionMorelia.mx |

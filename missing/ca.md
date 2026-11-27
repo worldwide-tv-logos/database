@@ -1,6 +1,6 @@
 # Canada: channels without a logo
 
-247 of 606 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
+253 of 610 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
 
 | Channel ID | Name | iptv-org ID |
 |---|---|---|
@@ -161,6 +161,7 @@
 | `ch_zpyc69snw9` | Odyssey | Odyssey.ca |
 | `ch_bvaqes3erm` | OLN | OLN.ca |
 | `ch_55e96gmnsq` | One | One.ca |
+| `ch_6v8t7m4zc4` | OneSoccer |  |
 | `ch_0n889nbyg1` | ONNtv | ONNtv.ca |
 | `ch_anaqjwcwa7` | Ontario Parliamentary Network | OntarioParliamentaryNetwork.ca |
 | `ch_aqya5s4wr0` | Pamir TV | PamirTV.ca |
@@ -176,6 +177,8 @@
 | `ch_31eqa4tctb` | Rawal TV | RawalTV.ca |
 | `ch_vrmpymsgwx` | REV TV Canada | REVTVCanada.ca |
 | `ch_gghz3s4bn8` | RFD-TV Canada | RFDTVCanada.ca |
+| `ch_195f3ex350` | Rogers tv London |  |
+| `ch_ezjv8k7j9c` | Rogers tv Ottawa |  |
 | `ch_p1076pt9ex` | Saisons Canada | SaisonsCanada.ca |
 | `ch_bsxpnba6pv` | Salt + Light Television | SaltPlusLightTelevision.ca |
 | `ch_17k698te4z` | Sanjha Punjab | SanjhaPunjab.ca |
@@ -216,15 +219,12 @@
 | `ch_rvm897s11f` | Stingray Broadway | StingrayBroadway.ca |
 | `ch_cp0abjwwgq` | Stingray Celtic | StingrayCeltic.ca |
 | `ch_v19eq01ps1` | Stingray Chamber Music | StingrayChamberMusic.ca |
-| `ch_chz01phj52` | Stingray Chill Lounge | StingrayChillLounge.ca |
 | `ch_q6r18fhwc6` | Stingray Christian Pop & Rock | StingrayChristianPopRock.ca |
 | `ch_xjb4zeszgq` | Stingray Cityscapes | StingrayCityscapes.ca |
 | `ch_y5wk6by2m3` | Stingray Classic Masters / Grands classiques | StingrayClassicMastersGrandsclassiques.ca |
 | `ch_j36q5kkeg1` | Stingray Classic R&B | StingrayClassicRB.ca |
-| `ch_a5zv4g34h4` | Stingray Classic Rock | StingrayClassicRock.ca |
 | `ch_6bc7mxybfp` | Stingray Country Classics | StingrayCountryClassics.ca |
 | `ch_sejdr4s092` | Stingray Dance Clubbin' | StingrayDanceClubbin.ca |
-| `ch_vhdhvr2pgc` | Stingray Easy Listening | StingrayEasyListening.ca |
 | `ch_0rn45f6tsq` | Stingray Eclectic Electronic | StingrayEclecticElectronic.ca |
 | `ch_e3a6s96w14` | Stingray En Marge | StingrayEnMarge.ca |
 | `ch_h44tw92m1z` | Stingray Folk Roots | StingrayFolkRoots.ca |
@@ -238,7 +238,6 @@
 | `ch_nxheeh6hx3` | Stingray Greatest Hits | StingrayGreatestHits.ca |
 | `ch_chtcv98jps` | Stingray Groove Disco & Funk | StingrayGrooveDiscoFunk.ca |
 | `ch_gp5d7rnyvh` | Stingray Heavy Metal | StingrayHeavyMetal.ca |
-| `ch_cfjtx7868k` | Stingray Hip Hop | StingrayHipHop.ca |
 | `ch_3h1jqw8qr5` | Stingray Holiday Favourites | StingrayHolidayFavourites.ca |
 | `ch_8db27gmhr4` | Stingray Holiday Hits | StingrayHolidayHits.ca |
 | `ch_ra4xjb712a` | Stingray Hot Country | StingrayHotCountry.ca |
@@ -252,7 +251,6 @@
 | `ch_2jmgw94gda` | Stingray Latino Tropical | StingrayLatinoTropical.ca |
 | `ch_7crge016f0` | Stingray Latino Urbana | StingrayLatinoUrbana.ca |
 | `ch_x1dqmrvqhc` | Stingray Le Palmares | StingrayLePalmares.ca |
-| `ch_hh56nvczzr` | Stingray Lite TV | StingrayLiteTV.ca |
 | `ch_kvvsfrmd3x` | Stingray Masterworks | StingrayMasterworks.ca |
 | `ch_4qchsphdmw` | Stingray Maximum Party | StingrayMaximumParty.ca |
 | `ch_6h5er7ysjt` | Stingray Memories | StingrayMemories.ca |
@@ -260,7 +258,6 @@
 | `ch_gt5md1m3kr` | Stingray Musique Boutchoux | StingrayMusiqueBoutchoux.ca |
 | `ch_ba4ygv2q4j` | Stingray Nature | StingrayNature.ca |
 | `ch_0d4nrq5051` | Stingray No Fences | StingrayNoFences.ca |
-| `ch_e75cghkq5z` | Stingray Nostalgie | StingrayNostalgie.ca |
 | `ch_gzy0gp09da` | Stingray Nothin' But 90s | StingrayNothinBut90s.ca |
 | `ch_m50n18jqhn` | Stingray Opera Plus | StingrayOperaPlus.ca |
 | `ch_fsj4fcmjpb` | Stingray Osheaga | StingrayOsheaga.ca |
@@ -283,6 +280,7 @@
 | `ch_0e2c1wjr3e` | Stingray Today's Latin Pop | StingrayTodaysLatinPop.ca |
 | `ch_14czq67d10` | Stingray Treehouse | StingrayTreehouse.ca |
 | `ch_33hm1ap15r` | Stingray Urban Beat | StingrayUrbanBeat.ca |
+| `ch_fm8883m2cg` | Super Channel Quest |  |
 | `ch_jaa1wdcc02` | Super Ecran 4 | SuperEcran4.ca |
 | `ch_qsh0gb1gq8` | TAG TV | TAGTV.ca |
 | `ch_r034yjzav6` | Talentvision | Talentvision.ca |

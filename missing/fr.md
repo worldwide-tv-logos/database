@@ -1,6 +1,6 @@
 # France: channels without a logo
 
-389 of 586 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
+405 of 591 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
 
 | Channel ID | Name | iptv-org ID |
 |---|---|---|
@@ -18,17 +18,14 @@
 | `ch_gvvjmey2z6` | Afro Novelas | AfroNovelas.fr |
 | `ch_bx2944f83n` | Al Rawda | AlRawda.fr |
 | `ch_wvwmjg73w6` | Al-Faydatou Tidjania TV | AlFaydatouTidjaniaTV.fr |
-| `ch_6jxw39kzwx` | Amuse Animation | AmuseAnimation.fr |
 | `ch_t1f2af42kf` | Atelier des chefs | Atelierdeschefs.fr |
 | `ch_tne49r8a96` | BAZIK TV | BAZIKTV.fr |
 | `ch_8y3jx5nsmz` | BAZIK TV Hot | BAZIKTVHot.fr |
 | `ch_ty65v1gva3` | BAZIK TV Rumba | BAZIKTVRumba.fr |
-| `ch_yzwwcesvp8` | Bblack! Africa | BblackAfrica.fr |
 | `ch_ht3vxdfb5k` | Bblack! Caribbean | BblackCaribbean.fr |
 | `ch_hy2x375g79` | Berbere Jeunesse | BerbereJeunesse.fr |
 | `ch_78y4qccw2b` | Berbere Music | BerbereMusic.fr |
 | `ch_mzy2ja2p4r` | Beur TV | BeurTV.fr |
-| `ch_r3qt39ex4g` | BFM Grands Reportages |  |
 | `ch_bsxnpxd1z1` | BFM TV Vertical | BFMTVVertical.fr |
 | `ch_y0fc1ckdj6` | BIP TV | BIPTV.fr |
 | `ch_nw6498xvb2` | Caillou | Caillou.fr |
@@ -50,7 +47,6 @@
 | `ch_z7ghjw3twt` | Canal+ Premiere Centre | CanalPlusPremiereCentre.fr |
 | `ch_xxv8ragfha` | Canal+ Premiere Ouest | CanalPlusPremiereOuest.fr |
 | `ch_cxmjvy4h04` | Canal+ Series Reunion | CanalPlusSeriesReunion.fr |
-| `ch_75vkfw0y63` | Canal+ Sport 1 | CanalPlusSport1.fr |
 | `ch_q439fx69cd` | Canal+ Sport Reunion | CanalPlusSportReunion.fr |
 | `ch_3e4m1g7px3` | Canal+ Sports Myanmar | CanalPlusSportsMyanmar.fr |
 | `ch_xr3j6xs0wg` | Cannes Lerins TV | CannesLerinsTV.fr |
@@ -63,6 +59,7 @@
 | `ch_08aj4v09h1` | D5Music | D5Music.fr |
 | `ch_0d97a870mh` | D5tv | D5tv.fr |
 | `ch_empw9t49a1` | Demain TV | DemainTV.fr |
+| `ch_r19mj7khqm` | Djazz |  |
 | `ch_hmbqx6eyhd` | EDAN | EDAN.fr |
 | `ch_7xfs9em0k2` | EMCI TV | EMCITV.fr |
 | `ch_z5027f3t0e` | EMCI TV Europe | EMCITVEurope.fr |
@@ -77,7 +74,6 @@
 | `ch_kqq4j7gdjq` | Evangile TV | EvangileTV.fr |
 | `ch_ckcsdkb823` | FashionTV Asia | FashionTVAsia.fr |
 | `ch_ggksy2n7sb` | FashionTV Czech&Slovak | FashionTVCzechSlovak.fr |
-| `ch_2dhzhakwmq` | FashionTV Europe | FashionTVEurope.fr |
 | `ch_g1q7dcxadt` | FashionTV F-Men | FashionTVFMen.fr |
 | `ch_e7xxtm6wwa` | FashionTV Johannesburg | FashionTVJohannesburg.fr |
 | `ch_z7fv51cgf9` | FashionTV L'Original | FashionTVLOriginal.fr |
@@ -91,7 +87,6 @@
 | `ch_yz04rjh6vs` | Gaming TV | GamingTV.fr |
 | `ch_eq5fzj96nq` | Generations TV | GenerationsTV.fr |
 | `ch_bz6qjhy3ee` | Geneve Region Television | GeneveRegionTelevision.fr |
-| `ch_x2j9kjg89w` | Golf Channel | GolfChannel.fr |
 | `ch_6d5jpd75vt` | Grand Geneve TV | GrandGeneveTV.fr |
 | `ch_axdftxen2e` | HLIVE | HLIVE.fr |
 | `ch_zf0arpkhsz` | HolyGod TV | HolyGodTV.fr |
@@ -153,15 +148,10 @@
 | `ch_s8apcnjhc8` | Radio Karaoke | RadioKaraoke.fr |
 | `ch_cavaf09hqx` | Radio Soleil des Tropiques | RadioSoleildesTropiques.fr |
 | `ch_nzzhk6261h` | Reveil TV SAT | ReveilTVSAT.fr |
-| `ch_9nxxh6hks4` | RMC After Foot TV |  |
-| `ch_chcvh6m3b3` | RMC Alerte Secours |  |
-| `ch_27x5q90d5y` | RMC Mecanic |  |
-| `ch_ebw4phef4n` | RMC Mystère |  |
 | `ch_56zkvd83gf` | RMC Sport Access 2 | RMCSportAccess2.fr |
-| `ch_n2677wvywn` | RMC Talk Info |  |
-| `ch_ge7051gpc6` | RMC WOW |  |
 | `ch_6v9gh02y82` | RTVHF | RTVHF.fr |
 | `ch_by4p9h7swq` | RugbyZone.TV | RugbyZoneTV.fr |
+| `ch_1qv1jcfgxf` | Sanbox Realities | SanboxRealities.fr |
 | `ch_4ymctnbqty` | Short Films TV | ShortFilmsTV.fr |
 | `ch_7mr9mpxje0` | Sikka TV | SikkaTV.fr |
 | `ch_kzgyse2ke3` | SQOOL TV | SQOOLTV.fr |
@@ -200,4 +190,3 @@
 | `ch_k0mk0vwkyd` | Wataaa TV | WataaaTV.fr |
 | `ch_w2meq8jph7` | WatsUp TV | WatsUpTV.fr |
 | `ch_vkc5qsf23y` | XilamTV | XilamTV.fr |
-| `ch_4wnka1vmqj` | ZOUK TV |  |

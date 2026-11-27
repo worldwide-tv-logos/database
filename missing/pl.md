@@ -1,6 +1,6 @@
 # Poland: channels without a logo
 
-256 of 352 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
+282 of 356 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
 
 | Channel ID | Name | iptv-org ID |
 |---|---|---|
@@ -12,33 +12,16 @@
 | `ch_eg977drxys` | BTB Info | BTBInfo.pl |
 | `ch_fn6reccs4d` | Buzzfeed Unsolved | BuzzfeedUnsolved.pl |
 | `ch_wbt4zme8zh` | Cafe Futbol | CafeFutbol.pl |
-| `ch_maak2qv8br` | Canal+ Extra 3 | CanalPlusExtra3.pl |
-| `ch_8qzx1m89ys` | Canal+ Extra 4 | CanalPlusExtra4.pl |
-| `ch_ycm4c1p6x1` | Canal+ Extra 5 | CanalPlusExtra5.pl |
-| `ch_3rm6srhzt4` | Canal+ Extra 6 | CanalPlusExtra6.pl |
-| `ch_9n9kd79fyd` | Canal+ Extra 7 | CanalPlusExtra7.pl |
-| `ch_qk77naqewy` | Canal+ Sport 4 | CanalPlusSport4.pl |
 | `ch_3p7m1cqajx` | Car City Adventures | CarCityAdventures.pl |
 | `ch_9mg85ass79` | Cartoon Classics | CartoonClassics.pl |
 | `ch_t0gapkg58a` | Comedy Channel Extra | ComedyChannelExtra.pl |
-| `ch_a2wbjjzhc9` | Crime + Investigation Polsat | CrimePlusInvestigationPolsat.pl |
 | `ch_n3cfjsasex` | dlaCiebie.tv | dlaCiebietv.pl |
 | `ch_w9jnkdnzqd` | Dr G Medical Examiner | DrGMedicalExaminer.pl |
-| `ch_jsvmsspky8` | Eleven Sports 3 | ElevenSports3.pl |
-| `ch_d3q95013ge` | Eleven Sports 4 | ElevenSports4.pl |
 | `ch_080wdq5pzy` | Eska Hity na Czasie | EskaHitynaCzasie.pl |
 | `ch_vxcyznfaew` | Eska Rock Dobrze Rockuje | EskaRockDobrzeRockuje.pl |
-| `ch_rwb0an9srz` | Eurosport 1 Polska | Eurosport1Polska.pl |
 | `ch_5hp9jq0d1v` | Eurosport 4 Polska | Eurosport4Polska.pl |
-| `ch_c2t9bncdcj` | FILMBOX+ Action | FILMBOXPlusAction.pl |
-| `ch_9z3exq9bee` | FILMBOX+ Comedy | FILMBOXPlusComedy.pl |
-| `ch_55rek7vv55` | FILMBOX+ Emotion | FILMBOXPlusEmotion.pl |
-| `ch_9ewzjnfwwh` | FILMBOX+ Festival | FILMBOXPlusFestival.pl |
-| `ch_1c592g2s5v` | FILMBOX+ Hits | FILMBOXPlusHits.pl |
 | `ch_64pqdg6vc4` | FILMBOX+ Love & Crime | FILMBOXPlusLoveCrime.pl |
-| `ch_0abaqppfsr` | FILMBOX+ One | FILMBOXPlusOne.pl |
 | `ch_njtrqj00s2` | Gramy Dalej | GramyDalej.pl |
-| `ch_870av895wq` | Grjngo | Grjngo.pl |
 | `ch_pn4yd7wq0b` | Hard Knocks Fighting Championship | HardKnocksFightingChampionship.pl |
 | `ch_6n08caz7fn` | HiDance | HiDance.pl |
 | `ch_e86zb7ghxp` | HiMusic | HiMusic.pl |
@@ -56,6 +39,7 @@
 | `ch_yp6xrmk88f` | Polsat Reality | PolsatReality.pl |
 | `ch_3k97d8qsrs` | Poradnik Zdrowie TV | PoradnikZdrowieTV.pl |
 | `ch_am6qxb6m0r` | Porucznik Kabura TV | PorucznikKaburaTV.pl |
+| `ch_bj8f4pjt7y` | Prime Fight |  |
 | `ch_msd011gvd6` | Radio RAM | RadioRAM.pl |
 | `ch_zzvay8j83a` | Radiowa Czworka | RadiowaCzworka.pl |
 | `ch_mdsfpbpgt2` | Red Carpet TV International | RedCarpetTVInternational.pl |
@@ -82,7 +66,6 @@
 | `ch_y6dk5c3zdf` | TV.Ropczyce | TVRopczyce.pl |
 | `ch_3jatm7jbxq` | TVC Super | TVCSuper.pl |
 | `ch_q92mq6jwxv` | TVMN | TVMN.pl |
-| `ch_5x94dmnt05` | TVN Fabula | TVNFabula.pl |
 | `ch_3k03n55fd2` | TVT Zgorzelec | TVTZgorzelec.pl |
 | `ch_6gxrgbtjtg` | V90 | V90.pl |
 | `ch_t99x9j4shf` | Viasat Explore Classic | ViasatExploreClassic.pl |
@@ -91,12 +74,7 @@
 | `ch_v6m88357hn` | VOD 202 | VOD202.pl |
 | `ch_pcrmy9xxyy` | VOD 203 | VOD203.pl |
 | `ch_v5wm1scpx6` | VOD 204 | VOD204.pl |
-| `ch_vtdxj7fs79` | VOD 205 | VOD205.pl |
-| `ch_1geyjv0tvg` | VOD 206 | VOD206.pl |
-| `ch_1r4w5dbqfw` | VOD 207 | VOD207.pl |
-| `ch_0nbmqjdnxg` | VOD 208 | VOD208.pl |
 | `ch_a974bf215a` | wedotv Auta | wedotvAuta.pl |
 | `ch_dsy2cb7chs` | World Billiards | WorldBilliards.pl |
-| `ch_9scwc768ds` | WP TV | WPTV.pl |
 | `ch_1p61znbsbs` | Zachodniopomorska Telewizja | ZachodniopomorskaTelewizja.pl |
 | `ch_cgyta3fv2b` | Zee One | ZeeOne.pl |

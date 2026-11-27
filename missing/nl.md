@@ -1,12 +1,11 @@
 # Netherlands: channels without a logo
 
-231 of 345 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
+257 of 364 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
 
 | Channel ID | Name | iptv-org ID |
 |---|---|---|
 | `ch_tp80x2avvb` | Albrandswaard TV | AlbrandswaardTV.nl |
 | `ch_hmajrze52s` | Assen TV | AssenTV.nl |
-| `ch_s815vjcq94` | BR6 TV | BR6TV.nl |
 | `ch_zrv2ra5ygt` | BredaNu TV | BredaNuTV.nl |
 | `ch_bx8jt8z9s2` | BTL TV | BTLTV.nl |
 | `ch_tr7symaec8` | DocuBox | DocuBox.nl |
@@ -14,7 +13,6 @@
 | `ch_0067c1e3d7` | Dramastream | Dramastream.nl |
 | `ch_cqj74c0dwy` | DRTV | DRTV.nl |
 | `ch_ys33m4zxb0` | E! Europe | EEurope.nl |
-| `ch_eczr6eywej` | Extreme Sports Channel | ExtremeSportsChannel.nl |
 | `ch_4vmvr68k2n` | Fashionstream | Fashionstream.nl |
 | `ch_062bm0eat6` | Faststream | Faststream.nl |
 | `ch_3rcc0pbn1p` | Fightstream | Fightstream.nl |
@@ -23,6 +21,8 @@
 | `ch_824rbtfhn8` | GO-RTV | GORTV.nl |
 | `ch_72gft8dmjh` | GO-TV | GOTV.nl |
 | `ch_z6b8asphm0` | Groningen1 | Groningen1.nl |
+| `ch_jpdd2xzsga` | Haaglanden TV |  |
+| `ch_0fc8ynbhd5` | HalloGilzeRijen TV |  |
 | `ch_0xcz7p2kvb` | HTR TV | HTRTV.nl |
 | `ch_jcszw6rdan` | Hype Visual Radio | HypeVisualRadio.nl |
 | `ch_8748q3hs50` | Jenz TV | JenzTV.nl |
@@ -34,7 +34,6 @@
 | `ch_7z7bqvmafw` | Meer TV | MeerTV.nl |
 | `ch_h2bs7bcmbg` | Meppel TV | MeppelTV.nl |
 | `ch_d03em2n3ce` | MLA TV | MLATV.nl |
-| `ch_6v3eeg73k9` | National Geographic Wild | NationalGeographicWild.nl |
 | `ch_z5derbsxt3` | Omroep Bollenstreek | OmroepBollenstreek.nl |
 | `ch_12cbhz3c8x` | Omroep Centraal TV | OmroepCentraalTV.nl |
 | `ch_rkkd4n0yrm` | Omroep Horst aan de Maas | OmroepHorstaandeMaas.nl |
@@ -44,8 +43,6 @@
 | `ch_7mexhgzjt2` | Podium.TV 2 | PodiumTV2.nl |
 | `ch_dgt65x0v60` | Podium.TV 3 | PodiumTV3.nl |
 | `ch_4gyhpfz647` | Proximus TV RegInfo | ProximusTVRegInfo.nl |
-| `ch_qy8d477yr8` | Qmusic | Qmusic.nl |
-| `ch_j4sm434e6c` | Radio 350 | Radio350.nl |
 | `ch_8p83w556hx` | RadioToppers | RadioToppers.nl |
 | `ch_gq355v2e1h` | Regio TV Nieuws | RegioTVNieuws.nl |
 | `ch_px6beg7xsq` | Ronde Venen TV | RondeVenenTV.nl |
@@ -53,25 +50,23 @@
 | `ch_qb61kg8stk` | RTV Arnhem TV | RTVArnhemTV.nl |
 | `ch_sj50xkajrw` | RTV Connect TV | RTVConnectTV.nl |
 | `ch_8pz8nxwh75` | RTV Focus TV | RTVFocusTV.nl |
-| `ch_jhnfeg5tq9` | RTV GO! | RTVGO.nl |
 | `ch_7cf3xqsnr5` | RTV Horizon | RTVHorizon.nl |
 | `ch_gwghkwr4z6` | RTV Meppel | RTVMeppel.nl |
 | `ch_rzmfks11mh` | RTV NOF Achtkarspelen & Tytsjerksteradiel | RTVNOFAchtkarspelenTytsjerksteradiel.nl |
 | `ch_v45m3zzrzx` | RTV NOF Noardeast Fryslan & Dantumadiel | RTVNOFNoardeastFryslanDantumadiel.nl |
-| `ch_rqseds8dg7` | RTV Noord | RTVNoord.nl |
 | `ch_5wrvb728yz` | RTV Noord Extra | RTVNoordExtra.nl |
+| `ch_t5n6c1s63j` | RTV Noordoostpolder |  |
 | `ch_jchwh4c4jj` | RTV Rijnmond Extra | RTVRijnmondExtra.nl |
-| `ch_ye7f45hkem` | RTV Rijnstreek TV | RTVRijnstreekTV.nl |
 | `ch_hgs4y1j1g4` | RTV Scheldemond | RTVScheldemond.nl |
 | `ch_ypjj29z2h2` | RTV Seaport | RTVSeaport.nl |
 | `ch_7pm8pgmhhv` | RTV Veluwezoom TV | RTVVeluwezoomTV.nl |
+| `ch_e5t2r3xk6t` | Salland1 |  |
 | `ch_fes4r663dc` | Salto ADE | SaltoADE.nl |
 | `ch_dg6whzpcrh` | Salto Brasa Music | SaltoBrasaMusic.nl |
 | `ch_87kw4x4jp1` | Schagen TV | SchagenTV.nl |
 | `ch_dkn5t5mgy2` | Schie TV | SchieTV.nl |
 | `ch_zwk2w4d84s` | Silence TV | SilenceTV.nl |
 | `ch_h64242dmgw` | SLOGO TV | SLOGOTV.nl |
-| `ch_50hprjptbp` | SLOS TV | SLOSTV.nl |
 | `ch_p7std7vpb8` | Slotstad TV | SlotstadTV.nl |
 | `ch_e2acvqzm74` | Sport Klub 1 | SportKlub1.nl |
 | `ch_as556wy2nx` | Sport Klub 2 | SportKlub2.nl |
@@ -87,12 +82,10 @@
 | `ch_qp0w4e5szs` | SRC TV | SRCTV.nl |
 | `ch_n4x090ys90` | StreekTV | StreekTV.nl |
 | `ch_bekqe1czxk` | Studio Alphen TV | StudioAlphenTV.nl |
-| `ch_7zq84bn5dh` | Studio040 TV | Studio040TV.nl |
 | `ch_79nk9jtb66` | Tholen TV | TholenTV.nl |
 | `ch_58dpn1xjr3` | TMF | TMF.nl |
 | `ch_6s9sms54ng` | TV Berghem | TVBerghem.nl |
 | `ch_fbevtvymjz` | TV Ellef | TVEllef.nl |
-| `ch_wwgfdecaw2` | TV Krimpenerwaard | TVKrimpenerwaard.nl |
 | `ch_pmyhh1ahrc` | Tweede Kamer: Actualiteitenkanaal | TweedeKamerActualiteitenkanaal.nl |
 | `ch_srhnwr4218` | Tweede Kamer: Aletta Jacobszaal | TweedeKamerAlettaJacobszaal.nl |
 | `ch_r8q4g492qa` | Tweede Kamer: Groen van Prinstererzaal | TweedeKamerGroenvanPrinstererzaal.nl |

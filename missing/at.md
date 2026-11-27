@@ -1,6 +1,6 @@
 # Austria: channels without a logo
 
-80 of 120 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
+87 of 120 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
 
 | Channel ID | Name | iptv-org ID |
 |---|---|---|
@@ -18,19 +18,12 @@
 | `ch_8952s5r2q8` | Landeck TV | LandeckTV.at |
 | `ch_ybkp7myhka` | Linz-Land TV | LinzLandTV.at |
 | `ch_dmaysb15q4` | LT1 | LT1.at |
-| `ch_51pd3rh5xq` | Magenta HD | MagentaHD.at |
 | `ch_byxjywvntg` | MurauTV | MurauTV.at |
 | `ch_029ha2p6th` | ORF 2 Karnten | ORF2Karnten.at |
-| `ch_31fvmxm61j` | ORF 2 Salzburg | ORF2Salzburg.at |
-| `ch_qpw8dsrxsx` | ORF 2 Steiermark | ORF2Steiermark.at |
-| `ch_wn0c3d3ef8` | ORF 2 Tirol | ORF2Tirol.at |
-| `ch_7bgd2jq9c7` | ORF 2 Vorarlberg | ORF2Vorarlberg.at |
-| `ch_nn5t980n9z` | ORF 2 Wien | ORF2Wien.at |
 | `ch_fyqzfpypdn` | Premium Channel | PremiumChannel.at |
 | `ch_e62cmdw4my` | PTV Vienna | PTVVienna.at |
 | `ch_0d32j8z4z9` | Qufstein.TV | QufsteinTV.at |
 | `ch_59xksc7jf9` | R9 | R9.at |
-| `ch_mww5d4sbwm` | Red Bull TV | RedBullTV.at |
 | `ch_62nd664kav` | STV1 Regionalfernsehen | STV1Regionalfernsehen.at |
 | `ch_9khbnbh34b` | Swamiji TV American | SwamijiTVAmerican.at |
 | `ch_008mtr6ext` | Swamiji TV Australian | SwamijiTVAustralian.at |

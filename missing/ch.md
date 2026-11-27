@@ -1,6 +1,6 @@
 # Switzerland: channels without a logo
 
-89 of 161 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
+97 of 161 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
 
 | Channel ID | Name | iptv-org ID |
 |---|---|---|
@@ -13,7 +13,6 @@
 | `ch_m40s7f546k` | Blue Event 1 | BlueEvent1.ch |
 | `ch_j9xa8x4ck6` | Blue Event 2 | BlueEvent2.ch |
 | `ch_fn7kh3y5d3` | Blue Retro | BlueRetro.ch |
-| `ch_qxrz5hhtsn` | Blue Zoom D | BlueZoomD.ch |
 | `ch_gss5mmb9ed` | Bodensee TV | BodenseeTV.ch |
 | `ch_cs00syr9hb` | Canal Alpha NE | CanalAlphaNE.ch |
 | `ch_0xaqhssczr` | Canal Alpha Neuchatel | CanalAlphaNeuchatel.ch |
@@ -23,7 +22,6 @@
 | `ch_fe3kh31maq` | Die Neue Zeit TV | DieNeueZeitTV.ch |
 | `ch_7pc43hws72` | First Channel | FirstChannel.ch |
 | `ch_md9342a2r4` | Game TV | GameTV.ch |
-| `ch_xy1wz7zn7p` | Helvetia One TV | HelvetiaOneTV.ch |
 | `ch_qbjxh6t4k8` | HitExpress TV | HitExpressTV.ch |
 | `ch_8q1emj45xy` | Immaculata TV | ImmaculataTV.ch |
 | `ch_6n3cmnv8gt` | JLM TV | JLMTV.ch |
@@ -39,11 +37,6 @@
 | `ch_remsgvhr7j` | My Cinema Europe | MyCinemaEurope.ch |
 | `ch_5ev71n2yj3` | My German TV | MyGermanTV.ch |
 | `ch_fcc348z4pf` | My German TV + | MyGermanTVPlus.ch |
-| `ch_y5v2nhbmey` | MySports 10 |  |
-| `ch_bt5x00xcd3` | MySports 3 | MySports3.ch |
-| `ch_6jjhqyfn3m` | MySports 4 | MySports4.ch |
-| `ch_5jp6tb25d5` | MySports 7 | MySports7.ch |
-| `ch_a65djx6gs4` | MySports 9 | MySports9.ch |
 | `ch_h99bb855nc` | MySports Preview |  |
 | `ch_4zbynfjsj4` | Newcomer TV | NewcomerTV.ch |
 | `ch_77h0fhgw2q` | Radio 3i | Radio3i.ch |
@@ -73,6 +66,5 @@
 | `ch_krnyj73qmf` | TV4TNG | TV4TNG.ch |
 | `ch_wcx07j88b3` | Vernier Visions | VernierVisions.ch |
 | `ch_syhjga91m3` | W9 Switzerland | W9Switzerland.ch |
-| `ch_9n5z5xjh2a` | Wedo Big Stories | WedoBigStories.ch |
 | `ch_5sy5mvhxgc` | Wedo Movies Nordics | WedoMoviesNordics.ch |
 | `ch_m6v0rwe4m0` | Wedo TV Amor | WedoTVAmor.ch |

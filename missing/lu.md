@@ -1,6 +1,6 @@
 # Luxembourg: channels without a logo
 
-12 of 24 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
+13 of 24 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
 
 | Channel ID | Name | iptv-org ID |
 |---|---|---|
@@ -15,4 +15,3 @@
 | `ch_982gv9d86m` | RTL Gold | RTLGold.lu |
 | `ch_t1q564kars` | RTL Web Radio TV | RTLWebRadioTV.lu |
 | `ch_bg2az8842v` | Televisioun Steesel | TelevisiounSteesel.lu |
-| `ch_cqbh1ygt63` | UHD 1 | UHD1.lu |
