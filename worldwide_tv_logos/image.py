@@ -13,7 +13,7 @@ from pathlib import Path
 import numpy as np
 from PIL import Image, ImageDraw, UnidentifiedImageError
 
-MIN_SIDE = 500                  # longest side of the drawing, in pixels
+MIN_SIDE = 300                  # longest side of the drawing, in pixels (smaller than SHARP_SIDE: looked for again)
 MAX_SIDE = 2000
 TARGET_WIDTH = 1200             # vector originals are rendered so the drawing is this wide…
 TARGET_HEIGHT = 800             # …or this high, whichever comes first

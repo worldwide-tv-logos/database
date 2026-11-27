@@ -11,11 +11,11 @@ from __future__ import annotations
 import os
 import time
 
-from worldwide_tv_logos import net
+from worldwide_tv_logos import image, net
 from worldwide_tv_logos.sources import names
 
 MAX_AGE = 30 * 86400
-MIN_SIDE = 500                       # the size the repository asks for (image.MIN_SIDE): smaller ones are refused
+MIN_SIDE = image.MIN_SIDE            # the size the repository asks for: smaller ones are refused
 MAX_RESULTS = 30                     # results read per search
 KEEP = 6                             # candidates returned
 PAUSE = float(os.environ.get('WTL_DDG_PAUSE', '8'))     # seconds between two searches

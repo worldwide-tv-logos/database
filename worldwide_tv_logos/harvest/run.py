@@ -7,7 +7,7 @@ For each active channel and edition of the country in our registry that has no l
 1. candidates from every source (sources.collect: Wikidata, Wikipedia, Commons, iptv-org, iptv-epg, picons,
    xmltv-se and, for a hunt, the channel website);
 2. each candidate is downloaded (one at a time, with a pause) and goes through the same preparation as a request
-   (image.prepare: trimmed, white frame removed, at least 500 px); refused candidates are reported;
+   (image.prepare: trimmed, white frame removed, at least image.MIN_SIDE px); refused candidates are reported;
 3. the best one is kept: SVG first, then the largest, then the source's rank.
 
 Nothing is written to data/: the result goes to temp/harvest/<cc>/ (originals, manifest.csv for `logos import`,
@@ -239,7 +239,7 @@ def bulk(db: Database, iptv: IptvOrg, cc: str, iptv_logos: list[dict], pause: fl
                 good.append(cand)
         if not good:
             if not tries:
-                report.append({'id': u['id'], 'url': '', 'result': 'no logo of 500 px or SVG (iptv-org, iptv-epg)'})
+                report.append({'id': u['id'], 'url': '', 'result': f'no logo of {image.MIN_SIDE} px or SVG (iptv-org, iptv-epg)'})
             continue
         best = max(good, key=lambda x: (x.score, x.source == 'iptv-epg'))    # equal: the guide's, more recent
         if u['parent'] and same_as_channel(db, u, best, kept):

@@ -73,7 +73,7 @@ def test_prepare_trims_removes_white_frame_and_refuses_bad_images():
     img, notes = image.prepare(png(800, 300, bg=(0, 0, 255, 255), margin=40))   # brand block kept
     assert notes == [] and img.size == (880, 380)
     with pytest.raises(image.ImageError, match='too small'):
-        image.prepare(png(300, 100))
+        image.prepare(png(250, 100))
     with pytest.raises(image.ImageError, match='HTML'):
         image.prepare(b'<html>blocked</html>')
 
@@ -615,7 +615,7 @@ def test_guide_aliases_only_for_channels_with_a_logo(db, monkeypatch):
 
 def test_bulk_adds_the_iptv_org_logos_that_pass_the_rules(db):
     logos = [{'channel': 'TF1.fr', 'feed': '', 'url': 'https://x.org/tf1.svg', 'format': 'SVG'},
-             {'channel': 'France3.fr', 'feed': '', 'url': 'https://x.org/f3.png', 'format': 'PNG', 'width': 300,
+             {'channel': 'France3.fr', 'feed': '', 'url': 'https://x.org/f3.png', 'format': 'PNG', 'width': 250,
               'height': 100}]
     files = {'https://x.org/tf1.svg': SVG}
     stats = harvest.bulk(db, IPTV, 'fr', logos, pause=0, downloader=lambda url, **kw: files[url], log=lambda s: None)
@@ -820,7 +820,7 @@ def test_duckduckgo_keeps_large_images_from_other_sites_than_social_and_stock(tm
     def search(query, n):
         asked.append(query)
         return [{'image': 'https://www.example-tv.es/logo.png', 'width': 1200, 'height': 400},
-                {'image': 'https://www.example-tv.es/small.png', 'width': 320, 'height': 320},
+                {'image': 'https://www.example-tv.es/small.png', 'width': 250, 'height': 250},
                 {'image': 'https://img.freepik.com/stock-logo.jpg', 'width': 2000, 'height': 2000},
                 {'image': 'https://upload.wikimedia.org/x/Logo.svg', 'width': '960', 'height': '300'},
                 {'image': 'https://www.example-tv.es/logo.png', 'width': 1200, 'height': 400}]

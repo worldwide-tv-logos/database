@@ -8,7 +8,7 @@ body:
     attributes:
       value: |
         The new image replaces the current one under the same address, so every application using it is updated.
-        Same rules as for adding: transparent background, at least 500 px on its longest side (SVG preferred),
+        Same rules as for adding: transparent background, at least 300 px on its longest side (SVG preferred),
         direct `https://` link.
 
   - type: input

@@ -75,7 +75,7 @@ Wikidata gives dates: a logo with an end date, or whose file name gives a period
 old branding and is never proposed. The website of the channel is the best proof of what is on air now.
 
 **Looking for a missing logo: start with `logos find`**, whose first source is a DuckDuckGo image search ("<name>
-logo", images of 500 px or more, social networks and stock-image sites left out; free, no key, through the `ddgs`
+logo", images of 300 px or more, social networks and stock-image sites left out; free, no key, through the `ddgs`
 package, which falls back to Bing). It finds the most logos that the other sources miss (about a quarter of the
 channels without a logo in the 2026-11 hunts of eleven European countries), but its results are the least sure: most
 are photos, posters, older brandings, the brand logo of a numbered channel or a namesake. Look at every candidate on

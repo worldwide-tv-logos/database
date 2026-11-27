@@ -17,6 +17,7 @@ channel before giving it a logo.
 | iptv-org | A **source** only: its channels, feeds and issues tell us about new, renamed and closed channels. |
 | Provider | This repository **never** connects to an IPTV provider. Channels seen at a provider arrive as requests with public information only (name, country, website), sent by canonical-catalog. |
 | Image search | DuckDuckGo image search (free, no key, `ddgs` package) is the first source of `logos find` and of the hunts of missing logos (2026-11-27): it found a logo for about a quarter of the channels every other source had missed; its results are always checked by eye. Not used by the full harvests (one search per channel, 8 s apart). |
+| Logo size | At least 300 px on the longest side once trimmed (500 px until 2026-11-27): many official logos are published only at 300 to 500 px (channel websites, streaming platforms) and were refused. Images are never upscaled, and a logo under 1,000 px from a bitmap is looked for again every week in a sharper version. |
 | Hosting | Data and site on GitHub (Pages). A read-only API (FastAPI on Vercel) loads the published files; it never writes, and the site works without it. |
 | Edits | Data still changes only through `uv run logos` commands, never by hand. |
 
