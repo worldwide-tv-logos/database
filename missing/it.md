@@ -1,6 +1,6 @@
 # Italy: channels without a logo
 
-271 of 623 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
+274 of 623 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
 
 | Channel ID | Name | iptv-org ID |
 |---|---|---|
@@ -104,7 +104,6 @@
 | `ch_av8p940xar` | La Tr3 | LaTr3.it |
 | `ch_3q6a7t7b5d` | La TR3 Marsala | LaTR3Marsala.it |
 | `ch_dcq47cafjq` | La4 Italia | La4Italia.it |
-| `ch_3qpwje37d4` | Lazio Style Channel | LazioStyleChannel.it |
 | `ch_mknds8yf0p` | Le Cronache TV | LeCronacheTV.it |
 | `ch_e4syyx3m12` | Life 120 Channel | Life120Channel.it |
 | `ch_9h592s5zfc` | Lira TV | LiraTV.it |
@@ -243,7 +242,6 @@
 | `ch_sbqwycmvff` | Sophia TV | SophiaTV.it |
 | `ch_8paeesjyyq` | Sportitalia Motori | SportitaliaMotori.it |
 | `ch_p5bmwyp9tr` | Sportitalia Solocalcio | SportitaliaSolocalcio.it |
-| `ch_4tp3rr9n89` | SportOutdoor.tv |  |
 | `ch_asarm5jcs5` | SporTVL | SporTVL.it |
 | `ch_sbzswt0wr4` | ST Europe Channel | STEuropeChannel.it |
 | `ch_n49ktq95wb` | Stereo 5 TV | Stereo5TV.it |
@@ -256,7 +254,6 @@
 | `ch_w87ngz0beq` | TCI | TCI.it |
 | `ch_71qnexewth` | Tele A | TeleA.it |
 | `ch_bvdqy7f6m9` | Tele Abruzzo | TeleAbruzzo.it |
-| `ch_6vc6t5t5k4` | Tele Chiara | TeleChiara.it |
 | `ch_00wnegjm7j` | Tele Clusone | TeleClusone.it |
 | `ch_chqfnhdj3x` | Tele Liguria Sud | TeleLiguriaSud.it |
 | `ch_gcfsy2a59c` | Tele Moda | TeleModa.it |

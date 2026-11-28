@@ -1,6 +1,6 @@
 # Spain: channels without a logo
 
-321 of 654 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
+332 of 654 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
 
 | Channel ID | Name | iptv-org ID |
 |---|---|---|
@@ -61,7 +61,6 @@
 | `ch_g9prs5v724` | Canal 56 | Canal56.es |
 | `ch_km0v1w5s54` | Canal 6 | Canal6.es |
 | `ch_qg4qtjapje` | Canal Blau | CanalBlau.es |
-| `ch_3qgp5mhswe` | Canal Parlamento | CanalParlamento.es |
 | `ch_ftjpfx6xdx` | Canal Portada | CanalPortada.es |
 | `ch_axhj7h5ck6` | Canal Taronja Osona i Moianes | CanalTaronjaOsonaiMoianes.es |
 | `ch_bcn081cm78` | Canal Terrassa | CanalTerrassa.es |
@@ -103,7 +102,6 @@
 | `ch_nne2mkvefy` | Erlo Telebista | ErloTelebista.es |
 | `ch_rxybjzy1p5` | Escapa TV |  |
 | `ch_wxmnmpe45g` | Este Canal TV | EsteCanalTV.es |
-| `ch_jzqjc0mh3y` | Estepona Television | EsteponaTelevision.es |
 | `ch_zxay976n4b` | ETB Events 1 | ETBEvents1.es |
 | `ch_qv99gqtygy` | etv | etv.es |
 | `ch_s0bjr8j7eg` | Eurolatina TV | EurolatinaTV.es |
@@ -122,7 +120,6 @@
 | `ch_qmbbkj9nj8` | Garage TV | GarageTV.es |
 | `ch_y5rdzqj8x9` | GCM TV | GCMTV.es |
 | `ch_5dmgnkpnkg` | Gol Classics | GolClassics.es |
-| `ch_0zx0a2k9wv` | Golf 2 por Movistar Plus+ | Golf2porMovistarPlusPlus.es |
 | `ch_vvv626ddsd` | Gran Canaria TV | GranCanariaTV.es |
 | `ch_mb8j4ckttp` | Guada TV | GuadaTV.es |
 | `ch_qtdcnpjq1c` | Hamaika Telebista | HamaikaTelebista.es |
@@ -148,7 +145,6 @@
 | `ch_m9ra4rtvtx` | HQM Rock | HQMRock.es |
 | `ch_c9jkb6mwfj` | HQM Spanish | HQMSpanish.es |
 | `ch_wqjj20aqrz` | Huelva Conecta TV | HuelvaConectaTV.es |
-| `ch_45n9m617zn` | Huelva TV | HuelvaTV.es |
 | `ch_0jbqnpf8hf` | Huesca TV | HuescaTV.es |
 | `ch_9fc87hxqtb` | Iberalia 100% Pesca | Iberalia100Pesca.es |
 | `ch_6fxym11k9w` | Iberoamerica TV | IberoamericaTV.es |
@@ -170,17 +166,10 @@
 | `ch_7zwb73xp3h` | LaLiga 10 por Movistar Plus+ | LaLiga10porMovistarPlusPlus.es |
 | `ch_evpjps0828` | LaLiga 8 por Movistar Plus+ | LaLiga8porMovistarPlusPlus.es |
 | `ch_8tmyh7gyhm` | LaLiga 9 por Movistar Plus+ | LaLiga9porMovistarPlusPlus.es |
-| `ch_30jme09nx3` | LaLiga Hypermotion 2 | LaLigaHypermotion2.es |
-| `ch_p540fswprz` | LaLiga Hypermotion 3 | LaLigaHypermotion3.es |
 | `ch_mdqtqzfff4` | LaLiga Inside | LaLigaInside.es |
 | `ch_t5vjvsjcqf` | LaLiga TV Bar 1 | LaLigaTVBar1.es |
 | `ch_wsnv243zge` | LaLiga TV Bar 4 | LaLigaTVBar4.es |
 | `ch_m7f7ezcn3r` | Lebrija TV | LebrijaTV.es |
-| `ch_9nve101j23` | Liga de Campeones 13 por Movistar Plus+ | LigadeCampeones13porMovistarPlusPlus.es |
-| `ch_f3rkekdj7q` | Liga de Campeones 14 por Movistar Plus+ | LigadeCampeones14porMovistarPlusPlus.es |
-| `ch_psjrbp7pxn` | Liga de Campeones 15 por Movistar Plus+ | LigadeCampeones15porMovistarPlusPlus.es |
-| `ch_qzb4z4x9dc` | Liga de Campeones 16 por Movistar Plus+ | LigadeCampeones16porMovistarPlusPlus.es |
-| `ch_kk823wy7dq` | Liga de Campeones 17 por Movistar Plus+ | LigadeCampeones17porMovistarPlusPlus.es |
 | `ch_fqxffp8ttq` | Liga de Campeones 2 UHD por Movistar Plus+ | LigadeCampeones2UHDporMovistarPlusPlus.es |
 | `ch_2vhvb62kms` | Liga de Campeones UHD por Movistar Plus+ | LigadeCampeonesUHDporMovistarPlusPlus.es |
 | `ch_6eec21cm4r` | Lleida Televisio | LleidaTelevisio.es |

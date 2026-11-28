@@ -1,6 +1,6 @@
 # United Kingdom: channels without a logo
 
-456 of 593 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
+459 of 594 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
 
 | Channel ID | Name | iptv-org ID |
 |---|---|---|
@@ -20,7 +20,6 @@
 | `ch_1bgr34ra6m` | Asena TV | AsenaTV.uk |
 | `ch_v3wkqteh32` | AstraMarket | AstraMarket.uk |
 | `ch_y0nbe1xg3f` | ATN Bangla UK | ATNBanglaUK.uk |
-| `ch_x38c05s8jx` | BBC Brit | BBCBrit.uk |
 | `ch_8a3srzgqy4` | BBC Lifestyle | BBCLifestyle.uk |
 | `ch_41w6fkgzb2` | BBC UHD 2 | BBCUHD2.uk |
 | `ch_m02agzjwhs` | BBC UHD 3 | BBCUHD3.uk |
@@ -43,9 +42,7 @@
 | `ch_445smffgma` | Channel Europe | ChannelEurope.uk |
 | `ch_z0aeepf7w6` | Channel S | ChannelS.uk |
 | `ch_qna5pycqrm` | Cinemachi Crime | CinemachiCrime.uk |
-| `ch_a11sfdrjs3` | Court TV | CourtTV.uk |
 | `ch_vjsednx064` | Crime + Investigation CEE | CrimePlusInvestigationCEE.uk |
-| `ch_dpasc19j4a` | DAZN Combat | DAZNCombat.uk |
 | `ch_75vxyv11wx` | DAZN LaLiga 5 | DAZNLaLiga5.uk |
 | `ch_yrdg7wd9b4` | DAZN Women's Football | DAZNWomensFootball.uk |
 | `ch_pjvjb3cg34` | Dennis and Gnasher | DennisandGnasher.uk |
@@ -70,9 +67,10 @@
 | `ch_3g77q02qkg` | Five Somali TV | FiveSomaliTV.uk |
 | `ch_9xvbt9nrt9` | Foodies | Foodies.uk |
 | `ch_srfar3ygbs` | Garshom TV | GarshomTV.uk |
-| `ch_gh72029pt8` | Gems TV |  |
+| `ch_hwbqxc4ak3` | GoalUK | GoalUK.uk |
 | `ch_ybwh9rar92` | GOD TV Asia | GODTVAsia.uk |
 | `ch_p3evmqaj77` | Goodnews TV | GoodnewsTV.uk |
+| `ch_ek952ddz3d` | GREAT! movies | GREATmovies.uk |
 | `ch_yphzy1wbq0` | Hala London TV Cartoon | HalaLondonTVCartoon.uk |
 | `ch_yz845d4y7x` | Hala London TV Movies | HalaLondonTVMovies.uk |
 | `ch_bsw171x5db` | Hala London TV Series | HalaLondonTVSeries.uk |
@@ -115,6 +113,7 @@
 | `ch_p5v8qa3f4k` | National Geographic Wild Middle East | NationalGeographicWildMiddleEast.uk |
 | `ch_2ka88bc5w9` | New Media TV | NewMediaTV.uk |
 | `ch_j97ry8yhay` | New Vision | NewVision.uk |
+| `ch_fxh7vwf13j` | Nolly Africa | NollyAfrica.uk |
 | `ch_km3m59q5ay` | North Africa TV | NorthAfricaTV.uk |
 | `ch_v5d826r9nj` | Ocean News Network | OceanNewsNetwork.uk |
 | `ch_fzgttwatae` | Pet & Pal | PetPal.uk |
@@ -133,7 +132,6 @@
 | `ch_9rk12p7g0p` | That's Entertainment | ThatsEntertainment.uk |
 | `ch_084m50m6h7` | TJC Beauty | TJCBeauty.uk |
 | `ch_hhhs3ma10s` | Totalmusic 2000s | Totalmusic2000s.uk |
-| `ch_qrx6rjkraf` | Travel Channel EMEA | TravelChannelEMEA.uk |
 | `ch_agmefcn6d1` | TV Warehouse | TVWarehouse.uk |
 | `ch_tdd5c53kv5` | Universal Somali TV | UniversalSomaliTV.uk |
 | `ch_k2x2xraznz` | Venus TV | VenusTV.uk |

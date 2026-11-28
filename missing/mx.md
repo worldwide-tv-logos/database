@@ -1,6 +1,6 @@
 # Mexico: channels without a logo
 
-209 of 512 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
+210 of 512 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
 
 | Channel ID | Name | iptv-org ID |
 |---|---|---|
@@ -69,7 +69,6 @@
 | `ch_sx5yyqk6tg` | Canal Parlamento del Congreso de Jalisco | CanalParlamentodelCongresodeJalisco.mx |
 | `ch_jqsg17k2tg` | Car One TV | CarOneTV.mx |
 | `ch_hm3jb5rxx1` | Cepropie | Cepropie.mx |
-| `ch_21sv18rk57` | Cinema Dinamita | CinemaDinamita.mx |
 | `ch_r58zmd4vab` | Cinema Platino | CinemaPlatino.mx |
 | `ch_51mwjktw6y` | Cinema Platino 2 | CinemaPlatino2.mx |
 | `ch_563qpamwg6` | Citro 6 TV La Imagen de Alamo | Citro6TVLaImagendeAlamo.mx |

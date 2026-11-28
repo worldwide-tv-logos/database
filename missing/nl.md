@@ -1,6 +1,6 @@
 # Netherlands: channels without a logo
 
-257 of 364 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
+264 of 364 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
 
 | Channel ID | Name | iptv-org ID |
 |---|---|---|
@@ -55,7 +55,6 @@
 | `ch_rzmfks11mh` | RTV NOF Achtkarspelen & Tytsjerksteradiel | RTVNOFAchtkarspelenTytsjerksteradiel.nl |
 | `ch_v45m3zzrzx` | RTV NOF Noardeast Fryslan & Dantumadiel | RTVNOFNoardeastFryslanDantumadiel.nl |
 | `ch_5wrvb728yz` | RTV Noord Extra | RTVNoordExtra.nl |
-| `ch_t5n6c1s63j` | RTV Noordoostpolder |  |
 | `ch_jchwh4c4jj` | RTV Rijnmond Extra | RTVRijnmondExtra.nl |
 | `ch_hgs4y1j1g4` | RTV Scheldemond | RTVScheldemond.nl |
 | `ch_ypjj29z2h2` | RTV Seaport | RTVSeaport.nl |
@@ -105,9 +104,3 @@
 | `ch_72n6xds8tt` | XITE Gospel | XITEGospel.nl |
 | `ch_gvrvk8vgmm` | XITE R&B Classic Jams | XITERBClassicJams.nl |
 | `ch_hx3m7kd1jp` | XITE Reggae Vibes | XITEReggaeVibes.nl |
-| `ch_08kd8kx5wd` | Ziggo Sport 2 | ZiggoSport2.nl |
-| `ch_y53hzz0zyx` | Ziggo Sport 3 | ZiggoSport3.nl |
-| `ch_hbq734qvmx` | Ziggo Sport 4 | ZiggoSport4.nl |
-| `ch_x93vwda9wk` | Ziggo Sport 5 | ZiggoSport5.nl |
-| `ch_3hd99f6eqp` | Ziggo Sport 6 | ZiggoSport6.nl |
-| `ch_p6bv1re9ks` | Ziggo Sport Extra | ZiggoSportExtra.nl |

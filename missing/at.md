@@ -1,11 +1,10 @@
 # Austria: channels without a logo
 
-87 of 120 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
+88 of 120 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
 
 | Channel ID | Name | iptv-org ID |
 |---|---|---|
 | `ch_j1mv6snfq0` | Abimago TV | AbimagoTV.at |
-| `ch_qr3dezy5dn` | Arcadia World HD | ArcadiaWorldHD.at |
 | `ch_38510m2ktb` | ARF | ARF.at |
 | `ch_nn475mbye9` | ATV Aichfeld | ATVAichfeld.at |
 | `ch_e5meq7e8fr` | GipsyTv Wien | GipsyTvWien.at |

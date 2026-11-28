@@ -1,6 +1,6 @@
 # Argentina: channels without a logo
 
-214 of 480 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
+214 of 481 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
 
 | Channel ID | Name | iptv-org ID |
 |---|---|---|
@@ -190,6 +190,7 @@
 | `ch_myast9jdme` | Play Television | PlayTelevision.ar |
 | `ch_he3m619y0w` | Plim Plim | PlimPlim.ar |
 | `ch_cc53f9tpfw` | PowerHD | PowerHD.ar |
+| `ch_sz4kw313zs` | Primired | Primired.ar |
 | `ch_c62tthmtfy` | Quantica TV | QuanticaTV.ar |
 | `ch_2pm43r4nwk` | Quatro TV | QuatroTV.ar |
 | `ch_zjfj9d1y0n` | Quiero Musica en mi Idioma | QuieroMusicaenmiIdioma.ar |

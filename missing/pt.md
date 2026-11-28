@@ -1,6 +1,6 @@
 # Portugal: channels without a logo
 
-107 of 142 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
+108 of 142 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
 
 | Channel ID | Name | iptv-org ID |
 |---|---|---|
@@ -25,7 +25,6 @@
 | `ch_xxjgh5mj1s` | RTPm Asia | RTPmAsia.pt |
 | `ch_sgjyfp9zfd` | SIC Alta Definicao | SICAltaDefinicao.pt |
 | `ch_nvxgdayqr1` | SIC Internacional Africa | SICInternacionalAfrica.pt |
-| `ch_h7q0k24ww3` | SIC Novelas | SICNovelas.pt |
 | `ch_5t69tbqjjm` | SIC Replay | SICReplay.pt |
 | `ch_h9hwct6t2a` | Sobrenatural TV | SobrenaturalTV.pt |
 | `ch_ycxa1hn295` | Sport TV Africa 1 | SportTVAfrica1.pt |

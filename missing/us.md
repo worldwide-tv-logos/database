@@ -1,6 +1,6 @@
 # United States: channels without a logo
 
-1512 of 5019 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
+1639 of 5019 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
 
 | Channel ID | Name | iptv-org ID |
 |---|---|---|
@@ -70,7 +70,6 @@
 | `ch_srem33zdzg` | Access Tuolumne | AccessTuolumne.us |
 | `ch_zsjxberkys` | AccessVision Channel 16 | AccessVisionChannel16.us |
 | `ch_qhtgk4kjgf` | AccessVision Channel 17 | AccessVisionChannel17.us |
-| `ch_npa55yv04y` | AccuWeather Network | AccuWeatherNetwork.us |
 | `ch_gmw05nbfcs` | ACE Country Radio | ACECountryRadio.us |
 | `ch_kden3bhaka` | Ace TV | AceTV.us |
 | `ch_bh1294zs53` | ACMi Education Channel | ACMiEducationChannel.us |
@@ -85,7 +84,6 @@
 | `ch_p4d9pyn6qb` | Addison Community TV | AddisonCommunityTV.us |
 | `ch_9md28g4n9a` | Adoracion Real | AdoracionReal.us |
 | `ch_znbt6gm9ry` | Adrenalina Pura TV | AdrenalinaPuraTV.us |
-| `ch_v4z4f25n7a` | Adult Swim | AdultSwim.us |
 | `ch_k4cwk4bjbv` | Adult Swim Latin America | AdultSwimLatinAmerica.us |
 | `ch_mdcc166edm` | Advenimiento TV | AdvenimientoTV.us |
 | `ch_rkgcqbtp8t` | Adventure Sports Network | AdventureSportsNetwork.us |
@@ -97,12 +95,10 @@
 | `ch_g11n66dk55` | AFN Prime Atlantic | AFNPrimeAtlantic.us |
 | `ch_cb2acyfzb6` | AFN Prime Pacific | AFNPrimePacific.us |
 | `ch_fm14xeanmm` | AFN Spectrum | AFNSpectrum.us |
-| `ch_fab74x0dqf` | AFN Sports | AFNSports.us |
 | `ch_yqy1hedm1k` | AFN Sports 2 | AFNSports2.us |
 | `ch_nt1zkjct3n` | Afro | Afro.us |
 | `ch_xh0j0w6qhf` | AfroVibes TV | AfroVibesTV.us |
 | `ch_9stsrppepa` | AFTV | AFTV.us |
-| `ch_576hktc2w8` | AFV | AFV.us |
 | `ch_whdhxb1skm` | AFV Family | AFVFamily.us |
 | `ch_nyatqarfcy` | Aghapy Kids | AghapyKids.us |
 | `ch_jwmrqkw05k` | AHSAA TV Network | AHSAATVNetwork.us |
@@ -151,9 +147,7 @@
 | `ch_fnt223dryv` | America TeVe | AmericaTeVe.us |
 | `ch_gk2wbvj01e` | America vs. Addiction | AmericavsAddiction.us |
 | `ch_xbz6b30cx5` | America's Auction Channel | AmericasAuctionChannel.us |
-| `ch_g4k06npb7z` | America's Test Kitchen | AmericasTestKitchen.us |
 | `ch_mjncycgdv7` | America's Value Channel | AmericasValueChannel.us |
-| `ch_3anp9dj2vg` | America's Voice | AmericasVoice.us |
 | `ch_qcz4h8dx3b` | America's Voice News | AmericasVoiceNews.us |
 | `ch_rsfabr5art` | American Country Network | AmericanCountryNetwork.us |
 | `ch_dj27e5j644` | American Gladiators | AmericanGladiators.us |
@@ -170,7 +164,6 @@
 | `ch_2rhd244hrf` | Andover TV | AndoverTV.us |
 | `ch_1593qnngt5` | Andromeda | Andromeda.us |
 | `ch_wf32adfhjx` | Angela Anaconda | AngelaAnaconda.us |
-| `ch_1713456bc9` | Animal Planet | AnimalPlanet.us |
 | `ch_mnsgebkees` | Animal Planet Latin America | AnimalPlanetLatinAmerica.us |
 | `ch_57tbky6bmj` | Animax Eastern Europe | AnimaxEasternEurope.us |
 | `ch_zx0yabdy9p` | Anime Clasico | AnimeClasico.us |
@@ -268,10 +261,7 @@
 | `ch_8bc8by7w5e` | Beavercreek Television | BeavercreekTelevision.us |
 | `ch_3n2ez2mnbs` | Bebecito Bum y sus amigos | BebecitoBumysusamigos.us |
 | `ch_zpj04wy6xy` | BEC-TV | BECTV.us |
-| `ch_0yn4nd7qk7` | beIN SPORTS XTRA | beINSPORTSXTRA.us |
-| `ch_98336jcyvt` | beIN SPORTS XTRA en Espanol | beINSPORTSXTRAenEspanol.us |
 | `ch_r8tphadffy` | BEK Sports Plus | BEKSportsPlus.us |
-| `ch_he0192srsf` | Bellator MMA | BellatorMMA.us |
 | `ch_hw4nrvt4vy` | Bellevue TV | BellevueTV.us |
 | `ch_ch3dhajbdm` | Bellingham Government Channel | BellinghamGovernmentChannel.us |
 | `ch_fjmjbqa93a` | BensenvilleTV | BensenvilleTV.us |
@@ -281,7 +271,6 @@
 | `ch_mym5vmzr83` | BET Africa | BETAfrica.us |
 | `ch_6gpe3t11qc` | BET Caribbean | BETCaribbean.us |
 | `ch_2r4b3mrcsv` | BET Her | BETHer.us |
-| `ch_zvfsw7y7a1` | BET Jams | BETJams.us |
 | `ch_qeyjg7p84a` | BET Latin America | BETLatinAmerica.us |
 | `ch_zrycerq3c7` | BET Pluto TV | BETPlutoTV.us |
 | `ch_sqezztx0sa` | Better Health TV | BetterHealthTV.us |
@@ -299,11 +288,8 @@
 | `ch_9zgwgz8gc4` | Big Life TV | BigLifeTV.us |
 | `ch_3xykxnd1pg` | Big Ten Network Alternate | BigTenNetworkAlternate.us |
 | `ch_cn11gv9k75` | Big Ten Network Overflow 1 | BigTenNetworkOverflow1.us |
-| `ch_gq0hb59c09` | Big Ten Network Overflow 2 | BigTenNetworkOverflow2.us |
-| `ch_4g764112m3` | Big Ten Network Overflow 3 | BigTenNetworkOverflow3.us |
 | `ch_scs5w8pdsf` | Big Ten Network Overflow 4 | BigTenNetworkOverflow4.us |
 | `ch_w5thj9djmc` | Big Time Rush | BigTimeRush.us |
-| `ch_kz95d7pkjh` | Billiard TV | BilliardTV.us |
 | `ch_b5q4vep67k` | BiswaBangla 24 | BiswaBangla24.us |
 | `ch_c2nfq0xss9` | Biz TV | BizTV.us |
 | `ch_phdxn4pk0r` | Blab TV | BlabTV.us |
@@ -343,7 +329,6 @@
 | `ch_2krbgtvynv` | BPTV | BPTV.us |
 | `ch_g5eq2sk2tn` | BPX TV Radio | BPXTVRadio.us |
 | `ch_b2ry9vaymd` | Brat TV | BratTV.us |
-| `ch_yg6hdzbbez` | Bravo | Bravo.us |
 | `ch_43kzqzqhph` | Brazi TV | BraziTV.us |
 | `ch_54gahspfw8` | Bremerton Kitsap Access Television | BremertonKitsapAccessTelevision.us |
 | `ch_4ajr8byzpn` | Brevard Government Access TV | BrevardGovernmentAccessTV.us |
@@ -407,8 +392,6 @@
 | `ch_4qwgx8ra6y` | BYU TV Global | BYUTVGlobal.us |
 | `ch_wb6r1bgct5` | BYU TV Latin America | BYUTVLatinAmerica.us |
 | `ch_cmx06ze4xp` | C Sat | CSat.us |
-| `ch_re0dbtn7cm` | C-SPAN 2 | CSPAN2.us |
-| `ch_e1zcrz1y2e` | C-SPAN 3 | CSPAN3.us |
 | `ch_xzsw9x676g` | Cable Hits | CableHits.us |
 | `ch_31kx6znvfr` | California Music Channel | CaliforniaMusicChannel.us |
 | `ch_r0fp96nman` | CAM Access | CAMAccess.us |
@@ -437,7 +420,6 @@
 | `ch_x5ybx6j0sv` | Carmel TV | CarmelTV.us |
 | `ch_qz4nxtka53` | Cars.TV | CarsTV.us |
 | `ch_406qqvrh0b` | Cartoon Cartoons | CartoonCartoons.us |
-| `ch_pb3qmadt8c` | Cartoon Network | CartoonNetwork.us |
 | `ch_ka4r9hafn6` | Cartoon Network Latin America | CartoonNetworkLatinAmerica.us |
 | `ch_56xae8jjex` | Cartoonito Latin America | CartoonitoLatinAmerica.us |
 | `ch_4zwg8739wp` | CAT-TV Channel 1075 | CATTVChannel1075.us |
@@ -454,7 +436,6 @@
 | `ch_x2vp3n7rzg` | CBN Family | CBNFamily.us |
 | `ch_x1kze0fp1b` | CBN News | CBNNews.us |
 | `ch_artgtp39w4` | CBS News Baltimore | CBSNewsBaltimore.us |
-| `ch_p6zmwmem04` | CBS News Boston | CBSNewsBoston.us |
 | `ch_zge562gt7j` | CBS News Chicago | CBSNewsChicago.us |
 | `ch_08bwkkxzyt` | CBS News Colorado | CBSNewsColorado.us |
 | `ch_3zgezfmej3` | CBS News Detroit | CBSNewsDetroit.us |
@@ -464,11 +445,9 @@
 | `ch_nk3xw841bb` | CBS News Minnesota | CBSNewsMinnesota.us |
 | `ch_fzr5d1qj21` | CBS News New York | CBSNewsNewYork.us |
 | `ch_1j48ngfbb1` | CBS News Philly | CBSNewsPhilly.us |
-| `ch_vj6nz33t9y` | CBS News Pittsburgh | CBSNewsPittsburgh.us |
 | `ch_bk1mqcc5tb` | CBS News Sacramento | CBSNewsSacramento.us |
 | `ch_s19swt7nt9` | CBS Sports Golazo Network | CBSSportsGolazoNetwork.us |
 | `ch_26atecs23w` | CBS Sports HQ | CBSSportsHQ.us |
-| `ch_zt5n6vgxxh` | CBS Sports Network USA | CBSSportsNetworkUSA.us |
 | `ch_t406qrhapa` | CBSN Live Event | CBSNLiveEvent.us |
 | `ch_zgh72gtgyr` | CBTV Internacional | CBTVInternacional.us |
 | `ch_4x95ac6pz8` | CC Made in Germany | CCMadeinGermany.us |
@@ -486,7 +465,6 @@
 | `ch_92g2wm660z` | CCX1 | CCX1.us |
 | `ch_c533ejacvk` | CDTV | CDTV.us |
 | `ch_hygkgkpx87` | Celebrity Scene TV | CelebritySceneTV.us |
-| `ch_fzmhg0pthj` | Centroamerica TV | CentroamericaTV.us |
 | `ch_54ezpqcws9` | Cerritos TV3 | CerritosTV3.us |
 | `ch_xxf8vrbqyt` | CETV Channel 98 | CETVChannel98.us |
 | `ch_34eyjaq3qw` | CFM TV Channel 98 | CFMTVChannel98.us |
@@ -522,7 +500,6 @@
 | `ch_1rh7e0c8cw` | Cine Nostalgia | CineNostalgia.us |
 | `ch_b42hkqjp98` | Cine Premiere | CinePremiere.us |
 | `ch_eh5rqrk8tn` | Cine Premium | CinePremium.us |
-| `ch_exgjzh7nac` | Cine Romantico | CineRomantico.us |
 | `ch_yjb96tv6cx` | Cine Series | CineSeries.us |
 | `ch_22wvwsfd74` | Cine Sony | CineSony.us |
 | `ch_c70cbz4edx` | Cine Sureno | CineSureno.us |
@@ -586,7 +563,6 @@
 | `ch_bmaf567ygk` | CNET | CNET.us |
 | `ch_rakdsef8vg` | CNJN | CNJN.us |
 | `ch_mm6sg37fpx` | CNN en Espanol | CNNenEspanol.us |
-| `ch_j1nphckfrg` | CNN Max |  |
 | `ch_y5raea7xyr` | CNN RePlay | CNNRePlay.us |
 | `ch_ech6bwh8ry` | COA-TV | COATV.us |
 | `ch_cnexs5vqan` | CobbTV | CobbTV.us |
@@ -625,7 +601,6 @@
 | `ch_nhepwjs2d7` | Cortez City Council | CortezCityCouncil.us |
 | `ch_6vzkkfkcsm` | COStv | COStv.us |
 | `ch_1aj5djmk9x` | County Channel | CountyChannel.us |
-| `ch_21cbc6sn4g` | Court TV | CourtTV.us |
 | `ch_5netpry6bp` | Cox Enfield Public Access | CoxEnfieldPublicAccess.us |
 | `ch_xv95z727pj` | CPA-TV | CPATV.us |
 | `ch_zcnw2ez70r` | CPTV-10 | CPTV10.us |
@@ -682,7 +657,6 @@
 | `ch_vmg7kmddbf` | Dalsan TV | DalsanTV.us |
 | `ch_k91sy800s7` | DanceStar TV | DanceStarTV.us |
 | `ch_75feegdhft` | Dancing Bear | DancingBear.us |
-| `ch_hpat2sjr2y` | Danger TV | DangerTV.us |
 | `ch_80gs3ftj43` | Dare To Dream Network | DareToDreamNetwork.us |
 | `ch_xe4pqt5crq` | Dark Matter TV | DarkMatterTV.us |
 | `ch_16p0k5sg1y` | Dark Shadows | DarkShadows.us |
@@ -729,19 +703,16 @@
 | `ch_yjb06qr9hf` | Diff'rent Strokes Arnold | DiffrentStrokesArnold.us |
 | `ch_d63grewsg8` | DIG 170 | DIG170.us |
 | `ch_56yhqqm2p2` | Discovery & Tourism Guyana | DiscoveryTourismGuyana.us |
-| `ch_k6awcg12ty` | Discovery Channel | DiscoveryChannel.us |
 | `ch_32na2wgpm9` | Discovery Channel Latin America | DiscoveryChannelLatinAmerica.us |
 | `ch_30bdv6fmw6` | Discovery Channel Middle East & Africa | DiscoveryChannelMiddleEastAfrica.us |
 | `ch_mahcvqvcmg` | Discovery Family Africa | DiscoveryFamilyAfrica.us |
 | `ch_rhpmpjkcqe` | Discovery Science | DiscoveryScience.us |
 | `ch_g5svsa1vep` | Discovery Science Latin America | DiscoveryScienceLatinAmerica.us |
-| `ch_s0rymkzgef` | Discovery Theater Latin America | DiscoveryTheaterLatinAmerica.us |
 | `ch_yxf8zpj409` | Dish Business TV | DishBusinessTV.us |
 | `ch_9bs132snng` | Dish scapes | Dishscapes.us |
 | `ch_bd5qqvzqr9` | Dish Studio | DishStudio.us |
 | `ch_9mbfqj79t6` | Disney Channel | DisneyChannel.us |
 | `ch_23msj82kcn` | Disney Junior | DisneyJunior.us |
-| `ch_h4tkq6zpge` | Disney XD | DisneyXD.us |
 | `ch_yeqj51bjn9` | Divine TV UK | DivineTVUK.us |
 | `ch_as9p2jyyx1` | Divine TV USA | DivineTVUSA.us |
 | `ch_7naa0kkcev` | DKN | DKN.us |
@@ -759,7 +730,6 @@
 | `ch_0amqrcmwn5` | Dove Channel | DoveChannel.us |
 | `ch_30vsz8zepy` | DPS-TV | DPSTV.us |
 | `ch_2pfjghxkyn` | Dr Oz | DrOz.us |
-| `ch_3sy8my2g2e` | DraftKings Network | DraftKingsNetwork.us |
 | `ch_v1syca7etn` | Drama Life | DramaLife.us |
 | `ch_0q2ewaq30k` | DreamInTV | DreamInTV.us |
 | `ch_g7745qmske` | DreamWorks Channel Asia | DreamWorksChannelAsia.us |
@@ -821,8 +791,6 @@
 | `ch_93wgac7f61` | eScapes XUMO | eScapesXUMO.us |
 | `ch_ezv87zak67` | Esperanza TV | EsperanzaTV.us |
 | `ch_dek0fj9khn` | Espiritu TV | EspirituTV.us |
-| `ch_fv5nkhyjdc` | ESPN | ESPN.us |
-| `ch_gan0xn364a` | ESPN 2 | ESPN2.us |
 | `ch_n1kenyyg6g` | ESPN 2 Caribbean | ESPN2Caribbean.us |
 | `ch_hybx7x5zbz` | ESPN 2 Latin America | ESPN2LatinAmerica.us |
 | `ch_802ywdwc3w` | ESPN 3 Latin America | ESPN3LatinAmerica.us |
@@ -831,10 +799,8 @@
 | `ch_5ah21yyzea` | ESPN Caribbean | ESPNCaribbean.us |
 | `ch_gb633patec` | ESPN Extra Latin America | ESPNExtraLatinAmerica.us |
 | `ch_g1ryc275fa` | ESPN Latin America | ESPNLatinAmerica.us |
-| `ch_grxsm2kqyq` | ESPN+ |  |
 | `ch_tff9h6qeqz` | ESR 24x7 eSports Network | ESR24x7eSportsNetwork.us |
 | `ch_wh6c0pnsbs` | ESR Persia | ESRPersia.us |
-| `ch_yhqcbhepb9` | Estrella TV | EstrellaTV.us |
 | `ch_m95ev5j306` | Estudio 5 | Estudio5.us |
 | `ch_vedr08xgms` | ET Live | ETLive.us |
 | `ch_ws7q1fp9aj` | Eternal Life TV Network | EternalLifeTVNetwork.us |
@@ -860,21 +826,16 @@
 | `ch_60cmmhphb7` | Faith TV | FaithTV.us |
 | `ch_d5cvefabey` | Family Entertainment TV | FamilyEntertainmentTV.us |
 | `ch_66v52594pm` | Family Ties | FamilyTies.us |
-| `ch_80nwhp28fj` | FanDuel Sports Network Detroit | FanDuelSportsNetworkDetroit.us |
 | `ch_9vrwpbdm8y` | FanDuel Sports Network Detroit Extra | FanDuelSportsNetworkDetroitExtra.us |
 | `ch_83nzr7c23d` | FanDuel Sports Network Indiana Plus | FanDuelSportsNetworkIndianaPlus.us |
-| `ch_hptdfmx728` | FanDuel Sports Network Midwest | FanDuelSportsNetworkMidwest.us |
 | `ch_3c24by4rrr` | FanDuel Sports Network Midwest Central & Downstate Illinois | FanDuelSportsNetworkMidwestCentralDownstateIllinois.us |
 | `ch_aj60gbvmxm` | FanDuel Sports Network Midwest Iowa | FanDuelSportsNetworkMidwestIowa.us |
 | `ch_hqevjr0fqg` | FanDuel Sports Network Midwest Nebraska | FanDuelSportsNetworkMidwestNebraska.us |
 | `ch_kk1x4t15nb` | FanDuel Sports Network Midwest Southeast Missouri | FanDuelSportsNetworkMidwestSoutheastMissouri.us |
 | `ch_dmk5aax3cg` | FanDuel Sports Network Midwest Southwest & Mid-Missouri | FanDuelSportsNetworkMidwestSouthwestMidMissouri.us |
 | `ch_20drqjd4z3` | FanDuel Sports Network Midwest St Louis | FanDuelSportsNetworkMidwestStLouis.us |
-| `ch_98mkpdg6zm` | FanDuel Sports Network North | FanDuelSportsNetworkNorth.us |
 | `ch_qywyw8q1rr` | FanDuel Sports Network Ohio Cincinnati | FanDuelSportsNetworkOhioCincinnati.us |
-| `ch_c3y961ghb3` | FanDuel Sports Network Ohio Cleveland | FanDuelSportsNetworkOhioCleveland.us |
 | `ch_6pw1zjrgrb` | FanDuel Sports Network Ohio Plus | FanDuelSportsNetworkOhioPlus.us |
-| `ch_yr797w0y2j` | FanDuel Sports Network SoCal | FanDuelSportsNetworkSoCal.us |
 | `ch_08ds7pj989` | FanDuel Sports Network South Alabama | FanDuelSportsNetworkSouthAlabama.us |
 | `ch_57h6m9n9zm` | FanDuel Sports Network South Georgia | FanDuelSportsNetworkSouthGeorgia.us |
 | `ch_7x4ck4w6px` | FanDuel Sports Network South Kentucky | FanDuelSportsNetworkSouthKentucky.us |
@@ -882,8 +843,6 @@
 | `ch_mvbrq6q9nt` | FanDuel Sports Network South North Carolinas | FanDuelSportsNetworkSouthNorthCarolinas.us |
 | `ch_6b20171ar9` | FanDuel Sports Network South Plus | FanDuelSportsNetworkSouthPlus.us |
 | `ch_gf3zprt3t1` | FanDuel Sports Network South South Carolinas | FanDuelSportsNetworkSouthSouthCarolinas.us |
-| `ch_cyjhzxdtd0` | FanDuel Sports Network South Tennessee | FanDuelSportsNetworkSouthTennessee.us |
-| `ch_y2yhng45sy` | FanDuel Sports Network Southeast | FanDuelSportsNetworkSoutheast.us |
 | `ch_dy2s6c79q1` | FanDuel Sports Network Southeast Alabama | FanDuelSportsNetworkSoutheastAlabama.us |
 | `ch_91j7yt3h8g` | FanDuel Sports Network Southeast Georgia | FanDuelSportsNetworkSoutheastGeorgia.us |
 | `ch_ara2q8sn4y` | FanDuel Sports Network Southeast Kentucky | FanDuelSportsNetworkSoutheastKentucky.us |
@@ -897,7 +856,6 @@
 | `ch_ztsf96ezbv` | FanDuel Sports Network Southwest Plus | FanDuelSportsNetworkSouthwestPlus.us |
 | `ch_d6gb5mqw7a` | FanDuel Sports Network Southwest San Antonio | FanDuelSportsNetworkSouthwestSanAntonio.us |
 | `ch_yf9gfvmdkn` | FanDuel Sports Network Southwest/Dallas Fort Worth | FanDuelSportsNetworkSouthwestDallasFortWorth.us |
-| `ch_schmecxc55` | FanDuel Sports Network West | FanDuelSportsNetworkWest.us |
 | `ch_p3rmjfypzj` | FanDuel Sports Network West Plus | FanDuelSportsNetworkWestPlus.us |
 | `ch_zdmfzj1hdr` | FanDuel Sports Network Wisconsin Plus | FanDuelSportsNetworkWisconsinPlus.us |
 | `ch_sspx7psmdy` | Faribault Community Television | FaribaultCommunityTelevision.us |
@@ -957,7 +915,6 @@
 | `ch_zfecqee35g` | FMH Movies | FMHMovies.us |
 | `ch_sgamwnrxjd` | Focus TV Reportage | FocusTVReportage.us |
 | `ch_wesp1f344x` | Food 52 | Food52.us |
-| `ch_m013eta33n` | Food Network | FoodNetwork.us |
 | `ch_2bjnf79g5p` | Food Network Latin America | FoodNetworkLatinAmerica.us |
 | `ch_6ryhxxgv4r` | Food TV | FoodTV.us |
 | `ch_j1r096ynsa` | Foodies | Foodies.us |
@@ -979,14 +936,10 @@
 | `ch_1q5ny1z6vq` | Front Royal Channel 7 | FrontRoyalChannel7.us |
 | `ch_bssvtceb6z` | Froot TV | FrootTV.us |
 | `ch_9yv4wx3mex` | FTTV | FTTV.us |
-| `ch_hkbnxw5sqt` | Fubo Sports Network 2 | FuboSportsNetwork2.us |
-| `ch_6pq8bw7pyq` | Fubo Sports Network 3 | FuboSportsNetwork3.us |
-| `ch_5a5beca6m9` | Fubo Sports Network 4 | FuboSportsNetwork4.us |
 | `ch_sg08mna2jj` | Full Custom Garage | FullCustomGarage.us |
 | `ch_r8jymjmxbf` | Fun Roads | FunRoads.us |
 | `ch_qfbc8w2vbx` | Fuse Beat | FuseBeat.us |
 | `ch_k5efgrfwes` | FVTV | FVTV.us |
-| `ch_87hbsyr77p` | FXM | FXM.us |
 | `ch_9d3hczan2n` | G4 Select | G4Select.us |
 | `ch_y45cpgdfqv` | Gagsnetwork | Gagsnetwork.us |
 | `ch_aty9cx67gj` | Galveston County TV | GalvestonCountyTV.us |
@@ -1009,10 +962,8 @@
 | `ch_xsmtt7d190` | GCSC HD-TV | GCSCHDTV.us |
 | `ch_n2m3z6yw6e` | GCTV Community Television | GCTVCommunityTelevision.us |
 | `ch_aqn12rgkxa` | GCTV2 | GCTV2.us |
-| `ch_ew27722q71` | Gem Shopping Network | GemShoppingNetwork.us |
 | `ch_kfpnfc8e2y` | Georgetown TV | GeorgetownTV.us |
 | `ch_0v3d5qaqwy` | Get.factual | Getfactual.us |
-| `ch_1d7bq89jgm` | getTV |  |
 | `ch_x6gc87bj5n` | GETV Education Television | GETVEducationTelevision.us |
 | `ch_0kwz67nv1p` | GGETV | GGETV.us |
 | `ch_gf82cvt1vh` | GGTV Government Television | GGTVGovernmentTelevision.us |
@@ -1135,14 +1086,12 @@
 | `ch_w2wrda9vbe` | HGTV Arabia | HGTVArabia.us |
 | `ch_r76kd4w7zb` | HGTV Asia | HGTVAsia.us |
 | `ch_cv2ynef172` | HGTV Latin America | HGTVLatinAmerica.us |
-| `ch_b5wtjptm0n` | Hi-YAH! | HiYAH.us |
 | `ch_xf45cfntdt` | High Times | HighTimes.us |
 | `ch_xzy4sfs2hk` | High TV 3D | HighTV3D.us |
 | `ch_s1f1w75wax` | High Vision TV | HighVisionTV.us |
 | `ch_6jqmfvnnqp` | Highland Village Television | HighlandVillageTelevision.us |
 | `ch_eadhears4z` | Hillsborough TV | HillsboroughTV.us |
 | `ch_m1v3xvzwdk` | HISD TV | HISDTV.us |
-| `ch_bkh4y46qt5` | History | History.us |
 | `ch_hg0444kdvh` | History 2 Latin America | History2LatinAmerica.us |
 | `ch_46xmfx34b3` | History 2 Middle East | History2MiddleEast.us |
 | `ch_ypawa3p5df` | History 2 Nordic | History2Nordic.us |
@@ -1173,7 +1122,6 @@
 | `ch_ycjp350p1n` | HooplaKidz TV | HooplaKidzTV.us |
 | `ch_h7bsp233s1` | Hope Channel Inter-America | HopeChannelInterAmerica.us |
 | `ch_8g2d9rdsrh` | Hope Channel Inter-America English | HopeChannelInterAmericaEnglish.us |
-| `ch_pjm467myqf` | Hope Channel North America | HopeChannelNorthAmerica.us |
 | `ch_d7zevzxntm` | Hope4Life TV | Hope4LifeTV.us |
 | `ch_d79fm7twrq` | Horizon Armenian TV | HorizonArmenianTV.us |
 | `ch_ryhrf2d6nx` | Horizon Sports | HorizonSports.us |
@@ -1193,8 +1141,6 @@
 | `ch_ht0paqt2rw` | Hunt Channel | HuntChannel.us |
 | `ch_6whk51f8mp` | Hunter | Hunter.us |
 | `ch_wsmkhyhj7x` | HWCAM Government Access | HWCAMGovernmentAccess.us |
-| `ch_246y6pkbyy` | I Heart 80s | IHeart80s.us |
-| `ch_nc5wgm4714` | I Heart 90s | IHeart90s.us |
 | `ch_rtj18b5jaj` | IBC TV | IBCTV.us |
 | `ch_747c8ve9n2` | IBN Television | IBNTelevision.us |
 | `ch_6bq4pwms6e` | IBTV USA | IBTVUSA.us |
@@ -1256,11 +1202,9 @@
 | `ch_h7vna6vjde` | Jesus Satellite TV | JesusSatelliteTV.us |
 | `ch_tp502652dp` | Jesus Wonderful TV | JesusWonderfulTV.us |
 | `ch_ee9sepyech` | JesusChrist TV | JesusChristTV.us |
-| `ch_3thcvf0yvb` | Jewelry TV | JewelryTV.us |
 | `ch_vk7k1ds9d6` | Jewelry TV 2 | JewelryTV2.us |
 | `ch_ga213d6k84` | Jewelry TV Extra | JewelryTVExtra.us |
 | `ch_wqtdepzv8y` | Joel Osteen Network | JoelOsteenNetwork.us |
-| `ch_h7ef2ktq5y` | Johnny Carson TV | JohnnyCarsonTV.us |
 | `ch_qekc64dtqv` | Journy | Journy.us |
 | `ch_a0rxeqmtp0` | Jovem Pan Pluto TV | JovemPanPlutoTV.us |
 | `ch_8hfm16j5z9` | JPopsuki TV | JPopsukiTV.us |
@@ -1276,7 +1220,6 @@
 | `ch_c8vatr5fsa` | Jus One | JusOne.us |
 | `ch_52hwj4dv2k` | Jus Punjabi | JusPunjabi.us |
 | `ch_wey4947r99` | Just for Laughs | JustforLaughs.us |
-| `ch_e5eyfywhnj` | Just for Laughs Gags | JustforLaughsGags.us |
 | `ch_1pm3kg9f94` | Juste pour Rire | JustepourRire.us |
 | `ch_9x8g9ndmwy` | Justice Central.TV | JusticeCentralTV.us |
 | `ch_evejc3jspp` | Juventud Renovada en el Espiritu Santo | JuventudRenovadaenelEspirituSanto.us |
@@ -1302,7 +1245,6 @@
 | `ch_gcp4kyyg5v` | kabillion | kabillion.us |
 | `ch_akm8gc0xr8` | KAHC-LD 43.6 | KAHCLD436.us |
 | `ch_wsy50c88ra` | KALO TV | KALOTV.us |
-| `ch_8zn10xgcx8` | Kartoon Channel! | KartoonChannel.us |
 | `ch_50ja0kt96j` | KAUO-LD 15.5 | KAUOLD155.us |
 | `ch_r76yqxp8a0` | KAZQ 32.1 | KAZQ321.us |
 | `ch_s3y71mvda6` | KBEV | KBEV.us |
@@ -1343,7 +1285,6 @@
 | `ch_n0y0etxper` | Ketchup TV | KetchupTV.us |
 | `ch_e9qjffppb0` | KETD 53.3 | KETD533.us |
 | `ch_jv0aw4qa5t` | Kevin Hart's LOL! Network | KevinHartsLOLNetwork.us |
-| `ch_p1pj85ca4y` | KFAA 29.1 | KFAA291.us |
 | `ch_vcb33nvgda` | KFDA-TV 10.2 | KFDATV102.us |
 | `ch_dxv7p39wsb` | KFKZ-LD 35.6 | KFKZLD356.us |
 | `ch_f0yswzqwwd` | KFMS-LD 47.1 | KFMSLD471.us |
@@ -1476,7 +1417,6 @@
 | `ch_z4qc67rx4j` | KSTC-TV 5.5 | KSTCTV55.us |
 | `ch_f98kvkpw72` | KSTP-TV 5.2 | KSTPTV52.us |
 | `ch_gteg6v6j96` | KSTP-TV 5.4 | KSTPTV54.us |
-| `ch_cvj3kgqnfn` | KSTW 11.1 | KSTW111.us |
 | `ch_7pss7ykh07` | KTBS-TV 3.2 | KTBSTV32.us |
 | `ch_zxd1170apb` | KTBU 55.3 | KTBU553.us |
 | `ch_hs1p31pps3` | KTCI-TV 2.5 | KTCITV25.us |
@@ -1595,7 +1535,6 @@
 | `ch_sfsmfm70qz` | Libya's Channel | LibyasChannel.us |
 | `ch_1fp8cqzp07` | Libyan Business Channel | LibyanBusinessChannel.us |
 | `ch_hgcv35402c` | Lifestyle | Lifestyle.us |
-| `ch_5v68er7nfn` | Lifetime | Lifetime.us |
 | `ch_xq3gevk4sx` | Lifetime Asia | LifetimeAsia.us |
 | `ch_kfp0xeg28p` | Lifetime Latin America | LifetimeLatinAmerica.us |
 | `ch_6efge4pcbp` | Lifetime Movies | LifetimeMovies.us |
@@ -1665,7 +1604,6 @@
 | `ch_tmnj2xx467` | Made TV | MadeTV.us |
 | `ch_haq9hrt0c0` | MaEzer Semay TV | MaEzerSemayTV.us |
 | `ch_9mzp2byjwd` | Magnificent Movies Network | MagnificentMoviesNetwork.us |
-| `ch_62zq6a3jdg` | Magnolia Network | MagnoliaNetwork.us |
 | `ch_gcg99wtqg0` | Mahwah Community Bulletin Board | MahwahCommunityBulletinBoard.us |
 | `ch_8khnhp98fe` | MainStreet Television | MainStreetTelevision.us |
 | `ch_v4y2azf9jp` | Majestad TV | MajestadTV.us |
@@ -1712,7 +1650,6 @@
 | `ch_978awtenwh` | MEA TV | MEATV.us |
 | `ch_vj1ymq8kyn` | MeatEater |  |
 | `ch_xjqxkmzwmx` | Mega Extreno HD | MegaExtrenoHD.us |
-| `ch_m3vvg4es9k` | Mega TV | MegaTV.us |
 | `ch_wv97rky4fy` | Merrimack TV Community Channel 23 | MerrimackTVCommunityChannel23.us |
 | `ch_tks58sdxaw` | Merrimack TV Education Channel 21 | MerrimackTVEducationChannel21.us |
 | `ch_ee04dhq3pj` | Merrimack TV Government Channel 20 | MerrimackTVGovernmentChannel20.us |
@@ -1725,7 +1662,6 @@
 | `ch_dc3rsh1ndz` | Metro21 | Metro21.us |
 | `ch_yweee7ndza` | MetroTV | MetroTV.us |
 | `ch_6b4rr9p0ey` | MGM Presents |  |
-| `ch_75q3qwgmkv` | MGM+ Drive-In | MGMPlusDriveIn.us |
 | `ch_9vcxmtxndv` | MGTV 188 | MGTV188.us |
 | `ch_2p6bmx828j` | MHz Now | MHzNow.us |
 | `ch_cv741fk98h` | Mi Musica en ingles | MiMusicaeningles.us |
@@ -1756,7 +1692,6 @@
 | `ch_x425072axn` | Missouri City TV | MissouriCityTV.us |
 | `ch_dv1dvkstq1` | Misterios sin resolver | Misteriossinresolver.us |
 | `ch_m16nfahm68` | Mixible | Mixible.us |
-| `ch_eap87rbsj5` | MLB | MLB.us |
 | `ch_hs286xd2zf` | MLB Big Inning |  |
 | `ch_g9ckwbq0tn` | MLB Extra Innings 1 | MLBExtraInnings1.us |
 | `ch_3c3h4s40yx` | MLB Extra Innings 10 | MLBExtraInnings10.us |
@@ -1835,7 +1770,6 @@
 | `ch_resa9x2ktb` | Monroe Community Media Public Access Channel | MonroeCommunityMediaPublicAccessChannel.us |
 | `ch_rfv3y880xh` | Monster Movies | MonsterMovies.us |
 | `ch_8txbqz3sa4` | Montgomery Channel | MontgomeryChannel.us |
-| `ch_mz6fjhbw4f` | Monumental Sports Network |  |
 | `ch_ffgzb9gczp` | Moose Lake Public Access Television Channel 7 | MooseLakePublicAccessTelevisionChannel7.us |
 | `ch_29a6a4zbpp` | More Star Trek | MoreStarTrek.us |
 | `ch_zfhc6knedf` | More TV Drama | MoreTVDrama.us |
@@ -1860,7 +1794,6 @@
 | `ch_7g6p5deqwq` | MSTV | MSTV.us |
 | `ch_jfkbcvw23c` | MTC | MTC.us |
 | `ch_mqxs657zqh` | MTN Special Events | MTNSpecialEvents.us |
-| `ch_tkpsvyqqq5` | MTV | MTV.us |
 | `ch_kp5ta9q4sp` | MTV Block Party | MTVBlockParty.us |
 | `ch_ns3ncx19bm` | MTV Brave | MTVBrave.us |
 | `ch_qxjx4f53gt` | MTV Dating | MTVDating.us |
@@ -1956,14 +1889,10 @@
 | `ch_95y8n2ccnq` | Nash Bridges | NashBridges.us |
 | `ch_zcjatsr1an` | Nashua ETV | NashuaETV.us |
 | `ch_03vwy897cd` | Nashville | Nashville.us |
-| `ch_ta40kpwhae` | Nat Geo Mundo | NatGeoMundo.us |
 | `ch_37444nk5gr` | NAT TV | NATTV.us |
-| `ch_b3ayr36d3q` | National Geographic | NationalGeographic.us |
 | `ch_ggghm9zw88` | National Geographic Latin America | NationalGeographicLatinAmerica.us |
-| `ch_kmee5c84te` | National Geographic Wild | NationalGeographicWild.us |
 | `ch_bc8gbpzvzy` | National Iranian Congress TV | NationalIranianCongressTV.us |
 | `ch_xsn6e3b54r` | NAU-TV Northern Arizona University | NAUTVNorthernArizonaUniversity.us |
-| `ch_2y8sreg2ph` | NBA League Pass | NBALeaguePass.us |
 | `ch_g0bx8az7b4` | NBA League Pass 1 | NBALeaguePass1.us |
 | `ch_1fj9k9ag89` | NBA League Pass 10 | NBALeaguePass10.us |
 | `ch_psmh6w85fp` | NBA League Pass 11 | NBALeaguePass11.us |
@@ -2016,19 +1945,15 @@
 | `ch_jrz5f7rpsh` | NBA TV Latin America | NBATVLatinAmerica.us |
 | `ch_zzmgx3k2k9` | NBC American Crimes | NBCAmericanCrimes.us |
 | `ch_c8nx1aexd9` | NBC Boston News |  |
-| `ch_an1yrgem3e` | NBC Chicago News |  |
-| `ch_xjkrw5vm8w` | NBC Comedy Vault | NBCComedyVault.us |
 | `ch_qjt3e3x1rq` | NBC Los Angeles News |  |
 | `ch_3mdj5gjak4` | NBC New York News |  |
 | `ch_c6za3yags5` | NBC Philadelphia News |  |
-| `ch_dagd8fcrp8` | NBC South Florida News |  |
 | `ch_pz4cn67r9m` | NBC Sports Bay Area Plus | NBCSportsBayAreaPlus.us |
 | `ch_1e0awzghck` | NBC Sports Chicago Plus | NBCSportsChicagoPlus.us |
 | `ch_9b91m3970y` | NBC Sports Chicago Plus 2 | NBCSportsChicagoPlus2.us |
 | `ch_dkbyhbynze` | NBC Sports Philadelphia Plus | NBCSportsPhiladelphiaPlus.us |
 | `ch_d5jj5hmedh` | NBC Sports Washington Plus | NBCSportsWashingtonPlus.us |
 | `ch_bn158bdead` | NBC True CRMZ | NBCTrueCRMZ.us |
-| `ch_jxpm23w5t4` | NBC Universo | NBCUniverso.us |
 | `ch_gj4jxrqbrc` | NCAA Season Ticket 0 | NCAASeasonTicket0.us |
 | `ch_vbfejcqcd4` | NCAA Season Ticket 1 | NCAASeasonTicket1.us |
 | `ch_z3nbbab25r` | NCAA Season Ticket 2 | NCAASeasonTicket2.us |
@@ -2048,7 +1973,6 @@
 | `ch_1dyn2r6w5h` | NCW Life Channel | NCWLifeChannel.us |
 | `ch_jzkq5k0bs2` | NEAT | NEAT.us |
 | `ch_g6hy8e6517` | Neshaminy School Distrct TV | NeshaminySchoolDistrctTV.us |
-| `ch_vys5zt82tj` | NESN | NESN.us |
 | `ch_4s41wzt9fy` | NESN Plus | NESNPlus.us |
 | `ch_n5nrg43n0r` | NETV-194 | NETV194.us |
 | `ch_hvt8fgrean` | Neural Focused | NeuralFocused.us |
@@ -2060,13 +1984,8 @@
 | `ch_nz6qmfabs9` | News 8 Now | News8Now.us |
 | `ch_45nx0f4da9` | News Channel Nebraska | NewsChannelNebraska.us |
 | `ch_ndvsj7r2a2` | News of the World | NewsoftheWorld.us |
-| `ch_qkybthmpqs` | News12 Bronx | News12Bronx.us |
 | `ch_cee69525tt` | News12 Brooklyn | News12Brooklyn.us |
 | `ch_wxjxkbv0tj` | News12 Hudson Valley | News12HudsonValley.us |
-| `ch_8p8k53xnx3` | News12 Long Island | News12LongIsland.us |
-| `ch_xsbz3wk6x6` | News12 New Jersey | News12NewJersey.us |
-| `ch_bzpby0fvtf` | News12 New York | News12NewYork.us |
-| `ch_w9qp7vk379` | News12 Westchester | News12Westchester.us |
 | `ch_gx43xt9bhy` | News12+ Hudson Valley | News12PlusHudsonValley.us |
 | `ch_0hpz57a2yc` | News12+ New Jersey | News12PlusNewJersey.us |
 | `ch_8arfx1htyj` | Newsy Top Stories | NewsyTopStories.us |
@@ -2150,14 +2069,12 @@
 | `ch_vmwz505dfz` | Nick Clasico | NickClasico.us |
 | `ch_rrpcp5vpsa` | Nick Classico | NickClassico.us |
 | `ch_wgc6er7ag8` | Nick en Espanol | NickenEspanol.us |
-| `ch_mkmeatcnza` | Nick Jr. | NickJr.us |
 | `ch_nxpdj8re1n` | Nick Jr. en Espanol | NickJrenEspanol.us |
 | `ch_t2zet2gagp` | Nick Jr. Latin America | NickJrLatinAmerica.us |
 | `ch_m1bpag8xcg` | Nick Pluto TV | NickPlutoTV.us |
 | `ch_24pdhbghc3` | Nick Space | NickSpace.us |
 | `ch_txk170m799` | Nick Spotlight | NickSpotlight.us |
 | `ch_bjs6qp18se` | Nick Teen | NickTeen.us |
-| `ch_4mbptcc25t` | Nickelodeon | Nickelodeon.us |
 | `ch_yfzkwk69da` | Nickelodeon Latin America | NickelodeonLatinAmerica.us |
 | `ch_7gp75qcg89` | Nickelodeon Toons | NickelodeonToons.us |
 | `ch_pawb3ps5ws` | NickRewind | NickRewind.us |
@@ -2225,7 +2142,6 @@
 | `ch_ns3k4z5hnm` | Oromia Islamic Television | OromiaIslamicTelevision.us |
 | `ch_cfr43g0ptq` | Oromia News Network | OromiaNewsNetwork.us |
 | `ch_5d2mjrn85y` | Outdoor Channel International | OutdoorChannelInternational.us |
-| `ch_1j7e2qsh10` | Oxygen True Crime | OxygenTrueCrime.us |
 | `ch_3sj0q8vygz` | P3TV | P3TV.us |
 | `ch_5z2se45wq6` | PAC 14 | PAC14.us |
 | `ch_38gmd6enjj` | Pacific Blue | PacificBlue.us |
@@ -2247,7 +2163,6 @@
 | `ch_gcxag3w4vj` | PBC Tapesh TV | PBCTapeshTV.us |
 | `ch_wwh5yvagbm` | PBC TV Channel 20 | PBCTVChannel20.us |
 | `ch_taqdskmq5j` | PBR RidePass | PBRRidePass.us |
-| `ch_crt4p8qd9t` | PBS Kids | PBSKids.us |
 | `ch_crmja8qy5e` | PBS Kids 24/7 | PBSKids247.us |
 | `ch_swjvhgsdew` | PBS Kids Africa | PBSKidsAfrica.us |
 | `ch_hjypp31cv0` | PBS Kids Alaska | PBSKidsAlaska.us |
@@ -2439,7 +2354,6 @@
 | `ch_28bmtkrt8h` | PMN Three | PMNThree.us |
 | `ch_xm38p09576` | PMN Two | PMNTwo.us |
 | `ch_pdkgkwkxp2` | PNTV | PNTV.us |
-| `ch_45tg6gh1sq` | PokerGo | PokerGo.us |
 | `ch_e32qpqpq2y` | Police Women | PoliceWomen.us |
 | `ch_mn4md4ef4e` | Pomona Internet Streaming Channel | PomonaInternetStreamingChannel.us |
 | `ch_wf0y96wxb5` | Pongalo Novelaclub | PongaloNovelaclub.us |
@@ -2462,7 +2376,6 @@
 | `ch_2g5akbgq8z` | Public 1075 | Public1075.us |
 | `ch_yd8v9nh24m` | Pure Flix TV | PureFlixTV.us |
 | `ch_e0sx8beyg9` | Pure Rock | PureRock.us |
-| `ch_rwrh2520na` | Pursuit Channel | PursuitChannel.us |
 | `ch_ebxcrdccbp` | PursuitUP | PursuitUP.us |
 | `ch_jyqehvcjp5` | Putnam Valley Channel 20 | PutnamValleyChannel20.us |
 | `ch_27cmzk2k6h` | Puto TV Classic TV Crime Drama | PutoTVClassicTVCrimeDrama.us |
@@ -2531,7 +2444,6 @@
 | `ch_yfqbmq3tb8` | RFD-TV | RFDTV.us |
 | `ch_9n3sbtq0rc` | Rialto Network | RialtoNetwork.us |
 | `ch_mawn9k30jf` | RICH | RICH.us |
-| `ch_ph1wzs4dez` | Ride TV | RideTV.us |
 | `ch_z0xagn5rnb` | Right Side Broadcasting Network | RightSideBroadcastingNetwork.us |
 | `ch_yfybxm36h1` | Ring of Honor Wrestling | RingofHonorWrestling.us |
 | `ch_cv19ywrc62` | Ringwood TV | RingwoodTV.us |
@@ -2546,7 +2458,6 @@
 | `ch_dy380rd5ps` | Rooster Teeth TV | RoosterTeethTV.us |
 | `ch_seyx8wt7ht` | Root Sports Northwest Alternate | RootSportsNorthwestAlternate.us |
 | `ch_ab5jmyc497` | Root Sports Northwest Plus | RootSportsNorthwestPlus.us |
-| `ch_bheskjkh59` | Root Sports Northwest Seattle | RootSportsNorthwestSeattle.us |
 | `ch_nx1ms0r49k` | Rowlett Television Network | RowlettTelevisionNetwork.us |
 | `ch_dd59qqm801` | RTH-TV1 | RTHTV1.us |
 | `ch_gts8z910af` | RTH-TV2 Gospel | RTHTV2Gospel.us |
@@ -2596,7 +2507,6 @@
 | `ch_3dmwmh90bq` | SCATV | SCATV.us |
 | `ch_wy0wfqwy40` | Scherzi e risate | Scherzierisate.us |
 | `ch_j4xe1v3a04` | Sci-Fi 4U | SciFi4U.us |
-| `ch_cps9970veg` | Science | Science.us |
 | `ch_rgt4d4tpnb` | Scotch Plains TV | ScotchPlainsTV.us |
 | `ch_h5yxgt7btr` | Scottsdale Channel 11 | ScottsdaleChannel11.us |
 | `ch_0b8gt5hvgv` | Screambox TV |  |
@@ -2667,7 +2577,6 @@
 | `ch_7mxh00an1k` | SMC Channel 329 | SMCChannel329.us |
 | `ch_60z6gnm9e5` | SMC Channel 330 | SMCChannel330.us |
 | `ch_w3bfbtdkxp` | SMCTV Channel 25 | SMCTVChannel25.us |
-| `ch_gv6k4e3j1f` | Smithsonian Channel | SmithsonianChannel.us |
 | `ch_dran4j7sss` | Smithsonian Channel Asia | SmithsonianChannelAsia.us |
 | `ch_9v3x5ccr0n` | Smithsonian Channel Latin America | SmithsonianChannelLatinAmerica.us |
 | `ch_acek7s9ftx` | Smyrna TV | SmyrnaTV.us |
@@ -2692,7 +2601,6 @@
 | `ch_wyhs34cbyz` | South Park: Kenny Collection | SouthParkKennyCollection.us |
 | `ch_tpjwgsgs55` | Southwick Channel 15 | SouthwickChannel15.us |
 | `ch_q0hx0hxnye` | Space Channel | SpaceChannel.us |
-| `ch_hswd9crrft` | Space City Home Network |  |
 | `ch_jpez232z36` | Space Coast Government Television | SpaceCoastGovernmentTelevision.us |
 | `ch_jht9d1324n` | SPACO 8 | SPACO8.us |
 | `ch_rpcpv6fs72` | SPACO 9 | SPACO9.us |
@@ -2702,22 +2610,13 @@
 | `ch_4sdatybxsx` | SPEAK MPLS Channel 16 | SPEAKMPLSChannel16.us |
 | `ch_4wd5sb9tav` | SPEAK MPLS Channel 17 | SPEAKMPLSChannel17.us |
 | `ch_s6qxcft2xw` | SPEAK MPLS Channel 75 | SPEAKMPLSChannel75.us |
-| `ch_gxvpjvrge5` | Spectrum Bay News 9 | SpectrumBayNews9.us |
 | `ch_g8kavr8vqc` | Spectrum News 1 Austin |  |
 | `ch_xap2n5ved9` | Spectrum News 1 Buffalo |  |
-| `ch_1a8xn17yag` | Spectrum News 1 Capital Region |  |
-| `ch_253dx1eybj` | Spectrum News 1 Central NY |  |
-| `ch_tkmvgpdb78` | Spectrum News 1 Hudson Valley |  |
 | `ch_mdpkn3ye91` | Spectrum News 1 Kansas City |  |
-| `ch_vbx6vjvd92` | Spectrum News 1 Kentucky |  |
 | `ch_ss0xjtwvv3` | Spectrum News 1 Massachusetts |  |
-| `ch_j616mft0jq` | Spectrum News 1 North Carolina |  |
 | `ch_7wp0ba45t6` | Spectrum News 1 Ohio |  |
-| `ch_5f3rx6knfa` | Spectrum News 1 Rochester |  |
 | `ch_74q430ndag` | Spectrum News 1 SoCal |  |
-| `ch_4ev1q7q0r4` | Spectrum News 1 Southern Tier |  |
 | `ch_0xjw838v70` | Spectrum News 13 | SpectrumNews13.us |
-| `ch_4awawwg9ch` | Spectrum News St. Louis |  |
 | `ch_myd396wnm1` | Spectrum OC16 | SpectrumOC16.us |
 | `ch_f9sj88382h` | Speed Sport 1 |  |
 | `ch_5y1dznsxw2` | Spike !extremo! | Spikeextremo.us |
@@ -2728,9 +2627,7 @@
 | `ch_2ewfw904hn` | Sports Channel Network | SportsChannelNetwork.us |
 | `ch_qw5pkv13bd` | Sports First TV | SportsFirstTV.us |
 | `ch_gm4971p8fz` | Sports TV Plus | SportsTVPlus.us |
-| `ch_fckh8t78g6` | SportsGrid | SportsGrid.us |
 | `ch_579hh8bv5a` | Sportskool | Sportskool.us |
-| `ch_8g9mqvqzaa` | SportsNet Pittsburgh |  |
 | `ch_8m15b113h6` | SPPA-TV | SPPATV.us |
 | `ch_jq9qcz90a3` | Springfield CityView | SpringfieldCityView.us |
 | `ch_5jv7yn76cj` | SpringsTV | SpringsTV.us |
@@ -2747,13 +2644,6 @@
 | `ch_b9x6xxrgw0` | Star Hits Brasil | StarHitsBrasil.us |
 | `ch_vxsezmbw8e` | Star Life Latin America | StarLifeLatinAmerica.us |
 | `ch_2wrp16g7ts` | Star Series +3 | StarSeriesPlus3.us |
-| `ch_pqqajnyyws` | Starz Edge | StarzEdge.us |
-| `ch_v07vg18fj7` | Starz Encore | StarzEncore.us |
-| `ch_04yxp8vtzr` | Starz Encore Family | StarzEncoreFamily.us |
-| `ch_j7paqg0kwc` | Starz Encore Spanish | StarzEncoreSpanish.us |
-| `ch_khme9024bm` | Starz Encore Westerns | StarzEncoreWesterns.us |
-| `ch_n8wjnmgdsq` | Starz In Black | StarzInBlack.us |
-| `ch_bgq3fztsff` | Starz Kids & Family | StarzKidsFamily.us |
 | `ch_xvtg4pdcba` | Stereo Always More Music | StereoAlwaysMoreMusic.us |
 | `ch_vdg6a1s5bv` | Stereo Siempre Mas Musica | StereoSiempreMasMusica.us |
 | `ch_zmg14t6gd8` | STIRR City Abilene | STIRRCityAbilene.us |
@@ -2842,7 +2732,6 @@
 | `ch_nhp660423c` | STN Channel 2 | STNChannel2.us |
 | `ch_5pg0rns84f` | Stockton Gov TV | StocktonGovTV.us |
 | `ch_nxk44egbsv` | Stop Satellite Tax Channel | StopSatelliteTaxChannel.us |
-| `ch_sn5yj6psks` | Stories by AMC | StoriesbyAMC.us |
 | `ch_wxyjz5k577` | Story Television | StoryTelevision.us |
 | `ch_tzj2bjp93t` | Strange Paradise | StrangeParadise.us |
 | `ch_t1cve03k6v` | Street Music 4U | StreetMusic4U.us |
@@ -2854,7 +2743,6 @@
 | `ch_a8gjfe1eyp` | Sudbury TV Public/Government Channel | SudburyTVPublicGovernmentChannel.us |
 | `ch_r4843456at` | Suffolk Municipal Channel | SuffolkMunicipalChannel.us |
 | `ch_8c2d6rakwr` | Sun TV US | SunTVUS.us |
-| `ch_cpv0vccw5q` | Super Simple Songs | SuperSimpleSongs.us |
 | `ch_xcmp6ct94z` | Super! Brothers and Sisters | SuperBrothersandSisters.us |
 | `ch_yyg9c5srsa` | Super! Eroi | SuperEroi.us |
 | `ch_s4rqdje5p6` | Super! iCarly | SuperiCarly.us |
@@ -2867,7 +2755,6 @@
 | `ch_h7dxwjcp86` | Survivor | Survivor.us |
 | `ch_6ncc7kqqx1` | Swerve Sports | SwerveSports.us |
 | `ch_x2q7h37j32` | Sword and Shield | SwordandShield.us |
-| `ch_6xyymf2z35` | SYFY | SYFY.us |
 | `ch_2dg1qy5jya` | TAG TV | TAGTV.us |
 | `ch_c77nkjkjhq` | Takoma Park City TV | TakomaParkCityTV.us |
 | `ch_mpkcxtfnzk` | Talkin Live Classics TV | TalkinLiveClassicsTV.us |
@@ -2908,7 +2795,6 @@
 | `ch_12zetmgm9s` | Telehit Musica Estados Unidos | TelehitMusicaEstadosUnidos.us |
 | `ch_j0x3wjcp22` | Telemasters TV | TelemastersTV.us |
 | `ch_73a9ydhr5f` | TeleMIX | TeleMIX.us |
-| `ch_a1dqtybp0r` | Telemundo | Telemundo.us |
 | `ch_0ne1320ywm` | Telemundo Corpus Christi | TelemundoCorpusChristi.us |
 | `ch_ac97rs0abz` | Telemundo Telenovelas Clasicas | TelemundoTelenovelasClasicas.us |
 | `ch_bpk7yepjsq` | Televida Abundante | TelevidaAbundante.us |
@@ -2924,7 +2810,6 @@
 | `ch_vmq22wd756` | The Amazing Race | TheAmazingRace.us |
 | `ch_xsgkwgg1k1` | The Archive | TheArchive.us |
 | `ch_5jyxwshv98` | The Boat Show | TheBoatShow.us |
-| `ch_7vce7spyw6` | The Bob Ross Channel | TheBobRossChannel.us |
 | `ch_7kfmy06jf7` | The Bold & the Beautiful | TheBoldtheBeautiful.us |
 | `ch_f9t2erdz44` | The Burbank Channel | TheBurbankChannel.us |
 | `ch_v06nym1tfb` | The Carol Burnett Show | TheCarolBurnettShow.us |
@@ -2956,7 +2841,6 @@
 | `ch_b5e0d2981c` | The Ohio Channel | TheOhioChannel.us |
 | `ch_nk2e8rywtn` | The Outdoor Cooking Channel | TheOutdoorCookingChannel.us |
 | `ch_9x6g93fkj7` | The Peninsula Channel | ThePeninsulaChannel.us |
-| `ch_kg38hrbg12` | The Pet Collective | ThePetCollective.us |
 | `ch_8jwqp2ywdf` | The Point Televsion Network | ThePointTelevsionNetwork.us |
 | `ch_j6h3gj2fjc` | The Preview Channel | ThePreviewChannel.us |
 | `ch_6xs8bam2x1` | The Price Is Right: The Barker Era | ThePriceIsRightTheBarkerEra.us |
@@ -2989,11 +2873,9 @@
 | `ch_tx9btejyqm` | TLN Media San Francisco | TLNMediaSanFrancisco.us |
 | `ch_hdyw8bty85` | TM TV | TMTV.us |
 | `ch_wn7xqsw464` | TMH TV | TMHTV.us |
-| `ch_eatm29cxhd` | TMZ | TMZ.us |
 | `ch_wmzt1hdm84` | TNC-HD | TNCHD.us |
 | `ch_x4nx0a4hfv` | TNC-TV | TNCTV.us |
 | `ch_rerdeqym92` | TNC-TV-ED | TNCTVED.us |
-| `ch_zdg4hp55g9` | TNT | TNT.us |
 | `ch_s556n6pt60` | TNT Latin America | TNTLatinAmerica.us |
 | `ch_vnqc503gd5` | TODAY TV | TODAYTV.us |
 | `ch_5mntqwysdd` | Toku | Toku.us |
@@ -3012,10 +2894,8 @@
 | `ch_6nzgnnp9a6` | Township of Marlboro | TownshipofMarlboro.us |
 | `ch_g5exmssmcj` | TPTV | TPTV.us |
 | `ch_e3xnvgc8ps` | Travel Adventures With Jeff Swan | TravelAdventuresWithJeffSwan.us |
-| `ch_es4xxpp9ca` | Travel Channel | TravelChannel.us |
 | `ch_81jxf7gqef` | Travis County TV | TravisCountyTV.us |
 | `ch_qq8jygxjj7` | Trinity Channel | TrinityChannel.us |
-| `ch_dtq69ss6fs` | Triton Poker |  |
 | `ch_qyh98v3rww` | Troll TV | TrollTV.us |
 | `ch_p94eb7geh8` | Tropical Music TV | TropicalMusicTV.us |
 | `ch_qs55151tvq` | True Blue TV | TrueBlueTV.us |
@@ -3033,7 +2913,6 @@
 | `ch_y3yjde9fw1` | TV Fargo 56 | TVFargo56.us |
 | `ch_nkt2yg4eky` | TV Gwinnett | TVGwinnett.us |
 | `ch_36rf8snyfr` | TV Islaamaa | TVIslaamaa.us |
-| `ch_wfpj5vev0e` | TV One | TVOne.us |
 | `ch_1v5qedfqcq` | TV Quisqueya | TVQuisqueya.us |
 | `ch_zdrdpfsw6h` | TV Tacoma | TVTacoma.us |
 | `ch_a490gc96cx` | TV10 | TV10.us |
@@ -3157,7 +3036,6 @@
 | `ch_0m8r214q76` | Vevo Hip Hop | VevoHipHop.us |
 | `ch_kxzbaz31mc` | Vevo Holiday | VevoHoliday.us |
 | `ch_2nxjvkkdzk` | Vevo Latino | VevoLatino.us |
-| `ch_17wkch9rry` | Vevo Pop | VevoPop.us |
 | `ch_jz7xctbrbf` | Vevo Retro Rock | VevoRetroRock.us |
 | `ch_gysteq0ycf` | Vevo True School Hip-Hop | VevoTrueSchoolHipHop.us |
 | `ch_28tdgrc8b8` | VGN TV | VGNTV.us |
@@ -3177,7 +3055,6 @@
 | `ch_rnxe5t996q` | VILLEtv | VILLEtv.us |
 | `ch_96fv0c6f62` | Vision Global TV | VisionGlobalTV.us |
 | `ch_hfkjddpbq4` | Vision TV | VisionTV.us |
-| `ch_d1xxbn8c4a` | ViX |  |
 | `ch_eynjp4zzfn` | Vme Kids | VmeKids.us |
 | `ch_wt3f7c2pnx` | VNBC TV | VNBCTV.us |
 | `ch_jjs4pmqq42` | VoA Deewa TV | VoADeewaTV.us |
@@ -3216,7 +3093,6 @@
 | `ch_qsmahg3w7c` | WAMI-DT 69.2 | WAMIDT692.us |
 | `ch_7077cr2s6r` | WANN-CD 32.1 | WANNCD321.us |
 | `ch_hnapz7fn4y` | Wanted: Dead or Alive | WantedDeadorAlive.us |
-| `ch_vbhmewvacz` | WAPA América |  |
 | `ch_b4mqxydbq7` | Warner TV Asia | WarnerTVAsia.us |
 | `ch_vmksdx484p` | Washoe County TV | WashoeCountyTV.us |
 | `ch_zabx0bf3h9` | WATC-DT 57.1 | WATCDT571.us |
@@ -3237,7 +3113,6 @@
 | `ch_z0jqgvxy8v` | WBRA-TV 15.4 | WBRATV154.us |
 | `ch_29jswmxnbv` | WBRW TV | WBRWTV.us |
 | `ch_khrr19zrmy` | WBRZ-TV 2.2 | WBRZTV22.us |
-| `ch_1cmw5r0a3n` | WBTV 64.1 | WBTV641.us |
 | `ch_chgyfvgb5p` | WBXZ-LD 56.7 | WBXZLD567.us |
 | `ch_tjh9qrwtrg` | WCA-TV Education Channel | WCATVEducationChannel.us |
 | `ch_bgetw5hnxg` | WCA-TV Government Channel | WCATVGovernmentChannel.us |
@@ -3326,7 +3201,6 @@
 | `ch_3rtpqm2q82` | Wild at Heart | WildatHeart.us |
 | `ch_x006xzdgne` | WilliNet | WilliNet.us |
 | `ch_jyyzt8rfft` | Willow | Willow.us |
-| `ch_4tf1qxs9zm` | Willow Xtra | WillowXtra.us |
 | `ch_bv2v3kg1a3` | WILM-LD 10.1 | WILMLD101.us |
 | `ch_y64nvakpws` | WinCAM Education | WinCAMEducation.us |
 | `ch_3jj02kgtq9` | WinCAM Government | WinCAMGovernment.us |
@@ -3464,7 +3338,6 @@
 | `ch_70ss2rr01s` | WVVH-CD 18.1 | WVVHCD181.us |
 | `ch_t5730d8jds` | WWCI-CD 10.1 | WWCICD101.us |
 | `ch_p9v80cnjwe` | WWCI-CD 10.2 | WWCICD102.us |
-| `ch_1tan2mhb7x` | WWE Network | WWENetwork.us |
 | `ch_jbejzfmrrv` | WWJ-TV 62.4 | WWJTV624.us |
 | `ch_kkg24exnct` | WWJS 14.6 | WWJS146.us |
 | `ch_mh9z4exgv0` | WWL-TV 4.5 | WWLTV45.us |

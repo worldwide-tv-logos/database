@@ -1,6 +1,6 @@
 # Colombia: channels without a logo
 
-247 of 502 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
+248 of 502 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
 
 | Channel ID | Name | iptv-org ID |
 |---|---|---|
@@ -70,7 +70,6 @@
 | `ch_c16pmwmx29` | Canal Zona D TV | CanalZonaDTV.co |
 | `ch_zkdkeprjy3` | Capsos TV | CapsosTV.co |
 | `ch_wpfrwsdr7p` | Caracol HD2 | CaracolHD2.co |
-| `ch_qwh1whk8e6` | Caracol TV | CaracolTV.co |
 | `ch_mwmpvf0xns` | Carare TV | CarareTV.co |
 | `ch_dp8x0tcnjq` | CDB Radio y TV | CDBRadioyTV.co |
 | `ch_qmw7zrn4by` | Chamorro Television | ChamorroTelevision.co |

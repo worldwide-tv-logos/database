@@ -1,6 +1,6 @@
 # Belgium: channels without a logo
 
-122 of 159 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
+125 of 159 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
 
 | Channel ID | Name | iptv-org ID |
 |---|---|---|
@@ -9,15 +9,12 @@
 | `ch_h8shhywzw6` | Be 1+1hr | Be1Plus1hr.be |
 | `ch_hxqkrmh5bp` | Belgian Federal Parliament | BelgianFederalParliament.be |
 | `ch_sx89qh7e6y` | City Music TV | CityMusicTV.be |
-| `ch_ee6yd9d9b3` | Comedy Central VL |  |
 | `ch_6fzmc3525c` | EbS | EbS.be |
 | `ch_5qcv217rwn` | EbS+ | EbSPlus.be |
 | `ch_6gbbb10565` | Eurosport 2 VL |  |
 | `ch_v8fv9588ym` | JapanimTV | JapanimTV.be |
-| `ch_kv0enxzsrc` | National Geographic VL |  |
 | `ch_a094ap86rc` | Nickelodeon Flanders | NickelodeonFlanders.be |
 | `ch_rsbk16fz8d` | Nickelodeon Wallonia | NickelodeonWallonia.be |
-| `ch_abawwqekwd` | Notele | Notele.be |
 | `ch_vsqtwdzfh9` | Pickx Live | PickxLive.be |
 | `ch_sg9p60xe5g` | Pickx+ | PickxPlus.be |
 | `ch_1hkaxnkpby` | Pickx+ Sports 1 | PickxPlusSports1.be |

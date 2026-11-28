@@ -1,6 +1,6 @@
 # France: channels without a logo
 
-405 of 591 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
+411 of 591 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
 
 | Channel ID | Name | iptv-org ID |
 |---|---|---|
@@ -59,9 +59,7 @@
 | `ch_08aj4v09h1` | D5Music | D5Music.fr |
 | `ch_0d97a870mh` | D5tv | D5tv.fr |
 | `ch_empw9t49a1` | Demain TV | DemainTV.fr |
-| `ch_r19mj7khqm` | Djazz |  |
 | `ch_hmbqx6eyhd` | EDAN | EDAN.fr |
-| `ch_7xfs9em0k2` | EMCI TV | EMCITV.fr |
 | `ch_z5027f3t0e` | EMCI TV Europe | EMCITVEurope.fr |
 | `ch_ggt6ea4jhr` | Equidia Pro 1 | EquidiaPro1.fr |
 | `ch_ksmsxxfwbw` | Equidia Pro 2 | EquidiaPro2.fr |
@@ -69,7 +67,6 @@
 | `ch_qmp22cgg56` | Euromed TV | EuromedTV.fr |
 | `ch_r68bwym6qd` | Euronews Hungarian | EuronewsHungarian.fr |
 | `ch_93b7bwmc5a` | Euronews Russian | EuronewsRussian.fr |
-| `ch_ga1tt7fjv7` | Euronews Spanish | EuronewsSpanish.fr |
 | `ch_8kxmf9s8rj` | Evandis Gospel TV | EvandisGospelTV.fr |
 | `ch_kqq4j7gdjq` | Evangile TV | EvangileTV.fr |
 | `ch_ckcsdkb823` | FashionTV Asia | FashionTVAsia.fr |
@@ -121,7 +118,6 @@
 | `ch_nv3xc8prk7` | OCtele | OCtele.fr |
 | `ch_ewj2q93cy7` | OFIVE TV | OFIVETV.fr |
 | `ch_57pmn0ng16` | P2M TV | P2MTV.fr |
-| `ch_wq9v3by7ph` | Paramount Channel Offset | ParamountChannelOffset.fr |
 | `ch_swjmrptyk3` | Persiana Docs | PersianaDocs.fr |
 | `ch_a0w8f3y4xj` | Persiana Emirates | PersianaEmirates.fr |
 | `ch_m562jy1jks` | Persiana Fight | PersianaFight.fr |
@@ -161,7 +157,6 @@
 | `ch_f8ygq4xrc1` | Tele Bocal | TeleBocal.fr |
 | `ch_ejdvks1zqg` | TeleAntilles | TeleAntilles.fr |
 | `ch_r8fz6qak2k` | TeleToon Africa | TeleToonAfrica.fr |
-| `ch_dkvzze1rqp` | TiVi5 Monde | TiVi5Monde.fr |
 | `ch_bkdbkwa0f9` | TLVA | TLVA.fr |
 | `ch_x8xpzvvvxq` | Trace Ivoire | TraceIvoire.fr |
 | `ch_ch7qj39ey5` | Trace Naija | TraceNaija.fr |
@@ -176,7 +171,6 @@
 | `ch_rn3fdfysk4` | TV Sud Provence | TVSudProvence.fr |
 | `ch_7x06np5nem` | TV Tarn | TVTarn.fr |
 | `ch_d2et4w7kw8` | TV Vendee | TVVendee.fr |
-| `ch_k7arths4ff` | TV5MONDE Chefs | TV5MONDEChefs.fr |
 | `ch_n4ge9kefsx` | TV5Monde Latin America | TV5MondeLatinAmerica.fr |
 | `ch_aq9dfk9hhv` | TV5Monde Maghreb-Orient | TV5MondeMaghrebOrient.fr |
 | `ch_nj7han827y` | TV7 Colmar | TV7Colmar.fr |

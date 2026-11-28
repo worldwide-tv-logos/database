@@ -1,6 +1,6 @@
 # Germany: channels without a logo
 
-528 of 682 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
+529 of 682 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
 
 | Channel ID | Name | iptv-org ID |
 |---|---|---|
@@ -127,7 +127,6 @@
 | `ch_2wjjvpwtna` | Seenluft24 | Seenluft24.de |
 | `ch_66bpcbtpy4` | Sender Neu Jerusalem | SenderNeuJerusalem.de |
 | `ch_j6mjncrk11` | Shop 24 Direct | Shop24Direct.de |
-| `ch_06xke7swcc` | Sky Cinema Thriller | SkyCinemaThriller.de |
 | `ch_eeag5vkzkw` | Sky Sport Kompakt 4 | SkySportKompakt4.de |
 | `ch_qhtn75c9dh` | Sky Sport Kompakt 5 | SkySportKompakt5.de |
 | `ch_hdd75xvx17` | Sophia TV | SophiaTV.de |

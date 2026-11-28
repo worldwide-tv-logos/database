@@ -1,6 +1,6 @@
 # Canada: channels without a logo
 
-253 of 610 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
+265 of 610 channels have a logo here (editions not counted: they use their channel's logo). To add one, use the [logo form](../../../issues/new?template=01_logos_add.yml).
 
 | Channel ID | Name | iptv-org ID |
 |---|---|---|
@@ -81,12 +81,10 @@
 | `ch_p23n63tmhz` | CKNO-FM | CKNOFM.ca |
 | `ch_q51rh8h4s2` | Classical FM | ClassicalFM.ca |
 | `ch_jx662w4vpg` | Classique TV | ClassiqueTV.ca |
-| `ch_pyqptz56vs` | CPAC English | CPACEnglish.ca |
 | `ch_r8mfae1fgd` | Crave 3 | Crave3.ca |
 | `ch_s592qqtpxv` | Crave 4 | Crave4.ca |
 | `ch_0z0df2j0xe` | CTB TV | CTBTV.ca |
 | `ch_2x3c8nyb8e` | CTV 2 Alberta | CTV2Alberta.ca |
-| `ch_sr7h9b2jdx` | CTV Nature Channel | CTVNatureChannel.ca |
 | `ch_4nr6yr1cn0` | CTV Speed Channel | CTVSpeedChannel.ca |
 | `ch_97yb8prcbp` | CTV Wild Channel | CTVWildChannel.ca |
 | `ch_5t9bg31hcy` | Declassified | Declassified.ca |
@@ -104,7 +102,6 @@
 | `ch_9w4f1e4ger` | GurSikh Sabha TV | GurSikhSabhaTV.ca |
 | `ch_c9gdt7qr0d` | Halla Bol! Kids TV | HallaBolKidsTV.ca |
 | `ch_z8xcta9g79` | Hay River TV | HayRiverTV.ca |
-| `ch_ghgzvbytep` | History2 | History2.ca |
 | `ch_v3j6jah1s2` | Hope Channel Canada | HopeChannelCanada.ca |
 | `ch_kmeq27w8ea` | House Assembly of Newfoundland and Labrador | HouseAssemblyofNewfoundlandandLabrador.ca |
 | `ch_bjcnccway7` | HPItv | HPItv.ca |
@@ -159,9 +156,7 @@
 | `ch_x0h3bx6hm2` | Nicktoons | Nicktoons.ca |
 | `ch_wnr0ktwx7e` | Nova Scotia Legislative TV | NovaScotiaLegislativeTV.ca |
 | `ch_zpyc69snw9` | Odyssey | Odyssey.ca |
-| `ch_bvaqes3erm` | OLN | OLN.ca |
 | `ch_55e96gmnsq` | One | One.ca |
-| `ch_6v8t7m4zc4` | OneSoccer |  |
 | `ch_0n889nbyg1` | ONNtv | ONNtv.ca |
 | `ch_anaqjwcwa7` | Ontario Parliamentary Network | OntarioParliamentaryNetwork.ca |
 | `ch_aqya5s4wr0` | Pamir TV | PamirTV.ca |
@@ -177,8 +172,6 @@
 | `ch_31eqa4tctb` | Rawal TV | RawalTV.ca |
 | `ch_vrmpymsgwx` | REV TV Canada | REVTVCanada.ca |
 | `ch_gghz3s4bn8` | RFD-TV Canada | RFDTVCanada.ca |
-| `ch_195f3ex350` | Rogers tv London |  |
-| `ch_ezjv8k7j9c` | Rogers tv Ottawa |  |
 | `ch_p1076pt9ex` | Saisons Canada | SaisonsCanada.ca |
 | `ch_bsxpnba6pv` | Salt + Light Television | SaltPlusLightTelevision.ca |
 | `ch_17k698te4z` | Sanjha Punjab | SanjhaPunjab.ca |
@@ -240,7 +233,6 @@
 | `ch_gp5d7rnyvh` | Stingray Heavy Metal | StingrayHeavyMetal.ca |
 | `ch_3h1jqw8qr5` | Stingray Holiday Favourites | StingrayHolidayFavourites.ca |
 | `ch_8db27gmhr4` | Stingray Holiday Hits | StingrayHolidayHits.ca |
-| `ch_ra4xjb712a` | Stingray Hot Country | StingrayHotCountry.ca |
 | `ch_k0vr07jxre` | Stingray Jammin' | StingrayJammin.ca |
 | `ch_6wjk26ewv2` | Stingray Jazz Cafe | StingrayJazzCafe.ca |
 | `ch_phbq3vy024` | Stingray Jazz Masters / Geants du Jazz | StingrayJazzMastersGeantsduJazz.ca |
@@ -281,7 +273,6 @@
 | `ch_14czq67d10` | Stingray Treehouse | StingrayTreehouse.ca |
 | `ch_33hm1ap15r` | Stingray Urban Beat | StingrayUrbanBeat.ca |
 | `ch_fm8883m2cg` | Super Channel Quest |  |
-| `ch_jaa1wdcc02` | Super Ecran 4 | SuperEcran4.ca |
 | `ch_qsh0gb1gq8` | TAG TV | TAGTV.ca |
 | `ch_r034yjzav6` | Talentvision | Talentvision.ca |
 | `ch_78dyehsvt1` | Tamazgha Monde TV | TamazghaMondeTV.ca |
@@ -303,9 +294,7 @@
 | `ch_s5vnx1mb8s` | The Scenic City | TheScenicCity.ca |
 | `ch_ec195n87hz` | TLN en Espanol | TLNenEspanol.ca |
 | `ch_37mmkhh6vw` | Toronto 360 TV | Toronto360TV.ca |
-| `ch_p63e4kbes6` | Total Crime | TotalCrime.ca |
 | `ch_8agz1s3nzz` | TQ5 TV | TQ5TV.ca |
-| `ch_mzdrwpczr2` | Treehouse TV | TreehouseTV.ca |
 | `ch_7jrx8c4g84` | TSN4 | TSN4.ca |
 | `ch_nbxh1vab8w` | TSN5 | TSN5.ca |
 | `ch_ns6722fzm4` | TV 16 Toronto | TV16Toronto.ca |
@@ -316,7 +305,6 @@
 | `ch_j2t8ywyqcq` | TVA Montreal +3 | TVAMontrealPlus3.ca |
 | `ch_pxc5psfyhw` | TVA Sports 2 | TVASports2.ca |
 | `ch_ve111jkkba` | TVA Sports 3 | TVASports3.ca |
-| `ch_mp866awt53` | TVA West | TVAWest.ca |
 | `ch_99j3bq1kqe` | TVC9 | TVC9.ca |
 | `ch_v8hj8r2sc1` | tvcTK | tvcTK.ca |
 | `ch_k2v7v6y2yf` | Urdu TV Toronto | UrduTVToronto.ca |
